@@ -103,3 +103,13 @@ function cambiarModulo(pagina)
 {
     redireccionar(pagina+".php");
 }
+
+function setParams(array)
+{
+    var data = "";
+    for (var i = 0 ; i < array.length; i++)
+    {
+        data+"&"+array[i]+"="+array[i];
+    }
+    return data;
+}

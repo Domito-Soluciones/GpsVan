@@ -24,81 +24,151 @@ session_start();
         </div>
         <div class="contenedor-lateral">
             <div class="lateral">
-                <div class="pestana pestana-activa" id="pestanaAsignar">
+                <div class="pestana pestana-activa" id="pestanaAgregar">
                     Agregar
                 </div>
                 <div class="pestana" id="pestanaBuscar">
                     Buscar
                 </div>
-                <div class="asignar" id="asignar">
+                <div class="asignar" id="agregar">
                     <div class="contenedor-pre-input">
-                        Partida
+                        Nombre
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" list="lorigen" id="partida" onkeyup="obtenerDireccion('partida')" placeholder="Partida">
-                        <datalist id="lorigen"></datalist>
+                        <input type="text" id="nombre" placeholder="Nombre">
                     </div>
                     <div class="contenedor-pre-input">
-                        Destino
+                        Apellido paterno
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" list="ldestino" id="destino" onkeyup="obtenerDireccion('destino')" placeholder="Destino">
-                        <datalist id="ldestino"></datalist>
+                        <input type="text" id="papellido" placeholder="Apellido paterno">
                     </div>
                     <div class="contenedor-pre-input">
-                        Cliente
+                        Apellido materno
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" list="lcliente" id="cliente" placeholder="Cliente">
-                        <datalist id="lcliente" ></datalist>
+                        <input type="text" id="mapellido" placeholder="Apellido materno">
                     </div>
                     <div class="contenedor-pre-input">
-                        Usuario
+                        Rut
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" list="lusuario" id="usuario" placeholder="Usuario">
-                        <datalist id="lusuario" ></datalist>
+                        <input type="text" id="rut" placeholder="Rut">
                     </div>
                     <div class="contenedor-pre-input">
-                        Transportista
+                        Teléfono
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" list="ltransportista" id="transportista" placeholder="Transportista">
-                        <datalist id="ltransportista"></datalist>
+                        <input type="text" id="telefono" placeholder="Teléfono">                    
                     </div>
                     <div class="contenedor-pre-input">
-                        N° Movil
+                        Celular
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" list="lmovil" id="movil" placeholder="N° Movil">
-                        <datalist id="lmovil"></datalist>
+                        <input type="text" id="celular" placeholder="Celular">
                     </div>
                     <div class="contenedor-pre-input">
-                        Tipo Servicio
+                        Dirección
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" list="ltipo" id="movil" placeholder="Tipo Servicio">
-                        <datalist id="ltipo">
-                            <option value="Recogida">Recogida</option>
-                            <option value="Reparto">Reparto</option>
-                            <option value="Servicio Especial">Servicio Especial</option>
+                        <input type="text"  id="direccion" placeholder="Dirección">
+                    </div>
+                    <div class="contenedor-pre-input">
+                        E-mail
+                    </div>
+                    <div class="contenedor-input">
+                        <input type="text" id="mail" placeholder="E-mail">
+                    </div>
+                    <div class="contenedor-pre-input">
+                        Tipo licencia
+                    </div>
+                    <div class="contenedor-input">
+                        <input type="text" list="llicencia" id="tipoLicencia" placeholder="Tipo licencia">
+                        <datalist id="llicencia" >
+                            <option value="A1">A1</option>
+                            <option value="A2">A2</option>
+                            <option value="A3">A3</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
                         </datalist>
                     </div>
                     <div class="contenedor-pre-input">
-                        Tarifa
+                        Fecha nacimiento
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" list="ltarifa" id="tarifa" placeholder="Tarifa">
-                        <datalist id="ltarifa">
-                            <option value="1000">1000</option>
-                            <option value="3000">3000</option>
-                            <option value="5000">5000</option>
-                            <option value="7000">7000</option>
-                            <option value="10000">10000</option>
-                            <option value="15000">15000</option>
-                            <option value="20000">20000</option>
-                            <option value="30000">30000</option>
+                        <input type="text" id="nacimiento" placeholder="Fecha nacimiento">
+                    </div>
+                    <div class="contenedor-pre-input">
+                        Renta imponible
+                    </div>
+                    <div class="contenedor-input">
+                        <input type="text" id="renta" placeholder="Renta">
+                    </div>
+                    <div class="contenedor-pre-input">
+                        Tipo contrato
+                    </div>
+                    <div class="contenedor-input">
+                        <input type="text" list="lcontrato" id="contrato" placeholder="Tipo contrato">
+                        <datalist id="lcontrato" >
+                            <option value="Modelo">Indefinido</option>
+                            <option value="Capital">Plazo fijo</option>
                         </datalist>
+                    </div>
+                    <div class="contenedor-pre-input">
+                        Institucion previsional
+                    </div>
+                    <div class="contenedor-input">
+                        <input type="text" list="lafp" id="afp" placeholder="Institución previsional">
+                        <datalist id="lafp" >
+                            <option value="Modelo">Modelo</option>
+                            <option value="Capital">Capital</option>
+                            <option value="Cuprum">Cuprum</option>
+                            <option value="Habitat">Habitat</option>
+                            <option value="Provida">Provida</option>
+                        </datalist>
+                    </div>
+                    <div class="contenedor-pre-input">
+                        Isapre
+                    </div>
+                    <div class="contenedor-input">
+                        <input type="text" list="lisapre" id="isapre" placeholder="Isapre">
+                        <datalist id="lisapre" >
+                            <option value="Banmédica">Banmédica</option>
+                            <option value="Colmena Golden Cross">Colmena Golden Cross</option>
+                            <option value="Consalud">Consalud</option>
+                            <option value="Cruz Blanca">Cruz Blanca</option>
+                            <option value="Nueva Masvida">Nueva Masvida</option>
+                        </datalist>
+                    </div>
+                    <div class="contenedor-pre-input">
+                        Mutual (% descuento)
+                    </div>
+                    <div class="contenedor-input">
+                        <input type="text" id="mutual" placeholder="% Descuento">
+                    </div>
+                    <div class="contenedor-pre-input">
+                        Inicio Seguro Conductor
+                    </div>
+                    <div class="contenedor-input">
+                        <input type="text" id="seguroInicio" placeholder="Inicio">
+                    </div>
+                    <div class="contenedor-pre-input">
+                        Renovación Seguro Conductor
+                    </div>
+                    <div class="contenedor-input">
+                        <input type="text" id="seguroRenovacion" placeholder="Renovación">
+                    </div>
+                    <div class="contenedor-pre-input">
+                        % Descuento
+                    </div>
+                    <div class="contenedor-input">
+                        <input type="text" id="descuento" placeholder="% Descuento">
+                    </div>
+                    <div class="contenedor-pre-input">
+                        Anticipos
+                    </div>
+                    <div class="contenedor-input">
+                        <input type="text" id="anticipo" placeholder="Anticipo">
                     </div>
                     <div class="contenedor-boton">
                         <div class="button-succes">
@@ -110,39 +180,39 @@ session_start();
                 </div>
                 <div class="buscar" id="buscar">
                     <div class="contenedor-pre-input">
-                        Id Servicio
+                        Rut
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" list="lid" id="cliente" placeholder="Id servicio">
-                        <datalist id="lid" ></datalist>
+                        <input type="text" list="lrut" id="rut" placeholder="Id servicio">
+                        <datalist id="lrut" ></datalist>
                     </div>
                     <div class="contenedor-pre-input">
-                        Cliente
+                        Nombre
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" list="lcliente" id="cliente" placeholder="Cliente">
-                        <datalist id="lcliente" ></datalist>
+                        <input type="text" list="lnombre" id="nombre" placeholder="Nombre">
+                        <datalist id="lnombre" ></datalist>
                     </div>
                     <div class="contenedor-pre-input">
-                        Usuario
+                        Apellido Paterno
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" list="lusuario" id="usuario" placeholder="Usuario">
-                        <datalist id="lusuario" ></datalist>
+                        <input type="text" list="lpapellido" id="papellido" placeholder="Apellido Paterno">
+                        <datalist id="lpapellido" ></datalist>
                     </div>
                     <div class="contenedor-pre-input">
-                        Transportista
+                        Apellido Paterno
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" list="ltransportista" id="transportista" placeholder="Transportista">
-                        <datalist id="ltransportista"></datalist>
+                        <input type="text" list="lmapellido" id="mapellido" placeholder="Apellido Materno">
+                        <datalist id="lmapellido"></datalist>
                     </div>
                     <div class="contenedor-pre-input">
-                        N° Movil
+                        E-mail
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" list="lmovil" id="movil" placeholder="N° Movil">
-                        <datalist id="lmovil"></datalist>
+                        <input type="text" list="lmail" id="mail" placeholder="E-mail">
+                        <datalist id="lmail"></datalist>
                     </div>
                     <div class="contenedor-boton">
                         <div class="button-succes">
@@ -163,9 +233,9 @@ session_start();
         </div>
         <div class="contendor_central">
             <div class="central" id="central">
-                <!--
-                aqui va el mapa
-                -->
+                <table>
+                    
+                </table>
             </div>    
         </div>   
     </body>
