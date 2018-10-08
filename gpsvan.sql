@@ -1,20 +1,22 @@
 -- phpMyAdmin SQL Dump
--- version 3.5.1
--- http://www.phpmyadmin.net
+-- version 4.8.3
+-- https://www.phpmyadmin.net/
 --
--- Servidor: localhost
--- Tiempo de generación: 08-10-2018 a las 04:19:35
--- Versión del servidor: 5.5.24-log
--- Versión de PHP: 5.4.3
+-- Servidor: 127.0.0.1:3306
+-- Tiempo de generación: 08-10-2018 a las 23:26:38
+-- Versión del servidor: 5.7.23
+-- Versión de PHP: 7.2.10
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Base de datos: `gpsvan`
@@ -26,6 +28,7 @@ SET time_zone = "+00:00";
 -- Estructura de tabla para la tabla `tbl_agente`
 --
 
+DROP TABLE IF EXISTS `tbl_agente`;
 CREATE TABLE IF NOT EXISTS `tbl_agente` (
   `agente_id` int(11) NOT NULL AUTO_INCREMENT,
   `agente_nombre` varchar(20) NOT NULL,
@@ -41,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `tbl_agente` (
   `agente_perfil` int(11) NOT NULL,
   PRIMARY KEY (`agente_id`),
   UNIQUE KEY `agente_rut` (`agente_rut`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `tbl_agente`
@@ -57,11 +60,12 @@ INSERT INTO `tbl_agente` (`agente_id`, `agente_nombre`, `agente_papellido`, `age
 -- Estructura de tabla para la tabla `tbl_cliente`
 --
 
+DROP TABLE IF EXISTS `tbl_cliente`;
 CREATE TABLE IF NOT EXISTS `tbl_cliente` (
   `cliente_id` int(11) NOT NULL AUTO_INCREMENT,
   `cliente_nombre` varchar(20) NOT NULL,
   PRIMARY KEY (`cliente_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `tbl_cliente`
@@ -76,16 +80,48 @@ INSERT INTO `tbl_cliente` (`cliente_id`, `cliente_nombre`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `tbl_conductor`
+--
+
+DROP TABLE IF EXISTS `tbl_conductor`;
+CREATE TABLE IF NOT EXISTS `tbl_conductor` (
+  `conductor_id` int(11) NOT NULL AUTO_INCREMENT,
+  `conductor_nombre` varchar(20) NOT NULL,
+  `conductor_papellido` varchar(20) NOT NULL,
+  `conductor_mapellido` varchar(20) NOT NULL,
+  `conductor_rut` varchar(10) NOT NULL,
+  `conductor_telefono` varchar(10) NOT NULL,
+  `conductor_celular` varchar(20) NOT NULL,
+  `conductor_direccion` varchar(50) NOT NULL,
+  `conductor_mail` varchar(40) NOT NULL,
+  `conductor_tipo_licencia` varchar(3) NOT NULL,
+  `conductor_nacimiento` date NOT NULL,
+  `conductor_renta` int(11) NOT NULL,
+  `conductor_tipo_contrato` varchar(20) NOT NULL,
+  `conductor_prevision` varchar(20) NOT NULL,
+  `conductor_isapre` varchar(20) NOT NULL,
+  `conductor_mutual` varchar(20) NOT NULL,
+  `conductor_seguro_inicio` date NOT NULL,
+  `cunductor_seguro_renovacion` date NOT NULL,
+  `conductor_descuento` int(11) NOT NULL,
+  `conductor_anticipo` int(11) NOT NULL,
+  PRIMARY KEY (`conductor_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `tbl_movil`
 --
 
+DROP TABLE IF EXISTS `tbl_movil`;
 CREATE TABLE IF NOT EXISTS `tbl_movil` (
   `movil_id` int(11) NOT NULL AUTO_INCREMENT,
   `movil_nombre` varchar(20) NOT NULL,
   `movil_transportista` int(11) NOT NULL,
   `movil_estado` int(11) NOT NULL,
   PRIMARY KEY (`movil_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `tbl_movil`
@@ -107,6 +143,7 @@ INSERT INTO `tbl_movil` (`movil_id`, `movil_nombre`, `movil_transportista`, `mov
 -- Estructura de tabla para la tabla `tbl_servicio`
 --
 
+DROP TABLE IF EXISTS `tbl_servicio`;
 CREATE TABLE IF NOT EXISTS `tbl_servicio` (
   `servicio_id` int(11) NOT NULL AUTO_INCREMENT,
   `servicio_partida` varchar(100) NOT NULL,
@@ -120,7 +157,7 @@ CREATE TABLE IF NOT EXISTS `tbl_servicio` (
   `servicio_agente` int(11) NOT NULL,
   `servicio_fecha` datetime NOT NULL,
   PRIMARY KEY (`servicio_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10006 ;
+) ENGINE=InnoDB AUTO_INCREMENT=10006 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `tbl_servicio`
@@ -140,11 +177,12 @@ INSERT INTO `tbl_servicio` (`servicio_id`, `servicio_partida`, `servicio_destino
 -- Estructura de tabla para la tabla `tbl_transportista`
 --
 
+DROP TABLE IF EXISTS `tbl_transportista`;
 CREATE TABLE IF NOT EXISTS `tbl_transportista` (
   `transportista_id` int(11) NOT NULL AUTO_INCREMENT,
   `transportista_nombre` varchar(20) NOT NULL,
   PRIMARY KEY (`transportista_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `tbl_transportista`
@@ -162,6 +200,7 @@ INSERT INTO `tbl_transportista` (`transportista_id`, `transportista_nombre`) VAL
 -- Estructura de tabla para la tabla `tbl_usuario`
 --
 
+DROP TABLE IF EXISTS `tbl_usuario`;
 CREATE TABLE IF NOT EXISTS `tbl_usuario` (
   `usuario_id` int(11) NOT NULL,
   `usuario_nombre` varchar(20) NOT NULL,
@@ -181,6 +220,7 @@ INSERT INTO `tbl_usuario` (`usuario_id`, `usuario_nombre`, `usuario_cliente`) VA
 (6, 'usuario6', 3),
 (7, 'usuario7', 4),
 (8, 'usuario8', 4);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
