@@ -1,0 +1,47 @@
+<?php
+
+include '../query/ServicioDao.php';
+
+header('Content-Type: application/json');
+$id = $_REQUEST['id'];
+$cliente = $_REQUEST['cliente'];
+$usuario = $_REQUEST['usuario'];
+$transportista = $_REQUEST['transportista'];
+$movil = $_REQUEST['movil'];
+$desde = $_REQUEST['desde'];
+$hasta = $_REQUEST['hasta'];
+$servicioDao = new ServicioDao();
+$servicios = $servicioDao->getServicios($id,$cliente,$usuario,$transportista,$movil,$desde,$hasta);
+echo "[";
+for ($i = 0 ; $i < count($servicios); $i++)
+{
+    $servicioId = $servicios[$i]->getId();
+    $servicioPartida = $servicios[$i]->getPartida();
+    $servicioDestino = $servicios[$i]->getDestino();
+    $servicioCliente = $servicios[$i]->getCliente();
+    $servicioUsuario = $servicios[$i]->getUsuario();
+    $servicioTransportista = $servicios[$i]->getTransportista();
+    $servicioMovil = $servicios[$i]->getMovil();
+    $servicioTipo = $servicios[$i]->getTipo();
+    $servicioTarifa = $servicios[$i]->getTarifa();
+    $servicioAgente = $servicios[$i]->getAgente();
+    $servicioFecha = $servicios[$i]->getFecha();
+    
+    echo "{\"servicio_id\":\"".$servicioId."\","
+        . "\"servicio_partida\":\"".$servicioPartida."\","
+        . "\"servicio_destino\":\"".$servicioDestino."\","
+        . "\"servicio_cliente\":\"".$servicioCliente."\","
+        . "\"servicio_usuario\":\"".$servicioUsuario."\","
+        . "\"servicio_transportista\":\"".$servicioTransportista."\","
+        . "\"servicio_movil\":\"".$servicioMovil."\","
+        . "\"servicio_tipo\":\"".$servicioTipo."\","
+        . "\"servicio_tarifa\":\"".$servicioTarifa."\","
+        . "\"servicio_agente\":\"".$servicioAgente."\","
+        . "\"servicio_fecha\":\"".$servicioFecha."\""
+        . "}";
+    if (($i+1) != count($servicios))
+    {
+        echo ",";
+    }
+}
+echo "]";

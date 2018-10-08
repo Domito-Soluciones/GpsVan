@@ -1,0 +1,50 @@
+.contendor_mapa
+{
+    position: relative;
+    margin-left: 20%;
+    width: 80%;
+    height: calc(100% - 125px);
+}
+.map 
+{
+    height: 100%;
+    width: 100%;
+}
+.contenedor-pre-input
+{
+    margin-left: 15%;
+    width: 40%;
+}
+.contenedor-input
+{
+    margin-left: 15%;
+    margin-bottom: 5px;
+    width: 60%;
+}
+.contenedor-input input
+{
+    padding-left: 10px;
+    border: none;
+    border-radius: 7px;
+    height: 25px;
+}
+.buscar
+{
+    display: none;
+}
+.pestana
+{
+    background-color: #cccccc;
+    text-align: center;
+    width: 50%;
+    height: 26px;
+    float: left;
+    padding-top: 10px;
+    cursor: pointer;
+}
+.pestana-activa
+{
+    cursor: initial;
+    background-color: orange;
+}
+
