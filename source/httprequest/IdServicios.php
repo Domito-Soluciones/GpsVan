@@ -1,6 +1,7 @@
 <?php
 
 include '../query/ServicioDao.php';
+include '../dominio/Servicio.php';
 
 header('Content-Type: application/json');
 $id = $_REQUEST['id'];

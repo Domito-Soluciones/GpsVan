@@ -7,6 +7,7 @@ $(document).ready(function(){
     $("#cabecera").load("html/cabecera.html");
     $("#menu").load("html/menu.html");
     agregarclase($("#principal"),"menu-activo");
+    
     $("#usuario").focus(function () {
         preCargarUsuarios(); 
     });
@@ -144,20 +145,22 @@ function cargarMoviles(idTransportista)
 function agregarServicio()
 {
     var partida = $("#partida").val();
+    var partida_id = $("#partida_hidden").val();
     var destino = $("#destino").val();
+    var destino_id = $("#destino_hidden").val();
     var cliente = clientes[$("#cliente").val()];
     var usuario = usuarios[$("#usuario").val()];
     var transportista = transportistas[$("#transportista").val()];
     var movil = moviles[$("#movil").val()];
     var tipo = $("#tipo").val();
     var tarifa = $("#tarifa").val();
-    var array = [partida,destino,cliente,usuario,transportista,movil,tipo,tarifa];
+    var array = [partida,partida_id,destino,destino_id,cliente,usuario,transportista,movil,tipo,tarifa];
     if(!validarCamposOr(array))
     {
         addTexto($("#mensaje-error"),"Ingrese todos los campos necesarios");
         return;
     }
-    var data = "partida="+partida+"&destino="+destino+"&cliente="+cliente+"&usuario="
+    var data = "partida="+partida+"&partidaId="+partida_id+"&destino="+destino+"&destinoId="+destino_id+"&cliente="+cliente+"&usuario="
             +usuario+"&transportista="+transportista+"&movil="+movil+"&tipo="+tipo+"&tarifa="+tarifa;
     var url = "../source/httprequest/AddServicio.php?"+data;
     var success = function(response)

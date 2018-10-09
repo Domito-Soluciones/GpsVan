@@ -3,7 +3,9 @@
 class Servicio {
     private $id;
     private $partida;
+    private $partidaId;
     private $destino;
+    private $destinoId;
     private $cliente;
     private $usuario;
     private $transportista;
@@ -20,9 +22,17 @@ class Servicio {
     function getPartida() {
         return $this->partida;
     }
+    
+    function getPartidaId() {
+        return $this->partidaId;
+    }
 
     function getDestino() {
         return $this->destino;
+    }
+        
+    function getDestinoId() {
+        return $this->destinoId;
     }
 
     function getCliente() {
@@ -64,9 +74,17 @@ class Servicio {
     function setPartida($partida) {
         $this->partida = $partida;
     }
+    
+    function setPartidaId($partidaId) {
+        $this->partidaId = $partidaId;
+    }
 
     function setDestino($destino) {
         $this->destino = $destino;
+    }
+    
+    function setDestinoId($destinoId) {
+        $this->destinoId = $destinoId;
     }
 
     function setCliente($cliente) {

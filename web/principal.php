@@ -38,15 +38,15 @@ header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
                         Partida
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" list="lorigen" id="partida" onkeyup="obtenerDireccion('partida')" placeholder="Partida">
-                        <datalist id="lorigen"></datalist>
+                        <input type="text" id="partida" placeholder="Partida">
+                        <input type="hidden" id="partida_hidden">
                     </div>
                     <div class="contenedor-pre-input">
                         Destino
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" list="ldestino" id="destino" onkeyup="obtenerDireccion('destino')" placeholder="Destino">
-                        <datalist id="ldestino"></datalist>
+                        <input type="text" id="destino" placeholder="Destino">
+                        <input type="hidden" id="destino_hidden">
                     </div>
                     <div class="contenedor-pre-input">
                         Cliente
@@ -185,100 +185,87 @@ header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
             </div>    
         </div>   
         <script>
+            function initMap() {
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    mapTypeControl: false,
+                    center: {lat: -33.440616, lng: -70.6514212},
+                    zoom: 13
+                });
+                new AutocompleteDirectionsHandler(map);
+            }
+
+            function AutocompleteDirectionsHandler(map) {
+                this.map = map;
+                this.originPlaceId = null;
+                this.destinationPlaceId = null;
+                var originInput = document.getElementById('partida');
+                var destinationInput = document.getElementById('destino');
+                this.directionsService = new google.maps.DirectionsService;
+                this.directionsDisplay = new google.maps.DirectionsRenderer;
+                this.directionsDisplay.setMap(map);
                 
-        var map,infoWindow;
-                function initMap() 
-                {
-                    infoWindow = new google.maps.InfoWindow;
-                    var directionsService = new google.maps.DirectionsService;
-                    var directionsDisplay = new google.maps.DirectionsRenderer;
-                    var map = new google.maps.Map(document.getElementById('map'), {
-                        zoom: 17
-                    });
-                    if (navigator.geolocation) {
-                        navigator.geolocation.getCurrentPosition(function(position) {
-                          var pos = {
-                            lat: position.coords.latitude,
-                            lng: position.coords.longitude
-                          };
+                var originAutocomplete = new google.maps.places.Autocomplete(
+                    originInput, {placeIdOnly: true});
+                var destinationAutocomplete = new google.maps.places.Autocomplete(
+                    destinationInput, {placeIdOnly: true});
+                this.travelMode = 'DRIVING';
+                this.route();
+                this.setupPlaceChangedListener(originAutocomplete, 'ORIG');
+                this.setupPlaceChangedListener(destinationAutocomplete, 'DEST');
+                //this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(originInput);
+                //this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(destinationInput);
+            }
+            
+            AutocompleteDirectionsHandler.prototype.setupClickListener = function(id, mode) {
+                var radioButton = document.getElementById(id);
+                var me = this;
+                radioButton.addEventListener('click', function() {
+                me.travelMode = mode;
+                    me.route();
+                });
+            };
 
-                          infoWindow.setPosition(pos);
-                          infoWindow.setContent('Location found.');
-                          infoWindow.open(map);
-                          map.setCenter(pos);
-                        }, function() {
-                          handleLocationError(true, infoWindow, map.getCenter());
-                        });
-                      } else {
-                        // Browser doesn't support Geolocation
-                        handleLocationError(false, infoWindow, map.getCenter());
-                      }
+      AutocompleteDirectionsHandler.prototype.setupPlaceChangedListener = function(autocomplete, mode) {
+        var me = this;
+        autocomplete.bindTo('bounds', this.map);
+        autocomplete.addListener('place_changed', function() {
+          var place = autocomplete.getPlace();
+          if (!place.place_id) {
+            window.alert("Please select an option from the dropdown list.");
+            return;
+          }
+          if (mode === 'ORIG') {
+            me.originPlaceId = place.place_id;
+            document.getElementById("partida_hidden").value = place.place_id;
+          } else {
+            me.destinationPlaceId = place.place_id;
+            document.getElementById("destino_hidden").value = place.place_id;
+          }
+          me.route();
+        });
 
-                    directionsDisplay.setMap(map);
+      };
 
-                    var onChangeHandler = function() {
-                      calculateAndDisplayRoute(directionsService, directionsDisplay);
-                    };
-                    //document.getElementById('start').addEventListener('change', onChangeHandler);
-                    //document.getElementById('end').addEventListener('change', onChangeHandler);
-                  }
-/*
-                  function calculateAndDisplayRoute(directionsService, directionsDisplay) {
-                    directionsService.route({
-                      origin: document.getElementById('start').value,
-                      destination: document.getElementById('end').value,
-                      travelMode: 'DRIVING'
-                    }, function(response, status) {
-                      if (status === 'OK') {
-                        directionsDisplay.setDirections(response);
-                      } else {
-                        window.alert('Directions request failed due to ' + status);
-                      }
-                    });
-                  }*/
-
-                     function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-        infoWindow.setPosition(pos);
-        infoWindow.setContent(browserHasGeolocation ?
-                              'Error: The Geolocation service failed.' :
-                              'Error: Your browser doesn\'t support geolocation.');
-        infoWindow.open(map);
-      }
-  
-
-        function obtenerDireccion(opcion)
-        {
-            var busca = document.getElementById(opcion).value;
-            $.ajax({
-                url: "https://maps.googleapis.com/maps/api/place/autocomplete/json?input="+busca+"&key=AIzaSyDfPGTUHN5DXdLh9XN52mFKEay6vtTrmos&location=-33.440616,-70.6514212&radius=500000&strictbounds&language=es",
-                method:'GET',
-                dataType: 'json',
-                beforeSend: function (xhr) {
-                
-                },
-                success: function(response) {
-                    if(opcion === 'partida') {
-                        $("#lorigen").html("");
-                        for(var i = 0 ; i < response.predictions.length ; i++){
-                            $("#lorigen").append("<option>"+response.predictions[i].description+"</option>");
-                        }
-                    }
-                    else if(opcion === 'destino'){
-                        $("#ldestino").html("");
-                        for(var i = 0 ; i < response.predictions.length ; i++){
-                            $("#ldestino").append("<option>"+response.predictions[i].description+"</option>");
-                        }
-                    }       
-                },
-                error: function (resposeError){
-                    //alert(resposeError.status);
-                }
-            });
+      AutocompleteDirectionsHandler.prototype.route = function() {
+        if (!this.originPlaceId || !this.destinationPlaceId) {
+          return;
         }
-               
-            </script>
-            <script async defer
-                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfPGTUHN5DXdLh9XN52mFKEay6vtTrmos&callback=initMap">
-            </script>
+        var me = this;
+
+        this.directionsService.route({
+          origin: {'placeId': this.originPlaceId},
+          destination: {'placeId': this.destinationPlaceId},
+          travelMode: this.travelMode
+        }, function(response, status) {
+          if (status === 'OK') {
+            me.directionsDisplay.setDirections(response);
+          } else {
+            window.alert('Directions request failed due to ' + status);
+          }
+        });
+      };
+
+    </script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfPGTUHN5DXdLh9XN52mFKEay6vtTrmos&libraries=places&callback=initMap"></script>
     </body>
 </html>

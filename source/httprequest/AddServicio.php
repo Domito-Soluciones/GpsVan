@@ -5,7 +5,9 @@
     include '../dominio/Servicio.php';
 
     $partida = $_REQUEST['partida'];
+    $partida_id = $_REQUEST['partidaId'];
     $destino = $_REQUEST['destino'];
+    $destino_id = $_REQUEST['destinoId'];
     $cliente = $_REQUEST['cliente'];
     $usuario = $_REQUEST['usuario'];
     $transportista = $_REQUEST['transportista'];
@@ -15,7 +17,9 @@
     $agente = $_SESSION['agente'];
     $servicio = new Servicio();
     $servicio->setPartida($partida);
+    $servicio->setPartidaId($partida_id); 
     $servicio->setDestino($destino);
+    $servicio->setDestinoId($destino_id);
     $servicio->setCliente($cliente);
     $servicio->setUsuario($usuario);
     $servicio->setTransportista($transportista);

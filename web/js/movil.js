@@ -34,7 +34,7 @@ $(document).ready(function(){
 
 function cargarDatosConductores()
 {
-    var url = "../source/httprequest/Conductores.php?id="+id;
+    var url = "../source/httprequest/Conductores.php";
     var success = function(response)
     {
         $("#lrut").html("");
@@ -89,7 +89,7 @@ function agregarConductor()
         addTexto($("#mensaje-error"),"Ingrese todos los campos");
         return;
     }
-    var data = setParams(array);
+    var data = "";
     var url = "../source/httprequest/AddConductor.php?agrega=true"+data;
     var success = function(response)
     {
