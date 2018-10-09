@@ -2,11 +2,42 @@
 include '../query/ConductorDao.php';
 
 header('Content-Type: application/json');
+if(isset($_REQUEST['rut'])){
+    $rut = $_REQUEST['rut'];
+}
+else{
+    $rut = '';
+}
+if(isset($_REQUEST['nombre'])){
+    $nombre = $_REQUEST['nombre'];
+}
+else{
+    $nombre = '';
+}
+if(isset($_REQUEST['papellido'])){
+    $papellido = $_REQUEST['papellido'];
+}
+else{
+    $papellido = '';
+}
+if(isset($_REQUEST['mapellido'])){
+    $mapellido = $_REQUEST['mapellido'];
+}
+else{
+    $mapellido = '';
+}
+if(isset($_REQUEST['mail'])){
+    $mail = $_REQUEST['mail'];
+}
+else{
+    $mail = '';
+}
 $conductorDao = new ConductorDao();
-$conductores = $conductorDao->getConductores();
+$conductores = $conductorDao->getConductores($rut,$nombre,$papellido,$mapellido,$mail);
 echo "[";
 for ($i = 0 ; $i < count($conductores); $i++)
 {
+    $cId = $conductores[$i]->getId();
     $nombre = $conductores[$i]->getNombre();
     $papellido = $conductores[$i]->getPapellido();
     $mapellido = $conductores[$i]->getMapellido();
@@ -26,7 +57,8 @@ for ($i = 0 ; $i < count($conductores); $i++)
     $seguroRenovacion = $conductores[$i]->getSeguroRenovacion();
     $descuento = $conductores[$i]->getDescuento();
     $anticipo = $conductores[$i]->getAnticipo();
-    echo "{\"conductor_nombre\":\"".$nombre."\","
+    echo "{\"conductor_id\":\"".$cId."\","
+        . "\"conductor_nombre\":\"".$nombre."\","
         . "\"conductor_papellido\":\"".$papellido."\","
         . "\"conductor_mapellido\":\"".$mapellido."\","
         . "\"conductor_rut\":\"".$rut."\","

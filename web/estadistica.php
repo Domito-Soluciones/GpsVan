@@ -5,7 +5,7 @@ session_start();
 <html>
     <head>
         <title>
-            Maps
+            Estadistica
         </title>
         <meta charset="utf-8">
         <link rel="stylesheet" href="css/estilo.css">

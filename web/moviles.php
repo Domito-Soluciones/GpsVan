@@ -233,8 +233,71 @@ session_start();
         </div>
         <div class="contendor_central">
             <div class="central" id="central">
-                <table>
-                    
+                <table id="tabla">
+                    <thead>
+                        <tr>
+                            <th>
+                                Nombre
+                            </th>
+                            <th>
+                                Apellido paterno
+                            </th>
+                            <th>
+                                Apellido materno
+                            </th>
+                            <th>
+                                Rut
+                            </th>
+                            <th>
+                                Teléfono
+                            </th>
+                            <th>
+                                Celular
+                            </th>
+                            <th>
+                                Dirección
+                            </th>
+                            <th>
+                                E-mail
+                            </th>
+                            <th>
+                                Tipo licencia
+                            </th>
+                            <th>
+                                Fecha nacimiento
+                            </th>
+                            <th>
+                               Renta imponible 
+                            </th>
+                            <th>
+                               Tipo contrato 
+                            </th>
+                            <th>
+                                Institucion previsional 
+                            </th>
+                            <th>
+                                Isapre
+                            </th>
+                            <th>
+                                Mutual (% descuento)
+                            </th>
+                            <th>
+                                Inicio Seguro Conductor
+                            </th>
+                            <th>
+                                Renovación Seguro Conductor  
+                            </th>
+                            <th>
+                                % Descuento
+                            </th>
+                            <th>
+                                Anticipos
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
                 </table>
             </div>    
         </div>   
