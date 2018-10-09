@@ -10,7 +10,7 @@ class ClienteDao {
         try {
             if($cliente !== '')
             {
-                $query = "SELECT * FROM tbl_cliente WHERE cliente_nombre ilike '$cliente%' LIMIT 20"; 
+                $query = "SELECT * FROM tbl_cliente WHERE cliente_razon_social ilike '$cliente%' LIMIT 20"; 
             }
             $query = "SELECT * FROM tbl_cliente LIMIT 20"; 
             $conn->conectar();
@@ -18,7 +18,7 @@ class ClienteDao {
             while($row = mysqli_fetch_array($result)) {
                 $cliente = new Cliente();
                 $cliente->setId($row["cliente_id"]);
-                $cliente->setNombre($row["cliente_nombre"]);
+                $cliente->setRazon($row["cliente_razon_social"]);
                 array_push($array, $cliente);
             }
         } catch (Exception $exc) {
@@ -26,4 +26,5 @@ class ClienteDao {
         }
         return $array;
     }
+   
 }

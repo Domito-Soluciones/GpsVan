@@ -53,7 +53,7 @@ session_start();
                         Rut
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" id="rut" placeholder="Rut">
+                        <input type="text" id="rut" placeholder="Rut"  autocomplete="off">
                     </div>
                     <div class="contenedor-pre-input">
                         Teléfono
@@ -183,7 +183,7 @@ session_start();
                         Rut
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" list="lrut" id="rut" placeholder="Id servicio">
+                        <input type="text" list="lrut" id="rut" placeholder="Rut"  autocomplete="off">
                         <datalist id="lrut" ></datalist>
                     </div>
                     <div class="contenedor-pre-input">
