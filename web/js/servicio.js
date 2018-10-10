@@ -6,36 +6,15 @@ var moviles = new Array();
 $(document).ready(function(){
     $("#cabecera").load("html/cabecera.html");
     $("#menu").load("html/menu.html");
-    agregarclase($("#principal"),"menu-activo");
-    
-    $("#usuario").focus(function () {
-        preCargarUsuarios(); 
-    });
-    $("#movil").focus(function () {
-        preCargarMoviles(); 
-    });
-    $("#entrar").click(function () {
-        agregarServicio();
-    });
+    agregarclase($("#moviles"),"menu-activo");
     $("#buscar").click(function () {
         buscarServicio();
-    });
-    $("#pestanaBuscar").click(function () {
-        cambiarPropiedad($("#asignar"),"display","none");
-        cambiarPropiedad($("#buscar"),"display","initial");
-        agregarclase($("#pestanaBuscar"),"pestana-activa");
-        quitarclase($("#pestanaAsignar"),"pestana-activa");
-    });
-    $("#pestanaAsignar").click(function () {
-        cambiarPropiedad($("#buscar"),"display","none");
-        cambiarPropiedad($("#asignar"),"display","initial");
-        agregarclase($("#pestanaAsignar"),"pestana-activa");
-        quitarclase($("#pestanaBuscar"),"pestana-activa");
     });
     cargarIds();
     cargarClientes();
     cargarTransportistas();
 });
+
 
 function cargarIds()
 {
@@ -140,36 +119,6 @@ function cargarMoviles(idTransportista)
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
     getRequest(url,success);
-}
-
-function agregarServicio()
-{
-    var partida = $("#partida").val();
-    var partida_id = $("#partida_hidden").val();
-    var destino = $("#destino").val();
-    var destino_id = $("#destino_hidden").val();
-    var cliente = clientes[$("#cliente").val()];
-    var usuario = usuarios[$("#usuario").val()];
-    var transportista = transportistas[$("#transportista").val()];
-    var movil = moviles[$("#movil").val()];
-    var tipo = $("#tipo").val();
-    var tarifa = $("#tarifa").val();
-    var array = [partida,partida_id,destino,destino_id,cliente,usuario,transportista,movil,tipo,tarifa];
-    if(!validarCamposOr(array))
-    {
-        addTexto($("#mensaje-error"),"Ingrese todos los campos necesarios");
-        return;
-    }
-    var data = "partida="+partida+"&partidaId="+partida_id+"&destino="+destino+"&destinoId="+destino_id+"&cliente="+cliente+"&usuario="
-            +usuario+"&transportista="+transportista+"&movil="+movil+"&tipo="+tipo+"&tarifa="+tarifa;
-    var url = "../source/httprequest/AddServicio.php?"+data;
-    var success = function(response)
-    {
-        alert("servicio agregado con id "+response);
-        cambiarPropiedad($("#loader"),"visibility","hidden");
-        addTexto($("#mensaje-error"),"");
-    };
-    postRequest(url,success);
 }
 
 function buscarServicio()

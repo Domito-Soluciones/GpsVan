@@ -2,23 +2,96 @@
 
 class Cliente {
     private $id;
-    private $nombre;
+    private $razon;
+    private $tipo;
+    private $rut;
+    private $direccion;
+    private $nombreContacto;
+    private $fonoContacto;
+    private $mailContacto;
+    private $mailFacturacion;
+    private $centroCosto;
     
+
     function getId() {
         return $this->id;
     }
 
-    function getNombre() {
-        return $this->nombre;
+     function getRazon() {
+        return $this->razon;
     }
 
-    function setId($id) {
+     function getTipo() {
+        return $this->tipo;
+    }
+
+     function getRut() {
+        return $this->rut;
+    }
+
+     function getDireccion() {
+        return $this->direccion;
+    }
+
+     function getNombreContacto() {
+        return $this->nombreContacto;
+    }
+
+     function getFonoContacto() {
+        return $this->fonoContacto;
+    }
+
+     function getMailContacto() {
+        return $this->mailContacto;
+    }
+
+     function getMailFacturacion() {
+        return $this->mailFacturacion;
+    }
+
+     function getCentroCosto() {
+        return $this->centroCosto;
+    }
+
+     function setId($id) {
         $this->id = $id;
     }
 
-    function setNombre($nombre) {
-        $this->nombre = $nombre;
+     function setRazon($razon) {
+        $this->razon = $razon;
     }
 
+     function setTipo($tipo) {
+        $this->tipo = $tipo;
+    }
+
+     function setRut($rut) {
+        $this->rut = $rut;
+    }
+
+     function setDireccion($direccion) {
+        $this->direccion = $direccion;
+    }
+
+     function setNombreContacto($nombreContacto) {
+        $this->nombreContacto = $nombreContacto;
+    }
+
+     function setFonoContacto($fonoContacto) {
+        $this->fonoContacto = $fonoContacto;
+    }
+
+     function setMailContacto($mailContacto) {
+        $this->mailContacto = $mailContacto;
+    }
+
+     function setMailFacturacion($mailFacturacion) {
+        $this->mailFacturacion = $mailFacturacion;
+    }
+
+     function setCentroCosto($centroCosto) {
+        $this->centroCosto = $centroCosto;
+    }
 
 }
+

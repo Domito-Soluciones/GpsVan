@@ -99,3 +99,31 @@ function agregarConductor()
     };
     postRequest(url,success);
 }
+
+function buscarConductores()
+{
+    var rut = $("#rut").val();
+    var nombre = $("#nombre").val();
+    var papellido = $("#papellido").val();
+    var mapellido = $("#mapellido").val();
+    var mail = $("#mail").val();
+    
+    var array = [rut,nombre,papellido,mapellido,mail];
+    if(!validarCamposAnd(array))
+    {
+        addTexto($("#mensaje-error"),"Ingrese todos los campos");
+        return;
+    }
+    var data = "rut="+rut+"&nombre="+nombre+"&papellido="+papellido+"&mapellido="+mapellido+"&mail="+mail;
+    var url = "../source/httprequest/Servicios.php?"+data;
+    var success = function(response)
+    {
+        for(var i = 0 ; i < response.length; i++)
+        {
+            alert("servicio encontrado con id "+response[i].servicio_id);
+        }
+        cambiarPropiedad($("#loader"),"visibility","hidden");
+        addTexto($("#mensaje-error"),"");
+    };
+    getRequest(url,success);
+}

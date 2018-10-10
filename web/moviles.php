@@ -53,7 +53,7 @@ session_start();
                         Rut
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" id="rut" placeholder="Rut">
+                        <input type="text" id="rut" placeholder="Rut"  autocomplete="off">
                     </div>
                     <div class="contenedor-pre-input">
                         Teléfono
@@ -183,7 +183,7 @@ session_start();
                         Rut
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" list="lrut" id="rut" placeholder="Id servicio">
+                        <input type="text" list="lrut" id="rut" placeholder="Rut"  autocomplete="off">
                         <datalist id="lrut" ></datalist>
                     </div>
                     <div class="contenedor-pre-input">
@@ -233,8 +233,71 @@ session_start();
         </div>
         <div class="contendor_central">
             <div class="central" id="central">
-                <table>
-                    
+                <table id="tabla">
+                    <thead>
+                        <tr>
+                            <th>
+                                Nombre
+                            </th>
+                            <th>
+                                Apellido paterno
+                            </th>
+                            <th>
+                                Apellido materno
+                            </th>
+                            <th>
+                                Rut
+                            </th>
+                            <th>
+                                Teléfono
+                            </th>
+                            <th>
+                                Celular
+                            </th>
+                            <th>
+                                Dirección
+                            </th>
+                            <th>
+                                E-mail
+                            </th>
+                            <th>
+                                Tipo licencia
+                            </th>
+                            <th>
+                                Fecha nacimiento
+                            </th>
+                            <th>
+                               Renta imponible 
+                            </th>
+                            <th>
+                               Tipo contrato 
+                            </th>
+                            <th>
+                                Institucion previsional 
+                            </th>
+                            <th>
+                                Isapre
+                            </th>
+                            <th>
+                                Mutual (% descuento)
+                            </th>
+                            <th>
+                                Inicio Seguro Conductor
+                            </th>
+                            <th>
+                                Renovación Seguro Conductor  
+                            </th>
+                            <th>
+                                % Descuento
+                            </th>
+                            <th>
+                                Anticipos
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
                 </table>
             </div>    
         </div>   

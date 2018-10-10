@@ -59,7 +59,7 @@ header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
                         Usuario
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" list="lusuario" id="usuario" placeholder="Usuario">
+                        <input type="text" list="lusuario" id="usuario" placeholder="Usuario"  autocomplete="off">
                         <datalist id="lusuario" ></datalist>
                     </div>
                     <div class="contenedor-pre-input">
