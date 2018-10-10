@@ -1,6 +1,7 @@
 <?php
 
 class Conductor {
+    private $id;
     private $nombre;
     private $papellido;
     private $mapellido;
@@ -20,6 +21,10 @@ class Conductor {
     private $seguroRenovacion;
     private $descuento;
     private $anticipo;
+    
+    function getId() {
+        return $this->id;
+    }
     
     function getNombre() {
         return $this->nombre;
@@ -96,7 +101,11 @@ class Conductor {
     function getAnticipo() {
         return $this->anticipo;
     }
-
+    
+    function setId($id) {
+        $this->id = $id;
+    }
+    
     function setNombre($nombre) {
         $this->nombre = $nombre;
     }

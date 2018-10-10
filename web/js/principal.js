@@ -7,30 +7,48 @@ $(document).ready(function(){
     $("#cabecera").load("html/cabecera.html");
     $("#menu").load("html/menu.html");
     agregarclase($("#principal"),"menu-activo");
-    
-    $("#usuario").focus(function () {
-        preCargarUsuarios(); 
-    });
-    $("#movil").focus(function () {
-        preCargarMoviles(); 
-    });
+    iniciarFecha();
     $("#entrar").click(function () {
         agregarServicio();
     });
-    $("#buscar").click(function () {
+    $("#boton-buscar").click(function () {
         buscarServicio();
+    });
+    $("#cliente").on('input',function () {
+        preCargarUsuarios(); 
+    });
+    $("#transportista").on('input',function () {
+        preCargarMoviles(); 
+    });
+    $("#cliente").on('input',function () {
+        preCargarUsuarios(); 
+    });
+    $("#transportista").on('input',function () {
+        preCargarMoviles(); 
     });
     $("#pestanaBuscar").click(function () {
         cambiarPropiedad($("#asignar"),"display","none");
         cambiarPropiedad($("#buscar"),"display","initial");
         agregarclase($("#pestanaBuscar"),"pestana-activa");
         quitarclase($("#pestanaAsignar"),"pestana-activa");
+        $("#cliente").on('input',function () {
+            preCargarUsuarios(); 
+        });
+        $("#transportista").on('input',function () {
+            preCargarMoviles(); 
+        });
     });
     $("#pestanaAsignar").click(function () {
         cambiarPropiedad($("#buscar"),"display","none");
         cambiarPropiedad($("#asignar"),"display","initial");
         agregarclase($("#pestanaAsignar"),"pestana-activa");
         quitarclase($("#pestanaBuscar"),"pestana-activa");
+        $("#cliente").on('input',function () {
+            preCargarUsuarios(); 
+        });
+        $("#transportista").on('input',function () {
+            preCargarMoviles(); 
+        });
     });
     cargarIds();
     cargarClientes();
@@ -93,6 +111,7 @@ function cargarUsuarios(idCliente)
             usuarios[nombre] = id;
             $("#lusuario").append("<option value='"+nombre+"'>"+nombre+"</option>");
         }
+        cambiarPropiedad($("#loader"),"visibility","hidden");
     };
     getRequest(url,success);
 }
@@ -157,7 +176,7 @@ function agregarServicio()
     var array = [partida,partida_id,destino,destino_id,cliente,usuario,transportista,movil,tipo,tarifa];
     if(!validarCamposOr(array))
     {
-        addTexto($("#mensaje-error"),"Ingrese todos los campos necesarios");
+        alertify.error("Ingrese todos los campos necesarios");
         return;
     }
     var data = "partida="+partida+"&partidaId="+partida_id+"&destino="+destino+"&destinoId="+destino_id+"&cliente="+cliente+"&usuario="
@@ -165,7 +184,9 @@ function agregarServicio()
     var url = "../source/httprequest/AddServicio.php?"+data;
     var success = function(response)
     {
-        alert("servicio agregado con id "+response);
+        cerrarSession(response);
+        alertify.success('servicio agregado con id '+response);
+        vaciarFormulario($("#asignar input"));
         cambiarPropiedad($("#loader"),"visibility","hidden");
         addTexto($("#mensaje-error"),"");
     };
@@ -184,7 +205,7 @@ function buscarServicio()
     var array = [id,cliente,usuario,transportista,movil,desde,hasta];
     if(!validarCamposAnd(array))
     {
-        addTexto($("#mensaje-error"),"Ingrese todos los campos");
+        alertify.error("Ingrese algun criterio de busqueda");
         return;
     }
     var data = "id="+id+"&cliente="+cliente+"&usuario="
@@ -194,10 +215,35 @@ function buscarServicio()
     {
         for(var i = 0 ; i < response.length; i++)
         {
-            alert("servicio encontrado con id "+response[i].servicio_id);
+            alertify.success("servicio encontrado con id "+response[i].servicio_id);
+            calculateAndDisplayRoute(response[i].servicio_partida, response[i].servicio_destino);
+
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
         addTexto($("#mensaje-error"),"");
     };
     getRequest(url,success);
+}
+
+function iniciarFecha() {
+    jQuery.datetimepicker.setLocale('es');
+    var conf = {
+        i18n:{
+            de:{
+                months:[
+                    'Januar','Februar','März','April',
+                    'Mai','Juni','Juli','August',
+                    'September','Oktober','November','Dezember'
+                ],
+                dayOfWeek:[
+                    "So.", "Mo", "Di", "Mi", 
+                    "Do", "Fr", "Sa."
+                ]
+            }
+        },
+        timepicker:false,
+        format:'d-m-Y'
+    };
+    jQuery('#desde').datetimepicker(conf);
+    jQuery('#hasta').datetimepicker(conf);
 }

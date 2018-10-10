@@ -87,7 +87,7 @@ class ServicioDao {
             {
                 $query .= " AND servicio_fecha <= '".$hasta."%' ";
             }
-            $query .= " ORDER BY servicio_fecha DESC LIMIT 10"; 
+            $query .= " ORDER BY servicio_fecha DESC LIMIT 1"; 
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
             while($row = mysqli_fetch_array($result)) {

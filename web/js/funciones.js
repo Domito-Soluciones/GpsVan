@@ -104,13 +104,20 @@ function cambiarModulo(pagina)
     redireccionar(pagina+".php");
 }
 
-function setParams(array)
+function cerrarSession(response)
 {
-    var data = "";
-    for (var i = 0 ; i < array.length; i++)
+    if(response === 'return')
     {
-        data+="&"+array[i]+"="+array[i];
-        alert(data);
+        alertify.error('sesion expirada');
+        location.href = "../web/index.php";
+        return;
     }
-    return data;
 }
+
+function vaciarFormulario(div)
+{
+    div.each(function() {
+        $(this).val("");
+    });
+}
+

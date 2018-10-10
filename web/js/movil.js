@@ -51,8 +51,8 @@ function cargarDatosConductores()
             var mail = response[i].conductor_mail;
             $("#lrut").append("<option value='"+rut+"'>"+rut+"</option>");
             $("#lnombre").append("<option value='"+nombre+"'>"+nombre+"</option>");
-            $("#papellido").append("<option value='"+papellido+"'>"+papellido+"</option>");
-            $("#mapellido").append("<option value='"+mapellido+"'>"+mapellido+"</option>");
+            $("#lpapellido").append("<option value='"+papellido+"'>"+papellido+"</option>");
+            $("#lmapellido").append("<option value='"+mapellido+"'>"+mapellido+"</option>");
             $("#lmail").append("<option value='"+mail+"'>"+mail+"</option>");
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
@@ -89,8 +89,13 @@ function agregarConductor()
         addTexto($("#mensaje-error"),"Ingrese todos los campos");
         return;
     }
-    var data = "";
-    var url = "../source/httprequest/AddConductor.php?agrega=true"+data;
+    var data = "nombre="+nombre+"&papellido="+papellido+"&mapellido="+mapellido
+    +"&rut="+rut+"&telefono="+telefono+"&celular="+celular+"&direccion="+direccion
+    +"&mail="+mail+"&tipoLicencia="+tipoLicencia+"&nacimiento="+nacimiento
+    +"&renta="+renta+"&contrato="+contrato+"&afp="+afp+"&isapre="+isapre
+    +"&mutual="+mutual+"&seguroInicio="+seguroInicio+"&seguroRenovacion="+seguroRenovacion
+    +"&descuento="+descuento+"&anticipo="+anticipo;
+    var url = "../source/httprequest/AddConductor.php?"+data;
     var success = function(response)
     {
         alert("servicio agregado con id "+response);
@@ -100,7 +105,7 @@ function agregarConductor()
     postRequest(url,success);
 }
 
-function buscarConductores()
+function buscarConductor()
 {
     var rut = $("#rut").val();
     var nombre = $("#nombre").val();

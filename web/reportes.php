@@ -13,7 +13,7 @@ session_start();
         <link rel="stylesheet" href="css/loader.css">
         <script src="js/jquery.js" type="text/javascript"></script>
         <script src="js/funciones.js" type="text/javascript"></script>
-        <script src="js/reportes.js" type="text/javascript"></script>
+        <script src="js/reporte.js" type="text/javascript"></script>
     </head>
     <body>
         <div class="cabecera" id="cabecera">

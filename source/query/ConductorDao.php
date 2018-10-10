@@ -1,11 +1,12 @@
 <?php
+include '../conexion/Conexion.php';
+include '../dominio/Conductor.php';
 
 class ConductorDao {
     
     public function agregarConductor($conductor)
     {
         $id = 0;
-        $conductor = new Conductor();
         $nombre = $conductor->getNombre();
         $papellido = $conductor->getPapellido();
         $mapellido = $conductor->getMapellido();
@@ -30,10 +31,10 @@ class ConductorDao {
             $query = "INSERT INTO tbl_conductor (conductor_nombre,conductor_papellido,"
                     . "conductor_mapellido,conductor_rut,conductor_telefono,"
                     . "conductor_celular,conductor_direccion,conductor_mail,conductor_tipo_licencia,"
-                    . "conductor_nacimiento,conductor_renta,conductor_contrato,conductor_afp,conductor_isapre,conductor_mutual"
+                    . "conductor_nacimiento,conductor_renta,conductor_tipo_contrato, conductor_prevision ,conductor_isapre,conductor_mutual,"
                     . "conductor_seguro_inicio,conductor_seguro_renovacion,conductor_descuento,conductor_anticipo) VALUES "
-                    . "('$nombre','$papellido',$mapellido,$rut,$telefono,$celular,'$direccion',$mail,$tipoLicencia,"
-                    . "$nacimiento,$renta,$contrato,$afp,$isapre,$mutual,$seguroInicio,$seguroRenovacion,$descuento,$anticipo)"; 
+                    . "('$nombre','$papellido','$mapellido','$rut','$telefono','$celular','$direccion','$mail','$tipoLicencia',"
+                    . "'$nacimiento',$renta,'$contrato','$afp','$isapre','$mutual','$seguroInicio','$seguroRenovacion',$descuento,$anticipo)"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -67,7 +68,7 @@ class ConductorDao {
             if($mail != ""){
                 $where .= " AND conductor_mail ilike ".$mail;
             }
-            $query = "SELECT servicio_id FROM tbl_conductores WHERE 1=1 ".$where." LIMIT 20"; 
+            $query = "SELECT * FROM tbl_conductor WHERE 1=1 ".$where." LIMIT 20"; 
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
             while($row = mysqli_fetch_array($result)) {
@@ -84,19 +85,15 @@ class ConductorDao {
                 $conductor->setTipoLicencia($row["conductor_tipo_licencia"]);
                 $conductor->setNacimiento($row["conductor_nacimiento"]);
                 $conductor->setRenta($row["conductor_renta"]);
-                $conductor->setContrato($row["conductor_contrato"]);
-                $conductor->setAfp($row["conductor_afp"]);
-                
-
-    $afp = $conductores[$i]->getAfp();
-    $isapre = $conductores[$i]->getIsapre();
-    $mutual = $conductores[$i]->getMutual();
-    $seguroInicio = $conductores[$i]->getSeguroInicio();
-    $seguroRenovacion = $conductores[$i]->getSeguroRenovacion();
-    $descuento = $conductores[$i]->getDescuento();
-    $anticipo = $conductores[$i]->getAnticipo();
-                
-                array_push($array, $servicio);
+                $conductor->setContrato($row["conductor_tipo_contrato"]);
+                $conductor->setAfp($row["conductor_prevision"]);
+                $conductor->setIsapre($row["conductor_isapre"]);
+                $conductor->setMutual($row["conductor_mutual"]);
+                $conductor->setSeguroInicio($row["conductor_seguro_inicio"]);
+                $conductor->setSeguroRenovacion($row["conductor_seguro_renovacion"]);
+                $conductor->setDescuento($row["conductor_descuento"]);
+                $conductor->setAnticipo($row["conductor_anticipo"]);
+                array_push($array, $conductor);
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

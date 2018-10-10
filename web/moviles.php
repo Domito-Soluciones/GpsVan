@@ -1,5 +1,9 @@
 <?php
 session_start(); 
+if(!isset($_SESSION['agente']))
+{
+    header('Location: index.php');
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -110,8 +114,8 @@ session_start();
                     <div class="contenedor-input">
                         <input type="text" list="lcontrato" id="contrato" placeholder="Tipo contrato">
                         <datalist id="lcontrato" >
-                            <option value="Modelo">Indefinido</option>
-                            <option value="Capital">Plazo fijo</option>
+                            <option value="Indefinido">Indefinido</option>
+                            <option value="Plazo fijo">Plazo fijo</option>
                         </datalist>
                     </div>
                     <div class="contenedor-pre-input">

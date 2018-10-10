@@ -10,8 +10,8 @@
         include '../query/ServicioDao.php';
         include '../dominio/Servicio.php';
 
-        $partida = urlencode($_REQUEST['partida']);
-        $partida_id = urlencode($_REQUEST['partidaId']);
+        $partida = $_REQUEST['partida'];
+        $partida_id = $_REQUEST['partidaId'];
         $destino = $_REQUEST['destino'];
         $destino_id = $_REQUEST['destinoId'];
         $cliente = $_REQUEST['cliente'];

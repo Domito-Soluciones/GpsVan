@@ -1,8 +1,9 @@
 <?php
 session_start(); 
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
+if(!isset($_SESSION['agente']))
+{
+    header('Location: index.php');
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -14,9 +15,13 @@ header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
         <link rel="stylesheet" href="css/estilo.css">
         <link rel="stylesheet" href="css/principal.css">
         <link rel="stylesheet" href="css/loader.css">
+        <link rel="stylesheet" href="css/alertify.css">
+        <link rel="stylesheet" href="css/jquery.datetimepicker.css">
         <script src="js/jquery.js" type="text/javascript"></script>
         <script src="js/funciones.js" type="text/javascript"></script>
         <script src="js/principal.js" type="text/javascript"></script>
+        <script src="js/alertify.js" type="text/javascript"></script>
+        <script src="js/jquery.datetimepicker.js" type="text/javascript"></script>
     </head>
     <body>
         <div class="cabecera" id="cabecera">
@@ -163,7 +168,7 @@ header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
                     </div>
                     <div class="contenedor-boton">
                         <div class="button-succes">
-                            <a class="enlace-succes" id="buscar">
+                            <a class="enlace-succes" id="boton-buscar">
                                 BUSCAR
                             </a>
                         </div>
@@ -185,13 +190,19 @@ header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
             </div>    
         </div>   
         <script>
+            var directionsService;
+            var directionsDisplay;
             function initMap() {
+                directionsService = new google.maps.DirectionsService;
+                directionsDisplay = new google.maps.DirectionsRenderer;
                 var map = new google.maps.Map(document.getElementById('map'), {
                     mapTypeControl: false,
                     center: {lat: -33.440616, lng: -70.6514212},
                     zoom: 13
                 });
                 new AutocompleteDirectionsHandler(map);
+                directionsDisplay.setMap(map);
+
             }
 
             function AutocompleteDirectionsHandler(map) {
@@ -264,6 +275,21 @@ header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
           }
         });
       };
+      function calculateAndDisplayRoute(partida,destino) {
+        directionsService.route({
+          origin: partida,
+          destination: destino,
+          travelMode: 'DRIVING'
+        }, function(response, status) {
+          if (status === 'OK') {
+            directionsDisplay.setDirections(response);
+          } else {
+            window.alert('Directions request failed due to ' + status);
+          }
+        });
+      }
+
+
 
     </script>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfPGTUHN5DXdLh9XN52mFKEay6vtTrmos&libraries=places&callback=initMap"></script>
