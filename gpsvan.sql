@@ -1,22 +1,20 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
--- https://www.phpmyadmin.net/
+-- version 3.5.1
+-- http://www.phpmyadmin.net
 --
--- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 09-10-2018 a las 21:39:40
--- Versión del servidor: 5.7.23
--- Versión de PHP: 7.2.10
+-- Servidor: localhost
+-- Tiempo de generación: 10-10-2018 a las 13:03:11
+-- Versión del servidor: 5.5.24-log
+-- Versión de PHP: 5.4.3
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- Base de datos: `gpsvan`
@@ -28,7 +26,6 @@ SET time_zone = "+00:00";
 -- Estructura de tabla para la tabla `tbl_agente`
 --
 
-DROP TABLE IF EXISTS `tbl_agente`;
 CREATE TABLE IF NOT EXISTS `tbl_agente` (
   `agente_id` int(11) NOT NULL AUTO_INCREMENT,
   `agente_nombre` varchar(20) NOT NULL,
@@ -44,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `tbl_agente` (
   `agente_perfil` int(11) NOT NULL,
   PRIMARY KEY (`agente_id`),
   UNIQUE KEY `agente_rut` (`agente_rut`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Volcado de datos para la tabla `tbl_agente`
@@ -60,7 +57,6 @@ INSERT INTO `tbl_agente` (`agente_id`, `agente_nombre`, `agente_papellido`, `age
 -- Estructura de tabla para la tabla `tbl_cliente`
 --
 
-DROP TABLE IF EXISTS `tbl_cliente`;
 CREATE TABLE IF NOT EXISTS `tbl_cliente` (
   `cliente_id` int(11) NOT NULL AUTO_INCREMENT,
   `cliente_razon_social` varchar(20) NOT NULL,
@@ -73,7 +69,7 @@ CREATE TABLE IF NOT EXISTS `tbl_cliente` (
   `cliente_mail_facturacion` varchar(30) NOT NULL,
   `cliente_centro_costo` varchar(20) NOT NULL,
   PRIMARY KEY (`cliente_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
 --
 -- Volcado de datos para la tabla `tbl_cliente`
@@ -83,7 +79,9 @@ INSERT INTO `tbl_cliente` (`cliente_id`, `cliente_razon_social`, `cliente_tipo`,
 (1, 'Falabella', '', '', '', '', '', '', '', ''),
 (2, 'Easy', '', '', '', '', '', '', '', ''),
 (3, 'Ripley', '', '', '', '', '', '', '', ''),
-(4, 'Entel', '', '', '', '', '', '', '', '');
+(4, 'Entel', '', '', '', '', '', '', '', ''),
+(5, '1', '1', '11', '1', '1', '1', '1', '1', '1'),
+(6, '1', '1', '1', '1', '1', '1', '1', '1', '1');
 
 -- --------------------------------------------------------
 
@@ -91,7 +89,6 @@ INSERT INTO `tbl_cliente` (`cliente_id`, `cliente_razon_social`, `cliente_tipo`,
 -- Estructura de tabla para la tabla `tbl_conductor`
 --
 
-DROP TABLE IF EXISTS `tbl_conductor`;
 CREATE TABLE IF NOT EXISTS `tbl_conductor` (
   `conductor_id` int(11) NOT NULL AUTO_INCREMENT,
   `conductor_nombre` varchar(20) NOT NULL,
@@ -110,11 +107,20 @@ CREATE TABLE IF NOT EXISTS `tbl_conductor` (
   `conductor_isapre` varchar(20) NOT NULL,
   `conductor_mutual` varchar(20) NOT NULL,
   `conductor_seguro_inicio` date NOT NULL,
-  `cunductor_seguro_renovacion` date NOT NULL,
+  `conductor_seguro_renovacion` date NOT NULL,
   `conductor_descuento` int(11) NOT NULL,
   `conductor_anticipo` int(11) NOT NULL,
   PRIMARY KEY (`conductor_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Volcado de datos para la tabla `tbl_conductor`
+--
+
+INSERT INTO `tbl_conductor` (`conductor_id`, `conductor_nombre`, `conductor_papellido`, `conductor_mapellido`, `conductor_rut`, `conductor_telefono`, `conductor_celular`, `conductor_direccion`, `conductor_mail`, `conductor_tipo_licencia`, `conductor_nacimiento`, `conductor_renta`, `conductor_tipo_contrato`, `conductor_prevision`, `conductor_isapre`, `conductor_mutual`, `conductor_seguro_inicio`, `conductor_seguro_renovacion`, `conductor_descuento`, `conductor_anticipo`) VALUES
+(1, 'Jose', 'Sanchez', 'Sandoval', '180797', '11111', '22222', '44444', '333333', 'A1', '2018-01-01', 1, 'Indefinido', 'Modelo', 'BanmÃ©dica', '1', '2018-01-01', '2018-01-01', 2, 1),
+(2, '1', '1', '1', '1', '1', '1', '1', '1', 'A1', '0000-00-00', 1, 'Indefinido', 'Capital', 'BanmÃ©dica', '1', '0000-00-00', '0000-00-00', 1, 2),
+(3, '2', '2', '2', '2', '2', '2', '2', '2', 'A2', '0000-00-00', 1, 'Indefinido', '1', '1', '1', '0000-00-00', '0000-00-00', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -122,14 +128,13 @@ CREATE TABLE IF NOT EXISTS `tbl_conductor` (
 -- Estructura de tabla para la tabla `tbl_movil`
 --
 
-DROP TABLE IF EXISTS `tbl_movil`;
 CREATE TABLE IF NOT EXISTS `tbl_movil` (
   `movil_id` int(11) NOT NULL AUTO_INCREMENT,
   `movil_nombre` varchar(20) NOT NULL,
   `movil_transportista` int(11) NOT NULL,
   `movil_estado` int(11) NOT NULL,
   PRIMARY KEY (`movil_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 --
 -- Volcado de datos para la tabla `tbl_movil`
@@ -151,11 +156,12 @@ INSERT INTO `tbl_movil` (`movil_id`, `movil_nombre`, `movil_transportista`, `mov
 -- Estructura de tabla para la tabla `tbl_servicio`
 --
 
-DROP TABLE IF EXISTS `tbl_servicio`;
 CREATE TABLE IF NOT EXISTS `tbl_servicio` (
   `servicio_id` int(11) NOT NULL AUTO_INCREMENT,
   `servicio_partida` varchar(100) NOT NULL,
+  `servicio_partida_id` varchar(200) NOT NULL,
   `servicio_destino` varchar(100) NOT NULL,
+  `servicio_destino_id` varchar(200) NOT NULL,
   `servicio_cliente` int(11) NOT NULL,
   `servicio_usuario` int(11) NOT NULL,
   `servicio_transportista` int(11) NOT NULL,
@@ -165,19 +171,43 @@ CREATE TABLE IF NOT EXISTS `tbl_servicio` (
   `servicio_agente` int(11) NOT NULL,
   `servicio_fecha` datetime NOT NULL,
   PRIMARY KEY (`servicio_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10006 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10036 ;
 
 --
 -- Volcado de datos para la tabla `tbl_servicio`
 --
 
-INSERT INTO `tbl_servicio` (`servicio_id`, `servicio_partida`, `servicio_destino`, `servicio_cliente`, `servicio_usuario`, `servicio_transportista`, `servicio_movil`, `servicio_tipo`, `servicio_tarifa`, `servicio_agente`, `servicio_fecha`) VALUES
-(10000, 'san martin 40', 'san ignacio 23', 1, 1, 1, 2, '', 15000, 2, '0000-00-00 00:00:00'),
-(10001, '1', '1', 1, 1, 1, 1, '', 1000, 1, '0000-00-00 00:00:00'),
-(10002, '1', '1', 1, 1, 1, 1, 'Recogida', 5000, 1, '2018-10-06 00:00:00'),
-(10003, '1Q', 'VB', 1, 1, 1, 1, 'Recogida', 1000, 1, '2018-10-06 18:07:22'),
-(10004, '1Q', 'VB', 1, 1, 1, 1, 'Recogidahhhhhhhhhhhh', 1000, 1, '2018-10-06 18:08:03'),
-(10005, '111', '222', 1, 1, 1, 1, 'Recogida', 7000, 1, '2018-10-07 18:47:49');
+INSERT INTO `tbl_servicio` (`servicio_id`, `servicio_partida`, `servicio_partida_id`, `servicio_destino`, `servicio_destino_id`, `servicio_cliente`, `servicio_usuario`, `servicio_transportista`, `servicio_movil`, `servicio_tipo`, `servicio_tarifa`, `servicio_agente`, `servicio_fecha`) VALUES
+(10006, 'Nueva San MartÃ­n, Santiago, Chile', 'EiJOdWV2YSBTYW4gTWFydMOtbiwgU2FudGlhZ28sIENoaWxl', 'Carmen FariÃ±a, Vitacura, Chile', 'Eh9DYXJtZW4gRmFyacOxYSwgVml0YWN1cmEsIENoaWxl', 1, 2, 1, 1, 'Recogida', 5000, 1, '2018-10-10 00:06:39'),
+(10007, 'General Juan BuendÃ­a, Lo Prado, Chile', 'EiZHZW5lcmFsIEp1YW4gQnVlbmTDrWEsIExvIFByYWRvLCBDaGlsZQ', 'IPChile Toesca - Toesca, Santiago, Chile', 'ChIJQ-CO7_3EYpYRN3dYY-i6Bn4', 1, 1, 1, 1, 'Recogida', 1000, 1, '2018-10-10 00:56:56'),
+(10008, 'Gran Avenida Jose Miguel Carrera, San Miguel, Chile', 'EjNHcmFuIEF2ZW5pZGEgSm9zZSBNaWd1ZWwgQ2FycmVyYSwgU2FuIE1pZ3VlbCwgQ2hpbGU', 'Williams Rebolledo, Ã‘uÃ±oa, Chile', 'EiJXaWxsaWFtcyBSZWJvbGxlZG8sIMORdcOxb2EsIENoaWxl', 1, 1, 1, 1, 'Recogida', 5000, 1, '2018-10-10 01:05:11'),
+(10009, 'Franklin, Santiago, Chile', 'ChIJGfaJvDnFYpYRQsNvc9HVzRo', 'Orrego Luco, Providencia, Chile', 'Eh9PcnJlZ28gTHVjbywgUHJvdmlkZW5jaWEsIENoaWxl', 1, 1, 2, 4, 'Reparto', 10000, 1, '2018-10-10 01:06:26'),
+(10010, 'La Moneda, Santiago, Chile', 'ChIJoSQGpKfFYpYRZzryLThoNMw', 'Renca, Chile', 'ChIJ07zrFq7GYpYRT6VwiNiJFOk', 2, 4, 2, 4, 'Reparto', 10000, 1, '2018-10-10 01:07:34'),
+(10011, 'JosÃ© Victorino Lastarria, Santiago, Chile', 'EipKb3PDqSBWaWN0b3Jpbm8gTGFzdGFycmlhLCBTYW50aWFnbywgQ2hpbGU', 'Universidad de Chile, Santiago, Chile', 'ChIJd1lK26DFYpYR2LW16VB1Wgs', 2, 4, 2, 3, 'Servicio Especial', 99999, 1, '2018-10-10 01:10:16'),
+(10012, 'Vitacura, Chile', 'ChIJT8_5sTbPYpYRC7nDhONM9KY', 'Quilicura, Chile', 'ChIJ_9A-D-XAYpYR0Ovj-IzhwXg', 1, 2, 2, 4, 'Reparto', 10000, 1, '2018-10-10 01:11:24'),
+(10013, 'Zenteno, Santiago, Chile', 'EhhaZW50ZW5vLCBTYW50aWFnbywgQ2hpbGU', 'Quinta Normal, Santiago, Chile', 'Eh5RdWludGEgTm9ybWFsLCBTYW50aWFnbywgQ2hpbGU', 1, 1, 4, 7, 'Reparto', 10000, 1, '2018-10-10 01:20:38'),
+(10014, 'BBVA Chile santiago san pablo - Moneda, Santiago, Chile', 'ChIJbT9yP6HFYpYRD0w-td_ao3c', 'Ã‘uÃ±oa, Chile', 'ChIJ6TZN_JTPYpYRRVH-3xZvjZU', 1, 1, 3, 6, 'Recogida', 15000, 1, '2018-10-10 01:21:49'),
+(10015, 'Vergara, Santiago, Chile', 'EhhWZXJnYXJhLCBTYW50aWFnbywgQ2hpbGU', 'Fray Camilo HenrÃ­quez, Santiago, Chile', 'EidGcmF5IENhbWlsbyBIZW5yw61xdWV6LCBTYW50aWFnbywgQ2hpbGU', 1, 1, 1, 1, 'Recogida', 10000, 1, '2018-10-10 02:18:38'),
+(10016, 'ConchalÃ­, Chile', 'ChIJxyOCvX7IYpYRMRlejPtrhGM', 'San Diego, Santiago, Chile', 'EhpTYW4gRGllZ28sIFNhbnRpYWdvLCBDaGlsZQ', 1, 1, 1, 1, 'Recogida', 1000, 1, '2018-10-10 02:19:12'),
+(10017, 'ConchalÃ­, Chile', 'ChIJxyOCvX7IYpYRMRlejPtrhGM', 'San Diego, Santiago, Chile', 'EhpTYW4gRGllZ28sIFNhbnRpYWdvLCBDaGlsZQ', 1, 1, 1, 1, 'Recogida', 1000, 1, '2018-10-10 02:19:59'),
+(10018, 'del Parque, Huechuraba, Chile', 'Eh1kZWwgUGFycXVlLCBIdWVjaHVyYWJhLCBDaGlsZQ', 'Vitacura, Chile', 'ChIJT8_5sTbPYpYRC7nDhONM9KY', 1, 1, 2, 3, 'Recogida', 5000, 1, '2018-10-10 02:20:31'),
+(10019, 'Diagonal Las Torres, Penalolen, PeÃ±alolÃ©n, Chile', 'EjJEaWFnb25hbCBMYXMgVG9ycmVzLCBQZW5hbG9sZW4sIFBlw7FhbG9sw6luLCBDaGlsZQ', 'San Pablo, Quinta Normal, Chile', 'Eh9TYW4gUGFibG8sIFF1aW50YSBOb3JtYWwsIENoaWxl', 1, 1, 1, 1, 'Recogida', 10000, 1, '2018-10-10 07:02:04'),
+(10020, 'Diagonal Las Torres, Penalolen, PeÃ±alolÃ©n, Chile', 'EjJEaWFnb25hbCBMYXMgVG9ycmVzLCBQZW5hbG9sZW4sIFBlw7FhbG9sw6luLCBDaGlsZQ', 'San Pablo, Quinta Normal, Chile', 'Eh9TYW4gUGFibG8sIFF1aW50YSBOb3JtYWwsIENoaWxl', 1, 1, 1, 1, 'Recogida', 10000, 1, '2018-10-10 07:02:29'),
+(10021, 'Syngenta - Avenida Vitacura, Las Condes, Chile', 'ChIJVSHLtEbPYpYRfe_dsy0bkWQ', 'Qw - Gran Avenida Jose Miguel Carrera, San Miguel, Santiago, Chile', 'ChIJr3ql4FXaYpYRSE9dyji4vjc', 1, 1, 1, 1, 'Recogida', 10000, 1, '2018-10-10 07:05:40'),
+(10022, 'Syngenta - Avenida Vitacura, Las Condes, Chile', 'ChIJVSHLtEbPYpYRfe_dsy0bkWQ', 'Qw - Gran Avenida Jose Miguel Carrera, San Miguel, Santiago, Chile', 'ChIJr3ql4FXaYpYRSE9dyji4vjc', 1, 1, 1, 1, 'Recogida', 10000, 1, '2018-10-10 07:05:55'),
+(10023, 'Zapadores, Recoleta, Chile', 'ChIJsQL3gQ3GYpYRy4f8qb6-qHM', 'Xs Market, Santiago, EstaciÃ³n Central, Chile', 'ChIJBYDLpPfEYpYRO1VLelVYpQc', 2, 3, 2, 4, 'Recogida', 3000, 1, '2018-10-10 07:09:44'),
+(10024, 'Zapadores, Recoleta, Chile', 'ChIJsQL3gQ3GYpYRy4f8qb6-qHM', 'Xs Market, Santiago, EstaciÃ³n Central, Chile', 'ChIJBYDLpPfEYpYRO1VLelVYpQc', 2, 3, 2, 4, 'Recogida', 3000, 1, '2018-10-10 07:09:54'),
+(10025, 'Ffc Ingenieria y Construccion - San Diego, Santiago, Chile', 'ChIJ-wm-BxXFYpYRgA2kMzTf3cQ', 'D.D.M. Impresores Limitada - Arturo Prat, Santiago, Chile', 'ChIJhZ0GTArFYpYR1rcPIE5iO_E', 1, 1, 1, 1, 'Reparto', 15000, 1, '2018-10-10 07:10:42'),
+(10026, 'Xs Market, Santiago, EstaciÃ³n Central, Chile', 'ChIJBYDLpPfEYpYRO1VLelVYpQc', 'DublÃ© Almeyda, Ã‘uÃ±oa, Chile', 'Eh5EdWJsw6kgQWxtZXlkYSwgw5F1w7FvYSwgQ2hpbGU', 1, 1, 1, 1, 'Recogida', 1000, 1, '2018-10-10 07:14:04'),
+(10027, 'del Parque, Huechuraba, Chile', 'Eh1kZWwgUGFycXVlLCBIdWVjaHVyYWJhLCBDaGlsZQ', 'Dorsal, Recoleta, Chile', 'ChIJkb2fdwvGYpYRrIMZf3_BOwU', 1, 1, 1, 1, 'Recogida', 5000, 1, '2018-10-10 07:15:00'),
+(10028, 'ZoolÃ³gico Nacional - PÃ­o Nono, Providencia, Chile', 'ChIJ74j6LJDFYpYRiBjqRDUcsEM', 'ConchalÃ­, Chile', 'ChIJxyOCvX7IYpYRMRlejPtrhGM', 1, 1, 1, 1, 'Reparto', 7000, 1, '2018-10-10 07:16:28'),
+(10029, 'Ingenierias Asd - Monjitas, Santiago, Chile', 'ChIJzQHPX5jFYpYR_AdYNYARQkY', 'Qwerti Consultores Spa - Longitudinal Sur, La Florida, Chile', 'ChIJoxj0Ot_TYpYRv8rOZFNTrx0', 1, 1, 1, 1, 'Recogida', 1000, 1, '2018-10-10 07:18:08'),
+(10030, 'La Florida, Chile', 'ChIJlZDV7CXRYpYRrPO-VsvmdQM', 'Obispo Javier VÃ¡squez, Santiago, EstaciÃ³n Central, Chile', 'EjpPYmlzcG8gSmF2aWVyIFbDoXNxdWV6LCBTYW50aWFnbywgRXN0YWNpw7NuIENlbnRyYWwsIENoaWxl', 1, 1, 1, 1, 'Recogida', 1000, 1, '2018-10-10 07:19:31'),
+(10031, 'Quinta Normal, Chile', 'ChIJnePXWBDEYpYRGQ68gdAXWGg', 'Williams Rebolledo, Ã‘uÃ±oa, Chile', 'EiJXaWxsaWFtcyBSZWJvbGxlZG8sIMORdcOxb2EsIENoaWxl', 1, 1, 3, 5, 'Reparto', 5000, 1, '2018-10-10 07:20:21'),
+(10032, 'Xiaomi CHILE - Concordia, Providencia, Chile', 'ChIJG_HyEG_PYpYRT0p4Qwz42GY', 'Ã‘uÃ±oa, Chile', 'ChIJ6TZN_JTPYpYRRVH-3xZvjZU', 2, 3, 2, 3, 'Recogida', 1000, 1, '2018-10-10 07:21:07'),
+(10033, 'FFV - Isidora Goyenechea, Las Condes, Chile', 'ChIJ5-aeET7PYpYROZj4ERB2JMw', 'Posta Central - Avenida Portugal, Santiago, Chile', 'ChIJe-Ejip3FYpYRUw0ILXsb0vc', 1, 1, 2, 4, 'Reparto', 15000, 1, '2018-10-10 07:22:50'),
+(10034, 'Alameda, Santiago, EstaciÃ³n Central, Chile', 'ChIJoy5dZfjEYpYRv_gWKJBK1FY', 'Moneda, Santiago, Chile', 'EhdNb25lZGEsIFNhbnRpYWdvLCBDaGlsZQ', 1, 1, 1, 1, 'Reparto', 3000, 1, '2018-10-10 07:30:01'),
+(10035, 'Avenida+Libertador+Bernardo+O%27Higgins%2C+Santiago%2C+Chile', 'EjZBdmVuaWRhIExpYmVydGFkb3IgQmVybmFyZG8gTydIaWdnaW5zLCBTYW50aWFnbywgQ2hpbGU', 'Santiago, Chile', 'ChIJL68lBEHFYpYRMQkPQDzVdYQ', 1, 1, 1, 1, 'Reparto', 7000, 1, '2018-10-10 07:33:23');
 
 -- --------------------------------------------------------
 
@@ -185,12 +215,11 @@ INSERT INTO `tbl_servicio` (`servicio_id`, `servicio_partida`, `servicio_destino
 -- Estructura de tabla para la tabla `tbl_transportista`
 --
 
-DROP TABLE IF EXISTS `tbl_transportista`;
 CREATE TABLE IF NOT EXISTS `tbl_transportista` (
   `transportista_id` int(11) NOT NULL AUTO_INCREMENT,
   `transportista_nombre` varchar(20) NOT NULL,
   PRIMARY KEY (`transportista_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Volcado de datos para la tabla `tbl_transportista`
@@ -208,11 +237,11 @@ INSERT INTO `tbl_transportista` (`transportista_id`, `transportista_nombre`) VAL
 -- Estructura de tabla para la tabla `tbl_usuario`
 --
 
-DROP TABLE IF EXISTS `tbl_usuario`;
 CREATE TABLE IF NOT EXISTS `tbl_usuario` (
   `usuario_id` int(11) NOT NULL,
   `usuario_nombre` varchar(20) NOT NULL,
-  `usuario_cliente` int(11) NOT NULL
+  `usuario_cliente` int(11) NOT NULL,
+  UNIQUE KEY `USUARIO_INDEX` (`usuario_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -228,7 +257,6 @@ INSERT INTO `tbl_usuario` (`usuario_id`, `usuario_nombre`, `usuario_cliente`) VA
 (6, 'usuario6', 3),
 (7, 'usuario7', 4),
 (8, 'usuario8', 4);
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
