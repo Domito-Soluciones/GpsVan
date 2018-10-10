@@ -1,4 +1,5 @@
 <?php
+    session_start();
     if(!isset($_SESSION['agente']))
     {   
         print('return');
@@ -6,7 +7,6 @@
     else
     {
         include '../query/ConductorDao.php';
-        include '../dominio/Conductor.php';
 
         $nombre = $_REQUEST['nombre'];
         $papellido = $_REQUEST['papellido'];

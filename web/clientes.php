@@ -1,5 +1,9 @@
 <?php
 session_start(); 
+if(!isset($_SESSION['agente']))
+{
+    header('Location: index.php');
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -11,9 +15,11 @@ session_start();
         <link rel="stylesheet" href="css/estilo.css">
         <link rel="stylesheet" href="css/principal.css">
         <link rel="stylesheet" href="css/loader.css">
+        <link rel="stylesheet" href="css/alertify.css">
         <script src="js/jquery.js" type="text/javascript"></script>
         <script src="js/funciones.js" type="text/javascript"></script>
         <script src="js/cliente.js" type="text/javascript"></script>
+        <script src="js/alertify.js" type="text/javascript"></script>
     </head>
     <body>
         <div class="cabecera" id="cabecera">
@@ -35,7 +41,7 @@ session_start();
                         Razon social
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" id="razon" placeholder="Nombre">
+                        <input type="text" id="razon" placeholder="Razon social">
                     </div>
                     <div class="contenedor-pre-input">
                         Tipo
@@ -87,7 +93,7 @@ session_start();
                         Centros de costo
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" id="centros" placeholder="Tipo licencia">
+                        <input type="text" id="centros" placeholder="Centros de costo">
                     </div>
                     <div class="contenedor-boton">
                         <div class="button-succes">
@@ -102,7 +108,7 @@ session_start();
                         Razon social
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" list="lrazon" id="razon" placeholder="Nombre">
+                        <input type="text" list="lrazon" id="razonS" placeholder="Nombre">
                         <datalist id="lrazon">
                             <option value="Convenio">Convenio</option>
                             <option value="Servicio especial">Servicio especial</option>
@@ -112,7 +118,7 @@ session_start();
                         Tipo
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" list="ltipo" id="tipo" placeholder="Tipo">
+                        <input type="text" list="ltipo" id="tipoS" placeholder="Tipo">
                         <datalist id="ltipo">
                             <option value="Convenio">Convenio</option>
                             <option value="Servicio especial">Servicio especial</option>
@@ -122,7 +128,7 @@ session_start();
                         Rut
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" list="lrut" id="rut" placeholder="Rut">
+                        <input type="text" list="lrut" id="rutS" placeholder="Rut">
                         <datalist id="lrut"></datalist>
                     </div>
                     

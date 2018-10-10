@@ -7,33 +7,27 @@
     else
     {
     
-        include '../query/ServicioDao.php';
-        include '../dominio/Servicio.php';
+        include '../query/ClienteDao.php';
 
-        $partida = $_REQUEST['partida'];
-        $partida_id = $_REQUEST['partidaId'];
-        $destino = $_REQUEST['destino'];
-        $destino_id = $_REQUEST['destinoId'];
-        $cliente = $_REQUEST['cliente'];
-        $usuario = $_REQUEST['usuario'];
-        $transportista = $_REQUEST['transportista'];
-        $movil = $_REQUEST['movil'];
+        $razon = $_REQUEST['razon'];
         $tipo = $_REQUEST['tipo'];
-        $tarifa = $_REQUEST['tarifa'];
-        $agente = $_SESSION['agente'];
-        $servicio = new Servicio();
-        $servicio->setPartida($partida);
-        $servicio->setPartidaId($partida_id); 
-        $servicio->setDestino($destino);
-        $servicio->setDestinoId($destino_id);
-        $servicio->setCliente($cliente);
-        $servicio->setUsuario($usuario);
-        $servicio->setTransportista($transportista);
-        $servicio->setMovil($movil);
-        $servicio->setTipo($tipo);
-        $servicio->setTarifa($tarifa);
-        $servicio->setAgente($agente);
-        $servicioDao = new ServicioDao();
-        $idServicio = $servicioDao->addServicio($servicio);
-        print $idServicio;
+        $rut = $_REQUEST['rut'];
+        $direccion = $_REQUEST['direccion'];
+        $nombre = $_REQUEST['nombre'];
+        $telefono = $_REQUEST['telefono'];
+        $mail = $_REQUEST['mail'];
+        $mail2 = $_REQUEST['mail2'];
+        $centro = $_REQUEST['centros'];
+        $cliente = new Cliente();
+        $cliente->setRazon($razon);
+        $cliente->setTipo($tipo); 
+        $cliente->setRut($rut);
+        $cliente->setDireccion($direccion);
+        $cliente->setNombreContacto($nombre);
+        $cliente->setFonoContacto($telefono);
+        $cliente->setMailContacto($mail);
+        $cliente->setMailFacturacion($mail2);
+        $cliente->setCentroCosto($centro);
+        $clienteDao = new ClienteDao();
+        $clienteDao->addCliente($cliente);
     }

@@ -213,6 +213,7 @@ function buscarServicio()
     var url = "../source/httprequest/Servicios.php?"+data;
     var success = function(response)
     {
+        cerrarSession(response);
         for(var i = 0 ; i < response.length; i++)
         {
             alertify.success("servicio encontrado con id "+response[i].servicio_id);

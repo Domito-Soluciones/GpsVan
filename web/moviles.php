@@ -15,9 +15,13 @@ if(!isset($_SESSION['agente']))
         <link rel="stylesheet" href="css/estilo.css">
         <link rel="stylesheet" href="css/principal.css">
         <link rel="stylesheet" href="css/loader.css">
+        <link rel="stylesheet" href="css/alertify.css">
+        <link rel="stylesheet" href="css/jquery.datetimepicker.css">
         <script src="js/jquery.js" type="text/javascript"></script>
+        <script src="js/jquery.datetimepicker.js" type="text/javascript"></script>
         <script src="js/funciones.js" type="text/javascript"></script>
         <script src="js/movil.js" type="text/javascript"></script>
+        <script src="js/alertify.js" type="text/javascript"></script>
     </head>
     <body>
         <div class="cabecera" id="cabecera">
@@ -187,40 +191,40 @@ if(!isset($_SESSION['agente']))
                         Rut
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" list="lrut" id="rut" placeholder="Rut"  autocomplete="off">
+                        <input type="text" list="lrut" id="rutS" placeholder="Rut"  autocomplete="off">
                         <datalist id="lrut" ></datalist>
                     </div>
                     <div class="contenedor-pre-input">
                         Nombre
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" list="lnombre" id="nombre" placeholder="Nombre">
+                        <input type="text" list="lnombre" id="nombreS" placeholder="Nombre">
                         <datalist id="lnombre" ></datalist>
                     </div>
                     <div class="contenedor-pre-input">
                         Apellido Paterno
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" list="lpapellido" id="papellido" placeholder="Apellido Paterno">
+                        <input type="text" list="lpapellido" id="papellidoS" placeholder="Apellido Paterno">
                         <datalist id="lpapellido" ></datalist>
                     </div>
                     <div class="contenedor-pre-input">
                         Apellido Paterno
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" list="lmapellido" id="mapellido" placeholder="Apellido Materno">
+                        <input type="text" list="lmapellido" id="mapellidoS" placeholder="Apellido Materno">
                         <datalist id="lmapellido"></datalist>
                     </div>
                     <div class="contenedor-pre-input">
                         E-mail
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" list="lmail" id="mail" placeholder="E-mail">
+                        <input type="text" list="lmail" id="mailS" placeholder="E-mail">
                         <datalist id="lmail"></datalist>
                     </div>
                     <div class="contenedor-boton">
                         <div class="button-succes">
-                            <a class="enlace-succes" id="buscar">
+                            <a class="enlace-succes" id="boton-buscar">
                                 BUSCAR
                             </a>
                         </div>
@@ -236,74 +240,45 @@ if(!isset($_SESSION['agente']))
             </div>
         </div>
         <div class="contendor_central">
-            <div class="central" id="central">
-                <table id="tabla">
-                    <thead>
-                        <tr>
-                            <th>
-                                Nombre
-                            </th>
-                            <th>
-                                Apellido paterno
-                            </th>
-                            <th>
-                                Apellido materno
-                            </th>
-                            <th>
-                                Rut
-                            </th>
-                            <th>
-                                Teléfono
-                            </th>
-                            <th>
-                                Celular
-                            </th>
-                            <th>
-                                Dirección
-                            </th>
-                            <th>
-                                E-mail
-                            </th>
-                            <th>
-                                Tipo licencia
-                            </th>
-                            <th>
-                                Fecha nacimiento
-                            </th>
-                            <th>
-                               Renta imponible 
-                            </th>
-                            <th>
-                               Tipo contrato 
-                            </th>
-                            <th>
-                                Institucion previsional 
-                            </th>
-                            <th>
-                                Isapre
-                            </th>
-                            <th>
-                                Mutual (% descuento)
-                            </th>
-                            <th>
-                                Inicio Seguro Conductor
-                            </th>
-                            <th>
-                                Renovación Seguro Conductor  
-                            </th>
-                            <th>
-                                % Descuento
-                            </th>
-                            <th>
-                                Anticipos
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        
-                    </tbody>
-                </table>
-            </div>    
+            <table id="tabla" class="tabla-central">
+                <thead>
+                    <tr>
+                        <th>
+                            Nombre
+                        </th>
+                        <th>
+                            Apellido paterno
+                        </th>
+                        <th>
+                            Apellido materno
+                        </th>
+                        <th>
+                            Rut
+                        </th>
+                        <th>
+                            Teléfono
+                        </th>
+                        <th>
+                            Celular
+                        </th>
+                        <th>
+                            Dirección
+                        </th>
+                        <th>
+                            E-mail
+                        </th>
+                        <th>
+                            Tipo licencia
+                        </th>
+                        <th>
+                           Tipo contrato 
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
         </div>   
     </body>
 </html>

@@ -10,6 +10,7 @@ $(document).ready(function(){
     $("#cabecera").load("html/cabecera.html");
     $("#menu").load("html/menu.html");
     agregarclase($("#moviles"),"menu-activo");
+    iniciarFecha();
     $("#pestanaBuscar").click(function () {
         cambiarPropiedad($("#agregar"),"display","none");
         cambiarPropiedad($("#buscar"),"display","initial");
@@ -25,7 +26,7 @@ $(document).ready(function(){
     $("#entrar").click(function () {
         agregarConductor();
     });
-    $("#buscar").click(function () {
+    $("#boton-buscar").click(function () {
         buscarConductor();
     });
     
@@ -86,7 +87,7 @@ function agregarConductor()
         seguroRenovacion,descuento,anticipo];
     if(!validarCamposOr(array))
     {
-        addTexto($("#mensaje-error"),"Ingrese todos los campos");
+        alertify.error("Ingrese todos los campos necesarios");
         return;
     }
     var data = "nombre="+nombre+"&papellido="+papellido+"&mapellido="+mapellido
@@ -98,37 +99,70 @@ function agregarConductor()
     var url = "../source/httprequest/AddConductor.php?"+data;
     var success = function(response)
     {
-        alert("servicio agregado con id "+response);
+        alertify.success("Conductor agregado");
+        vaciarFormulario($("#agregar input"));
         cambiarPropiedad($("#loader"),"visibility","hidden");
-        addTexto($("#mensaje-error"),"");
     };
     postRequest(url,success);
 }
 
 function buscarConductor()
 {
-    var rut = $("#rut").val();
-    var nombre = $("#nombre").val();
-    var papellido = $("#papellido").val();
-    var mapellido = $("#mapellido").val();
-    var mail = $("#mail").val();
+    var rut = $("#rutS").val();
+    var nombre = $("#nombreS").val();
+    var papellido = $("#papellidoS").val();
+    var mapellido = $("#mapellidoS").val();
+    var mail = $("#mailS").val();
     
-    var array = [rut,nombre,papellido,mapellido,mail];
-    if(!validarCamposAnd(array))
-    {
-        addTexto($("#mensaje-error"),"Ingrese todos los campos");
-        return;
-    }
     var data = "rut="+rut+"&nombre="+nombre+"&papellido="+papellido+"&mapellido="+mapellido+"&mail="+mail;
-    var url = "../source/httprequest/Servicios.php?"+data;
+    var url = "../source/httprequest/Conductores.php?"+data;
     var success = function(response)
     {
+        cerrarSession(response);
+        var tabla = $("#tabla tbody");
+        tabla.html("");
         for(var i = 0 ; i < response.length; i++)
         {
-            alert("servicio encontrado con id "+response[i].servicio_id);
+            var nombre = response[i].conductor_nombre;
+            var papellido = response[i].conductor_papellido;
+            var mapellido = response[i].conductor_mapellido;
+            var rut = response[i].conductor_rut;
+            var telefono = response[i].conductor_telefono;
+            var celular = response[i].conductor_celular;
+            var direccion = response[i].conductor_direccion;
+            var mail = response[i].conductor_mail;
+            var licencia = response[i].conductor_tipoLicencia;
+            var contrato = response[i].conductor_contrato;
+            tabla.append("<tr><td>"+nombre+"</td><td>"+papellido+"</td><td>"+mapellido
+                    +"</td><td>"+rut+"</td><td>"+telefono+"</td><td>"+celular
+                    +"</td><td>"+direccion+"</td><td>"+mail+"</td><td>"+licencia
+                    +"</td><td>"+contrato+"</td></tr>");
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
         addTexto($("#mensaje-error"),"");
     };
     getRequest(url,success);
+}
+function iniciarFecha() {
+    jQuery.datetimepicker.setLocale('es');
+    var conf = {
+        i18n:{
+            de:{
+                months:[
+                    'Januar','Februar','März','April',
+                    'Mai','Juni','Juli','August',
+                    'September','Oktober','November','Dezember'
+                ],
+                dayOfWeek:[
+                    "So.", "Mo", "Di", "Mi", 
+                    "Do", "Fr", "Sa."
+                ]
+            }
+        },
+        timepicker:false,
+        format:'d-m-Y'
+    };
+    jQuery('#nacimiento').datetimepicker(conf);
+    jQuery('#seguroInicio').datetimepicker(conf);
+    jQuery('#seguroRenovacion').datetimepicker(conf);
 }

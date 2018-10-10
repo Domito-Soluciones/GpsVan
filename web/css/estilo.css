@@ -23,9 +23,9 @@ html,body
 }
 .button-succes
 {
+    text-align: center;
     padding-top: 10px;
-    padding-left: 15px;
-    width: 90px;
+    width: 120px;
     height: 30px;
     background-color: #0b41d3;
 }
@@ -140,3 +140,20 @@ html,body
     to {margin-left: 80%;}
 }
 
+.contendor_central
+{
+    position: relative;
+    margin-left: 20%;
+    width: 80%;
+    height: calc(100% - 125px);
+}
+
+.tabla-central
+{
+    width: 100%;
+    overflow: auto;
+}
+.tabla-central th
+{
+    width: 100px;
+}

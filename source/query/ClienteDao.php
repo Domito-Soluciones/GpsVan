@@ -26,5 +26,33 @@ class ClienteDao {
         }
         return $array;
     }
+    
+    public function addCliente($cliente)
+    {
+        $razon = $cliente->getRazon();
+        $tipo = $cliente->getTipo();
+        $rut = $cliente->getRut();
+        $direccion = $cliente->getDireccion();
+        $nombre = $cliente->getNombreContacto();
+        $telefono = $cliente->getFonoContacto();
+        $mail = $cliente->getMailContacto();
+        $mail2 = $cliente->getMailFacturacion();
+        $centro = $cliente->getCentroCosto();
+        $conn = new Conexion();
+        try {
+            $query = "INSERT INTO tbl_cliente (cliente_razon_social,cliente_tipo,cliente_rut,"
+                    . "cliente_direccion,cliente_nombre_contacto,cliente_fono_contacto,"
+                    . "cliente_mail_contacto,cliente_mail_facturacion,cliente_centro_costo"
+                    . ") VALUES ('$razon','$tipo','$rut','$direccion','$nombre','$telefono','$mail','$mail2','$centro')"; 
+            $conn->conectar();
+            if (mysqli_query($conn->conn,$query)) {
+                $id = mysqli_insert_id($conn->conn);
+            } else {
+                echo mysqli_error($conn->conn);
+            }           
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
    
 }

@@ -54,19 +54,19 @@ class ConductorDao {
         try {
             $where = "";
             if($rut != ""){
-                $where .= " AND conductor_rut ilike ".$rut;
+                $where .= " AND conductor_rut like '%".$rut."%'";
             }
             if($nombre != ""){
-                $where .= " AND conductor_nombre ilike ".$nombre;
+                $where .= " AND conductor_nombre like '%".$nombre."%'";
             }
             if($papellido != ""){
-                $where .= " AND conductor_papellido ilike ".$papellido;
+                $where .= " AND conductor_papellido like '%".$papellido."%'";
             }
             if($mapellido != ""){
-                $where .= " AND conductor_mapellido ilike ".$mapellido;
+                $where .= " AND conductor_mapellido like '%".$mapellido."%'";
             }
             if($mail != ""){
-                $where .= " AND conductor_mail ilike ".$mail;
+                $where .= " AND conductor_mail like '%".$mail."%'";
             }
             $query = "SELECT * FROM tbl_conductor WHERE 1=1 ".$where." LIMIT 20"; 
             $conn->conectar();
