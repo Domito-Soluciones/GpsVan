@@ -1,9 +1,9 @@
 
 $(document).ready(function(){
     $("#cabecera").load("html/cabecera.html");
-    $("#menu").load("html/menu.html");
-    agregarclase($("#principal"),"menu-activo");
-    iniciarFecha();
+    $("#menu").load("html/menu.html", function( response, status, xhr ) {
+        agregarclase($("#principal"),"menu-activo");
+    });    iniciarFecha();
     $("#entrar").click(function () {
         agregarServicio();
     });
@@ -93,11 +93,11 @@ function preCargarUsuarios()
     var cliente = $('#cliente').val();
     if(cliente === '')
     {
-        cargarUsuarios(cliente);
+        cargarUsuarios('');
     }
     else
     {
-        cargarUsuarios(clientes[cliente]);
+        cargarUsuarios(cliente);
     }
 }
 function cargarUsuarios(idCliente)
@@ -110,7 +110,6 @@ function cargarUsuarios(idCliente)
         {
             var id = response[i].usuario_id;
             var nombre = response[i].usuario_nombre;
-            usuarios[nombre] = id;
             $("#lusuario").append("<option value='"+nombre+"'>"+nombre+"</option>");
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
@@ -131,7 +130,6 @@ function cargarTransportistas()
         {
             var id = response[i].transportista_id;
             var nombre = response[i].transportista_nombre;
-            transportistas[nombre] = id;
             $("#ltransportista").append("<option value='"+nombre+"'>"+nombre+"</option>");
         }
     };
@@ -140,14 +138,7 @@ function cargarTransportistas()
 function preCargarMoviles()
 {
     var transportista = $('#transportista').val();
-    if(transportista === '')
-    {
-        cargarMoviles(transportista);
-    }
-    else
-    {
-        cargarMoviles(transportistas[transportista]);
-    }
+    cargarMoviles(transportista);
 }
 function cargarMoviles(idTransportista)
 {
@@ -159,7 +150,6 @@ function cargarMoviles(idTransportista)
         {
             var id = response[i].movil_id;
             var nombre = response[i].movil_nombre;
-            moviles[nombre] = id;
             $("#lmovil").append("<option value='"+nombre+"'>"+nombre+"</option>");
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");

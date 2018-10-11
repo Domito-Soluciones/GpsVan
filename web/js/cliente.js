@@ -1,8 +1,9 @@
 
 $(document).ready(function(){
     $("#cabecera").load("html/cabecera.html");
-    $("#menu").load("html/menu.html");
-    agregarclase($("#moviles"),"menu-activo");
+    $("#menu").load("html/menu.html", function( response, status, xhr ) {
+        agregarclase($("#clientes"),"menu-activo");
+    });
     $("#pestanaBuscar").click(function () {
         cambiarPropiedad($("#agregar"),"display","none");
         cambiarPropiedad($("#buscar"),"display","initial");
@@ -98,9 +99,8 @@ function buscarCliente()
             var mail2 = response[i].cliente_mail_facturacion;
             var centro = response[i].cliente_centro_costo;
             
-            tabla.append("<tr><td>"+razon+"</td><td>"+tipo+"</td><td>"+rut+"</td><td>"+direccion
-                    +"</td><td>"+nombre+"</td><td>"+fono+"</td><td>"+mail
-                    +"</td><td>"+direccion+"</td><td>"+mail+"</td><td>"+mail2+"</td><td>"+centro+"</td></tr>");
+            tabla.append("<tr class=\"tr_contenido\"><td>"+razon+"</td><td>"+tipo+"</td><td>"+rut+"</td><td>"+direccion
+                    +"</td><td>"+nombre+"</td><td>"+fono+"</td><td>"+mail+"</td><td>"+mail2+"</td><td>"+centro+"</td></tr>");
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
         addTexto($("#mensaje-error"),"");

@@ -8,8 +8,9 @@ var tipoLicencias;
 
 $(document).ready(function(){
     $("#cabecera").load("html/cabecera.html");
-    $("#menu").load("html/menu.html");
-    agregarclase($("#moviles"),"menu-activo");
+    $("#menu").load("html/menu.html", function( response, status, xhr ) {
+        agregarclase($("#moviles"),"menu-activo");
+    });
     iniciarFecha();
     $("#pestanaBuscar").click(function () {
         cambiarPropiedad($("#agregar"),"display","none");
@@ -142,7 +143,7 @@ function buscarConductor()
             var seguroRenovacion = response[i].conductor_seguro_renovacion;
             var descuento = response[i].conductor_descuento;
             var anticipo = response[i].conductor_anticipo;
-            tabla.append("<tr><td>"+nombre+"</td><td>"+papellido+"</td><td>"+mapellido
+            tabla.append("<tr class=\"tr_contenido\"><td>"+nombre+"</td><td>"+papellido+"</td><td>"+mapellido
                     +"</td><td>"+rut+"</td><td>"+telefono+"</td><td>"+celular
                     +"</td><td>"+direccion+"</td><td>"+mail+"</td><td>"+licencia
                     +"</td><td>"+nacimento+"</td><td>"+renta+"</td>"

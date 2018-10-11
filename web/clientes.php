@@ -151,7 +151,7 @@ if(!isset($_SESSION['agente']))
         <div class="contendor_central">
             <table id="tabla" class="tabla-central">
                 <thead>
-                    <tr>
+                    <tr class="tr_titulo">
                         <th>
                             Razon social
                         </th>

@@ -93,15 +93,21 @@ if(!isset($_SESSION['agente']))
         <div class="contendor_central">
             <table id="tabla" class="tabla-central">
                 <thead>
-                    <tr>
+                    <tr class="tr_titulo">
                         <th>
                             ID servicio
+                        </th>
+                        <th>
+                            Fecha
+                        </th>
+                        <th>
+                            Tarifa
                         </th>
                         <th>
                             Partida
                         </th>
                         <th>
-                            Desttino
+                            Destino
                         </th>
                         <th>
                             Cliente
@@ -118,12 +124,7 @@ if(!isset($_SESSION['agente']))
                         <th>
                             Tipo
                         </th>
-                        <th>
-                            Tarifa
-                        </th>
-                        <th>
-                            Fecha
-                        </th>
+
                     </tr>
                 </thead>
                 <tbody>

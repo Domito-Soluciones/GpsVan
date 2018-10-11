@@ -5,9 +5,10 @@ var moviles = new Array();
 
 $(document).ready(function(){
     $("#cabecera").load("html/cabecera.html");
-    $("#menu").load("html/menu.html");
+    $("#menu").load("html/menu.html", function( response, status, xhr ) {
+        agregarclase($("#servicios"),"menu-activo");
+    });
     iniciarFecha();
-    agregarclase($("#moviles"),"menu-activo");
     $("#boton-buscar").click(function () {
         buscarServicio(10000);
     });
@@ -172,9 +173,9 @@ function buscarServicio(limit)
             var tarifa = response[i].servicio_tarifa;
             var fecha = response[i].servicio_fecha;
             
-            tabla.append("<tr><td>"+id+"</td><td>"+partida+"</td><td>"+destino+"</td><td>"+cliente
+            tabla.append("<tr class=\"tr_contenido\"><td>"+id+"</td><td>"+fecha+"</td><td>"+tarifa+"</td><td>"+partida+"</td><td>"+destino+"</td><td>"+cliente
                     +"</td><td>"+pasajero+"</td><td>"+transportista+"</td><td>"+movil
-                    +"</td><td>"+tipo+"</td><td>"+tarifa+"</td><td>"+fecha+"</td><</tr>");
+                    +"</td><td>"+tipo+"</td><</tr>");
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
         addTexto($("#mensaje-error"),"");

@@ -298,7 +298,9 @@ if(!isset($_SESSION['agente']))
 
 function removeMap()
 {
-    map.panBy(0, 0);
+    directionsDisplay.setOptions({
+        suppressPolylines: true
+    });
 }
 
 
