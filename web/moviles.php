@@ -179,8 +179,8 @@ if(!isset($_SESSION['agente']))
                         <input type="text" id="anticipo" placeholder="Anticipo">
                     </div>
                     <div class="contenedor-boton">
-                        <div class="button-succes">
-                            <a class="enlace-succes" id="entrar">
+                        <div class="button-succes" id="entrar">
+                            <a class="enlace-succes">
                                 AGREGAR
                             </a>
                         </div>
@@ -223,8 +223,8 @@ if(!isset($_SESSION['agente']))
                         <datalist id="lmail"></datalist>
                     </div>
                     <div class="contenedor-boton">
-                        <div class="button-succes">
-                            <a class="enlace-succes" id="boton-buscar">
+                        <div class="button-succes" id="boton-buscar">
+                            <a class="enlace-succes">
                                 BUSCAR
                             </a>
                         </div>
@@ -271,8 +271,35 @@ if(!isset($_SESSION['agente']))
                             Tipo licencia
                         </th>
                         <th>
+                                Fecha nacimiento
+                            </th>
+                            <th>
+                               Renta imponible 
+                            </th>
+                            <th>
                            Tipo contrato 
                         </th>
+                            <th>
+                                Institucion previsional 
+                            </th>
+                            <th>
+                                Isapre
+                            </th>
+                            <th>
+                                Mutual (% descuento)
+                            </th>
+                            <th>
+                                Inicio Seguro Conductor
+                            </th>
+                            <th>
+                                Renovación Seguro Conductor  
+                            </th>
+                            <th>
+                                % Descuento
+                            </th>
+                            <th>
+                                Anticipos
+                            </th>
                     </tr>
                 </thead>
                 <tbody>

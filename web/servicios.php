@@ -1,5 +1,9 @@
 <?php
 session_start(); 
+if(!isset($_SESSION['agente']))
+{
+    header('Location: index.php');
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -11,9 +15,13 @@ session_start();
         <link rel="stylesheet" href="css/estilo.css">
         <link rel="stylesheet" href="css/principal.css">
         <link rel="stylesheet" href="css/loader.css">
+        <link rel="stylesheet" href="css/alertify.css">
+        <link rel="stylesheet" href="css/jquery.datetimepicker.css">
         <script src="js/jquery.js" type="text/javascript"></script>
         <script src="js/funciones.js" type="text/javascript"></script>
         <script src="js/servicio.js" type="text/javascript"></script>
+        <script src="js/jquery.datetimepicker.js" type="text/javascript"></script>
+        <script src="js/alertify.js" type="text/javascript"></script>
     </head>
     <body>
         <div class="cabecera" id="cabecera">
@@ -74,8 +82,8 @@ session_start();
 
                 </div>
                 <div class="contenedor-boton">
-                    <div class="button-succes">
-                        <a class="enlace-succes" id="buscar">
+                    <div class="button-succes" id="boton-buscar">
+                        <a class="enlace-succes">
                             BUSCAR
                         </a>
                     </div>
@@ -83,11 +91,45 @@ session_start();
             </div>
         </div>
         <div class="contendor_central">
-            <div class="central" id="central">
-                <!--
-                aqui va el mapa
-                -->
-            </div>    
+            <table id="tabla" class="tabla-central">
+                <thead>
+                    <tr>
+                        <th>
+                            ID servicio
+                        </th>
+                        <th>
+                            Partida
+                        </th>
+                        <th>
+                            Desttino
+                        </th>
+                        <th>
+                            Cliente
+                        </th>
+                        <th>
+                            Pasajero
+                        </th>
+                        <th>
+                            Transportista
+                        </th>
+                        <th>
+                            Movil
+                        </th>
+                        <th>
+                            Tipo
+                        </th>
+                        <th>
+                            Tarifa
+                        </th>
+                        <th>
+                            Fecha
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
         </div>   
     </body>
 </html>

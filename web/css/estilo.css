@@ -150,10 +150,12 @@ html,body
 
 .tabla-central
 {
-    width: 100%;
-    overflow: auto;
+    height: calc(100%);
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
 }
 .tabla-central th
 {
-    width: 100px;
+    width: auto;
 }

@@ -22,6 +22,12 @@ if(!isset($_SESSION['agente']))
         <script src="js/principal.js" type="text/javascript"></script>
         <script src="js/alertify.js" type="text/javascript"></script>
         <script src="js/jquery.datetimepicker.js" type="text/javascript"></script>
+        <style>
+            .pac-container
+            {
+                width: 400px !important;
+            }
+        </style>
     </head>
     <body>
         <div class="cabecera" id="cabecera">
@@ -109,8 +115,8 @@ if(!isset($_SESSION['agente']))
                         </datalist>
                     </div>
                     <div class="contenedor-boton">
-                        <div class="button-succes">
-                            <a class="enlace-succes" id="entrar">
+                        <div class="button-succes" id="entrar">
+                            <a class="enlace-succes">
                                 ASIGNAR
                             </a>
                         </div>
@@ -167,8 +173,8 @@ if(!isset($_SESSION['agente']))
                         
                     </div>
                     <div class="contenedor-boton">
-                        <div class="button-succes">
-                            <a class="enlace-succes" id="boton-buscar">
+                        <div class="button-succes" id="boton-buscar">
+                            <a class="enlace-succes">
                                 BUSCAR
                             </a>
                         </div>
@@ -192,10 +198,11 @@ if(!isset($_SESSION['agente']))
         <script>
             var directionsService;
             var directionsDisplay;
+            var map;
             function initMap() {
                 directionsService = new google.maps.DirectionsService;
                 directionsDisplay = new google.maps.DirectionsRenderer;
-                var map = new google.maps.Map(document.getElementById('map'), {
+                map = new google.maps.Map(document.getElementById('map'), {
                     mapTypeControl: false,
                     center: {lat: -33.440616, lng: -70.6514212},
                     zoom: 13
@@ -288,6 +295,11 @@ if(!isset($_SESSION['agente']))
           }
         });
       }
+
+function removeMap()
+{
+    map.panBy(0, 0);
+}
 
 
 

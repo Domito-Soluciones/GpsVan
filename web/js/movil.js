@@ -132,11 +132,24 @@ function buscarConductor()
             var direccion = response[i].conductor_direccion;
             var mail = response[i].conductor_mail;
             var licencia = response[i].conductor_tipoLicencia;
+            var nacimento = response[i].conductor_nacimiento;
+            var renta = response[i].conductor_renta;
             var contrato = response[i].conductor_contrato;
+            var afp = response[i].conductor_afp;
+            var isapre = response[i].conductor_isapre;
+            var mutual = response[i].conductor_mutual;
+            var seguroInicio = response[i].conductor_seguro_inicio;
+            var seguroRenovacion = response[i].conductor_seguro_renovacion;
+            var descuento = response[i].conductor_descuento;
+            var anticipo = response[i].conductor_anticipo;
             tabla.append("<tr><td>"+nombre+"</td><td>"+papellido+"</td><td>"+mapellido
                     +"</td><td>"+rut+"</td><td>"+telefono+"</td><td>"+celular
                     +"</td><td>"+direccion+"</td><td>"+mail+"</td><td>"+licencia
-                    +"</td><td>"+contrato+"</td></tr>");
+                    +"</td><td>"+nacimento+"</td><td>"+renta+"</td>"
+                    +"<td>"+contrato+"</td><td>"+afp+"</td>"
+                    +"<td>"+isapre+"</td><td>"+mutual+"</td>"
+                    +"<td>"+seguroInicio+"</td><td>"+seguroRenovacion+"</td>"
+                    +"<td>"+descuento+"</td><td>"+anticipo+"</td></tr>");
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
         addTexto($("#mensaje-error"),"");

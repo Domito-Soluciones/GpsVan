@@ -27,8 +27,8 @@
                 <input class="input-text" type="password" id="password" name="password" placeholder="Ingrese clave" />
             </div>
             <div class="contenedor-boton">
-                <div class="button-succes">
-                    <a class="enlace-succes" id="entrar">
+                <div class="button-succes" id="entrar">
+                    <a class="enlace-succes">
                         ENTRAR
                     </a>
                 </div>
