@@ -199,6 +199,8 @@ if(!isset($_SESSION['agente']))
             var directionsService;
             var directionsDisplay;
             var map;
+            var markers = [];
+           
             function initMap() {
                 directionsService = new google.maps.DirectionsService;
                 directionsDisplay = new google.maps.DirectionsRenderer;
@@ -259,6 +261,7 @@ if(!isset($_SESSION['agente']))
           } else {
             me.destinationPlaceId = place.place_id;
             document.getElementById("destino_hidden").value = place.place_id;
+            deleteMarkers();
           }
           me.route();
         });
@@ -299,9 +302,33 @@ if(!isset($_SESSION['agente']))
 
 function removeMap()
 {
-    directionsDisplay.setOptions({
-        suppressPolylines: true
+    initMap();
+    preCargarMoviles();
+}
+
+function dibujarMarcador(lat,lon,nombre)
+{
+    var myLatLng = {lat: lat, lng: lon};
+    var marker = new google.maps.Marker({
+        position: myLatLng,
+        map: map,
+        title: nombre
     });
+    markers.push(marker);
+
+}
+
+function deleteMarkers() {
+    for (var i = 0; i < markers.length; i++) {
+      markers[i].setMap(null);
+    }
+}
+
+function setMobiles()
+{
+    setInterval(function() {
+        alert("hola")
+    },2000);
 }
 
 

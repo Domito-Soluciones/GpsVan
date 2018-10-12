@@ -1,4 +1,6 @@
 
+/* global alertify, directionsDisplay */
+
 $(document).ready(function(){
     $("#cabecera").load("html/cabecera.html");
     $("#menu").load("html/menu.html", function( response, status, xhr ) {
@@ -111,6 +113,7 @@ function cargarUsuarios(idCliente)
     var url = "../source/httprequest/Usuarios.php?id="+idCliente;
     var success = function(response)
     {
+        $("#usuario").val("");
         $("#lusuario").html("");
         for(var i = 0 ; i < response.length ; i++)
         {
@@ -151,12 +154,20 @@ function cargarMoviles(idTransportista)
     var url = "../source/httprequest/Moviles.php?id="+idTransportista;
     var success = function(response)
     {
+        $("#movil").val("");
         $("#lmovil").html("");
         for(var i = 0 ; i < response.length ; i++)
         {
             var id = response[i].movil_id;
             var nombre = response[i].movil_nombre;
+            var lat = response[i].movil_lat;
+            var lon = response[i].movil_lon;
+            var estado = response[i].movil_estado;
             $("#lmovil").append("<option value='"+nombre+"'>"+nombre+"</option>");
+            if(estado !== '0')
+            {
+                dibujarMarcador(parseFloat(lat),parseFloat(lon),nombre);
+            }
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
@@ -191,6 +202,7 @@ function agregarServicio()
         vaciarFormulario($("#asignar input"));
         cambiarPropiedad($("#loader"),"visibility","hidden");
         addTexto($("#mensaje-error"),"");
+        init();
         removeMap();
     };
     postRequest(url,success);

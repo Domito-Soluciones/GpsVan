@@ -21,7 +21,7 @@ class MovilDao {
             $where = "";
             if($id !== "")
             {
-                $where = "WHERE movil_transportista = ".$id;
+                $where = "WHERE movil_transportista = (SELECT transportista_id FROM tbl_transportista WHERE transportista_nombre = '".$id."')";
             }
             $query = "SELECT * FROM tbl_movil ".$where." LIMIT 20"; 
             $conn->conectar();
@@ -30,6 +30,10 @@ class MovilDao {
                 $moviles = new Movil();
                 $moviles->setId($row["movil_id"]);
                 $moviles->setNombre($row["movil_nombre"]);
+                $moviles->setTransportista($row["movil_transportista"]);
+                $moviles->setEstado($row['movil_estado']);
+                $moviles->setLat($row['movil_lat']);
+                $moviles->setLon($row['movil_lon']);
                 array_push($array, $moviles);
             }
         } catch (Exception $exc) {

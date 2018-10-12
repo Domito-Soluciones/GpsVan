@@ -68,7 +68,6 @@ function validarCamposOr(array)
     {
         if(array[i] === undefined || array[i] === '')
         {
-            alert(array[i]);
             return false;
         }
     }
