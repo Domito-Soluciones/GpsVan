@@ -1,13 +1,9 @@
-var clientes = new Array();
-var usuarios = new Array();
-var transportistas = new Array();
-var moviles = new Array();
 
 $(document).ready(function(){
     $("#cabecera").load("html/cabecera.html");
-    $("#menu").load("html/menu.html");
-    agregarclase($("#principal"),"menu-activo");
-    iniciarFecha();
+    $("#menu").load("html/menu.html", function( response, status, xhr ) {
+        agregarclase($("#principal"),"menu-activo");
+    });    iniciarFecha();
     $("#entrar").click(function () {
         agregarServicio();
     });
@@ -53,6 +49,8 @@ $(document).ready(function(){
     cargarIds();
     cargarClientes();
     cargarTransportistas();
+    preCargarUsuarios(); 
+    preCargarMoviles();
 });
 
 function cargarIds()
@@ -93,9 +91,13 @@ function cargarClientes()
 function preCargarUsuarios()
 {
     var cliente = $('#cliente').val();
-    if(cliente !== '')
+    if(cliente === '')
     {
-        cargarUsuarios(clientes[cliente]);
+        cargarUsuarios('');
+    }
+    else
+    {
+        cargarUsuarios(cliente);
     }
 }
 function cargarUsuarios(idCliente)
@@ -108,7 +110,6 @@ function cargarUsuarios(idCliente)
         {
             var id = response[i].usuario_id;
             var nombre = response[i].usuario_nombre;
-            usuarios[nombre] = id;
             $("#lusuario").append("<option value='"+nombre+"'>"+nombre+"</option>");
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
@@ -129,7 +130,6 @@ function cargarTransportistas()
         {
             var id = response[i].transportista_id;
             var nombre = response[i].transportista_nombre;
-            transportistas[nombre] = id;
             $("#ltransportista").append("<option value='"+nombre+"'>"+nombre+"</option>");
         }
     };
@@ -138,10 +138,7 @@ function cargarTransportistas()
 function preCargarMoviles()
 {
     var transportista = $('#transportista').val();
-    if(transportista !== '')
-    {
-        cargarMoviles(transportistas[transportista]);
-    }
+    cargarMoviles(transportista);
 }
 function cargarMoviles(idTransportista)
 {
@@ -153,7 +150,6 @@ function cargarMoviles(idTransportista)
         {
             var id = response[i].movil_id;
             var nombre = response[i].movil_nombre;
-            moviles[nombre] = id;
             $("#lmovil").append("<option value='"+nombre+"'>"+nombre+"</option>");
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
@@ -167,9 +163,9 @@ function agregarServicio()
     var partida_id = $("#partida_hidden").val();
     var destino = $("#destino").val();
     var destino_id = $("#destino_hidden").val();
-    var cliente = clientes[$("#cliente").val()];
-    var usuario = usuarios[$("#usuario").val()];
-    var transportista = transportistas[$("#transportista").val()];
+    var cliente = $("#cliente").val();
+    var usuario = $("#usuario").val();
+    var transportista = $("#transportista").val();
     var movil = moviles[$("#movil").val()];
     var tipo = $("#tipo").val();
     var tarifa = $("#tarifa").val();
@@ -189,6 +185,7 @@ function agregarServicio()
         vaciarFormulario($("#asignar input"));
         cambiarPropiedad($("#loader"),"visibility","hidden");
         addTexto($("#mensaje-error"),"");
+        removeMap();
     };
     postRequest(url,success);
 }
@@ -196,12 +193,13 @@ function agregarServicio()
 function buscarServicio()
 {
     var id = $("#ids").val();
-    var cliente = clientes[$("#cliente").val()] === undefined ? "" : clientes[$("#cliente").val()];
-    var usuario = usuarios[$("#usuario").val()] === undefined ? "" : usuarios[$("#usuario").val()];
-    var transportista = transportistas[$("#transportista").val()] === undefined ? "" : transportistas[$("#transportista").val()];
-    var movil = moviles[$("#movil").val()] === undefined ? "" : moviles[$("#movil").val()];
+    var cliente = $("#cliente").val();
+    var usuario = $("#usuario").val();
+    var transportista = $("#transportista").val();
+    var movil = $("#movil").val();
     var desde = $("#tipo").val();
     var hasta = $("#tarifa").val();
+    var limit = 1;
     var array = [id,cliente,usuario,transportista,movil,desde,hasta];
     if(!validarCamposAnd(array))
     {
@@ -209,7 +207,7 @@ function buscarServicio()
         return;
     }
     var data = "id="+id+"&cliente="+cliente+"&usuario="
-            +usuario+"&transportista="+transportista+"&movil="+movil+"&desde="+desde+"&hasta="+hasta;
+            +usuario+"&transportista="+transportista+"&movil="+movil+"&desde="+desde+"&hasta="+hasta+"&limit="+limit;
     var url = "../source/httprequest/Servicios.php?"+data;
     var success = function(response)
     {

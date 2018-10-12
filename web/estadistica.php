@@ -1,5 +1,9 @@
 <?php
 session_start(); 
+if(!isset($_SESSION['agente']))
+{
+    header('Location: index.php');
+}
 ?>
 <!DOCTYPE html>
 <html>

@@ -96,8 +96,8 @@ if(!isset($_SESSION['agente']))
                         <input type="text" id="centros" placeholder="Centros de costo">
                     </div>
                     <div class="contenedor-boton">
-                        <div class="button-succes">
-                            <a class="enlace-succes" id="entrar">
+                        <div class="button-succes"  id="entrar">
+                            <a class="enlace-succes">
                                 AGREGAR
                             </a>
                         </div>
@@ -110,8 +110,7 @@ if(!isset($_SESSION['agente']))
                     <div class="contenedor-input">
                         <input type="text" list="lrazon" id="razonS" placeholder="Nombre">
                         <datalist id="lrazon">
-                            <option value="Convenio">Convenio</option>
-                            <option value="Servicio especial">Servicio especial</option>
+                            
                         </datalist>
                     </div>
                     <div class="contenedor-pre-input">
@@ -133,8 +132,8 @@ if(!isset($_SESSION['agente']))
                     </div>
                     
                     <div class="contenedor-boton">
-                        <div class="button-succes">
-                            <a class="enlace-succes" id="buscar">
+                        <div class="button-succes" id="boton-buscar">
+                            <a class="enlace-succes">
                                 BUSCAR
                             </a>
                         </div>
@@ -150,11 +149,42 @@ if(!isset($_SESSION['agente']))
             </div>
         </div>
         <div class="contendor_central">
-            <div class="central" id="central">
-                <!--
-                aqui va el mapa
-                -->
-            </div>    
+            <table id="tabla" class="tabla-central">
+                <thead>
+                    <tr class="tr_titulo">
+                        <th>
+                            Razon social
+                        </th>
+                        <th>
+                            Tipo Servicio
+                        </th>
+                        <th>
+                            Rut
+                        </th>
+                        <th>
+                            Dirección
+                        </th>
+                        <th>
+                            Nombre contacto
+                        </th>
+                        <th>
+                            Teléfono contacto
+                        </th>
+                        <th>
+                            E-mail contacto
+                        </th>
+                        <th>
+                            E-mail facturación
+                        </th>
+                        <th>
+                            Centro costo
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
         </div>   
     </body>
 </html>

@@ -52,7 +52,7 @@ class ServicioDao {
         return $array;
     }
     
-    public function getServicios($id,$cliente,$usuario,$transportista,$movil,$desde,$hasta)
+    public function getServicios($id,$cliente,$usuario,$transportista,$movil,$desde,$hasta,$limit)
     {
         $array = array();
         $conn = new Conexion();
@@ -81,13 +81,13 @@ class ServicioDao {
             }
             if($desde != '')
             {
-                $query .= " AND servicio_fecha >= '".$desde."%' ";
+                $query .= " AND servicio_fecha >= '".$desde."' ";
             }
             if($hasta != '')
             {
-                $query .= " AND servicio_fecha <= '".$hasta."%' ";
+                $query .= " AND servicio_fecha <= '".$hasta."' ";
             }
-            $query .= " ORDER BY servicio_fecha DESC LIMIT 1"; 
+            $query .= " ORDER BY servicio_fecha DESC LIMIT ".$limit; 
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
             while($row = mysqli_fetch_array($result)) {

@@ -1,8 +1,9 @@
 
 $(document).ready(function(){
     $("#cabecera").load("html/cabecera.html");
-    $("#menu").load("html/menu.html");
-    agregarclase($("#moviles"),"menu-activo");
+    $("#menu").load("html/menu.html", function( response, status, xhr ) {
+        agregarclase($("#clientes"),"menu-activo");
+    });
     $("#pestanaBuscar").click(function () {
         cambiarPropiedad($("#agregar"),"display","none");
         cambiarPropiedad($("#buscar"),"display","initial");
@@ -18,7 +19,7 @@ $(document).ready(function(){
     $("#entrar").click(function () {
         agregarCliente();
     });
-    $("#buscar").click(function () {
+    $("#boton-buscar").click(function () {
         buscarCliente();
     });
     
@@ -79,7 +80,7 @@ function buscarCliente()
     var tipo = $("#tipoS").val();
     var rut = $("#rutS").val();
     
-    var data = "razon="+razon+"&rut="+rut+"&tipo="+tipo;
+    var data = "cliente="+razon+"&rut="+rut+"&tipo="+tipo;
     var url = "../source/httprequest/Clientes.php?"+data;
     var success = function(response)
     {
@@ -88,20 +89,18 @@ function buscarCliente()
         tabla.html("");
         for(var i = 0 ; i < response.length; i++)
         {
-            var nombre = response[i].conductor_nombre;
-            var papellido = response[i].conductor_papellido;
-            var mapellido = response[i].conductor_mapellido;
-            var rut = response[i].conductor_rut;
-            var telefono = response[i].conductor_telefono;
-            var celular = response[i].conductor_celular;
-            var direccion = response[i].conductor_direccion;
-            var mail = response[i].conductor_mail;
-            var licencia = response[i].conductor_tipoLicencia;
-            var contrato = response[i].conductor_contrato;
-            tabla.append("<tr><td>"+nombre+"</td><td>"+papellido+"</td><td>"+mapellido
-                    +"</td><td>"+rut+"</td><td>"+telefono+"</td><td>"+celular
-                    +"</td><td>"+direccion+"</td><td>"+mail+"</td><td>"+licencia
-                    +"</td><td>"+contrato+"</td></tr>");
+            var razon = response[i].cliente_razon;
+            var tipo = response[i].cliente_tipo;
+            var rut = response[i].cliente_rut;
+            var direccion = response[i].cliente_direccion;
+            var nombre = response[i].cliente_nombre_contacto;
+            var fono = response[i].cliente_fono_contacto;
+            var mail = response[i].cliente_mail_contacto;
+            var mail2 = response[i].cliente_mail_facturacion;
+            var centro = response[i].cliente_centro_costo;
+            
+            tabla.append("<tr class=\"tr_contenido\"><td>"+razon+"</td><td>"+tipo+"</td><td>"+rut+"</td><td>"+direccion
+                    +"</td><td>"+nombre+"</td><td>"+fono+"</td><td>"+mail+"</td><td>"+mail2+"</td><td>"+centro+"</td></tr>");
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
         addTexto($("#mensaje-error"),"");

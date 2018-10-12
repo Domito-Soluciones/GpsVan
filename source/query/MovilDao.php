@@ -18,7 +18,12 @@ class MovilDao {
         $array = array();
         $conn = new Conexion();
         try {
-            $query = "SELECT * FROM tbl_movil WHERE movil_transportista = ".$id." LIMIT 20"; 
+            $where = "";
+            if($id !== "")
+            {
+                $where = "WHERE movil_transportista = ".$id;
+            }
+            $query = "SELECT * FROM tbl_movil ".$where." LIMIT 20"; 
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
             while($row = mysqli_fetch_array($result)) {

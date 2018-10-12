@@ -1,5 +1,9 @@
 <?php
 session_start(); 
+if(!isset($_SESSION['agente']))
+{
+    header('Location: index.php');
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -52,8 +56,8 @@ session_start();
                     <div class="loader" id="loader">Loading...</div>
                 </div>
                 <div class="contenedor-boton">
-                    <div class="button-succes">
-                        <a class="enlace-succes" id="buscar">
+                    <div class="button-succes" id="buscar">
+                        <a class="enlace-succes">
                             BUSCAR
                         </a>
                     </div>

@@ -3,22 +3,39 @@ include '../conexion/Conexion.php';
 include '../dominio/Cliente.php';
 
 class ClienteDao {
-    public function getClientes($cliente)
+    public function getClientes($razon,$tipo,$rut)
     {
         $array = array();
         $conn = new Conexion();
         try {
-            if($cliente !== '')
+            $where = "";
+            if($razon !== '')
             {
-                $query = "SELECT * FROM tbl_cliente WHERE cliente_razon_social ilike '$cliente%' LIMIT 20"; 
+                $where .= " AND cliente_razon_social like '%$razon%' ";
             }
-            $query = "SELECT * FROM tbl_cliente LIMIT 20"; 
+            if($tipo !== '')
+            {
+                $where .= " AND cliente_tipo like '%$tipo%' ";
+            }
+            if($rut !== '')
+            {
+                $where .= " AND cliente_rut like '%$rut%' ";
+            }
+            $query = "SELECT * FROM tbl_cliente WHERE 1=1 ".$where." LIMIT 20"; 
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query); 
+            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
             while($row = mysqli_fetch_array($result)) {
                 $cliente = new Cliente();
                 $cliente->setId($row["cliente_id"]);
                 $cliente->setRazon($row["cliente_razon_social"]);
+                $cliente->setTipo($row["cliente_tipo"]);
+                $cliente->setRut($row["cliente_rut"]);
+                $cliente->setDireccion($row["cliente_direccion"]);
+                $cliente->setNombreContacto($row["cliente_nombre_contacto"]);
+                $cliente->setFonoContacto($row["cliente_fono_contacto"]);
+                $cliente->setMailContacto($row["cliente_mail_contacto"]);
+                $cliente->setMailFacturacion($row["cliente_mail_facturacion"]);
+                $cliente->setCentroCosto($row["cliente_centro_costo"]);
                 array_push($array, $cliente);
             }
         } catch (Exception $exc) {

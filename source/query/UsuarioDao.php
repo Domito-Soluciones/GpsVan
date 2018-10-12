@@ -18,7 +18,12 @@ class UsuarioDao {
         $array = array();
         $conn = new Conexion();
         try {
-            $query = "SELECT * FROM tbl_usuario WHERE usuario_cliente = ".$id." LIMIT 20"; 
+            $where = "";
+            if($id != "")
+            {
+                $where = " WHERE usuario_cliente = ".$id;
+            }
+            $query = "SELECT * FROM tbl_usuario ".$where." LIMIT 20"; 
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die; 
             while($row = mysqli_fetch_array($result)) {
