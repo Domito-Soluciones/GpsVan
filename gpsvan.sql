@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 10-10-2018 a las 13:03:11
+-- Tiempo de generación: 12-10-2018 a las 04:30:40
 -- Versión del servidor: 5.5.24-log
 -- Versión de PHP: 5.4.3
 
@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS `tbl_cliente` (
   `cliente_mail_facturacion` varchar(30) NOT NULL,
   `cliente_centro_costo` varchar(20) NOT NULL,
   PRIMARY KEY (`cliente_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 --
 -- Volcado de datos para la tabla `tbl_cliente`
@@ -81,7 +81,8 @@ INSERT INTO `tbl_cliente` (`cliente_id`, `cliente_razon_social`, `cliente_tipo`,
 (3, 'Ripley', '', '', '', '', '', '', '', ''),
 (4, 'Entel', '', '', '', '', '', '', '', ''),
 (5, '1', '1', '11', '1', '1', '1', '1', '1', '1'),
-(6, '1', '1', '1', '1', '1', '1', '1', '1', '1');
+(6, '1', '1', '1', '1', '1', '1', '1', '1', '1'),
+(7, '1', 'Convenio', '1', '1', '1', '1', '1', '1', '1');
 
 -- --------------------------------------------------------
 
@@ -95,6 +96,7 @@ CREATE TABLE IF NOT EXISTS `tbl_conductor` (
   `conductor_papellido` varchar(20) NOT NULL,
   `conductor_mapellido` varchar(20) NOT NULL,
   `conductor_rut` varchar(10) NOT NULL,
+  `conductor_clave` varchar(20) NOT NULL,
   `conductor_telefono` varchar(10) NOT NULL,
   `conductor_celular` varchar(20) NOT NULL,
   `conductor_direccion` varchar(50) NOT NULL,
@@ -117,10 +119,10 @@ CREATE TABLE IF NOT EXISTS `tbl_conductor` (
 -- Volcado de datos para la tabla `tbl_conductor`
 --
 
-INSERT INTO `tbl_conductor` (`conductor_id`, `conductor_nombre`, `conductor_papellido`, `conductor_mapellido`, `conductor_rut`, `conductor_telefono`, `conductor_celular`, `conductor_direccion`, `conductor_mail`, `conductor_tipo_licencia`, `conductor_nacimiento`, `conductor_renta`, `conductor_tipo_contrato`, `conductor_prevision`, `conductor_isapre`, `conductor_mutual`, `conductor_seguro_inicio`, `conductor_seguro_renovacion`, `conductor_descuento`, `conductor_anticipo`) VALUES
-(1, 'Jose', 'Sanchez', 'Sandoval', '180797', '11111', '22222', '44444', '333333', 'A1', '2018-01-01', 1, 'Indefinido', 'Modelo', 'BanmÃ©dica', '1', '2018-01-01', '2018-01-01', 2, 1),
-(2, '1', '1', '1', '1', '1', '1', '1', '1', 'A1', '0000-00-00', 1, 'Indefinido', 'Capital', 'BanmÃ©dica', '1', '0000-00-00', '0000-00-00', 1, 2),
-(3, '2', '2', '2', '2', '2', '2', '2', '2', 'A2', '0000-00-00', 1, 'Indefinido', '1', '1', '1', '0000-00-00', '0000-00-00', 1, 1);
+INSERT INTO `tbl_conductor` (`conductor_id`, `conductor_nombre`, `conductor_papellido`, `conductor_mapellido`, `conductor_rut`, `conductor_clave`, `conductor_telefono`, `conductor_celular`, `conductor_direccion`, `conductor_mail`, `conductor_tipo_licencia`, `conductor_nacimiento`, `conductor_renta`, `conductor_tipo_contrato`, `conductor_prevision`, `conductor_isapre`, `conductor_mutual`, `conductor_seguro_inicio`, `conductor_seguro_renovacion`, `conductor_descuento`, `conductor_anticipo`) VALUES
+(1, 'Jose', 'Sanchez', 'Sandoval', '180797', '123456', '11111', '22222', '44444', '333333', 'A1', '2018-01-01', 1, 'Indefinido', 'Modelo', 'BanmÃ©dica', '1', '2018-01-01', '2018-01-01', 2, 1),
+(2, '1', '1', '1', '1', '', '1', '1', '1', '1', 'A1', '0000-00-00', 1, 'Indefinido', 'Capital', 'BanmÃ©dica', '1', '0000-00-00', '0000-00-00', 1, 2),
+(3, '2', '2', '2', '2', '', '2', '2', '2', '2', 'A2', '0000-00-00', 1, 'Indefinido', '1', '1', '1', '0000-00-00', '0000-00-00', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -133,6 +135,10 @@ CREATE TABLE IF NOT EXISTS `tbl_movil` (
   `movil_nombre` varchar(20) NOT NULL,
   `movil_transportista` int(11) NOT NULL,
   `movil_estado` int(11) NOT NULL,
+  `movil_lat` float NOT NULL,
+  `movil_last_lat` float NOT NULL,
+  `mivil_lon` float NOT NULL,
+  `mivil_last_lon` float NOT NULL,
   PRIMARY KEY (`movil_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
@@ -140,15 +146,15 @@ CREATE TABLE IF NOT EXISTS `tbl_movil` (
 -- Volcado de datos para la tabla `tbl_movil`
 --
 
-INSERT INTO `tbl_movil` (`movil_id`, `movil_nombre`, `movil_transportista`, `movil_estado`) VALUES
-(1, 'M101', 1, 0),
-(2, 'M102', 1, 0),
-(3, 'M201', 2, 0),
-(4, 'M202', 2, 0),
-(5, 'M301', 3, 0),
-(6, 'M302', 3, 0),
-(7, 'M401', 4, 0),
-(8, 'M402', 4, 0);
+INSERT INTO `tbl_movil` (`movil_id`, `movil_nombre`, `movil_transportista`, `movil_estado`, `movil_lat`, `movil_last_lat`, `mivil_lon`, `mivil_last_lon`) VALUES
+(1, 'M101', 1, 0, -33.4529, -33.4529, -70.6544, -70.6544),
+(2, 'M102', 1, 0, 0, 0, 0, 0),
+(3, 'M201', 2, 0, 0, 0, 0, 0),
+(4, 'M202', 2, 0, 0, 0, 0, 0),
+(5, 'M301', 3, 0, 0, 0, 0, 0),
+(6, 'M302', 3, 0, 0, 0, 0, 0),
+(7, 'M401', 4, 0, 0, 0, 0, 0),
+(8, 'M402', 4, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -171,7 +177,7 @@ CREATE TABLE IF NOT EXISTS `tbl_servicio` (
   `servicio_agente` int(11) NOT NULL,
   `servicio_fecha` datetime NOT NULL,
   PRIMARY KEY (`servicio_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10036 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10040 ;
 
 --
 -- Volcado de datos para la tabla `tbl_servicio`
@@ -207,7 +213,11 @@ INSERT INTO `tbl_servicio` (`servicio_id`, `servicio_partida`, `servicio_partida
 (10032, 'Xiaomi CHILE - Concordia, Providencia, Chile', 'ChIJG_HyEG_PYpYRT0p4Qwz42GY', 'Ã‘uÃ±oa, Chile', 'ChIJ6TZN_JTPYpYRRVH-3xZvjZU', 2, 3, 2, 3, 'Recogida', 1000, 1, '2018-10-10 07:21:07'),
 (10033, 'FFV - Isidora Goyenechea, Las Condes, Chile', 'ChIJ5-aeET7PYpYROZj4ERB2JMw', 'Posta Central - Avenida Portugal, Santiago, Chile', 'ChIJe-Ejip3FYpYRUw0ILXsb0vc', 1, 1, 2, 4, 'Reparto', 15000, 1, '2018-10-10 07:22:50'),
 (10034, 'Alameda, Santiago, EstaciÃ³n Central, Chile', 'ChIJoy5dZfjEYpYRv_gWKJBK1FY', 'Moneda, Santiago, Chile', 'EhdNb25lZGEsIFNhbnRpYWdvLCBDaGlsZQ', 1, 1, 1, 1, 'Reparto', 3000, 1, '2018-10-10 07:30:01'),
-(10035, 'Avenida+Libertador+Bernardo+O%27Higgins%2C+Santiago%2C+Chile', 'EjZBdmVuaWRhIExpYmVydGFkb3IgQmVybmFyZG8gTydIaWdnaW5zLCBTYW50aWFnbywgQ2hpbGU', 'Santiago, Chile', 'ChIJL68lBEHFYpYRMQkPQDzVdYQ', 1, 1, 1, 1, 'Reparto', 7000, 1, '2018-10-10 07:33:23');
+(10035, 'Avenida+Libertador+Bernardo+O%27Higgins%2C+Santiago%2C+Chile', 'EjZBdmVuaWRhIExpYmVydGFkb3IgQmVybmFyZG8gTydIaWdnaW5zLCBTYW50aWFnbywgQ2hpbGU', 'Santiago, Chile', 'ChIJL68lBEHFYpYRMQkPQDzVdYQ', 1, 1, 1, 1, 'Reparto', 7000, 1, '2018-10-10 07:33:23'),
+(10036, 'Amun%C3%A1tegui+20%2C+Santiago%2C+Chile', 'ChIJO3AHtqfFYpYRN7RqYr7LhEI', 'Pto Velero 160, MaipÃº, Chile', 'Eh1QdG8gVmVsZXJvIDE2MCwgTWFpcMO6LCBDaGlsZSIxEi8KFAoSCSFIQURH3WKWEXTbBgtoRnVSEKABKhQKEgl38r5pR91ilhHcucUB14Maxg', 3, 5, 1, 1, 'Recogida', 10000, 1, '2018-10-10 20:28:33'),
+(10037, 'San+Mart%C3%ADn+1040%2C+Santiago%2C+Chile', 'EiFTYW4gTWFydMOtbiAxMDQwLCBTYW50aWFnbywgQ2hpbGUiMRIvChQKEgnr8_XAsMVilhEoZbiHGVP3vxCQCCoUChIJvRdam6_FYpYRVeel0eFO2Yc', 'Los Pajaritos 1000, La Florida, Chile', 'EiVMb3MgUGFqYXJpdG9zIDEwMDAsIExhIEZsb3JpZGEsIENoaWxl', 1, 1, 2, 4, 'Reparto', 7000, 1, '2018-10-10 20:36:49'),
+(10038, 'Nueva+San+Mart%C3%ADn+1490%2C+Santiago%2C+Chile', 'EiJOdWV2YSBTYW4gTWFydMOtbiwgU2FudGlhZ28sIENoaWxl', 'Rafael Riesco Bernales 501, MaipÃº, Chile', 'ChIJ1RPcOTDDYpYRTygTkanSlb8', 2, 4, 4, 7, 'Servicio Especial', 15000, 1, '2018-10-10 21:33:07'),
+(10039, 'San+Mart%C3%ADn%2C+Santiago%2C+Chile', 'EhxTYW4gTWFydMOtbiwgU2FudGlhZ28sIENoaWxl', 'Rafael Riesco 501 maipu', 'ChIJ1RPcOTDDYpYRTygTkanSlb8', 4, 8, 3, 5, 'Recogida', 5000, 1, '2018-10-10 21:35:46');
 
 -- --------------------------------------------------------
 
@@ -256,7 +266,7 @@ INSERT INTO `tbl_usuario` (`usuario_id`, `usuario_nombre`, `usuario_cliente`) VA
 (5, 'usuario5', 3),
 (6, 'usuario6', 3),
 (7, 'usuario7', 4),
-(8, 'usuario8', 4);
+(8, 'robin', 4);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
