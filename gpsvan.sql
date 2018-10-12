@@ -1,20 +1,22 @@
 -- phpMyAdmin SQL Dump
--- version 3.5.1
--- http://www.phpmyadmin.net
+-- version 4.8.3
+-- https://www.phpmyadmin.net/
 --
--- Servidor: localhost
--- Tiempo de generación: 12-10-2018 a las 04:30:40
--- Versión del servidor: 5.5.24-log
--- Versión de PHP: 5.4.3
+-- Servidor: 127.0.0.1:3306
+-- Tiempo de generación: 12-10-2018 a las 19:32:00
+-- Versión del servidor: 5.7.23
+-- Versión de PHP: 7.2.10
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Base de datos: `gpsvan`
@@ -26,6 +28,7 @@ SET time_zone = "+00:00";
 -- Estructura de tabla para la tabla `tbl_agente`
 --
 
+DROP TABLE IF EXISTS `tbl_agente`;
 CREATE TABLE IF NOT EXISTS `tbl_agente` (
   `agente_id` int(11) NOT NULL AUTO_INCREMENT,
   `agente_nombre` varchar(20) NOT NULL,
@@ -41,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `tbl_agente` (
   `agente_perfil` int(11) NOT NULL,
   PRIMARY KEY (`agente_id`),
   UNIQUE KEY `agente_rut` (`agente_rut`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `tbl_agente`
@@ -57,6 +60,7 @@ INSERT INTO `tbl_agente` (`agente_id`, `agente_nombre`, `agente_papellido`, `age
 -- Estructura de tabla para la tabla `tbl_cliente`
 --
 
+DROP TABLE IF EXISTS `tbl_cliente`;
 CREATE TABLE IF NOT EXISTS `tbl_cliente` (
   `cliente_id` int(11) NOT NULL AUTO_INCREMENT,
   `cliente_razon_social` varchar(20) NOT NULL,
@@ -69,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `tbl_cliente` (
   `cliente_mail_facturacion` varchar(30) NOT NULL,
   `cliente_centro_costo` varchar(20) NOT NULL,
   PRIMARY KEY (`cliente_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `tbl_cliente`
@@ -90,6 +94,7 @@ INSERT INTO `tbl_cliente` (`cliente_id`, `cliente_razon_social`, `cliente_tipo`,
 -- Estructura de tabla para la tabla `tbl_conductor`
 --
 
+DROP TABLE IF EXISTS `tbl_conductor`;
 CREATE TABLE IF NOT EXISTS `tbl_conductor` (
   `conductor_id` int(11) NOT NULL AUTO_INCREMENT,
   `conductor_nombre` varchar(20) NOT NULL,
@@ -113,7 +118,7 @@ CREATE TABLE IF NOT EXISTS `tbl_conductor` (
   `conductor_descuento` int(11) NOT NULL,
   `conductor_anticipo` int(11) NOT NULL,
   PRIMARY KEY (`conductor_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `tbl_conductor`
@@ -130,31 +135,32 @@ INSERT INTO `tbl_conductor` (`conductor_id`, `conductor_nombre`, `conductor_pape
 -- Estructura de tabla para la tabla `tbl_movil`
 --
 
+DROP TABLE IF EXISTS `tbl_movil`;
 CREATE TABLE IF NOT EXISTS `tbl_movil` (
   `movil_id` int(11) NOT NULL AUTO_INCREMENT,
   `movil_nombre` varchar(20) NOT NULL,
-  `movil_transportista` int(11) NOT NULL,
+  `movil_transportista` varchar(20) NOT NULL,
   `movil_estado` int(11) NOT NULL,
   `movil_lat` float NOT NULL,
   `movil_last_lat` float NOT NULL,
-  `mivil_lon` float NOT NULL,
-  `mivil_last_lon` float NOT NULL,
+  `movil_lon` float NOT NULL,
+  `movil_last_lon` float NOT NULL,
   PRIMARY KEY (`movil_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `tbl_movil`
 --
 
-INSERT INTO `tbl_movil` (`movil_id`, `movil_nombre`, `movil_transportista`, `movil_estado`, `movil_lat`, `movil_last_lat`, `mivil_lon`, `mivil_last_lon`) VALUES
-(1, 'M101', 1, 0, -33.4529, -33.4529, -70.6544, -70.6544),
-(2, 'M102', 1, 0, 0, 0, 0, 0),
-(3, 'M201', 2, 0, 0, 0, 0, 0),
-(4, 'M202', 2, 0, 0, 0, 0, 0),
-(5, 'M301', 3, 0, 0, 0, 0, 0),
-(6, 'M302', 3, 0, 0, 0, 0, 0),
-(7, 'M401', 4, 0, 0, 0, 0, 0),
-(8, 'M402', 4, 0, 0, 0, 0, 0);
+INSERT INTO `tbl_movil` (`movil_id`, `movil_nombre`, `movil_transportista`, `movil_estado`, `movil_lat`, `movil_last_lat`, `movil_lon`, `movil_last_lon`) VALUES
+(1, 'M101', '1', 1, -33.4529, -33.4529, -70.6544, -70.6544),
+(2, 'M102', '1', 0, 0, 0, 0, 0),
+(3, 'M201', '2', 0, 0, 0, 0, 0),
+(4, 'M202', '2', 0, 0, 0, 0, 0),
+(5, 'M301', '3', 0, 0, 0, 0, 0),
+(6, 'M302', '3', 0, 0, 0, 0, 0),
+(7, 'M401', '4', 0, 0, 0, 0, 0),
+(8, 'M402', '4', 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -162,62 +168,77 @@ INSERT INTO `tbl_movil` (`movil_id`, `movil_nombre`, `movil_transportista`, `mov
 -- Estructura de tabla para la tabla `tbl_servicio`
 --
 
+DROP TABLE IF EXISTS `tbl_servicio`;
 CREATE TABLE IF NOT EXISTS `tbl_servicio` (
   `servicio_id` int(11) NOT NULL AUTO_INCREMENT,
   `servicio_partida` varchar(100) NOT NULL,
   `servicio_partida_id` varchar(200) NOT NULL,
   `servicio_destino` varchar(100) NOT NULL,
   `servicio_destino_id` varchar(200) NOT NULL,
-  `servicio_cliente` int(11) NOT NULL,
-  `servicio_usuario` int(11) NOT NULL,
-  `servicio_transportista` int(11) NOT NULL,
-  `servicio_movil` int(11) NOT NULL,
+  `servicio_cliente` varchar(20) NOT NULL,
+  `servicio_usuario` varchar(20) NOT NULL,
+  `servicio_transportista` varchar(20) NOT NULL,
+  `servicio_movil` varchar(20) NOT NULL,
   `servicio_tipo` varchar(20) NOT NULL,
   `servicio_tarifa` int(11) NOT NULL,
   `servicio_agente` int(11) NOT NULL,
   `servicio_fecha` datetime NOT NULL,
   PRIMARY KEY (`servicio_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10040 ;
+) ENGINE=InnoDB AUTO_INCREMENT=10054 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `tbl_servicio`
 --
 
 INSERT INTO `tbl_servicio` (`servicio_id`, `servicio_partida`, `servicio_partida_id`, `servicio_destino`, `servicio_destino_id`, `servicio_cliente`, `servicio_usuario`, `servicio_transportista`, `servicio_movil`, `servicio_tipo`, `servicio_tarifa`, `servicio_agente`, `servicio_fecha`) VALUES
-(10006, 'Nueva San MartÃ­n, Santiago, Chile', 'EiJOdWV2YSBTYW4gTWFydMOtbiwgU2FudGlhZ28sIENoaWxl', 'Carmen FariÃ±a, Vitacura, Chile', 'Eh9DYXJtZW4gRmFyacOxYSwgVml0YWN1cmEsIENoaWxl', 1, 2, 1, 1, 'Recogida', 5000, 1, '2018-10-10 00:06:39'),
-(10007, 'General Juan BuendÃ­a, Lo Prado, Chile', 'EiZHZW5lcmFsIEp1YW4gQnVlbmTDrWEsIExvIFByYWRvLCBDaGlsZQ', 'IPChile Toesca - Toesca, Santiago, Chile', 'ChIJQ-CO7_3EYpYRN3dYY-i6Bn4', 1, 1, 1, 1, 'Recogida', 1000, 1, '2018-10-10 00:56:56'),
-(10008, 'Gran Avenida Jose Miguel Carrera, San Miguel, Chile', 'EjNHcmFuIEF2ZW5pZGEgSm9zZSBNaWd1ZWwgQ2FycmVyYSwgU2FuIE1pZ3VlbCwgQ2hpbGU', 'Williams Rebolledo, Ã‘uÃ±oa, Chile', 'EiJXaWxsaWFtcyBSZWJvbGxlZG8sIMORdcOxb2EsIENoaWxl', 1, 1, 1, 1, 'Recogida', 5000, 1, '2018-10-10 01:05:11'),
-(10009, 'Franklin, Santiago, Chile', 'ChIJGfaJvDnFYpYRQsNvc9HVzRo', 'Orrego Luco, Providencia, Chile', 'Eh9PcnJlZ28gTHVjbywgUHJvdmlkZW5jaWEsIENoaWxl', 1, 1, 2, 4, 'Reparto', 10000, 1, '2018-10-10 01:06:26'),
-(10010, 'La Moneda, Santiago, Chile', 'ChIJoSQGpKfFYpYRZzryLThoNMw', 'Renca, Chile', 'ChIJ07zrFq7GYpYRT6VwiNiJFOk', 2, 4, 2, 4, 'Reparto', 10000, 1, '2018-10-10 01:07:34'),
-(10011, 'JosÃ© Victorino Lastarria, Santiago, Chile', 'EipKb3PDqSBWaWN0b3Jpbm8gTGFzdGFycmlhLCBTYW50aWFnbywgQ2hpbGU', 'Universidad de Chile, Santiago, Chile', 'ChIJd1lK26DFYpYR2LW16VB1Wgs', 2, 4, 2, 3, 'Servicio Especial', 99999, 1, '2018-10-10 01:10:16'),
-(10012, 'Vitacura, Chile', 'ChIJT8_5sTbPYpYRC7nDhONM9KY', 'Quilicura, Chile', 'ChIJ_9A-D-XAYpYR0Ovj-IzhwXg', 1, 2, 2, 4, 'Reparto', 10000, 1, '2018-10-10 01:11:24'),
-(10013, 'Zenteno, Santiago, Chile', 'EhhaZW50ZW5vLCBTYW50aWFnbywgQ2hpbGU', 'Quinta Normal, Santiago, Chile', 'Eh5RdWludGEgTm9ybWFsLCBTYW50aWFnbywgQ2hpbGU', 1, 1, 4, 7, 'Reparto', 10000, 1, '2018-10-10 01:20:38'),
-(10014, 'BBVA Chile santiago san pablo - Moneda, Santiago, Chile', 'ChIJbT9yP6HFYpYRD0w-td_ao3c', 'Ã‘uÃ±oa, Chile', 'ChIJ6TZN_JTPYpYRRVH-3xZvjZU', 1, 1, 3, 6, 'Recogida', 15000, 1, '2018-10-10 01:21:49'),
-(10015, 'Vergara, Santiago, Chile', 'EhhWZXJnYXJhLCBTYW50aWFnbywgQ2hpbGU', 'Fray Camilo HenrÃ­quez, Santiago, Chile', 'EidGcmF5IENhbWlsbyBIZW5yw61xdWV6LCBTYW50aWFnbywgQ2hpbGU', 1, 1, 1, 1, 'Recogida', 10000, 1, '2018-10-10 02:18:38'),
-(10016, 'ConchalÃ­, Chile', 'ChIJxyOCvX7IYpYRMRlejPtrhGM', 'San Diego, Santiago, Chile', 'EhpTYW4gRGllZ28sIFNhbnRpYWdvLCBDaGlsZQ', 1, 1, 1, 1, 'Recogida', 1000, 1, '2018-10-10 02:19:12'),
-(10017, 'ConchalÃ­, Chile', 'ChIJxyOCvX7IYpYRMRlejPtrhGM', 'San Diego, Santiago, Chile', 'EhpTYW4gRGllZ28sIFNhbnRpYWdvLCBDaGlsZQ', 1, 1, 1, 1, 'Recogida', 1000, 1, '2018-10-10 02:19:59'),
-(10018, 'del Parque, Huechuraba, Chile', 'Eh1kZWwgUGFycXVlLCBIdWVjaHVyYWJhLCBDaGlsZQ', 'Vitacura, Chile', 'ChIJT8_5sTbPYpYRC7nDhONM9KY', 1, 1, 2, 3, 'Recogida', 5000, 1, '2018-10-10 02:20:31'),
-(10019, 'Diagonal Las Torres, Penalolen, PeÃ±alolÃ©n, Chile', 'EjJEaWFnb25hbCBMYXMgVG9ycmVzLCBQZW5hbG9sZW4sIFBlw7FhbG9sw6luLCBDaGlsZQ', 'San Pablo, Quinta Normal, Chile', 'Eh9TYW4gUGFibG8sIFF1aW50YSBOb3JtYWwsIENoaWxl', 1, 1, 1, 1, 'Recogida', 10000, 1, '2018-10-10 07:02:04'),
-(10020, 'Diagonal Las Torres, Penalolen, PeÃ±alolÃ©n, Chile', 'EjJEaWFnb25hbCBMYXMgVG9ycmVzLCBQZW5hbG9sZW4sIFBlw7FhbG9sw6luLCBDaGlsZQ', 'San Pablo, Quinta Normal, Chile', 'Eh9TYW4gUGFibG8sIFF1aW50YSBOb3JtYWwsIENoaWxl', 1, 1, 1, 1, 'Recogida', 10000, 1, '2018-10-10 07:02:29'),
-(10021, 'Syngenta - Avenida Vitacura, Las Condes, Chile', 'ChIJVSHLtEbPYpYRfe_dsy0bkWQ', 'Qw - Gran Avenida Jose Miguel Carrera, San Miguel, Santiago, Chile', 'ChIJr3ql4FXaYpYRSE9dyji4vjc', 1, 1, 1, 1, 'Recogida', 10000, 1, '2018-10-10 07:05:40'),
-(10022, 'Syngenta - Avenida Vitacura, Las Condes, Chile', 'ChIJVSHLtEbPYpYRfe_dsy0bkWQ', 'Qw - Gran Avenida Jose Miguel Carrera, San Miguel, Santiago, Chile', 'ChIJr3ql4FXaYpYRSE9dyji4vjc', 1, 1, 1, 1, 'Recogida', 10000, 1, '2018-10-10 07:05:55'),
-(10023, 'Zapadores, Recoleta, Chile', 'ChIJsQL3gQ3GYpYRy4f8qb6-qHM', 'Xs Market, Santiago, EstaciÃ³n Central, Chile', 'ChIJBYDLpPfEYpYRO1VLelVYpQc', 2, 3, 2, 4, 'Recogida', 3000, 1, '2018-10-10 07:09:44'),
-(10024, 'Zapadores, Recoleta, Chile', 'ChIJsQL3gQ3GYpYRy4f8qb6-qHM', 'Xs Market, Santiago, EstaciÃ³n Central, Chile', 'ChIJBYDLpPfEYpYRO1VLelVYpQc', 2, 3, 2, 4, 'Recogida', 3000, 1, '2018-10-10 07:09:54'),
-(10025, 'Ffc Ingenieria y Construccion - San Diego, Santiago, Chile', 'ChIJ-wm-BxXFYpYRgA2kMzTf3cQ', 'D.D.M. Impresores Limitada - Arturo Prat, Santiago, Chile', 'ChIJhZ0GTArFYpYR1rcPIE5iO_E', 1, 1, 1, 1, 'Reparto', 15000, 1, '2018-10-10 07:10:42'),
-(10026, 'Xs Market, Santiago, EstaciÃ³n Central, Chile', 'ChIJBYDLpPfEYpYRO1VLelVYpQc', 'DublÃ© Almeyda, Ã‘uÃ±oa, Chile', 'Eh5EdWJsw6kgQWxtZXlkYSwgw5F1w7FvYSwgQ2hpbGU', 1, 1, 1, 1, 'Recogida', 1000, 1, '2018-10-10 07:14:04'),
-(10027, 'del Parque, Huechuraba, Chile', 'Eh1kZWwgUGFycXVlLCBIdWVjaHVyYWJhLCBDaGlsZQ', 'Dorsal, Recoleta, Chile', 'ChIJkb2fdwvGYpYRrIMZf3_BOwU', 1, 1, 1, 1, 'Recogida', 5000, 1, '2018-10-10 07:15:00'),
-(10028, 'ZoolÃ³gico Nacional - PÃ­o Nono, Providencia, Chile', 'ChIJ74j6LJDFYpYRiBjqRDUcsEM', 'ConchalÃ­, Chile', 'ChIJxyOCvX7IYpYRMRlejPtrhGM', 1, 1, 1, 1, 'Reparto', 7000, 1, '2018-10-10 07:16:28'),
-(10029, 'Ingenierias Asd - Monjitas, Santiago, Chile', 'ChIJzQHPX5jFYpYR_AdYNYARQkY', 'Qwerti Consultores Spa - Longitudinal Sur, La Florida, Chile', 'ChIJoxj0Ot_TYpYRv8rOZFNTrx0', 1, 1, 1, 1, 'Recogida', 1000, 1, '2018-10-10 07:18:08'),
-(10030, 'La Florida, Chile', 'ChIJlZDV7CXRYpYRrPO-VsvmdQM', 'Obispo Javier VÃ¡squez, Santiago, EstaciÃ³n Central, Chile', 'EjpPYmlzcG8gSmF2aWVyIFbDoXNxdWV6LCBTYW50aWFnbywgRXN0YWNpw7NuIENlbnRyYWwsIENoaWxl', 1, 1, 1, 1, 'Recogida', 1000, 1, '2018-10-10 07:19:31'),
-(10031, 'Quinta Normal, Chile', 'ChIJnePXWBDEYpYRGQ68gdAXWGg', 'Williams Rebolledo, Ã‘uÃ±oa, Chile', 'EiJXaWxsaWFtcyBSZWJvbGxlZG8sIMORdcOxb2EsIENoaWxl', 1, 1, 3, 5, 'Reparto', 5000, 1, '2018-10-10 07:20:21'),
-(10032, 'Xiaomi CHILE - Concordia, Providencia, Chile', 'ChIJG_HyEG_PYpYRT0p4Qwz42GY', 'Ã‘uÃ±oa, Chile', 'ChIJ6TZN_JTPYpYRRVH-3xZvjZU', 2, 3, 2, 3, 'Recogida', 1000, 1, '2018-10-10 07:21:07'),
-(10033, 'FFV - Isidora Goyenechea, Las Condes, Chile', 'ChIJ5-aeET7PYpYROZj4ERB2JMw', 'Posta Central - Avenida Portugal, Santiago, Chile', 'ChIJe-Ejip3FYpYRUw0ILXsb0vc', 1, 1, 2, 4, 'Reparto', 15000, 1, '2018-10-10 07:22:50'),
-(10034, 'Alameda, Santiago, EstaciÃ³n Central, Chile', 'ChIJoy5dZfjEYpYRv_gWKJBK1FY', 'Moneda, Santiago, Chile', 'EhdNb25lZGEsIFNhbnRpYWdvLCBDaGlsZQ', 1, 1, 1, 1, 'Reparto', 3000, 1, '2018-10-10 07:30:01'),
-(10035, 'Avenida+Libertador+Bernardo+O%27Higgins%2C+Santiago%2C+Chile', 'EjZBdmVuaWRhIExpYmVydGFkb3IgQmVybmFyZG8gTydIaWdnaW5zLCBTYW50aWFnbywgQ2hpbGU', 'Santiago, Chile', 'ChIJL68lBEHFYpYRMQkPQDzVdYQ', 1, 1, 1, 1, 'Reparto', 7000, 1, '2018-10-10 07:33:23'),
-(10036, 'Amun%C3%A1tegui+20%2C+Santiago%2C+Chile', 'ChIJO3AHtqfFYpYRN7RqYr7LhEI', 'Pto Velero 160, MaipÃº, Chile', 'Eh1QdG8gVmVsZXJvIDE2MCwgTWFpcMO6LCBDaGlsZSIxEi8KFAoSCSFIQURH3WKWEXTbBgtoRnVSEKABKhQKEgl38r5pR91ilhHcucUB14Maxg', 3, 5, 1, 1, 'Recogida', 10000, 1, '2018-10-10 20:28:33'),
-(10037, 'San+Mart%C3%ADn+1040%2C+Santiago%2C+Chile', 'EiFTYW4gTWFydMOtbiAxMDQwLCBTYW50aWFnbywgQ2hpbGUiMRIvChQKEgnr8_XAsMVilhEoZbiHGVP3vxCQCCoUChIJvRdam6_FYpYRVeel0eFO2Yc', 'Los Pajaritos 1000, La Florida, Chile', 'EiVMb3MgUGFqYXJpdG9zIDEwMDAsIExhIEZsb3JpZGEsIENoaWxl', 1, 1, 2, 4, 'Reparto', 7000, 1, '2018-10-10 20:36:49'),
-(10038, 'Nueva+San+Mart%C3%ADn+1490%2C+Santiago%2C+Chile', 'EiJOdWV2YSBTYW4gTWFydMOtbiwgU2FudGlhZ28sIENoaWxl', 'Rafael Riesco Bernales 501, MaipÃº, Chile', 'ChIJ1RPcOTDDYpYRTygTkanSlb8', 2, 4, 4, 7, 'Servicio Especial', 15000, 1, '2018-10-10 21:33:07'),
-(10039, 'San+Mart%C3%ADn%2C+Santiago%2C+Chile', 'EhxTYW4gTWFydMOtbiwgU2FudGlhZ28sIENoaWxl', 'Rafael Riesco 501 maipu', 'ChIJ1RPcOTDDYpYRTygTkanSlb8', 4, 8, 3, 5, 'Recogida', 5000, 1, '2018-10-10 21:35:46');
+(10006, 'Nueva San MartÃ­n, Santiago, Chile', 'EiJOdWV2YSBTYW4gTWFydMOtbiwgU2FudGlhZ28sIENoaWxl', 'Carmen FariÃ±a, Vitacura, Chile', 'Eh9DYXJtZW4gRmFyacOxYSwgVml0YWN1cmEsIENoaWxl', '1', '2', '1', '1', 'Recogida', 5000, 1, '2018-10-10 00:06:39'),
+(10007, 'General Juan BuendÃ­a, Lo Prado, Chile', 'EiZHZW5lcmFsIEp1YW4gQnVlbmTDrWEsIExvIFByYWRvLCBDaGlsZQ', 'IPChile Toesca - Toesca, Santiago, Chile', 'ChIJQ-CO7_3EYpYRN3dYY-i6Bn4', '1', '1', '1', '1', 'Recogida', 1000, 1, '2018-10-10 00:56:56'),
+(10008, 'Gran Avenida Jose Miguel Carrera, San Miguel, Chile', 'EjNHcmFuIEF2ZW5pZGEgSm9zZSBNaWd1ZWwgQ2FycmVyYSwgU2FuIE1pZ3VlbCwgQ2hpbGU', 'Williams Rebolledo, Ã‘uÃ±oa, Chile', 'EiJXaWxsaWFtcyBSZWJvbGxlZG8sIMORdcOxb2EsIENoaWxl', '1', '1', '1', '1', 'Recogida', 5000, 1, '2018-10-10 01:05:11'),
+(10009, 'Franklin, Santiago, Chile', 'ChIJGfaJvDnFYpYRQsNvc9HVzRo', 'Orrego Luco, Providencia, Chile', 'Eh9PcnJlZ28gTHVjbywgUHJvdmlkZW5jaWEsIENoaWxl', '1', '1', '2', '4', 'Reparto', 10000, 1, '2018-10-10 01:06:26'),
+(10010, 'La Moneda, Santiago, Chile', 'ChIJoSQGpKfFYpYRZzryLThoNMw', 'Renca, Chile', 'ChIJ07zrFq7GYpYRT6VwiNiJFOk', '2', '4', '2', '4', 'Reparto', 10000, 1, '2018-10-10 01:07:34'),
+(10011, 'JosÃ© Victorino Lastarria, Santiago, Chile', 'EipKb3PDqSBWaWN0b3Jpbm8gTGFzdGFycmlhLCBTYW50aWFnbywgQ2hpbGU', 'Universidad de Chile, Santiago, Chile', 'ChIJd1lK26DFYpYR2LW16VB1Wgs', '2', '4', '2', '3', 'Servicio Especial', 99999, 1, '2018-10-10 01:10:16'),
+(10012, 'Vitacura, Chile', 'ChIJT8_5sTbPYpYRC7nDhONM9KY', 'Quilicura, Chile', 'ChIJ_9A-D-XAYpYR0Ovj-IzhwXg', '1', '2', '2', '4', 'Reparto', 10000, 1, '2018-10-10 01:11:24'),
+(10013, 'Zenteno, Santiago, Chile', 'EhhaZW50ZW5vLCBTYW50aWFnbywgQ2hpbGU', 'Quinta Normal, Santiago, Chile', 'Eh5RdWludGEgTm9ybWFsLCBTYW50aWFnbywgQ2hpbGU', '1', '1', '4', '7', 'Reparto', 10000, 1, '2018-10-10 01:20:38'),
+(10014, 'BBVA Chile santiago san pablo - Moneda, Santiago, Chile', 'ChIJbT9yP6HFYpYRD0w-td_ao3c', 'Ã‘uÃ±oa, Chile', 'ChIJ6TZN_JTPYpYRRVH-3xZvjZU', '1', '1', '3', '6', 'Recogida', 15000, 1, '2018-10-10 01:21:49'),
+(10015, 'Vergara, Santiago, Chile', 'EhhWZXJnYXJhLCBTYW50aWFnbywgQ2hpbGU', 'Fray Camilo HenrÃ­quez, Santiago, Chile', 'EidGcmF5IENhbWlsbyBIZW5yw61xdWV6LCBTYW50aWFnbywgQ2hpbGU', '1', '1', '1', '1', 'Recogida', 10000, 1, '2018-10-10 02:18:38'),
+(10016, 'ConchalÃ­, Chile', 'ChIJxyOCvX7IYpYRMRlejPtrhGM', 'San Diego, Santiago, Chile', 'EhpTYW4gRGllZ28sIFNhbnRpYWdvLCBDaGlsZQ', '1', '1', '1', '1', 'Recogida', 1000, 1, '2018-10-10 02:19:12'),
+(10017, 'ConchalÃ­, Chile', 'ChIJxyOCvX7IYpYRMRlejPtrhGM', 'San Diego, Santiago, Chile', 'EhpTYW4gRGllZ28sIFNhbnRpYWdvLCBDaGlsZQ', '1', '1', '1', '1', 'Recogida', 1000, 1, '2018-10-10 02:19:59'),
+(10018, 'del Parque, Huechuraba, Chile', 'Eh1kZWwgUGFycXVlLCBIdWVjaHVyYWJhLCBDaGlsZQ', 'Vitacura, Chile', 'ChIJT8_5sTbPYpYRC7nDhONM9KY', '1', '1', '2', '3', 'Recogida', 5000, 1, '2018-10-10 02:20:31'),
+(10019, 'Diagonal Las Torres, Penalolen, PeÃ±alolÃ©n, Chile', 'EjJEaWFnb25hbCBMYXMgVG9ycmVzLCBQZW5hbG9sZW4sIFBlw7FhbG9sw6luLCBDaGlsZQ', 'San Pablo, Quinta Normal, Chile', 'Eh9TYW4gUGFibG8sIFF1aW50YSBOb3JtYWwsIENoaWxl', '1', '1', '1', '1', 'Recogida', 10000, 1, '2018-10-10 07:02:04'),
+(10020, 'Diagonal Las Torres, Penalolen, PeÃ±alolÃ©n, Chile', 'EjJEaWFnb25hbCBMYXMgVG9ycmVzLCBQZW5hbG9sZW4sIFBlw7FhbG9sw6luLCBDaGlsZQ', 'San Pablo, Quinta Normal, Chile', 'Eh9TYW4gUGFibG8sIFF1aW50YSBOb3JtYWwsIENoaWxl', '1', '1', '1', '1', 'Recogida', 10000, 1, '2018-10-10 07:02:29'),
+(10021, 'Syngenta - Avenida Vitacura, Las Condes, Chile', 'ChIJVSHLtEbPYpYRfe_dsy0bkWQ', 'Qw - Gran Avenida Jose Miguel Carrera, San Miguel, Santiago, Chile', 'ChIJr3ql4FXaYpYRSE9dyji4vjc', '1', '1', '1', '1', 'Recogida', 10000, 1, '2018-10-10 07:05:40'),
+(10022, 'Syngenta - Avenida Vitacura, Las Condes, Chile', 'ChIJVSHLtEbPYpYRfe_dsy0bkWQ', 'Qw - Gran Avenida Jose Miguel Carrera, San Miguel, Santiago, Chile', 'ChIJr3ql4FXaYpYRSE9dyji4vjc', '1', '1', '1', '1', 'Recogida', 10000, 1, '2018-10-10 07:05:55'),
+(10023, 'Zapadores, Recoleta, Chile', 'ChIJsQL3gQ3GYpYRy4f8qb6-qHM', 'Xs Market, Santiago, EstaciÃ³n Central, Chile', 'ChIJBYDLpPfEYpYRO1VLelVYpQc', '2', '3', '2', '4', 'Recogida', 3000, 1, '2018-10-10 07:09:44'),
+(10024, 'Zapadores, Recoleta, Chile', 'ChIJsQL3gQ3GYpYRy4f8qb6-qHM', 'Xs Market, Santiago, EstaciÃ³n Central, Chile', 'ChIJBYDLpPfEYpYRO1VLelVYpQc', '2', '3', '2', '4', 'Recogida', 3000, 1, '2018-10-10 07:09:54'),
+(10025, 'Ffc Ingenieria y Construccion - San Diego, Santiago, Chile', 'ChIJ-wm-BxXFYpYRgA2kMzTf3cQ', 'D.D.M. Impresores Limitada - Arturo Prat, Santiago, Chile', 'ChIJhZ0GTArFYpYR1rcPIE5iO_E', '1', '1', '1', '1', 'Reparto', 15000, 1, '2018-10-10 07:10:42'),
+(10026, 'Xs Market, Santiago, EstaciÃ³n Central, Chile', 'ChIJBYDLpPfEYpYRO1VLelVYpQc', 'DublÃ© Almeyda, Ã‘uÃ±oa, Chile', 'Eh5EdWJsw6kgQWxtZXlkYSwgw5F1w7FvYSwgQ2hpbGU', '1', '1', '1', '1', 'Recogida', 1000, 1, '2018-10-10 07:14:04'),
+(10027, 'del Parque, Huechuraba, Chile', 'Eh1kZWwgUGFycXVlLCBIdWVjaHVyYWJhLCBDaGlsZQ', 'Dorsal, Recoleta, Chile', 'ChIJkb2fdwvGYpYRrIMZf3_BOwU', '1', '1', '1', '1', 'Recogida', 5000, 1, '2018-10-10 07:15:00'),
+(10028, 'ZoolÃ³gico Nacional - PÃ­o Nono, Providencia, Chile', 'ChIJ74j6LJDFYpYRiBjqRDUcsEM', 'ConchalÃ­, Chile', 'ChIJxyOCvX7IYpYRMRlejPtrhGM', '1', '1', '1', '1', 'Reparto', 7000, 1, '2018-10-10 07:16:28'),
+(10029, 'Ingenierias Asd - Monjitas, Santiago, Chile', 'ChIJzQHPX5jFYpYR_AdYNYARQkY', 'Qwerti Consultores Spa - Longitudinal Sur, La Florida, Chile', 'ChIJoxj0Ot_TYpYRv8rOZFNTrx0', '1', '1', '1', '1', 'Recogida', 1000, 1, '2018-10-10 07:18:08'),
+(10030, 'La Florida, Chile', 'ChIJlZDV7CXRYpYRrPO-VsvmdQM', 'Obispo Javier VÃ¡squez, Santiago, EstaciÃ³n Central, Chile', 'EjpPYmlzcG8gSmF2aWVyIFbDoXNxdWV6LCBTYW50aWFnbywgRXN0YWNpw7NuIENlbnRyYWwsIENoaWxl', '1', '1', '1', '1', 'Recogida', 1000, 1, '2018-10-10 07:19:31'),
+(10031, 'Quinta Normal, Chile', 'ChIJnePXWBDEYpYRGQ68gdAXWGg', 'Williams Rebolledo, Ã‘uÃ±oa, Chile', 'EiJXaWxsaWFtcyBSZWJvbGxlZG8sIMORdcOxb2EsIENoaWxl', '1', '1', '3', '5', 'Reparto', 5000, 1, '2018-10-10 07:20:21'),
+(10032, 'Xiaomi CHILE - Concordia, Providencia, Chile', 'ChIJG_HyEG_PYpYRT0p4Qwz42GY', 'Ã‘uÃ±oa, Chile', 'ChIJ6TZN_JTPYpYRRVH-3xZvjZU', '2', '3', '2', '3', 'Recogida', 1000, 1, '2018-10-10 07:21:07'),
+(10033, 'FFV - Isidora Goyenechea, Las Condes, Chile', 'ChIJ5-aeET7PYpYROZj4ERB2JMw', 'Posta Central - Avenida Portugal, Santiago, Chile', 'ChIJe-Ejip3FYpYRUw0ILXsb0vc', '1', '1', '2', '4', 'Reparto', 15000, 1, '2018-10-10 07:22:50'),
+(10034, 'Alameda, Santiago, EstaciÃ³n Central, Chile', 'ChIJoy5dZfjEYpYRv_gWKJBK1FY', 'Moneda, Santiago, Chile', 'EhdNb25lZGEsIFNhbnRpYWdvLCBDaGlsZQ', '1', '1', '1', '1', 'Reparto', 3000, 1, '2018-10-10 07:30:01'),
+(10035, 'Avenida+Libertador+Bernardo+O%27Higgins%2C+Santiago%2C+Chile', 'EjZBdmVuaWRhIExpYmVydGFkb3IgQmVybmFyZG8gTydIaWdnaW5zLCBTYW50aWFnbywgQ2hpbGU', 'Santiago, Chile', 'ChIJL68lBEHFYpYRMQkPQDzVdYQ', '1', '1', '1', '1', 'Reparto', 7000, 1, '2018-10-10 07:33:23'),
+(10036, 'Amun%C3%A1tegui+20%2C+Santiago%2C+Chile', 'ChIJO3AHtqfFYpYRN7RqYr7LhEI', 'Pto Velero 160, MaipÃº, Chile', 'Eh1QdG8gVmVsZXJvIDE2MCwgTWFpcMO6LCBDaGlsZSIxEi8KFAoSCSFIQURH3WKWEXTbBgtoRnVSEKABKhQKEgl38r5pR91ilhHcucUB14Maxg', '3', '5', '1', '1', 'Recogida', 10000, 1, '2018-10-10 20:28:33'),
+(10037, 'San+Mart%C3%ADn+1040%2C+Santiago%2C+Chile', 'EiFTYW4gTWFydMOtbiAxMDQwLCBTYW50aWFnbywgQ2hpbGUiMRIvChQKEgnr8_XAsMVilhEoZbiHGVP3vxCQCCoUChIJvRdam6_FYpYRVeel0eFO2Yc', 'Los Pajaritos 1000, La Florida, Chile', 'EiVMb3MgUGFqYXJpdG9zIDEwMDAsIExhIEZsb3JpZGEsIENoaWxl', '1', '1', '2', '4', 'Reparto', 7000, 1, '2018-10-10 20:36:49'),
+(10038, 'Nueva+San+Mart%C3%ADn+1490%2C+Santiago%2C+Chile', 'EiJOdWV2YSBTYW4gTWFydMOtbiwgU2FudGlhZ28sIENoaWxl', 'Rafael Riesco Bernales 501, MaipÃº, Chile', 'ChIJ1RPcOTDDYpYRTygTkanSlb8', '2', '4', '4', '7', 'Servicio Especial', 15000, 1, '2018-10-10 21:33:07'),
+(10039, 'San+Mart%C3%ADn%2C+Santiago%2C+Chile', 'EhxTYW4gTWFydMOtbiwgU2FudGlhZ28sIENoaWxl', 'Rafael Riesco 501 maipu', 'ChIJ1RPcOTDDYpYRTygTkanSlb8', '4', '8', '3', '5', 'Recogida', 5000, 1, '2018-10-10 21:35:46'),
+(10040, 'Vicu%C3%B1a+Mackenna%2C+San+Joaqu%C3%ADn%2C+Macul%2C+Chile', 'EixWaWN1w7FhIE1hY2tlbm5hLCBTYW4gSm9hcXXDrW4sIE1hY3VsLCBDaGlsZQ', 'Agustinas 705, Santiago, Chile', 'ChIJi0Ld8qHFYpYRhamBpuD3gbc', '1', '1', '1', '1', '1', 1, 1, '2018-10-12 09:30:38'),
+(10041, 'Diagonal+Las+Torres%2C+Penalolen%2C+Pe%C3%B1alol%C3%A9n%2C+Chile', 'EjJEaWFnb25hbCBMYXMgVG9ycmVzLCBQZW5hbG9sZW4sIFBlw7FhbG9sw6luLCBDaGlsZQ', 'Avenida Portugal, Santiago, Chile', 'EiFBdmVuaWRhIFBvcnR1Z2FsLCBTYW50aWFnbywgQ2hpbGU', 'Falabella', 'usuario1', 'T200', 'M201', 'Recogida', 3000, 1, '2018-10-12 09:36:36'),
+(10042, 'Zenteno%2C+Santiago%2C+Chile', 'EhhaZW50ZW5vLCBTYW50aWFnbywgQ2hpbGU', 'Xiaomi CHILE - Concordia, Providencia, Chile', 'ChIJG_HyEG_PYpYRT0p4Qwz42GY', 'Falabella', 'usuario1', 'T100', 'M102', 'Recogida', 3000, 1, '2018-10-12 09:37:47'),
+(10043, 'Vicu%C3%B1a+Mackenna%2C+San+Joaqu%C3%ADn%2C+Macul%2C+Chile', 'EixWaWN1w7FhIE1hY2tlbm5hLCBTYW4gSm9hcXXDrW4sIE1hY3VsLCBDaGlsZQ', 'Quinta Normal, Chile', 'ChIJnePXWBDEYpYRGQ68gdAXWGg', 'Falabella', 'usuario1', 'T100', 'M101', 'Reparto', 7000, 1, '2018-10-12 09:39:32'),
+(10044, 'Franklin%2C+Santiago%2C+Chile', 'EhlGcmFua2xpbiwgU2FudGlhZ28sIENoaWxl', 'Zenteno, Santiago, Chile', 'EhhaZW50ZW5vLCBTYW50aWFnbywgQ2hpbGU', 'Falabella', 'usuario1', 'T200', 'M201', 'Reparto', 3000, 1, '2018-10-12 09:54:50'),
+(10045, 'Avenida+Libertador+Bernardo+O%27Higgins%2C+Santiago%2C+Chile', 'EjZBdmVuaWRhIExpYmVydGFkb3IgQmVybmFyZG8gTydIaWdnaW5zLCBTYW50aWFnbywgQ2hpbGU', 'Avenida Apoquindo, Las Condes, Chile', 'EiRBdmVuaWRhIEFwb3F1aW5kbywgTGFzIENvbmRlcywgQ2hpbGU', 'Ripley', 'usuario6', 'T300', 'M302', 'Servicio Especial', 5000, 1, '2018-10-12 09:55:31'),
+(10046, 'Hu%C3%A9rfanos%2C+Quinta+Normal%2C+Chile', 'EiBIdcOpcmZhbm9zLCBRdWludGEgTm9ybWFsLCBDaGlsZQ', 'Kentucky Fried Chicken - Merced, Santiago, Chile', 'ChIJWaovu6PFYpYR5p0IgdSk9ps', 'Easy', 'usuario4', 'T200', 'M202', 'Reparto', 3000, 1, '2018-10-12 09:56:06'),
+(10047, 'BGR+Latam+-+Pedro+Mar%C3%ADn%2C+%C3%91u%C3%B1oa%2C+Chile', 'ChIJeQynoJDPYpYRETF89ENeiyI', 'Hermanos AmunÃ¡tegui, Santiago, Chile', 'EiVIZXJtYW5vcyBBbXVuw6F0ZWd1aSwgU2FudGlhZ28sIENoaWxl', 'Ripley', 'usuario5', 'T100', 'M101', 'Reparto', 3000, 1, '2018-10-12 09:56:51'),
+(10048, 'Dubl%C3%A9+Almeyda%2C+%C3%91u%C3%B1oa%2C+Chile', 'Eh5EdWJsw6kgQWxtZXlkYSwgw5F1w7FvYSwgQ2hpbGU', 'Recoleta, Chile', 'ChIJk_SSOOTFYpYRJfFRx4V2o_c', 'Falabella', 'usuario2', 'T100', 'M101', 'Reparto', 7000, 1, '2018-10-12 10:00:28'),
+(10049, 'Dubl%C3%A9+Almeyda%2C+%C3%91u%C3%B1oa%2C+Chile', 'Eh5EdWJsw6kgQWxtZXlkYSwgw5F1w7FvYSwgQ2hpbGU', 'Quinta Normal, Santiago, EstaciÃ³n Central, Chile', 'EjFRdWludGEgTm9ybWFsLCBTYW50aWFnbywgRXN0YWNpw7NuIENlbnRyYWwsIENoaWxl', 'Falabella', 'usuario2', 'T300', 'M302', 'Recogida', 3000, 1, '2018-10-12 10:03:36'),
+(10050, 'Agustinas%2C+Santiago%2C+Chile', 'EhpBZ3VzdGluYXMsIFNhbnRpYWdvLCBDaGlsZQ', 'San Diego, Santiago, Chile', 'EhpTYW4gRGllZ28sIFNhbnRpYWdvLCBDaGlsZQ', 'Falabella', 'usuario2', 'T200', 'M202', 'Recogida', 7000, 1, '2018-10-12 10:04:00'),
+(10051, 'Colegio+del+Verbo+Divino+-+Presidente+Err%C3%A1zuriz%2C+Las+Condes%2C+Chile', 'ChIJOwY_pRDPYpYRlcO2SoN4a3Q', 'Quinta Normal, Santiago, Chile', 'Eh5RdWludGEgTm9ybWFsLCBTYW50aWFnbywgQ2hpbGU', 'Easy', 'usuario4', 'T200', 'M202', 'Recogida', 10000, 1, '2018-10-12 10:04:58'),
+(10052, 'Irarr%C3%A1zaval+753%2C+%C3%91u%C3%B1oa%2C+Chile', 'ChIJAbKKv2LFYpYRSyg1LzbkKf4', 'IrarrÃ¡zaval 096, Ã‘uÃ±oa, Chile', 'ChIJzd3EPnvFYpYR-tUcKZ_rBvw', 'Falabella', 'usuario2', 'T100', 'M102', 'Reparto', 3000, 1, '2018-10-12 10:06:43'),
+(10053, 'Avenida+Libertador+Bernardo+O%27Higgins+4050%2C+Santiago%2C+Estaci%C3%B3n+Central%2C+Chile', 'ChIJP1xHGPXEYpYRPtxMf4L7H0E', 'Santiago, Chile', 'ChIJuzrymgbQYpYRl0jtCfRZnYc', 'Easy', 'usuario3', 'T200', 'M202', 'Reparto', 5000, 1, '2018-10-12 10:07:24');
 
 -- --------------------------------------------------------
 
@@ -225,11 +246,12 @@ INSERT INTO `tbl_servicio` (`servicio_id`, `servicio_partida`, `servicio_partida
 -- Estructura de tabla para la tabla `tbl_transportista`
 --
 
+DROP TABLE IF EXISTS `tbl_transportista`;
 CREATE TABLE IF NOT EXISTS `tbl_transportista` (
   `transportista_id` int(11) NOT NULL AUTO_INCREMENT,
   `transportista_nombre` varchar(20) NOT NULL,
   PRIMARY KEY (`transportista_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `tbl_transportista`
@@ -247,6 +269,7 @@ INSERT INTO `tbl_transportista` (`transportista_id`, `transportista_nombre`) VAL
 -- Estructura de tabla para la tabla `tbl_usuario`
 --
 
+DROP TABLE IF EXISTS `tbl_usuario`;
 CREATE TABLE IF NOT EXISTS `tbl_usuario` (
   `usuario_id` int(11) NOT NULL,
   `usuario_nombre` varchar(20) NOT NULL,
@@ -267,6 +290,7 @@ INSERT INTO `tbl_usuario` (`usuario_id`, `usuario_nombre`, `usuario_cliente`) VA
 (6, 'usuario6', 3),
 (7, 'usuario7', 4),
 (8, 'robin', 4);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
