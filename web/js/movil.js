@@ -119,9 +119,14 @@ function buscarConductor()
     var url = "../source/httprequest/Conductores.php?"+data;
     var success = function(response)
     {
-        cerrarSession(response);
         var tabla = $("#tabla tbody");
         tabla.html("");
+        cerrarSession(response);
+        if(response.length === 0)
+        {
+            alertify.error("No hay registros que mostrar");
+            return;
+        }
         for(var i = 0 ; i < response.length; i++)
         {
             var nombre = response[i].conductor_nombre;

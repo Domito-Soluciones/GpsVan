@@ -60,17 +60,17 @@ if(!isset($_SESSION['agente']))
                         <input type="hidden" id="destino_hidden">
                     </div>
                     <div class="contenedor-pre-input">
-                        Cliente
+                        Empresa cliente
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" list="lcliente" id="cliente" placeholder="Cliente" onkeyup="cargarClientes()">
+                        <input type="text" list="lcliente" id="cliente" placeholder="Empresa cliente" onkeyup="cargarClientes()">
                         <datalist id="lcliente" ></datalist>
                     </div>
                     <div class="contenedor-pre-input">
-                        Usuario
+                        Pasajero
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" list="lusuario" id="usuario" placeholder="Usuario"  autocomplete="off">
+                        <input type="text" list="lusuario" id="usuario" placeholder="Pasajero"  autocomplete="off">
                         <datalist id="lusuario" ></datalist>
                     </div>
                     <div class="contenedor-pre-input">
@@ -138,10 +138,10 @@ if(!isset($_SESSION['agente']))
                         <datalist id="lcliente" ></datalist>
                     </div>
                     <div class="contenedor-pre-input">
-                        Usuario
+                        Pasajero
                     </div>
                     <div class="contenedor-input">
-                        <input type="text" list="lusuario" id="usuario" placeholder="Usuario">
+                        <input type="text" list="lusuario" id="usuario" placeholder="Pasajero">
                         <datalist id="lusuario" ></datalist>
                     </div>
                     <div class="contenedor-pre-input">
@@ -204,6 +204,7 @@ if(!isset($_SESSION['agente']))
                 directionsDisplay = new google.maps.DirectionsRenderer;
                 map = new google.maps.Map(document.getElementById('map'), {
                     mapTypeControl: false,
+                    streetViewControl: false,
                     center: {lat: -33.440616, lng: -70.6514212},
                     zoom: 13
                 });

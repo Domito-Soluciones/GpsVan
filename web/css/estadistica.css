@@ -14,21 +14,17 @@
 {
     margin: 1px 1px 1px 1px;
     width: 33%;
-    height: 200px;
+    height: calc(50%);
     border: 1px solid white;
 }
 .conductores
 {
     margin: 1px 1px 1px 1px;
     width: 33%;
-    height: 200px;
+    height: calc(50%);
     border: 1px solid white;
 }
 #container {
   margin-top: 30px;
   /*padding: 10px;*/
 }
-body, html {
-  background-color: #111;
-}
-

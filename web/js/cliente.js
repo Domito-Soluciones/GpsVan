@@ -36,7 +36,7 @@ function cargarDatosClientes()
         for(var i = 0 ; i < response.length ; i++)
         {
             var rut = response[i].cliente_rut;
-            var razon = response[i].cliente_rut;
+            var razon = response[i].cliente_razon;
             $("#lrut").append("<option value='"+rut+"'>"+rut+"</option>");
             $("#lrazon").append("<option value='"+razon+"'>"+razon+"</option>");
         }
@@ -84,9 +84,14 @@ function buscarCliente()
     var url = "../source/httprequest/Clientes.php?"+data;
     var success = function(response)
     {
-        cerrarSession(response);
         var tabla = $("#tabla tbody");
         tabla.html("");
+        cerrarSession(response);
+        if(response.length === 0)
+        {
+            alertify.error("No hay registros que mostrar");
+            return;
+        }
         for(var i = 0 ; i < response.length; i++)
         {
             var razon = response[i].cliente_razon;

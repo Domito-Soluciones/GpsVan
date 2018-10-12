@@ -157,9 +157,14 @@ function buscarServicio(limit)
     var url = "../source/httprequest/Servicios.php?"+data;
     var success = function(response)
     {
-        cerrarSession(response);
         var tabla = $("#tabla tbody");
         tabla.html("");
+        cerrarSession(response);
+        if(response.length === 0)
+        {
+            alertify.error("No hay registros que mostrar");
+            return;
+        }
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].servicio_id;
@@ -173,7 +178,7 @@ function buscarServicio(limit)
             var tarifa = response[i].servicio_tarifa;
             var fecha = response[i].servicio_fecha;
             
-            tabla.append("<tr class=\"tr_contenido\"><td>"+id+"</td><td>"+fecha+"</td><td>"+tarifa+"</td><td>"+partida+"</td><td>"+destino+"</td><td>"+cliente
+            tabla.append("<tr class=\"tr_contenido\"><td>"+id+"</td><td>"+formato_humano(fecha)+"</td><td>"+tarifa+"</td><td>"+partida+"</td><td>"+destino+"</td><td>"+cliente
                     +"</td><td>"+pasajero+"</td><td>"+transportista+"</td><td>"+movil
                     +"</td><td>"+tipo+"</td><</tr>");
         }

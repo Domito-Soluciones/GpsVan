@@ -40,17 +40,17 @@ if(!isset($_SESSION['agente']))
                     <datalist id="lids"></datalist>
                 </div>
                 <div class="contenedor-pre-input">
-                    Cliente
+                    Empresa cliente
                 </div>
                 <div class="contenedor-input">
-                    <input type="text" list="lcliente" id="cliente" placeholder="Cliente">
+                    <input type="text" list="lcliente" id="cliente" placeholder="Empresa cliente">
                     <datalist id="lcliente" ></datalist>
                 </div>
                 <div class="contenedor-pre-input">
-                    Usuario
+                    Pasajero
                 </div>
                 <div class="contenedor-input">
-                    <input type="text" list="lusuario" id="usuario" placeholder="Usuario" autocomplete="off">
+                    <input type="text" list="lusuario" id="usuario" placeholder="Pasajero" autocomplete="off">
                     <datalist id="lusuario" ></datalist>
                 </div>
                 <div class="contenedor-pre-input">

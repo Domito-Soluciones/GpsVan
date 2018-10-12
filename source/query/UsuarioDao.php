@@ -21,7 +21,7 @@ class UsuarioDao {
             $where = "";
             if($id != "")
             {
-                $where = " WHERE usuario_cliente = ".$id;
+                $where = " WHERE usuario_cliente = (select razon_social".$id;
             }
             $query = "SELECT * FROM tbl_usuario ".$where." LIMIT 20"; 
             $conn->conectar();

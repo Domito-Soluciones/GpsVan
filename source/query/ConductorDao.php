@@ -100,4 +100,21 @@ class ConductorDao {
         }
         return $array;
     }
+     public function getConductor($nombre,$clave)
+    {
+        $conn = new Conexion();
+        $id = 0;
+        try {
+            $query = "SELECT * FROM tbl_conductor WHERE conductor_rut = '$nombre' and conductor_clave = '$clave'"; 
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query); 
+            while($row = mysqli_fetch_array($result)) {
+                $id = $row["conductor_id"];
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $id;
+    }
+    
 }
