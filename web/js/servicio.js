@@ -12,14 +12,18 @@ $(document).ready(function(){
     $("#boton-buscar").click(function () {
         buscarServicio(10000);
     });
+    init();
+});
+
+function init()
+{
     cargarIds();
     cargarClientes();
     cargarTransportistas();
     preCargarMoviles();
     preCargarUsuarios();
     buscarServicio(10000);
-});
-
+}
 
 function cargarIds()
 {

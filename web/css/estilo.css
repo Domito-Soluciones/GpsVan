@@ -72,6 +72,7 @@ html,body
 {
     background-color: #4e4e4e;
     color: white;
+    border-bottom: solid 2px #4e4e4e;
 }
 .menu
 {

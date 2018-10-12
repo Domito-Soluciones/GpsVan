@@ -1,11 +1,3 @@
-var ruts;
-var nombres;
-var papellidos;
-var mapellidos;
-var mails;
-var tipoLicencias;
-
-
 $(document).ready(function(){
     $("#cabecera").load("html/cabecera.html");
     $("#menu").load("html/menu.html", function( response, status, xhr ) {
@@ -17,6 +9,7 @@ $(document).ready(function(){
         cambiarPropiedad($("#buscar"),"display","initial");
         agregarclase($("#pestanaBuscar"),"pestana-activa");
         quitarclase($("#pestanaAgregar"),"pestana-activa");
+        cargarDatosConductores();
     });
     $("#pestanaAgregar").click(function () {
         cambiarPropiedad($("#buscar"),"display","none");

@@ -8,7 +8,9 @@ $(document).ready(function(){
         cambiarPropiedad($("#agregar"),"display","none");
         cambiarPropiedad($("#buscar"),"display","initial");
         agregarclase($("#pestanaBuscar"),"pestana-activa");
-        quitarclase($("#pestanaAgregar"),"pestana-activa");
+        quitarclase($("#pestanaAgregar"),"pestana-activa")
+        cargarDatosClientes();
+
     });
     $("#pestanaAgregar").click(function () {
         cambiarPropiedad($("#buscar"),"display","none");

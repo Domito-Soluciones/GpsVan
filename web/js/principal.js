@@ -33,6 +33,7 @@ $(document).ready(function(){
         $("#transportista").on('input',function () {
             preCargarMoviles(); 
         });
+        init();
     });
     $("#pestanaAsignar").click(function () {
         cambiarPropiedad($("#buscar"),"display","none");
@@ -46,12 +47,17 @@ $(document).ready(function(){
             preCargarMoviles(); 
         });
     });
+    init();
+});
+
+function init()
+{
     cargarIds();
     cargarClientes();
     cargarTransportistas();
     preCargarUsuarios(); 
     preCargarMoviles();
-});
+}
 
 function cargarIds()
 {
@@ -166,7 +172,7 @@ function agregarServicio()
     var cliente = $("#cliente").val();
     var usuario = $("#usuario").val();
     var transportista = $("#transportista").val();
-    var movil = moviles[$("#movil").val()];
+    var movil = $("#movil").val();
     var tipo = $("#tipo").val();
     var tarifa = $("#tarifa").val();
     var array = [partida,partida_id,destino,destino_id,cliente,usuario,transportista,movil,tipo,tarifa];
