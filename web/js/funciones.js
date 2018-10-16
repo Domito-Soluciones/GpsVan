@@ -9,10 +9,12 @@ function darFoco(elemento)
 {
     elemento.focus();
 }
+
 function cambiarPropiedad(elemento,propiedad,valor)
 {
     elemento.css(propiedad,valor);
 }
+
 function isTeclaEnter(e){
     if(e.which === 13){
         return true;

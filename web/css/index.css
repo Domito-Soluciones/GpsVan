@@ -5,8 +5,16 @@
     height: auto;
     margin-left: 35%;
     margin-right: 35%;
-    margin-top: 150px;
+    margin-top: 50px;
     padding-left: 5%;
     padding-top: 2%;
     padding-bottom: 2%;
+}
+.img-login
+{
+    width: auto;
+    height: auto;
+    margin-left: 45%;
+    margin-right: 35%;
+    margin-top: 100px;
 }

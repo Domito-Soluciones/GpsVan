@@ -54,15 +54,19 @@ html,body
 /* menu */
 .opcion-menu
 {
-    background-color: #cccccc;
+    background-color: #0b41d3;
     border-right: solid 2px black;
-    width: calc(16.6% - 2px);
+    width: calc(16% - 2px);
     height: 100%;
     display: inline;
     float: left;
     font-size: 15px;
     min-width: 130px;
     cursor: pointer;
+    z-index: 1000;
+}
+#arco{
+    z-index: 1;
 }
 .opcion-menu:hover
 {
@@ -123,23 +127,9 @@ html,body
 
 .img-van
 {
-    margin-left: 13%;
-    /*animation-name: example;*/
-    /*animation-duration: 4s;*/
-    /*animation-fill-mode: forwards;*/
+    margin-left: 10%;
 }
 
-/* Safari 4.0 - 8.0 */
-@-webkit-keyframes example {
-    from {margin-left: 0;}
-    to {margin-left: 80%;}
-}
-
-/* Standard syntax */
-@keyframes example {
-    from {margin-left: 0;}
-    to {margin-left: 80%;}
-}
 
 .contendor_central
 {
@@ -164,14 +154,35 @@ html,body
     background-color: #4e4e4e;
     color: white;
     text-align: center;
+
 }
 .tr_titulo th
 {
     width: 10%;
 }
+
 .tr_contenido
 {
     background-color: white;
     color: black;
     text-align: center;
+}
+.tabla-central td
+{
+    border: double 1px black;
+}
+
+.img-salir
+{
+    margin-top: 7px;
+    margin-left: 10px;
+    width: 30px;
+    height: 30px;
+}
+
+.opcion-menu-cerrar
+{
+    background-color: #0b41d3;
+    height: 50px;
+    cursor: pointer;
 }

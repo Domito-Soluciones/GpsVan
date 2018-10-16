@@ -5,7 +5,8 @@ $(document).ready(function(){
     $("#cabecera").load("html/cabecera.html");
     $("#menu").load("html/menu.html", function( response, status, xhr ) {
         agregarclase($("#principal"),"menu-activo");
-    });    iniciarFecha();
+    });    
+    iniciarFecha();
     $("#entrar").click(function () {
         agregarServicio();
     });
@@ -163,10 +164,11 @@ function cargarMoviles(idTransportista)
             var lat = response[i].movil_lat;
             var lon = response[i].movil_lon;
             var estado = response[i].movil_estado;
+            var servicio = response[i].movil_servicio;
             $("#lmovil").append("<option value='"+nombre+"'>"+nombre+"</option>");
             if(estado !== '0')
             {
-                dibujarMarcador(parseFloat(lat),parseFloat(lon),nombre);
+                dibujarMarcador(parseFloat(lat),parseFloat(lon),nombre,servicio);
             }
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");

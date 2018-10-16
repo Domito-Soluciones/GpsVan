@@ -3,14 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Jose/Desktop/GpsVan/web/index.php</file>
-            <file>file:/C:/Users/Jose/Desktop/GpsVan/web/reportes.php</file>
-            <file>file:/C:/Users/Jose/Desktop/GpsVan/web/js/servicio.js</file>
-            <file>file:/C:/Users/Jose/Desktop/GpsVan/web/clientes.php</file>
-            <file>file:/C:/Users/Jose/Desktop/GpsVan/web/servicios.php</file>
-            <file>file:/C:/Users/Jose/Desktop/GpsVan/web/principal.php</file>
-            <file>file:/C:/Users/Jose/Desktop/GpsVan/web/moviles.php</file>
-            <file>file:/C:/Users/Jose/Desktop/GpsVan/web/css/estilo.css</file>
+            <file>file:/C:/Users/Jose/Documents/NetBeansProjects/GpsVan/source/httprequest/LoginConductor.php</file>
+            <file>file:/C:/Users/Jose/Documents/NetBeansProjects/GpsVan/web/js/principal.js</file>
+            <file>file:/C:/Users/Jose/Documents/NetBeansProjects/GpsVan/source/httprequest/Clientes.php</file>
+            <file>file:/C:/Users/Jose/Documents/NetBeansProjects/GpsVan/source/query/ConductorDao.php</file>
+            <file>file:/C:/Users/Jose/Documents/NetBeansProjects/GpsVan/web/estadistica.php</file>
+            <file>file:/C:/Users/Jose/Documents/NetBeansProjects/GpsVan/source/query/MovilDao.php</file>
+            <file>file:/C:/Users/Jose/Documents/NetBeansProjects/GpsVan/web/js/estadistica.js</file>
+            <file>file:/C:/Users/Jose/Documents/NetBeansProjects/GpsVan/source/httprequest/CantidadServiciosConductor.php</file>
+            <file>file:/C:/Users/Jose/Documents/NetBeansProjects/GpsVan/web/css/estilo.css</file>
+            <file>file:/C:/Users/Jose/Documents/NetBeansProjects/GpsVan/source/conexion/Conexion.php</file>
+            <file>file:/C:/Users/Jose/Documents/NetBeansProjects/GpsVan/source/httprequest/addLoginConductor.php</file>
+            <file>file:/C:/Users/Jose/Documents/NetBeansProjects/GpsVan/web/principal.php</file>
+            <file>file:/C:/Users/Jose/Documents/NetBeansProjects/GpsVan/source/query/ServicioDao.php</file>
         </group>
     </open-files>
 </project-private>

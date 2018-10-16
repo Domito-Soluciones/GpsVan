@@ -110,4 +110,66 @@ class ServicioDao {
         }
         return $array;
     }
+    public function getCountServicios($desde,$hasta)
+    {
+        $array = array();
+        $conn = new Conexion();
+        try {
+            
+            $query = "SELECT lower(servicio_tipo) as tipo,count(*) as total FROM tbl_servicio where servicio_fecha >= '$desde 00:00:00.0' and servicio_fecha <= '$hasta 23:59:59.999' group by servicio_tipo";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            while($row = mysqli_fetch_array($result)) {
+                $array[$row["tipo"]] = $row['total'];
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $array;
+    }
+    
+    public function getCountServiciosConductor($desde,$hasta)
+    {
+        $array = array();
+        $conn = new Conexion();
+        try {
+            
+            $query = "SELECT servicio_movil,count(*) as total FROM tbl_servicio WHERE servicio_fecha >= '$desde 00:00:00.0' and servicio_fecha <= '$hasta 23:59:59.999' group by servicio_movil";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            while($row = mysqli_fetch_array($result)) {
+                $array[$row["servicio_movil"]] = $row['total'];
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $array;
+    }
+    
+    public function getServicioAsignado($usuario)
+    {
+        $conn = new Conexion();
+        try {
+            $servicio = new Servicio();            
+            $query = "SELECT * FROM tbl_servicio WHERE servicio_estado = 0 AND servicio_movil = (select movil_nombre from tbl_movil where movil_conductor = ".$usuario.")";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            while($row = mysqli_fetch_array($result)) {
+                $servicio->setId($row["servicio_id"]);          
+                $servicio->setPartida($row["servicio_partida"]);
+                $servicio->setDestino($row["servicio_destino"]);
+                $servicio->setCliente($row["servicio_cliente"]);
+                $servicio->setUsuario($row["servicio_usuario"]);
+                $servicio->setTransportista($row["servicio_transportista"]);
+                $servicio->setMovil($row["servicio_movil"]);
+                $servicio->setTipo($row["servicio_tipo"]);
+                $servicio->setTarifa($row["servicio_tarifa"]);
+                $servicio->setAgente($row["servicio_agente"]);
+                $servicio->setFecha($row["servicio_fecha"]);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $servicio;
+    }
 }

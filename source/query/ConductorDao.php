@@ -117,4 +117,22 @@ class ConductorDao {
         return $id;
     }
     
+    function getConductoresConectados()
+    {
+        $conn = new Conexion();
+        $array = array();
+        try {
+            $query = "SELECT count(*) as total,conductor_estado FROM tbl_conductor group by conductor_estado"; 
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query); 
+            while($row = mysqli_fetch_array($result)) {
+                $array[$row["conductor_estado"]] = $row["total"];
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $array;
+    }
+    
+    
 }

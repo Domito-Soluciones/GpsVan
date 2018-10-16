@@ -13,6 +13,9 @@
         <script src="js/funciones.js"></script>
     </head>
     <body>
+        <div class="img-login">
+            <img src="img/logo.png">
+        </div>
         <div class="login">
             <div class="contenedor-input">
                 <div class="mensaje-input">

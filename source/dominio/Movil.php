@@ -7,6 +7,8 @@ class Movil {
     private $estado;
     private $lat;
     private $lon;
+    private $servicio;
+    
     function getId() {
         return $this->id;
     }
@@ -31,6 +33,10 @@ class Movil {
         return $this->lon;
     }
 
+    function getServicio() {
+        return $this->servicio;
+    }
+
     function setId($id) {
         $this->id = $id;
     }
@@ -53,6 +59,10 @@ class Movil {
 
     function setLon($lon) {
         $this->lon = $lon;
+    }
+
+    function setServicio($servicio) {
+        $this->servicio = $servicio;
     }
 
 
