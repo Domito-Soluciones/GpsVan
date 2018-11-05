@@ -1,3 +1,5 @@
+/* global urlBase */
+
 var clientes = new Array();
 var usuarios = new Array();
 var transportistas = new Array();
@@ -28,7 +30,7 @@ function init()
 function cargarIds()
 {
     var id = $("#ids").val();
-    var url = "../source/httprequest/IdServicios.php?id="+id;
+    var url = urlBase + "/servicio/IdServicios.php?id="+id;
     var success = function(response)
     {
         $("#lids").html("");
@@ -45,7 +47,7 @@ function cargarIds()
 function cargarClientes()
 {
     var cliente = $("#cliente").val();
-    var url = "../source/httprequest/Clientes.php?cliente"+cliente;
+    var url = urlBase + "/cliente/Clientes.php?cliente"+cliente;
     var success = function(response)
     {
         $("#lcliente").html("");
@@ -74,7 +76,7 @@ function preCargarUsuarios()
 }
 function cargarUsuarios(idCliente)
 {
-    var url = "../source/httprequest/Usuarios.php?id="+idCliente;
+    var url = urlBase + "/usuario/Usuarios.php?id="+idCliente;
     var success = function(response)
     {
         $("#lusuario").html("");
@@ -94,7 +96,7 @@ function cargarUsuarios(idCliente)
 function cargarTransportistas()
 {
     var transportista = $("#transportista").val();
-    var url = "../source/httprequest/Transportistas.php?transportista="+transportista;
+    var url = urlBase + "/transportista/Transportistas.php?transportista="+transportista;
     var success = function(response)
     {
         $("#ltransportista").html("");
@@ -122,7 +124,7 @@ function preCargarMoviles()
 }
 function cargarMoviles(idTransportista)
 {
-    var url = "../source/httprequest/Moviles.php?id="+idTransportista;
+    var url = urlBase + "/movil/Moviles.php?id="+idTransportista;
     var success = function(response)
     {
         $("#lmovil").html("");
@@ -158,7 +160,7 @@ function buscarServicio(limit)
     }
     var data = "id="+id+"&cliente="+cliente+"&usuario="
             +usuario+"&transportista="+transportista+"&movil="+movil+"&desde="+formato_fecha(desde)+"&hasta="+formato_fecha(hasta)+"&limit="+limit;
-    var url = "../source/httprequest/Servicios.php?"+data;
+    var url = urlBase + "/servicio/Servicios.php?"+data;
     var success = function(response)
     {
         var tabla = $("#tabla tbody");

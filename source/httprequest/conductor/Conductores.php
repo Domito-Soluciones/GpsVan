@@ -6,7 +6,7 @@
     }
     else
     {
-        include '../query/ConductorDao.php';
+        include '../../query/ConductorDao.php';
 
         header('Content-Type: application/json');
         if(isset($_REQUEST['rut'])){

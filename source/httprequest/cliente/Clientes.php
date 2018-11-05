@@ -1,5 +1,5 @@
 <?php
-include '../query/ClienteDao.php';
+include '../../query/ClienteDao.php';
 
 header('Content-Type: application/json');
 if(isset($_REQUEST['cliente']))

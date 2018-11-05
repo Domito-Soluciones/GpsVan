@@ -7,12 +7,12 @@
     else
     {
     
-        include '../query/ServicioDao.php';
-        include '../dominio/Servicio.php';
+        include '../../query/ServicioDao.php';
+        include '../../dominio/Servicio.php';
 
         $partida = urlencode($_REQUEST['partida']);
-        $partida_id = urlencode($_REQUEST['partidaId']);
-        $destino = $_REQUEST['destino'];
+        $partida_id = $_REQUEST['partidaId'];
+        $destino = urlencode($_REQUEST['destino']);
         $destino_id = $_REQUEST['destinoId'];
         $cliente = $_REQUEST['cliente'];
         $usuario = $_REQUEST['usuario'];
@@ -27,7 +27,7 @@
         $servicio->setDestino($destino);
         $servicio->setDestinoId($destino_id);
         $servicio->setCliente($cliente);
-        $servicio->setUsuario($usuario);
+        $servicio->setUsuario_nombre($usuario);
         $servicio->setTransportista($transportista);
         $servicio->setMovil($movil);
         $servicio->setTipo($tipo);
@@ -35,5 +35,9 @@
         $servicio->setAgente($agente);
         $servicioDao = new ServicioDao();
         $idServicio = $servicioDao->addServicio($servicio);
+        if($idServicio > 0)
+        {
+            $servicioDao->actualizarMovil($servicio->getMovil());
+        }
         print $idServicio;
     }

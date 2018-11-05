@@ -1,6 +1,6 @@
 <?php
-include '../conexion/Conexion.php';
-include '../dominio/Agente.php';
+include '../../conexion/Conexion.php';
+include '../../dominio/Agente.php';
 
 class AgenteDao {
     

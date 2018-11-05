@@ -7,6 +7,7 @@ class Movil {
     private $estado;
     private $lat;
     private $lon;
+    private $ultimaAsignacion;
     private $servicio;
     
     function getId() {
@@ -31,6 +32,10 @@ class Movil {
 
     function getLon() {
         return $this->lon;
+    }
+
+    function getUltimaAsignacion() {
+        return $this->ultimaAsignacion;
     }
 
     function getServicio() {
@@ -61,9 +66,15 @@ class Movil {
         $this->lon = $lon;
     }
 
+    function setUltimaAsignacion($ultimaAsignacion) {
+        $this->ultimaAsignacion = $ultimaAsignacion;
+    }
+
     function setServicio($servicio) {
         $this->servicio = $servicio;
     }
+
+
 
 
 }

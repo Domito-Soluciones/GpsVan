@@ -1,6 +1,6 @@
 <?php
-include '../conexion/Conexion.php';
-include '../dominio/Cliente.php';
+include '../../conexion/Conexion.php';
+include '../../dominio/Cliente.php';
 
 class ClienteDao {
     public function getClientes($razon,$tipo,$rut)
@@ -71,5 +71,6 @@ class ClienteDao {
             echo $exc->getTraceAsString();
         }
     }
+    
    
 }

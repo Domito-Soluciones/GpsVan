@@ -7,7 +7,7 @@
     else
     {
     
-        include '../query/ClienteDao.php';
+        include '../../query/ClienteDao.php';
 
         $razon = $_REQUEST['razon'];
         $tipo = $_REQUEST['tipo'];

@@ -2,7 +2,7 @@
 var bordeAzul = "solid 1px #0b41d3";
 var bordeRojo = "solid 1px red";
 var bordeBlanco = "solid 1px white";
-
+var urlBase= "../source/httprequest";
 
 
 function darFoco(elemento)
@@ -111,7 +111,7 @@ function cerrarSession(response)
     if(response === 'return')
     {
         alertify.error('sesion expirada');
-        location.href = "../web/index.php";
+        location.href = "index.php";
         return;
     }
 }

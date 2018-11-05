@@ -1,6 +1,6 @@
 <?php
-include '../conexion/Conexion.php';
-include '../dominio/Movil.php';
+include '../../conexion/Conexion.php';
+include '../../dominio/Movil.php';
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -61,4 +61,5 @@ class MovilDao {
         }
         return $id;
     }
+    
 }

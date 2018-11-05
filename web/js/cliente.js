@@ -1,4 +1,6 @@
 
+/* global urlBase */
+
 $(document).ready(function(){
     $("#cabecera").load("html/cabecera.html");
     $("#menu").load("html/menu.html", function( response, status, xhr ) {
@@ -30,7 +32,7 @@ $(document).ready(function(){
 
 function cargarDatosClientes()
 {
-    var url = "../source/httprequest/Clientes.php";
+    var url = urlBase+"/cliente/Clientes.php";
     var success = function(response)
     {
         $("#lrut").html("");
@@ -66,7 +68,7 @@ function agregarCliente()
     }
     var data = "razon="+razon+"&tipo="+tipo+"&rut="+rut+"&direccion="+direccion+"&nombre="+nombre+
             "&telefono="+telefono+"&mail="+mail+"&mail2="+mail2+"&centros="+cc;
-    var url = "../source/httprequest/AddCliente.php?"+data;
+    var url = urlBase+"/cliente/AddCliente.php?"+data;
     var success = function(response)
     {
         alertify.success("Cliente agregado");
@@ -83,7 +85,7 @@ function buscarCliente()
     var rut = $("#rutS").val();
     
     var data = "cliente="+razon+"&rut="+rut+"&tipo="+tipo;
-    var url = "../source/httprequest/Clientes.php?"+data;
+    var url = urlBase+"/cliente/Clientes.php?"+data;
     var success = function(response)
     {
         var tabla = $("#tabla tbody");

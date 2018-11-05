@@ -1,3 +1,5 @@
+/* global urlBase */
+
 $(document).ready(function(){
     $("#cabecera").load("html/cabecera.html");
     $("#menu").load("html/menu.html", function( response, status, xhr ) {
@@ -29,7 +31,7 @@ $(document).ready(function(){
 
 function cargarDatosConductores()
 {
-    var url = "../source/httprequest/Conductores.php";
+    var url = urlBase + "/conductor/Conductores.php";
     var success = function(response)
     {
         $("#lrut").html("");
@@ -90,7 +92,7 @@ function agregarConductor()
     +"&renta="+renta+"&contrato="+contrato+"&afp="+afp+"&isapre="+isapre
     +"&mutual="+mutual+"&seguroInicio="+seguroInicio+"&seguroRenovacion="+seguroRenovacion
     +"&descuento="+descuento+"&anticipo="+anticipo;
-    var url = "../source/httprequest/AddConductor.php?"+data;
+    var url = urlBase + "/conductor/AddConductor.php?"+data;
     var success = function(response)
     {
         alertify.success("Conductor agregado");
@@ -109,7 +111,7 @@ function buscarConductor()
     var mail = $("#mailS").val();
     
     var data = "rut="+rut+"&nombre="+nombre+"&papellido="+papellido+"&mapellido="+mapellido+"&mail="+mail;
-    var url = "../source/httprequest/Conductores.php?"+data;
+    var url = urlBase + "/conductor/Conductores.php?"+data;
     var success = function(response)
     {
         var tabla = $("#tabla tbody");

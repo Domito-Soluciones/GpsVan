@@ -1,4 +1,4 @@
-/* global bordeAzul, bordeBlanco, bordeRojo */
+/* global bordeAzul, bordeBlanco, bordeRojo, urlBase */
 
 $(document).ready(function(){
     darFoco($("#usuario"));
@@ -54,7 +54,7 @@ function login(){
         return;
     }
     addTexto($("#mensaje-error"),"");
-    var url = "../source/httprequest/Login.php?usuario="+usuario+"&password="+password;
+    var url = urlBase + "/agente/Login.php?usuario="+usuario+"&password="+password;
     var success = function(response){
         if(response === '0')
         {

@@ -6,7 +6,7 @@
     }
     else
     {
-        include '../query/ConductorDao.php';
+        include '../../query/ConductorDao.php';
 
         $nombre = $_REQUEST['nombre'];
         $papellido = $_REQUEST['papellido'];

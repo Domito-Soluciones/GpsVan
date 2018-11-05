@@ -1,5 +1,5 @@
 <?php
-include '../query/ConductorDao.php';
+include '../../query/ConductorDao.php';
 
 header('Content-Type: application/json');
 $conductorDao = new ConductorDao();

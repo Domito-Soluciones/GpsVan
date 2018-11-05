@@ -1,5 +1,5 @@
 <?php
-include '../query/TransportistaDao.php';
+include '../../query/TransportistaDao.php';
 
 header('Content-Type: application/json');
 $transportista = $_REQUEST['transportista'];

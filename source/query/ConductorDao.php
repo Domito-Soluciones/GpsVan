@@ -1,6 +1,6 @@
 <?php
-include '../conexion/Conexion.php';
-include '../dominio/Conductor.php';
+include '../../conexion/Conexion.php';
+include '../../dominio/Conductor.php';
 
 class ConductorDao {
     
@@ -100,7 +100,7 @@ class ConductorDao {
         }
         return $array;
     }
-     public function getConductor($nombre,$clave)
+    public function getConductor($nombre,$clave)
     {
         $conn = new Conexion();
         $id = 0;
@@ -115,6 +115,23 @@ class ConductorDao {
             echo $exc->getTraceAsString();
         }
         return $id;
+    }
+    
+    public function getConductorNombre($rut)
+    {
+        $conn = new Conexion();
+        $nombre = "";
+        try {
+            $query = "SELECT conductor_nombre,conductor_papellido FROM tbl_conductor WHERE conductor_rut = '$rut'"; 
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query); 
+            while($row = mysqli_fetch_array($result)) {
+                $nombre = $row["conductor_nombre"].' '.$row["conductor_papellido"];
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $nombre;
     }
     
     function getConductoresConectados()

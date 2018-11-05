@@ -1,5 +1,5 @@
 <?php
-include '../query/UsuarioDao.php';
+include '../../query/UsuarioDao.php';
 
 header('Content-Type: application/json');
 $id = $_REQUEST['id'];

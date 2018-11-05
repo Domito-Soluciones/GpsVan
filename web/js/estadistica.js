@@ -1,3 +1,5 @@
+/* global urlBase */
+
 $(document).ready(function(){
     $("#cabecera").load("html/cabecera.html");
     $("#menu").load("html/menu.html", function( response, status, xhr ) {
@@ -18,7 +20,7 @@ $(document).ready(function(){
 
 function setArco()
 {
-    var url = "../source/httprequest/CantidadServicios.php?fecha=dia";
+    var url = urlBase + "/estadistica/CantidadServicios.php?fecha=dia";
     var success = function(response)
     {
         $("#total").html("");
@@ -34,7 +36,7 @@ function setArco()
 }
 function setTorta()
 {
-    var url = "../source/httprequest/CantidadServicios.php?fecha=mes";
+    var url = urlBase + "/estadistica/CantidadServicios.php?fecha=mes";
     var success = function(response)
     {   
         new Chart(document.getElementById("pie-chart"), {
@@ -69,7 +71,7 @@ function setTorta()
 
 function getBar()
 {
-     var url = "../source/httprequest/CantidadServiciosConductor.php?fecha=mes";
+    var url = urlBase + "/estadistica/CantidadServiciosConductor.php?fecha=mes";
     var success = function(response)
     {
         var labels = [];
@@ -157,7 +159,7 @@ function getBar()
 
 function setConductoresConectados()
 {
-    var url = "../source/httprequest/ConductoresConectados.php";
+    var url = urlBase + "/estadistica/ConductoresConectados.php";
     var success = function (response) {
         $("#activos tbody").append("<tr><th>Tipo</th><th>Cantidad</th></tr>");
         $("#activos tbody").append("<tr><td>Activo</td><td>"+response.conductor_conectado+"</td></tr>");

@@ -1,5 +1,5 @@
 <?php
-include_once '../query/MovilDao.php';
+include_once '../../query/MovilDao.php';
 
 $conductor = $_REQUEST['usuario'];
 $movilDao = new MovilDao();

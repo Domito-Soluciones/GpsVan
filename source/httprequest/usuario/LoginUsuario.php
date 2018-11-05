@@ -1,10 +1,10 @@
 <?php
 
-include '../query/ConductorDao.php';
+include '../../query/UsuarioDao.php';
 header('Content-Type: application/json');
 $respuesta = 0;
 $nombre = $_REQUEST['usuario'];
 $password = $_REQUEST['password'];
-$conductorDao = new ConductorDao();
-$id = $conductorDao->getConductor($nombre, $password);
+$usuarioDao = new UsuarioDao();
+$id = $usuarioDao->getUsuario($nombre, $password);
 echo "{\"id\":".$id."}";

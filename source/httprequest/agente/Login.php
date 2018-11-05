@@ -1,6 +1,6 @@
 <?php
 
-include '../query/AgenteDao.php';
+include '../../query/AgenteDao.php';
 
 $respuesta = '0';
 $nombre = $_REQUEST['usuario'];

@@ -1,5 +1,5 @@
 <?php
-include '../query/MovilDao.php';
+include '../../query/MovilDao.php';
 
 header('Content-Type: application/json');
 $id = $_REQUEST['id'];
