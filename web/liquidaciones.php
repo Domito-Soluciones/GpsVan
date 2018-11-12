@@ -9,7 +9,7 @@ if(!isset($_SESSION['agente']))
 <html>
     <head>
         <title>
-            Reportes
+            Liquidaciones
         </title>
         <meta charset="utf-8">
         <link rel="stylesheet" href="css/estilo.css">
@@ -20,7 +20,7 @@ if(!isset($_SESSION['agente']))
         <script src="js/alertify.js" type="text/javascript"></script>
         <script src="js/thread.js" type="text/javascript"></script>
         <script src="js/funciones.js" type="text/javascript"></script>
-        <script src="js/reporte.js" type="text/javascript"></script>
+        <script src="js/liquidacion.js" type="text/javascript"></script>
     </head>
     <body>
         <div class="cabecera" id="cabecera">

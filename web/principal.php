@@ -9,7 +9,7 @@ if(!isset($_SESSION['agente']))
 <html>
     <head>
         <title>
-            Maps
+            Panel principal
         </title>
         <meta charset="utf-8">
         <link rel="stylesheet" href="css/estilo.css">
@@ -18,6 +18,8 @@ if(!isset($_SESSION['agente']))
         <link rel="stylesheet" href="css/alertify.css">
         <link rel="stylesheet" href="css/jquery.datetimepicker.css">
         <script src="js/jquery.js" type="text/javascript"></script>
+        <script src="js/alertify.js" type="text/javascript"></script>
+        <script src="js/thread.js" type="text/javascript"></script>
         <script src="js/funciones.js" type="text/javascript"></script>
         <script src="js/principal.js" type="text/javascript"></script>
         <script src="js/alertify.js" type="text/javascript"></script>
@@ -200,7 +202,7 @@ if(!isset($_SESSION['agente']))
             var directionsDisplay;
             var map;
             var markers = [];
-           
+            
             function initMap() {
                 directionsService = new google.maps.DirectionsService;
                 directionsDisplay = new google.maps.DirectionsRenderer;

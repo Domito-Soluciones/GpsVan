@@ -1,5 +1,5 @@
 
-/* global alertify, directionsDisplay, urlBase */
+/* global alertify, directionsDisplay, urlBase, ORIGEN */
 
 $(document).ready(function(){
     $("#cabecera").load("html/cabecera.html");
@@ -51,6 +51,7 @@ $(document).ready(function(){
         });
     });
     init();
+
 });
 
 function init()

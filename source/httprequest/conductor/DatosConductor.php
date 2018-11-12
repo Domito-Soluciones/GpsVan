@@ -4,8 +4,9 @@ include '../../util/validarPeticion.php';
 include '../../query/ConductorDao.php';
 header('Content-Type: application/json');
 $respuesta = 0;
-$nombre = $_REQUEST['usuario'];
-$password = $_REQUEST['password'];
+$rut = $_REQUEST['rut'];
 $conductorDao = new ConductorDao();
-$id = $conductorDao->getConductor($nombre, $password);
-echo "{\"id\":".$id."}";
+$datos = $conductorDao->getDatosConductor($rut);
+echo "{\"nombre\":\"".$datos[0]."\","
+        ."\"viajes\":\"".$datos[1]."\""
+        . "}";

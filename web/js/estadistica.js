@@ -10,7 +10,7 @@ $(document).ready(function(){
     var monthIndex = date.getMonth() < 10 ? '0'+date.getMonth() : date.getMonth();
     var year = date.getFullYear();
     
-    $("#fecha").html(day+"/"+monthIndex+"/"+year);
+    $("#fecha").html(day+"/"+(monthIndex+1)+"/"+year);
     setArco();
     setTorta();
     setConductoresConectados();

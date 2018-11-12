@@ -1,4 +1,5 @@
 <?php
+include '../../util/validarPeticion.php';
 
 include '../../query/UsuarioDao.php';
 header('Content-Type: application/json');

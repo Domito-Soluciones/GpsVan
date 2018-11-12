@@ -9,7 +9,7 @@ if(!isset($_SESSION['agente']))
 <html>
     <head>
         <title>
-            Maps
+            Conductores
         </title>
         <meta charset="utf-8">
         <link rel="stylesheet" href="css/estilo.css">
@@ -19,9 +19,10 @@ if(!isset($_SESSION['agente']))
         <link rel="stylesheet" href="css/jquery.datetimepicker.css">
         <script src="js/jquery.js" type="text/javascript"></script>
         <script src="js/jquery.datetimepicker.js" type="text/javascript"></script>
+        <script src="js/alertify.js" type="text/javascript"></script>
+        <script src="js/thread.js" type="text/javascript"></script>
         <script src="js/funciones.js" type="text/javascript"></script>
         <script src="js/movil.js" type="text/javascript"></script>
-        <script src="js/alertify.js" type="text/javascript"></script>
     </head>
     <body>
         <div class="cabecera" id="cabecera">

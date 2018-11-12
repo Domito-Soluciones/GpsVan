@@ -1,4 +1,6 @@
 <?php
+include '../../util/validarPeticion.php';
+
 include '../../conexion/Conexion.php';
 include '../../dominio/Cliente.php';
 

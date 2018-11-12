@@ -1,17 +1,9 @@
 <?php
+include '../../util/validarPeticion.php';
+
 include '../../conexion/Conexion.php';
 include '../../dominio/Transportista.php';
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
-/**
- * Description of TransportistaDao
- *
- * @author Jose
- */
 class TransportistaDao {
     public function getTransportistas($transportista)
     {

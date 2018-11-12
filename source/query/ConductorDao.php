@@ -1,4 +1,6 @@
 <?php
+include '../../util/validarPeticion.php';
+
 include '../../conexion/Conexion.php';
 include '../../dominio/Conductor.php';
 
@@ -117,21 +119,28 @@ class ConductorDao {
         return $id;
     }
     
-    public function getConductorNombre($rut)
+    public function getDatosConductor($rut)
     {
         $conn = new Conexion();
+        $array = array();
         $nombre = "";
+        $viajes = "";
         try {
-            $query = "SELECT conductor_nombre,conductor_papellido FROM tbl_conductor WHERE conductor_rut = '$rut'"; 
+            $hoy = getdate();
+            $fecha = $hoy['year'] . "-" . $hoy['mon'] . "-" . $hoy['mday']. " 00:00:00";
+            $query = "SELECT conductor_nombre,conductor_papellido,(SELECT count(*) FROM tbl_servicio WHERE servicio_fecha > '$fecha' AND servicio_movil = (SELECT movil_nombre FROM tbl_movil WHERE movil_conductor = '$rut')) AS viajes FROM tbl_conductor WHERE conductor_rut = '$rut'"; 
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query); 
             while($row = mysqli_fetch_array($result)) {
                 $nombre = $row["conductor_nombre"].' '.$row["conductor_papellido"];
+                $viajes = $row["viajes"];
             }
+            array_push($array, $nombre);
+            array_push($array, $viajes);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
-        return $nombre;
+        return $array;
     }
     
     function getConductoresConectados()

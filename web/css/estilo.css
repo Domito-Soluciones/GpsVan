@@ -56,7 +56,7 @@ html,body
 {
     background-color: #0b41d3;
     border-right: solid 2px black;
-    width: calc(16% - 2px);
+    width: calc(13.7% - 2px);
     height: 100%;
     display: inline;
     float: left;
@@ -71,6 +71,7 @@ html,body
 .opcion-menu:hover
 {
     background-color: #4e4e4e;
+    border-bottom-color: #4e4e4e;
 }
 .menu-activo
 {
@@ -183,6 +184,10 @@ html,body
 .opcion-menu-cerrar
 {
     background-color: #0b41d3;
-    height: 50px;
+    height: 50px;   
     cursor: pointer;
+    display: inline;
+    width: calc(4.1%);
+    height: 100%;   
+    float: left;
 }

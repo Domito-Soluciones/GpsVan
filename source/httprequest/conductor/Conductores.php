@@ -1,4 +1,6 @@
 <?php
+include '../../util/validarPeticion.php';
+
     session_start();
     if(!isset($_SESSION['agente']))
     {   

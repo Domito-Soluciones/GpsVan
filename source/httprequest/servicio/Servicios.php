@@ -1,4 +1,5 @@
 <?php
+include '../../util/validarPeticion.php';
 
 include '../../query/ServicioDao.php';
 include '../../dominio/Servicio.php';
@@ -19,10 +20,10 @@ echo "[";
 for ($i = 0 ; $i < count($servicios); $i++)
 {
     $servicioId = $servicios[$i]->getId();
-    $servicioPartida = urldecode($servicios[$i]->getPartida());
-    $servicioDestino = urldecode($servicios[$i]->getDestino());
+    $servicioPartida = utf8_encode(urldecode($servicios[$i]->getPartida()));
+    $servicioDestino = utf8_encode(urldecode($servicios[$i]->getDestino()));
     $servicioCliente = $servicios[$i]->getCliente();
-    $servicioUsuario = $servicios[$i]->getUsuario();
+    $servicioUsuario = $servicios[$i]->getUsuario_nombre();
     $servicioTransportista = $servicios[$i]->getTransportista();
     $servicioMovil = $servicios[$i]->getMovil();
     $servicioTipo = $servicios[$i]->getTipo();

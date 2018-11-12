@@ -1,4 +1,6 @@
 <?php
+include '../../util/validarPeticion.php';
+
 include '../../query/TransportistaDao.php';
 
 header('Content-Type: application/json');

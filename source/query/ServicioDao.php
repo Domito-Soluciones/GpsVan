@@ -1,4 +1,6 @@
 <?php
+include '../../util/validarPeticion.php';
+
 include '../../conexion/Conexion.php';
 
 class ServicioDao {
@@ -21,6 +23,7 @@ class ServicioDao {
             $query = "INSERT INTO tbl_servicio (servicio_partida,servicio_partida_id,servicio_destino,servicio_destino_id,"
                     . "servicio_cliente,servicio_usuario,servicio_transportista,"
                     . "servicio_movil,servicio_tipo,servicio_tarifa,servicio_agente,servicio_fecha) VALUES ('$partida','$partidaId','$destino','$destinoId','$cliente','$usuario','$transportista','$movil','$tipo',$tarifa,$agente,NOW())"; 
+            echo $query;
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -96,13 +99,14 @@ class ServicioDao {
                 $servicio->setPartida($row["servicio_partida"]);
                 $servicio->setDestino($row["servicio_destino"]);
                 $servicio->setCliente($row["servicio_cliente"]);
-                $servicio->setUsuario($row["servicio_usuario"]);
+                $servicio->setUsuario_nombre($row["servicio_usuario"]);
                 $servicio->setTransportista($row["servicio_transportista"]);
                 $servicio->setMovil($row["servicio_movil"]);
                 $servicio->setTipo($row["servicio_tipo"]);
                 $servicio->setTarifa($row["servicio_tarifa"]);
                 $servicio->setAgente($row["servicio_agente"]);
-                $servicio->setFecha($row["servicio_fecha"]);
+                $date = new DateTime($row["servicio_fecha"]);
+                $servicio->setFecha(date_format($date, 'd-m-Y H:i:s'));
                 array_push($array, $servicio);
             }
         } catch (Exception $exc) {
@@ -169,6 +173,25 @@ class ServicioDao {
                 $servicio->setTarifa($row["servicio_tarifa"]);
                 $servicio->setAgente($row["servicio_agente"]);
                 $servicio->setFecha($row["servicio_fecha"]);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $servicio;
+    }
+    public function getServicioPorAsignar()
+    {
+        $conn = new Conexion();
+        try {
+            $servicio = new Servicio();            
+            $query = "SELECT * FROM tbl_servicio WHERE servicio_movil = '' ORDER BY servicio_fecha LIMIT 1";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query); 
+            while($row = mysqli_fetch_array($result)) {
+                $servicio->setPartida($row["servicio_partida"]);
+                $servicio->setDestino($row["servicio_destino"]);
+                $servicio->setCliente($row["servicio_cliente"]);
+                $servicio->setUsuario_nombre($row["servicio_usuario"]);
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
