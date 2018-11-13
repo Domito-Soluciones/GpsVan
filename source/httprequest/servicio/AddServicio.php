@@ -77,6 +77,12 @@ include '../../util/validarPeticion.php';
     {
         $agente = $_REQUEST['agente'];
     }
+    $gestion = 0;
+    if(isset($_REQUEST['gestion']))
+    {
+        $gestion = $_REQUEST['gestion'];
+    }
+    
 
     $servicio = new Servicio();
     $servicio->setPartida($partida);
@@ -91,7 +97,14 @@ include '../../util/validarPeticion.php';
     $servicio->setTarifa($tarifa);
     $servicio->setAgente($agente);
     $servicioDao = new ServicioDao();
-    $idServicio = $servicioDao->addServicio($servicio);
+    if($gestion == 0)
+    {
+        $idServicio = $servicioDao->addServicio($servicio);
+    }
+    else
+    {
+        $idServicio = $servicioDao->modServicio($gestion,$servicio);
+    }
     if($idServicio > 0)
     {
         $servicioDao->actualizarMovil($servicio->getMovil());

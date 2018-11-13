@@ -1,5 +1,5 @@
 
-/* global alertify, directionsDisplay, urlBase, ORIGEN */
+/* global alertify, directionsDisplay, urlBase, ORIGEN, GESTIONANDO_TICKET */
 
 $(document).ready(function(){
     $("#cabecera").load("html/cabecera.html");
@@ -196,11 +196,12 @@ function agregarServicio()
         return;
     }
     var data = "partida="+partida+"&partidaId="+partida_id+"&destino="+destino+"&destinoId="+destino_id+"&cliente="+cliente+"&usuario="
-            +usuario+"&transportista="+transportista+"&movil="+movil+"&tipo="+tipo+"&tarifa="+tarifa;
+            +usuario+"&transportista="+transportista+"&movil="+movil+"&tipo="+tipo+"&tarifa="+tarifa+"&gestion="+GESTIONANDO_TICKET;
     var url = urlBase + "/servicio/AddServicio.php?"+data;
     var success = function(response)
     {
         cerrarSession(response);
+        GESTIONANDO_TICKET = 0;
         alertify.success('servicio agregado con id '+response);
         vaciarFormulario($("#asignar input"));
         cambiarPropiedad($("#loader"),"visibility","hidden");

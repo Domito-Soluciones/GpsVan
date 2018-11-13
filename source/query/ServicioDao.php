@@ -35,6 +35,33 @@ class ServicioDao {
         }
         return $id;
     }
+    public function modServicio($idServicio,$servicio)
+    {
+        $id = 0;
+        $cliente = $servicio->getCliente();
+        $usuario = $servicio->getUsuario_nombre();
+        $transportista = $servicio->getTransportista();
+        $movil = $servicio->getMovil();
+        $tipo = $servicio->getTipo();
+        $tarifa = $servicio->getTarifa();
+        $agente = $servicio->getAgente();
+        $conn = new Conexion();
+        try {
+            $query = "UPDATE tbl_servicio SET servicio_cliente = '$cliente',"
+                    . "servicio_usuario = '$usuario',servicio_transportista = '$transportista',"
+                    . "servicio_movil = '$movil',servicio_tipo = '$tipo',"
+                    . "servicio_tarifa = $tarifa,servicio_agente = $agente WHERE servicio_id = $idServicio"; 
+            $conn->conectar();
+            if (mysqli_query($conn->conn,$query)) {
+                $id = $idServicio;
+            } else {
+                echo mysqli_error($conn->conn);
+            }           
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $id;
+    }
     
     public function getIdServicios($id)
     {
@@ -188,8 +215,11 @@ class ServicioDao {
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query); 
             while($row = mysqli_fetch_array($result)) {
+                $servicio->setId($row["servicio_id"]);
                 $servicio->setPartida($row["servicio_partida"]);
+                $servicio->setPartidaId($row["servicio_partida_id"]);
                 $servicio->setDestino($row["servicio_destino"]);
+                $servicio->setDestinoId($row["servicio_destino_id"]);
                 $servicio->setCliente($row["servicio_cliente"]);
                 $servicio->setUsuario_nombre($row["servicio_usuario"]);
             }
