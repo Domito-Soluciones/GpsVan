@@ -6,5 +6,7 @@ header('Content-Type: application/json');
 $respuesta = 0;
 $nick = $_REQUEST['nick'];
 $usuarioDao = new UsuarioDao();
-$id = $usuarioDao->getUsuarioNombre($nick);
-echo "{\"nombre\":\"".$id."\"}";
+$usuario = $usuarioDao->getUsuarioDatos($nick);
+echo "{\"nombre\":\"".$usuario->getNombre()."\","
+        ."\"cliente\":\"".$usuario->getCliente()."\""
+        . "}";

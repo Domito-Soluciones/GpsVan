@@ -26,7 +26,7 @@ function setArco()
         $("#total").html("");
         $("#servicios tHead").html("");
         $("#servicios tBody").html("");
-        $("#servicios tHead").append("<tr><th>Tipo</th><th>Cantidad</th></tr>");
+        $("#servicios tHead").append("<tr><th>Tipo</th><th>Cantidad Diaria</th></tr>");
         $("#servicios tbody").append("<tr><td>Recogida</td><td>"+response.servicio_recogida+"</td></tr>");
         $("#servicios tbody").append("<tr><td>Especial</td><td>"+response.servicio_especial+"</td></tr>");
         $("#servicios tbody").append("<tr><td>Reparto</td><td>"+response.servicio_reparto+"</td></tr>");
@@ -52,14 +52,14 @@ function setTorta()
             options: {
                 title: {
                     display: true,
-                    text: 'Cantidad servicios (mensual)',
+                    text: 'Cantidad Servicios (Mensual)',
                     fontColor: "white",
-                    fontSize: 12
+                    fontSize: 20
                 },
                 legend: {
                     labels: {
                         fontColor: "white",
-                        fontSize: 12
+                        fontSize: 16
                     }
                 }
             }
@@ -90,7 +90,7 @@ function getBar()
             data: {
                 labels: labels,
                 datasets: [{
-                    label: ' Cantidad de servicios',
+                    label: ' Cantidad de Servicios',
                     data: data,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
@@ -126,29 +126,29 @@ function getBar()
             options: {
                 title: {
                     display: true,
-                    text: 'Cantidad servicios por movil',
+                    text: 'Cantidad Servicios por Movil Mensual',
                     fontColor: "white",
-                    fontSize: 12
+                    fontSize: 25
                 },
                 scales: {
                     yAxes: [{
                         ticks: {
                             beginAtZero:true,
                             fontColor: "white",
-                            fontSize: 12
+                            fontSize: 20
                         }
                     }],
                     xAxes: [{
                         ticks: {
                             fontColor: "white",
-                            fontSize: 12
+                            fontSize: 20
                         }
                     }]
                 },
                 legend: {
                     labels: {
                         fontColor: "white",
-                        fontSize: 12
+                        fontSize: 20
                     }
                 }
             }
@@ -163,9 +163,9 @@ function setConductoresConectados()
     var success = function (response) {
         $("#activos tbody").append("<tr><th>Tipo</th><th>Cantidad</th></tr>");
         $("#activos tbody").append("<tr><td>Activo</td><td>"+response.conductor_conectado+"</td></tr>");
-        $("#activos tbody").append("<tr><td>En servicio</td><td>"+response.conductor_ocupado+"</td></tr>");
+        $("#activos tbody").append("<tr><td>En Servicio</td><td>"+response.conductor_ocupado+"</td></tr>");
         $("#activos tbody").append("<tr><td>Inactivos</td><td>"+response.conductor_desconectado+"</td></tr>");
-        $("#activos tbody").append("<tr><td>Total moviles</td><td>"+response.conductor_total+"</td></tr>");
+        $("#activos tbody").append("<tr><td>Total Conductores</td><td>"+response.conductor_total+"</td></tr>");
         dibujarDona(response.conductor_conectado,response.conductor_total);
     };
     getRequest(url,success);
@@ -186,14 +186,14 @@ function dibujarDona(conectado,total)
     options: {
       title: {
         display: true,
-        text: 'Conductores activos',
+        text: 'Conductores Activos',
         fontColor: "white",
-        fontSize: 12
+        fontSize: 20
       },
       legend: {
             labels: {
                 fontColor: "white",
-                fontSize: 12
+                fontSize: 16
             }
         }
     }

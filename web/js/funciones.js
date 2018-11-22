@@ -27,6 +27,7 @@ function postRequest(url,success)
     $.ajax({
         url: url,
         method:'POST',
+        cache: false,
         beforeSend: function (xhr) {
             cambiarPropiedad($("#loader"),"visibility","visible");
         },

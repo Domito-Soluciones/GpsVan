@@ -23,7 +23,6 @@ class ServicioDao {
             $query = "INSERT INTO tbl_servicio (servicio_partida,servicio_partida_id,servicio_destino,servicio_destino_id,"
                     . "servicio_cliente,servicio_usuario,servicio_transportista,"
                     . "servicio_movil,servicio_tipo,servicio_tarifa,servicio_agente,servicio_fecha) VALUES ('$partida','$partidaId','$destino','$destinoId','$cliente','$usuario','$transportista','$movil','$tipo',$tarifa,$agente,NOW())"; 
-            echo $query;
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -117,7 +116,7 @@ class ServicioDao {
             {
                 $query .= " AND servicio_fecha <= '".$hasta."' ";
             }
-            $query .= " ORDER BY servicio_fecha DESC LIMIT ".$limit; 
+            $query .= " ORDER BY servicio_fecha DESC LIMIT ".$limit;
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
             while($row = mysqli_fetch_array($result)) {
@@ -182,7 +181,7 @@ class ServicioDao {
         $conn = new Conexion();
         try {
             $servicio = new Servicio();            
-            $query = "SELECT * FROM tbl_servicio JOIN tbl_usuario ON servicio_usuario = usuario_nombre WHERE servicio_estado = 0 AND servicio_movil = (select movil_nombre from tbl_movil where movil_conductor = ".$usuario.")";
+            $query = "SELECT * FROM tbl_servicio JOIN tbl_usuario ON servicio_usuario = usuario_nombre WHERE servicio_estado = 0 AND servicio_movil = (select movil_nombre from tbl_movil where movil_conductor = '".$usuario."')";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
             while($row = mysqli_fetch_array($result)) {

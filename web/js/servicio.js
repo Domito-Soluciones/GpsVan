@@ -47,7 +47,7 @@ function cargarIds()
 function cargarClientes()
 {
     var cliente = $("#cliente").val();
-    var url = urlBase + "/cliente/Clientes.php?cliente"+cliente;
+    var url = urlBase + "/cliente/Clientes.php?cliente="+cliente;
     var success = function(response)
     {
         $("#lcliente").html("");
@@ -143,21 +143,12 @@ function cargarMoviles(idTransportista)
 function buscarServicio(limit)
 {
     var id = $("#ids").val();
-    var cliente = clientes[$("#cliente").val()] === undefined ? "" : clientes[$("#cliente").val()];
-    var usuario = usuarios[$("#usuario").val()] === undefined ? "" : usuarios[$("#usuario").val()];
-    var transportista = transportistas[$("#transportista").val()] === undefined ? "" : transportistas[$("#transportista").val()];
-    var movil = moviles[$("#movil").val()] === undefined ? "" : moviles[$("#movil").val()];
+    var cliente = $("#cliente").val();
+    var usuario = $("#usuario").val();
+    var transportista = $("#transportista").val();
+    var movil = $("#movil").val();
     var desde = $("#desde").val();
-    var f = new Date();
-    if(desde === '')
-    {
-        desde =  f.getFullYear() + "-" + (f.getMonth() +1) + "-" + f.getDate() + " 00:00:00";
-    }
     var hasta = $("#hasta").val();
-    if(hasta === '')
-    {
-        hasta = f.getFullYear() + "-" + (f.getMonth() +1) + "-" + f.getDate() + " 23:59:59";
-    }
     var data = "id="+id+"&cliente="+cliente+"&usuario="
             +usuario+"&transportista="+transportista+"&movil="+movil+"&desde="+formato_fecha(desde)+"&hasta="+formato_fecha(hasta)+"&limit="+limit;
     var url = urlBase + "/servicio/Servicios.php?"+data;
@@ -183,10 +174,11 @@ function buscarServicio(limit)
             var tipo = response[i].servicio_tipo;
             var tarifa = response[i].servicio_tarifa;
             var fecha = response[i].servicio_fecha;
-            
-            tabla.append("<tr class=\"tr_contenido\"><td>"+id+"</td><td>"+formato_humano(fecha)+"</td><td>"+tarifa+"</td><td>"+partida+"</td><td>"+destino+"</td><td>"+cliente
-                    +"</td><td>"+pasajero+"</td><td>"+transportista+"</td><td>"+movil
-                    +"</td><td>"+tipo+"</td><</tr>");
+            var estado = response[i].servicio_estado;
+            tabla.append("<tr class=\"tr_contenido\"><td>"+id+"</td><td></td><td>"+
+                    formato_humano(fecha)+"</td><td>"+movil+"<td>"+pasajero+"</td><td>"+tipo+"</td>"
+                    +"</td><td>"+tarifa+"</td><td>"+partida+"</td><td>"+destino+"</td><td>"+cliente
+                    +"</td><td>"+transportista+"</td></tr>");
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
         addTexto($("#mensaje-error"),"");

@@ -18,6 +18,7 @@ class Servicio {
     private $tarifa;
     private $agente;
     private $fecha;
+    private $estado;
     function getId() {
         return $this->id;
     }
@@ -80,6 +81,10 @@ class Servicio {
 
     function getFecha() {
         return $this->fecha;
+    }
+
+    function getEstado() {
+        return $this->estado;
     }
 
     function setId($id) {
@@ -145,6 +150,11 @@ class Servicio {
     function setFecha($fecha) {
         $this->fecha = $fecha;
     }
+
+    function setEstado($estado) {
+        $this->estado = $estado;
+    }
+
 
    
 }

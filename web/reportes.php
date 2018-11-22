@@ -18,7 +18,7 @@ if(!isset($_SESSION['agente']))
         <link rel="stylesheet" href="css/alertify.css">
         <script src="js/jquery.js" type="text/javascript"></script>
         <script src="js/alertify.js" type="text/javascript"></script>
-        <script src="js/thread.js" type="text/javascript"></script>
+        <!--<script src="js/thread.js" type="text/javascript"></script>-->
         <script src="js/funciones.js" type="text/javascript"></script>
         <script src="js/reporte.js" type="text/javascript"></script>
     </head>
@@ -69,9 +69,42 @@ if(!isset($_SESSION['agente']))
         </div>
         <div class="contendor_central">
             <div class="central" id="central">
-                <!--
-                aqui va el mapa
-                -->
+                <table id="tabla" class="tabla-central">
+                    <thead>
+                        <tr class="tr_titulo">
+                            <th>
+                                Reportes
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                Reporte Servicios Diarios
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Reporte Servicios Mensuales
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Reporte Servicos Recogidas
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Reporte Servicios Reparto
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Reporte Servicios Especiales
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>    
         </div>   
     </body>

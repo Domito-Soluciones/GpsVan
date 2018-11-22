@@ -18,7 +18,7 @@ if(!isset($_SESSION['agente']))
         <link rel="stylesheet" href="css/alertify.css">
         <script src="js/jquery.js" type="text/javascript"></script>
         <script src="js/alertify.js" type="text/javascript"></script>
-        <script src="js/thread.js" type="text/javascript"></script>
+        <!--<script src="js/thrad.js" type="text/javascript"></script>-->
         <script src="js/funciones.js" type="text/javascript"></script>
         <script src="js/cliente.js" type="text/javascript"></script>
     </head>

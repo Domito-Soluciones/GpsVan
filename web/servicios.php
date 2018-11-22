@@ -19,7 +19,7 @@ if(!isset($_SESSION['agente']))
         <link rel="stylesheet" href="css/jquery.datetimepicker.css">
         <script src="js/jquery.js" type="text/javascript"></script>
         <script src="js/alertify.js" type="text/javascript"></script>
-        <script src="js/thread.js" type="text/javascript"></script>
+        <!--<script src="js/thread.js" type="text/javascript"></script>-->
         <script src="js/funciones.js" type="text/javascript"></script>
         <script src="js/servicio.js" type="text/javascript"></script>
         <script src="js/jquery.datetimepicker.js" type="text/javascript"></script>
@@ -96,10 +96,22 @@ if(!isset($_SESSION['agente']))
                 <thead>
                     <tr class="tr_titulo">
                         <th>
-                            ID servicio
+                            ID Serv.
                         </th>
                         <th>
-                            Fecha
+                            Estado Serv.
+                        </th>
+                        <th>
+                            Fecha/Hora
+                        </th>
+                        <th>
+                            N° Movil
+                        </th>
+                        <th>
+                            Pasajero
+                        </th>
+                        <th>
+                            Tipo
                         </th>
                         <th>
                             Tarifa
@@ -114,18 +126,8 @@ if(!isset($_SESSION['agente']))
                             Cliente
                         </th>
                         <th>
-                            Pasajero
-                        </th>
-                        <th>
                             Transportista
                         </th>
-                        <th>
-                            Movil
-                        </th>
-                        <th>
-                            Tipo
-                        </th>
-
                     </tr>
                 </thead>
                 <tbody>

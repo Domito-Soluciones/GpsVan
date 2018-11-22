@@ -6,6 +6,8 @@ class Usuario {
     private $nombre;
     private $direccion;
     private $celular;
+    private $cliente;
+    
     function getId() {
         return $this->id;
     }
@@ -22,6 +24,10 @@ class Usuario {
         return $this->celular;
     }
 
+    function getCliente() {
+        return $this->cliente;
+    }
+
     function setId($id) {
         $this->id = $id;
     }
@@ -36,6 +42,10 @@ class Usuario {
 
     function setCelular($celular) {
         $this->celular = $celular;
+    }
+
+    function setCliente($cliente) {
+        $this->cliente = $cliente;
     }
 
 

@@ -20,7 +20,7 @@ if(!isset($_SESSION['agente']))
         <script src="js/jquery.js" type="text/javascript"></script>
         <script src="js/jquery.datetimepicker.js" type="text/javascript"></script>
         <script src="js/alertify.js" type="text/javascript"></script>
-        <script src="js/thread.js" type="text/javascript"></script>
+        <!--<script src="js/thread.js" type="text/javascript"></script>-->
         <script src="js/funciones.js" type="text/javascript"></script>
         <script src="js/movil.js" type="text/javascript"></script>
     </head>

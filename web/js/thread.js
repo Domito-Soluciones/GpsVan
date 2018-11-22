@@ -9,7 +9,6 @@ var ORIGEN_ID;
 var DESTINO;
 var DESTINO_ID;
 var GESTIONANDO_TICKET = 0;
-
 $(document).ready(function(){
     setInterval('validarServicios()', 5000);
 });
@@ -33,6 +32,8 @@ $(document).ready(function(){
                                     $("#partida_hidden").val(response.servicio_partidaId);
                                     $("#destino").val(response.servicio_destino);
                                     $("#destino_hidden").val(response.servicio_destinoId);
+                                    $("#cliente").val(response.servicio_cliente);
+                                    $("#usuario").val(response.servicio_pasajero);
                                     calculateAndDisplayRoute(response.servicio_partidaId,response.servicio_destinoId);
                                 });
                     }

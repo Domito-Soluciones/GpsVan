@@ -56,7 +56,7 @@ html,body
 {
     background-color: #0b41d3;
     border-right: solid 2px black;
-    width: calc(13.7% - 2px);
+    width: calc(11.1% - 2px);
     height: 100%;
     display: inline;
     float: left;
@@ -176,18 +176,12 @@ html,body
 .img-salir
 {
     margin-top: 7px;
-    margin-left: 10px;
+    margin-left: 15px;
     width: 30px;
     height: 30px;
 }
 
 .opcion-menu-cerrar
 {
-    background-color: #0b41d3;
-    height: 50px;   
-    cursor: pointer;
-    display: inline;
-    width: calc(4.1%);
-    height: 100%;   
-    float: left;
+    background-color: orange;
 }

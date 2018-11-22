@@ -11,8 +11,34 @@ $cliente = $_REQUEST['cliente'];
 $usuario = $_REQUEST['usuario'];
 $transportista = $_REQUEST['transportista'];
 $movil = $_REQUEST['movil'];
+$hoy = getdate();
 $desde = $_REQUEST['desde'];
+
+if($desde == '')
+{
+    if(($id != '' || $cliente != '' || $usuario != '' || $transportista != '' 
+        || $movil != ''))
+    {
+        $desde = '2000-01-01 00:00:00';
+    }
+    else            
+    {
+    $desde = $hoy['year'] . "-" . $hoy['mon'] . "-" . $hoy['mday']. ' 00:00:00';
+    }
+}
 $hasta = $_REQUEST['hasta'];
+if($hasta == '')
+{
+    if(($id != '' || $cliente != '' || $usuario != '' || $transportista != '' 
+        || $movil != ''))
+    {
+        $hasta = '2100-01-01 00:00:00';
+    }
+    else            
+    {
+        $hasta = $hoy['year'] . "-" . $hoy['mon'] . "-" . $hoy['mday']. ' 23:59:59';    
+    }
+}
 $limit = $_REQUEST['limit'];
 $servicioDao = new ServicioDao();
 $servicios = $servicioDao->getServicios($id,$cliente,$usuario,$transportista,$movil,$desde,$hasta,$limit);
@@ -30,7 +56,8 @@ for ($i = 0 ; $i < count($servicios); $i++)
     $servicioTarifa = $servicios[$i]->getTarifa();
     $servicioAgente = $servicios[$i]->getAgente();
     $servicioFecha = $servicios[$i]->getFecha();
-    
+    //if($servicio->getEstado() == 0)
+    $servicioEstado = $servicios[$i]->getEstado();
     echo "{\"servicio_id\":\"".$servicioId."\","
         . "\"servicio_partida\":\"".$servicioPartida."\","
         . "\"servicio_destino\":\"".$servicioDestino."\","
@@ -41,7 +68,8 @@ for ($i = 0 ; $i < count($servicios); $i++)
         . "\"servicio_tipo\":\"".$servicioTipo."\","
         . "\"servicio_tarifa\":\"".$servicioTarifa."\","
         . "\"servicio_agente\":\"".$servicioAgente."\","
-        . "\"servicio_fecha\":\"".$servicioFecha."\""
+        . "\"servicio_fecha\":\"".$servicioFecha."\","
+        . "\"servicio_estado\":\"".$servicioEstado."\""
         . "}";
     if (($i+1) != count($servicios))
     {

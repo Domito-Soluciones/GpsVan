@@ -9,7 +9,7 @@ if(!isset($_SESSION['agente']))
 <html>
     <head>
         <title>
-            Liquidaciones
+            Contratos
         </title>
         <meta charset="utf-8">
         <link rel="stylesheet" href="css/estilo.css">
@@ -20,7 +20,7 @@ if(!isset($_SESSION['agente']))
         <script src="js/alertify.js" type="text/javascript"></script>
         <!--<script src="js/thread.js" type="text/javascript"></script>-->
         <script src="js/funciones.js" type="text/javascript"></script>
-        <script src="js/liquidacion.js" type="text/javascript"></script>
+        <script src="js/contrato.js" type="text/javascript"></script>
     </head>
     <body>
         <div class="cabecera" id="cabecera">
@@ -32,25 +32,25 @@ if(!isset($_SESSION['agente']))
         <div class="contenedor-lateral">
             <div class="lateral">
                 <div class="contenedor-pre-input">
-                    Transportista
+                    Contrato
                 </div>
                 <div class="contenedor-input">
                     <input type="text" list="ltransportista" id="transportista" placeholder="Transportista" onkeyup="cargarTransportistas()">
                     <datalist id="ltransportista"></datalist>
                 </div>
                 <div class="contenedor-pre-input">
-                    Conductor
+                    Tipo
                 </div>
                 <div class="contenedor-input">
                     <input type="text" list="ltransportista" id="transportista" placeholder="Conductor" onkeyup="cargarTransportistas()">
                     <datalist id="ltransportista"></datalist>
                 </div>
                 <div class="contenedor-pre-input">
-                    Administrativo
+                    Adjuntar Contrato
                 </div>
                 <div class="contenedor-input">
-                    <input type="text" list="ltransportista" id="transportista" placeholder="Transportista" onkeyup="cargarTransportistas()">
-                    <datalist id="ltransportista"></datalist>
+                    <a onclick="" name="agregar" id="upload_link" href="javascript:void(0)" style="color: #C73549" ><img src="img/mas.png" style="width:20px;height:20px;"></a>
+                    <input name="file" id="upload" type="file" style="display: none;" onchange="$('#form').submit()"/>
                 </div>
                 <div id="mensaje-error" class="mensaje-error">
                 
@@ -73,69 +73,24 @@ if(!isset($_SESSION['agente']))
                     <thead>
                         <tr class="tr_titulo">
                             <th>
-                                Liquidaci&oacuten
+                                Contratos
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>
-                                Enero 2018
+                                Contratos Conductores
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                Febrero 2018
+                                Contratos Personal Administrativo
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                Marzo 2018
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Abril 2018
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Mayo 2018
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Junio 2018
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Julio 2018
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Agosto 2018
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Septiembre 2018
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Octubre 2018
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Noviembre 2018
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Diciembre 2018
+                                Contratos con Terceros
                             </td>
                         </tr>
                     </tbody>

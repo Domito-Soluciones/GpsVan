@@ -82,7 +82,6 @@ include '../../util/validarPeticion.php';
     {
         $gestion = $_REQUEST['gestion'];
     }
-    
 
     $servicio = new Servicio();
     $servicio->setPartida($partida);
@@ -97,6 +96,7 @@ include '../../util/validarPeticion.php';
     $servicio->setTarifa($tarifa);
     $servicio->setAgente($agente);
     $servicioDao = new ServicioDao();
+    $idServicio = "";
     if($gestion == 0)
     {
         $idServicio = $servicioDao->addServicio($servicio);

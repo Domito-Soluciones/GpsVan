@@ -23,9 +23,10 @@ class UsuarioDao {
             $where = "";
             if($id != "")
             {
-                $where = " WHERE usuario_cliente = (SELECT cliente_id FROM tbl_cliente WHERE cliente_razon_social = '".$id."')";
+                $where = " WHERE usuario_cliente = '".$id."'";
             }
             $query = "SELECT * FROM tbl_usuario ".$where." LIMIT 20"; 
+            echo $query;
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die; 
             while($row = mysqli_fetch_array($result)) {
@@ -75,20 +76,21 @@ class UsuarioDao {
         return $id;
     }
     
-    public function getUsuarioNombre($usuario)
+    public function getUsuarioDatos($user)
     {
         $conn = new Conexion();
-        $nombre = "";
+        $usuario = new Usuario();
         try {
-            $query = "SELECT usuario_nombre FROM tbl_usuario WHERE usuario_nick = '$usuario'"; 
+            $query = "SELECT usuario_nombre,usuario_cliente FROM tbl_usuario WHERE usuario_nick = '$user'"; 
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query); 
             while($row = mysqli_fetch_array($result)) {
-                $nombre = $row["usuario_nombre"];
+                $usuario->setNombre($row["usuario_nombre"]);
+                $usuario->setCliente($row["usuario_cliente"]);
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
-        return $nombre;
+        return $usuario;
     }
 }
