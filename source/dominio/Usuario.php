@@ -7,7 +7,35 @@ class Usuario {
     private $direccion;
     private $celular;
     private $cliente;
+    private $nick;
+    private $password;
+    private $estado;
     
+    
+    function getNick() {
+        return $this->nick;
+    }
+
+    function getPassword() {
+        return $this->password;
+    }
+
+    function getEstado() {
+        return $this->estado;
+    }
+
+    function setNick($nick) {
+        $this->nick = $nick;
+    }
+
+    function setPassword($password) {
+        $this->password = $password;
+    }
+
+    function setEstado($estado) {
+        $this->estado = $estado;
+    }
+
     function getId() {
         return $this->id;
     }
