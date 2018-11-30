@@ -4,9 +4,9 @@ include '../../util/validarPeticion.php';
 class Conexion {
     
     private $host="localhost";
-    private $user="domitocl_gpsvan";
-    private $pass="Dmt.2005DMT";
-    private $dbname="domitocl_gpsvan";
+    private $user="root";//domitocl_gpsvan domitocl_gpsvan_test
+    private $pass="";//Dmt.2005DMT
+    private $dbname="gpsvan";//domitocl_gpsvan
 
     public $conn;
     

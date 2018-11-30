@@ -2,10 +2,10 @@
 /* global alertify, directionsDisplay, urlBase, ORIGEN, GESTIONANDO_TICKET */
 
 $(document).ready(function(){
-    $("#cabecera").load("html/cabecera.html");
-    $("#menu").load("html/menu.html", function( response, status, xhr ) {
+    $("#menu").load("menu.html", function( response, status, xhr ) {
         agregarclase($("#principal"),"menu-activo");
     });    
+    fecha = $("#fecha").append(getfecha());
     iniciarFecha();
     $("#entrar").click(function () {
         agregarServicio();

@@ -210,7 +210,7 @@ class ServicioDao {
         $conn = new Conexion();
         try {
             $servicio = new Servicio();            
-            $query = "SELECT * FROM tbl_servicio WHERE servicio_movil = '' ORDER BY servicio_fecha LIMIT 1";
+            $query = "SELECT * FROM tbl_servicio WHERE servicio_movil = '' AND servicio_estado NOT IN (2,3) ORDER BY servicio_fecha LIMIT 1";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query); 
             while($row = mysqli_fetch_array($result)) {
@@ -301,6 +301,23 @@ class ServicioDao {
         $conn = new Conexion();
         try {
             $query = "UPDATE tbl_servicio SET servicio_estado = 1 WHERE servicio_id = $idServicio"; 
+            $conn->conectar();
+            if (mysqli_query($conn->conn,$query)) {
+                $id = mysqli_insert_id($conn->conn);
+            } else {
+                echo mysqli_error($conn->conn);
+            }           
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $id;
+    }
+    public function cancelarServicio($idServicio)
+    {
+         $id = 0;
+        $conn = new Conexion();
+        try {
+            $query = "UPDATE tbl_servicio SET servicio_estado = 3 WHERE servicio_id = $idServicio"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);

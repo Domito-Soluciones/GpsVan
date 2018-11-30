@@ -2,7 +2,7 @@
 var bordeAzul = "solid 1px #0b41d3";
 var bordeRojo = "solid 1px red";
 var bordeBlanco = "solid 1px white";
-var urlBase= "../source/httprequest";
+var urlBase= "source/httprequest";
 
 
 function darFoco(elemento)
@@ -97,14 +97,15 @@ function agregarclase(div,clase)
 {
     div.addClass(clase);
 }
-function quitarclase(div,clase)
+function agregarclase(div,clase)
 {
     div.removeClass(clase);
 }
 
 function cambiarModulo(pagina)
 {
-    redireccionar(pagina+".php");
+    $("#contenido-central").load(pagina+".html");
+    agregarclase($("#"+pagina),"menu-activo");
 }
 
 function cerrarSession(response)
@@ -129,5 +130,17 @@ function formato_fecha(texto){
 }
 function formato_humano(texto){
   return texto.replace(/^(\d{2}-(\d{2})-(\d{4}))$/g,'$1/$2/$3');
+}
+
+function getfecha()
+{
+    var date = new Date();
+    var day = date.getDate();
+    var monthIndex = date.getMonth() < 10 ? '0'+date.getMonth() : date.getMonth();
+    var year = date.getFullYear();
+    var hour = date.getHours();
+    var minute = date.getMinutes();
+    
+    return day+"/"+(monthIndex+1)+"/"+year + " " + hour + ":" +minute;
 }
 

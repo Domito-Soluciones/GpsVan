@@ -5,12 +5,7 @@ $(document).ready(function(){
     $("#menu").load("html/menu.html", function( response, status, xhr ) {
         agregarclase($("#estadistica"),"menu-activo");
     });
-    var date = new Date();
-    var day = date.getDate();
-    var monthIndex = date.getMonth() < 10 ? '0'+date.getMonth() : date.getMonth();
-    var year = date.getFullYear();
     
-    $("#fecha").html(day+"/"+(monthIndex+1)+"/"+year);
     setArco();
     setTorta();
     setConductoresConectados();
