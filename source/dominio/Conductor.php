@@ -7,6 +7,8 @@ class Conductor {
     private $papellido;
     private $mapellido;
     private $rut;
+    private $nick;
+    private $password;
     private $telefono;
     private $celular;
     private $direccion;
@@ -22,11 +24,13 @@ class Conductor {
     private $seguroRenovacion;
     private $descuento;
     private $anticipo;
+    private $imagenAdjunta;
+    private $contratoAdjunto;
     
     function getId() {
         return $this->id;
     }
-    
+
     function getNombre() {
         return $this->nombre;
     }
@@ -41,6 +45,14 @@ class Conductor {
 
     function getRut() {
         return $this->rut;
+    }
+
+    function getNick() {
+        return $this->nick;
+    }
+
+    function getPassword() {
+        return $this->password;
     }
 
     function getTelefono() {
@@ -102,11 +114,19 @@ class Conductor {
     function getAnticipo() {
         return $this->anticipo;
     }
-    
+
+    function getImagenAdjunta() {
+        return $this->imagenAdjunta;
+    }
+
+    function getContratoAdjunto() {
+        return $this->contratoAdjunto;
+    }
+
     function setId($id) {
         $this->id = $id;
     }
-    
+
     function setNombre($nombre) {
         $this->nombre = $nombre;
     }
@@ -121,6 +141,14 @@ class Conductor {
 
     function setRut($rut) {
         $this->rut = $rut;
+    }
+
+    function setNick($nick) {
+        $this->nick = $nick;
+    }
+
+    function setPassword($password) {
+        $this->password = $password;
     }
 
     function setTelefono($telefono) {
@@ -181,6 +209,14 @@ class Conductor {
 
     function setAnticipo($anticipo) {
         $this->anticipo = $anticipo;
+    }
+
+    function setImagenAdjunta($imagenAdjunta) {
+        $this->imagenAdjunta = $imagenAdjunta;
+    }
+
+    function setContratoAdjunto($contratoAdjunto) {
+        $this->contratoAdjunto = $contratoAdjunto;
     }
 
 

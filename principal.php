@@ -2,7 +2,7 @@
 session_start(); 
 if(!isset($_SESSION['agente']))
 {
-    header('Location: index.html');
+    header('Location: index.php');
 }
 ?>
 <!DOCTYPE html>
@@ -20,10 +20,10 @@ if(!isset($_SESSION['agente']))
         <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
         <script src="js/jquery.js" type="text/javascript"></script>
         <script src="js/alertify.js" type="text/javascript"></script>
-        <script src="js/thread.js" type="text/javascript"></script>
         <script src="js/funciones.js" type="text/javascript"></script>
         <script src="js/principal.js" type="text/javascript"></script>
         <script src="js/alertify.js" type="text/javascript"></script>
+        <script src="js/jquery.datetimepicker.js" type="text/javascript"></script>
     </head>
     <body>
         <div class="cabecera" id="cabecera">

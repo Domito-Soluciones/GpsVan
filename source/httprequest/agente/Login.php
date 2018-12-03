@@ -1,6 +1,5 @@
 <?php
 include '../../util/validarPeticion.php';
-
 include '../../query/AgenteDao.php';
 
 $respuesta = '0';

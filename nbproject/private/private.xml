@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="2">
+        <file>
+            <url>moviles.html</url>
+            <bookmark id="2">
+                <name/>
+                <line>9</line>
+                <key/>
+            </bookmark>
+        </file>
         <file>
             <url>source/query/ServicioDao.php</url>
             <bookmark id="1">
@@ -12,7 +20,14 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Jose/Documents/Proyectos/GPSVAN/GpsVan/source/conexion/Conexion.php</file>
+            <file>file:/C:/Users/Jose/Documents/Proyectos/GPSVAN/GpsVan_new/html/datos_conductor.html</file>
+            <file>file:/C:/Users/Jose/Documents/Proyectos/GPSVAN/GpsVan_new/js/contrato.js</file>
+            <file>file:/C:/Users/Jose/Documents/Proyectos/GPSVAN/GpsVan_new/css/estilo.css</file>
+            <file>file:/C:/Users/Jose/Documents/Proyectos/GPSVAN/GpsVan_new/contrato.html</file>
+            <file>file:/C:/Users/Jose/Documents/Proyectos/GPSVAN/GpsVan_new/liquidaciones.html</file>
+            <file>file:/C:/Users/Jose/Documents/Proyectos/GPSVAN/GpsVan_new/js/liquidacion.js</file>
+            <file>file:/C:/Users/Jose/Documents/Proyectos/GPSVAN/GpsVan_new/js/conductor.js</file>
+            <file>file:/C:/Users/Jose/Documents/Proyectos/GPSVAN/GpsVan_new/js/estadistica.js</file>
         </group>
     </open-files>
 </project-private>

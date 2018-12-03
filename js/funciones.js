@@ -135,7 +135,7 @@ function formato_humano(texto){
 function getfecha()
 {
     var date = new Date();
-    var day = date.getDate();
+    var day = date.getDate() < 10 ? '0'+date.getDate() : date.getDate();
     var monthIndex = date.getMonth() < 10 ? '0'+date.getMonth() : date.getMonth();
     var year = date.getFullYear();
     var hour = date.getHours();
@@ -144,3 +144,130 @@ function getfecha()
     return day+"/"+(monthIndex+1)+"/"+year + " " + hour + ":" +minute;
 }
 
+function mensajeBienvenida(mensaje)
+{
+    $("#contenedor_central").html("<div class=\"mensaje_bienvenida\">\n\
+    SELECCIONE OPCIONES PARA AGREGAR EDITAR Y/O MODIFICAR "+mensaje+"</div>");
+}
+
+function resetFormulario(pagina) 
+{
+    $("#contenedor_central").html("");
+    mensajeBienvenida(pagina+"</div>");
+}
+
+function abrirFile(e,obj){
+    e.preventDefault();
+    obj.trigger("click");
+}
+
+function subirFichero(event,form,url,success)
+{
+    $.ajax({
+        async: true,
+        type: 'POST',
+        url: url,
+        data: new FormData(form[0]),
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: success
+    });
+    event.preventDefault();
+}
+
+function enviarFormFile(file,hidden,form)
+{   
+    var filename = file.replace(/.*(\/|\\)/, '');
+    hidden.val(filename);
+    form.submit();
+}
+
+function iniciarFecha(inputs) {
+    jQuery.datetimepicker.setLocale('es');
+    var conf = {
+        i18n:{
+            de:{
+                months:[
+                    'Januar','Februar','März','April',
+                    'Mai','Juni','Juli','August',
+                    'September','Oktober','November','Dezember'
+                ],
+                dayOfWeek:[
+                    "So.", "Mo", "Di", "Mi", 
+                    "Do", "Fr", "Sa."
+                ]
+            }
+        },
+        timepicker:false,
+        format:'d-m-Y'
+    };
+    for(var i = 0 ; i < inputs.length; i++)
+    {
+        jQuery(inputs[i]).datetimepicker(conf);    
+    }
+}
+
+function validarRut(rut)
+{
+    var tmpstr = "";
+    var intlargo = rut
+    if (intlargo.length> 0)
+    {
+        largo = rut.length;
+        if ( largo <2 )
+        {
+            return false;
+        }
+        for ( i=0; i <rut.length ; i++ )
+        var crut = rut;
+        if ( crut.charAt(i) != ' ' && crut.charAt(i) != '.' && crut.charAt(i) != '-' )
+        {
+                tmpstr = tmpstr + crut.charAt(i);
+        }
+        rut = tmpstr;
+        crut=tmpstr;
+        largo = crut.length; 
+        if ( largo> 2 )
+                rut = crut.substring(0, largo - 1);
+        else
+                rut = crut.charAt(0);
+        dv = crut.charAt(largo-1);
+        if ( rut == null || dv == null )
+        return 0;
+        var dvr = '0';
+        suma = 0;
+        mul  = 2;
+        for (i= rut.length-1 ; i>= 0; i--)
+        {
+            suma = suma + rut.charAt(i) * mul;
+            if (mul == 7)
+                mul = 2;
+            else
+                mul++;
+        } 
+        res = suma % 11;
+        if (res==1)
+                dvr = 'k';
+        else if (res==0)
+                dvr = '0';
+        else
+        {
+                dvi = 11-res;
+                dvr = dvi + "";
+        }
+        if ( dvr != dv.toLowerCase() )
+        {
+                return false;
+        }
+        return true;
+    }
+
+}
+function validarEmail(valor) {
+  if (/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(valor)){
+   return true;
+  } else {
+   return false;
+  }
+}

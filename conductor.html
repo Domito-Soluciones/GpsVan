@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="js/conductor.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <div class="contenedor-lateral">
+            <div class="buscador">
+                Buscar: <input type="text" id="busqueda">                    
+            </div>
+            <div class="buscador_titulo">
+                Conductores
+            </div>
+            <div id="lista_busqueda" class="lista_busqueda">
+                <div class="contenedor-loader">
+                    <div class="loader" id="loader">Loading...</div>
+                </div>
+            </div>
+            <div id="mensaje-error" class="mensaje-error">
+
+            </div>
+        </div>
+        <div class="contenedor_central" id="contenedor_central">
+            <div class="mensaje_bienvenida">
+                SELECCIONE OPCIONES PARA AGREGAR EDITAR Y/O MODIFICAR CONDUCTORES
+            </div>
+        </div>
+        <div class="pie">
+            <div class="pie-left">
+                <div class="boton" id="agregar">
+                    <img src="img/anadir.svg" width="12" height="12">
+                    A&Ntilde;ADIR
+                </div>
+            </div>
+            <div class="pie-center">
+                <div class="boton oculto" id="cancelar">
+                    <img src="img/cancelar.svg" width="12" height="12">
+                    CANCELAR
+                </div>
+                <div class="boton oculto" id="guardar">
+                    <img src="img/guardar.svg" width="12" height="12">
+                    GUARDAR
+                </div>
+            </div>
+            <div class="pie-right">
+                <div class="boton oculto" id="eliminar">
+                    <img src="img/eliminar.svg" width="12" height="12">
+                    ELIMINAR
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

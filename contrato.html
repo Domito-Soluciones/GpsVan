@@ -1,68 +1,76 @@
-<div class="contenedor-lateral">
-    <div class="lateral">
-        <div class="contenedor-pre-input">
-            Contrato
-        </div>
-        <div class="contenedor-input">
-            <input type="text" list="ltransportista" id="transportista" placeholder="Transportista" onkeyup="cargarTransportistas()">
-            <datalist id="ltransportista"></datalist>
-        </div>
-        <div class="contenedor-pre-input">
-            Tipo
-        </div>
-        <div class="contenedor-input">
-            <input type="text" list="ltransportista" id="transportista" placeholder="Conductor" onkeyup="cargarTransportistas()">
-            <datalist id="ltransportista"></datalist>
-        </div>
-        <div class="contenedor-pre-input">
-            Adjuntar Contrato
-        </div>
-        <div class="contenedor-input">
-            <a onclick="" name="agregar" id="upload_link" href="javascript:void(0)" style="color: #C73549" ><img src="img/mas.png" style="width:20px;height:20px;"></a>
-            <input name="file" id="upload" type="file" style="display: none;" onchange="$('#form').submit()"/>
-        </div>
-        <div id="mensaje-error" class="mensaje-error">
+<!DOCTYPE html>
+<html>
+    <head>
 
-        </div>
-        <div class="contenedor-loader">
-            <div class="loader" id="loader">Loading...</div>
-        </div>
-        <div class="contenedor-boton">
-            <div class="button-succes" id="buscar">
-                <a class="enlace-succes">
-                    BUSCAR
-                </a>
+    </head>
+    <body>
+        <div class="contenedor-lateral">
+            <div class="lateral">
+                <div class="contenedor-pre-input">
+                    Contrato
+                </div>
+                <div class="contenedor-input">
+                    <input type="text" list="ltransportista" id="transportista" placeholder="Transportista" onkeyup="cargarTransportistas()">
+                    <datalist id="ltransportista"></datalist>
+                </div>
+                <div class="contenedor-pre-input">
+                    Tipo
+                </div>
+                <div class="contenedor-input">
+                    <input type="text" list="ltransportista" id="transportista" placeholder="Conductor" onkeyup="cargarTransportistas()">
+                    <datalist id="ltransportista"></datalist>
+                </div>
+                <div class="contenedor-pre-input">
+                    Adjuntar Contrato
+                </div>
+                <div class="contenedor-input">
+                    <a onclick="" name="agregar" id="upload_link" href="javascript:void(0)" style="color: #C73549" ><img src="img/mas.png" style="width:20px;height:20px;"></a>
+                    <input name="file" id="upload" type="file" style="display: none;" onchange="$('#form').submit()"/>
+                </div>
+                <div id="mensaje-error" class="mensaje-error">
+
+                </div>
+                <div class="contenedor-loader">
+                    <div class="loader" id="loader">Loading...</div>
+                </div>
+                <div class="contenedor-boton">
+                    <div class="button-succes" id="buscar">
+                        <a class="enlace-succes">
+                            BUSCAR
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-<div class="contendor_central">
-    <div class="central" id="central">
-        <table id="tabla" class="tabla-central">
-            <thead>
-                <tr class="tr_titulo">
-                    <th>
-                        Contratos
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        Contratos Conductores
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Contratos Personal Administrativo
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Contratos con Terceros
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>    
-</div>   
+        <div class="contendor_central">
+            <div class="central" id="central">
+                <table id="tabla" class="tabla-central">
+                    <thead>
+                        <tr class="tr_titulo">
+                            <th>
+                                Contratos
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                Contratos Conductores
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Contratos Personal Administrativo
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Contratos con Terceros
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>    
+        </div>   
+    </body>
+</html>

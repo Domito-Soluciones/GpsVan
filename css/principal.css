@@ -10,24 +10,7 @@
     height: 100%;
     width: 100%;
 }
-.contenedor-pre-input
-{
-    margin-left: 15%;
-    width: 50%;
-}
-.contenedor-input
-{
-    margin-left: 15%;
-    margin-bottom: 5px;
-    width: 60%;
-}
-.contenedor-input input
-{
-    padding-left: 10px;
-    border: none;
-    border-radius: 7px;
-    height: 25px;
-}
+
 .buscar
 {
     display: none;
