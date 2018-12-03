@@ -8,20 +8,25 @@ $papellido = $_REQUEST['papellido'];
 $mapellido = $_REQUEST['mapellido'];
 $rut = $_REQUEST['rut'];
 $nick = $_REQUEST['nick'];
-$password = $_REQUEST['password'];
+$password = '';
+if(isset($_REQUEST['password']))
+{
+    $password = $_REQUEST['password'];
+}
+echo $password;
 $telefono = $_REQUEST['telefono'];
 $celular = $_REQUEST['celular'];
 $direccion = $_REQUEST['direccion'];
 $mail = $_REQUEST['mail'];
 $tipoLicencia = $_REQUEST['tipoLicencia'];
-$nacimiento = $_REQUEST['nacimiento'];
+$nacimiento = date("Y/m/d", strtotime($_REQUEST['nacimiento']));
 $renta = $_REQUEST['renta'];
 $contrato = $_REQUEST['contrato'];
 $afp = $_REQUEST['afp'];
 $isapre = $_REQUEST['isapre'];
 $mutual = $_REQUEST['mutual'];
-$seguroInicio = $_REQUEST['seguroInicio'];
-$seguroRenovacion = $_REQUEST['seguroRenovacion'];
+$seguroInicio = date("Y/m/d", strtotime($_REQUEST['seguroInicio']));
+$seguroRenovacion = date("Y/m/d", strtotime($_REQUEST['seguroRenovacion']));
 $descuento = $_REQUEST['descuento'];
 $anticipo = $_REQUEST['anticipo'];
 $imagen = $_REQUEST['imagen'];

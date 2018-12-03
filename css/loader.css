@@ -9,6 +9,18 @@
   -webkit-animation: load4 1.3s infinite linear;
   animation: load4 1.3s infinite linear;
 }
+.loaderCentral {
+  font-size: 20px;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  position: absolute;
+  z-index: 10;
+  text-indent: -9999em;
+  visibility: hidden;
+  -webkit-animation: load4 1.3s infinite linear;
+  animation: load4 1.3s infinite linear;
+}
 @-webkit-keyframes load4 {
   0%,
   100% {

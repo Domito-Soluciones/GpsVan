@@ -31,7 +31,7 @@ class ConductorDao {
         $descuento = $conductor->getDescuento();
         $anticipo = $conductor->getAnticipo();
         $imagen = $conductor->getImagenAdjunta();
-        $archivoContrato->getContratoAdjunto();
+        $archivoContrato = $conductor->getContratoAdjunto();
         $conn = new Conexion();
         try {
             $query = "INSERT INTO tbl_conductor (conductor_nombre,conductor_papellido,"
@@ -85,13 +85,18 @@ class ConductorDao {
                     . "conductor_papellido = '$papellido', conductor_mapellido = '$mapellido',"
                     . "conductor_telefono = '$telefono',conductor_celular = '$celular',"
                     . "conductor_direccion = '$direccion',conductor_mail = '$mail',"
-                    . "conductor_nick = '$nick',conductor_clave = '$password',"
-                    . "conductor_tipo_licencia = '$tipoLicencia',conductor_nacimiento = '$nacimiento',"
+                    . "conductor_nick = '$nick',";
+                    if($conductor->getPassword() != '')
+                    {
+                    $query .= "conductor_clave = '$password',";
+                    }
+                    $query .= "conductor_tipo_licencia = '$tipoLicencia',conductor_nacimiento = '$nacimiento',"
                     . "conductor_renta = '$renta',conductor_tipo_contrato = '$contrato',"
                     . "conductor_prevision = '$afp',conductor_isapre = '$isapre',conductor_mutual = '$mutual',"
                     . "conductor_seguro_inicio = '$seguroInicio',conductor_seguro_renovacion = '$seguroRenovacion',"
                     . "conductor_descuento = '$descuento',conductor_anticipo = '$anticipo',conductor_imagen = '$imagen',"
                     . "conductor_contrato = '$archivoContrato' WHERE conductor_rut = '$rut'";           
+                    echo $query;
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);

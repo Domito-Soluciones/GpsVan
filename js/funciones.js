@@ -29,13 +29,13 @@ function postRequest(url,success)
         method:'POST',
         cache: false,
         beforeSend: function (xhr) {
-            cambiarPropiedad($("#loader"),"visibility","visible");
+            cambiarPropiedad($("#loaderCentral"),"visibility","visible");
         },
         success: success,
         error: function (resposeError)
         {
             $("#error").text(resposeError);
-            cambiarPropiedad($("#loader"),"visibility","hidden");
+            cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
         }
     });
 }
@@ -97,7 +97,7 @@ function agregarclase(div,clase)
 {
     div.addClass(clase);
 }
-function agregarclase(div,clase)
+function quitarclase(div,clase)
 {
     div.removeClass(clase);
 }
@@ -126,10 +126,10 @@ function vaciarFormulario(div)
 }
 
 function formato_fecha(texto){
-  return texto.replace(/^(\d{4})-(\d{2})-(\d{2})$/g,'$3/$2/$1');
+  return texto.replace(/^(\d{4})\/(\d{2})\/(\d{2})$/g,'$3/$2/$1');
 }
 function formato_humano(texto){
-  return texto.replace(/^(\d{2}-(\d{2})-(\d{4}))$/g,'$1/$2/$3');
+  return texto.replace(/^(\d{2}\/(\d{2})\/(\d{4}))$/g,'$1/$2/$3');
 }
 
 function getfecha()
@@ -146,8 +146,10 @@ function getfecha()
 
 function mensajeBienvenida(mensaje)
 {
-    $("#contenedor_central").html("<div class=\"mensaje_bienvenida\">\n\
-    SELECCIONE OPCIONES PARA AGREGAR EDITAR Y/O MODIFICAR "+mensaje+"</div>");
+    $("#contenedor_central").html("<div class=\"contenedor-loaderCentral\">\n\
+                                    <div class=\"loaderCentral\" id=\"loader\">Loading...</div>\n\
+                                    </div><div class=\"mensaje_bienvenida\">\n\
+                                    SELECCIONE OPCIONES PARA AGREGAR EDITAR Y/O MODIFICAR "+mensaje+"</div>");
 }
 
 function resetFormulario(pagina) 
@@ -200,7 +202,7 @@ function iniciarFecha(inputs) {
             }
         },
         timepicker:false,
-        format:'d-m-Y'
+        format:'d/m/Y'
     };
     for(var i = 0 ; i < inputs.length; i++)
     {
@@ -208,62 +210,36 @@ function iniciarFecha(inputs) {
     }
 }
 
-function validarRut(rut)
-{
-    var tmpstr = "";
-    var intlargo = rut
-    if (intlargo.length> 0)
+function validarRut(rut){
+    var suma=0;
+    var arrRut = rut.split("-");
+    var rutSolo = arrRut[0];
+    if(isNaN(rutSolo))
     {
-        largo = rut.length;
-        if ( largo <2 )
-        {
-            return false;
-        }
-        for ( i=0; i <rut.length ; i++ )
-        var crut = rut;
-        if ( crut.charAt(i) != ' ' && crut.charAt(i) != '.' && crut.charAt(i) != '-' )
-        {
-                tmpstr = tmpstr + crut.charAt(i);
-        }
-        rut = tmpstr;
-        crut=tmpstr;
-        largo = crut.length; 
-        if ( largo> 2 )
-                rut = crut.substring(0, largo - 1);
-        else
-                rut = crut.charAt(0);
-        dv = crut.charAt(largo-1);
-        if ( rut == null || dv == null )
-        return 0;
-        var dvr = '0';
-        suma = 0;
-        mul  = 2;
-        for (i= rut.length-1 ; i>= 0; i--)
-        {
-            suma = suma + rut.charAt(i) * mul;
-            if (mul == 7)
-                mul = 2;
-            else
-                mul++;
-        } 
-        res = suma % 11;
-        if (res==1)
-                dvr = 'k';
-        else if (res==0)
-                dvr = '0';
-        else
-        {
-                dvi = 11-res;
-                dvr = dvi + "";
-        }
-        if ( dvr != dv.toLowerCase() )
-        {
-                return false;
-        }
+        return false;
+    }
+    var verif = arrRut[1];
+    var continuar = true;
+    for(i=2;continuar;i++){
+        suma += (rutSolo%10)*i;
+        rutSolo = parseInt((rutSolo /10));
+        i=(i==7)?1:i;
+        continuar = (rutSolo == 0)?false:true;
+    }
+    resto = suma%11;
+    dv = 11-resto;
+    if(dv==10){
+        if(verif.toUpperCase() == 'K')
         return true;
     }
-
+    else if (dv == 11 && verif == 0)
+        return true;
+    else if (dv == verif)
+        return true;
+    else
+    return false;
 }
+
 function validarEmail(valor) {
   if (/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(valor)){
    return true;
@@ -271,3 +247,21 @@ function validarEmail(valor) {
    return false;
   }
 }
+
+function validarNumero(numero)
+{
+    if(isNaN(numero))
+    {
+        return false;
+    }
+    return true;
+}
+
+function resetBotones()
+{
+    cambiarPropiedad($("#agregar"),"visibility","visible");
+    cambiarPropiedad($("#guardar"),"visibility","hidden");
+    cambiarPropiedad($("#cancelar"),"visibility","hidden");
+    cambiarPropiedad($("#eliminar"),"visibility","hidden");
+}
+

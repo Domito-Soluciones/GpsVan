@@ -1,88 +1,97 @@
 <div class="titulo_pagina">
     Informaci&oacute;n Conductor
 </div>
-<div class="titulo_pagina_general">
-    General
+<div class="contenedor-titulo">
+    <div class="titulo_pagina_general" id="p_general">
+        1. General
+    </div>
+    <div class="titulo_pagina_general dispose" id="p_contrato">
+        2. Contrato
+    </div>
+    <div class="titulo_pagina_general dispose" id="p_app">
+        3. Aplicaci&oacute;n
+    </div>
 </div>
-<div class="contenedor-info general">
+<div class="contenedor-info general" id="cont_general">
     <div class="contenedor-formulario">
         <div class="contenedor-fila">
             <div class="contenedor-fila">
                 <div class="contenedor-pre-input">
-                    Rut
+                    Rut (*)
                 </div>
                 <div class="contenedor-input">
-                    <input type="text" id="rut" placeholder="Rut"  autocomplete="off" maxlength="10">
+                    <input type="text" id="rut" placeholder="Ej: 11111111-1"  autocomplete="off" maxlength="10">
                 </div>
             </div>
             <div class="contenedor-fila">
                 <div class="contenedor-pre-input">
-                    Nombre
+                    Nombre (*)
                 </div>
                 <div class="contenedor-input">
-                    <input type="text" id="nombre" placeholder="Nombre" maxlength="20">
+                    <input type="text" id="nombre" placeholder="Ej: Manuel" maxlength="20">
                 </div>
             </div>
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Apellido paterno
+                Apellido paterno (*)
             </div>
             <div class="contenedor-input">
-                <input type="text" id="papellido" placeholder="Apellido paterno" maxlength="20">
+                <input type="text" id="papellido" placeholder="Ej: Soto" maxlength="20">
             </div>
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Apellido materno
+                Apellido materno (*)
             </div>
             <div class="contenedor-input">
-                <input type="text" id="mapellido" placeholder="Apellido materno" maxlength="20">
+                <input type="text" id="mapellido" placeholder="Ej: Vergara" maxlength="20">
             </div>
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Tel&eacute;fono
+                Tel&eacute;fono 
             </div>
             <div class="contenedor-input">
-                <input type="text" id="telefono" placeholder="Tel&eacute;fono" maxlength="10">                    
+                <input type="text" id="telefono" placeholder="Ej: 224337865" maxlength="10">                    
             </div>
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Celular
+                Celular (*)
             </div>
             <div class="contenedor-input">
-                <input type="text" id="celular" placeholder="Celular" maxlength="20">
+                <input type="text" id="celular" placeholder="Ej: 985563421" maxlength="20">
             </div>
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Direcci&oacute;n
-            </div>
+                Direcci&oacute;n (*)
+            </div> 
             <div class="contenedor-input">
-                <input type="text"  id="direccion" placeholder="Direcci&oacute;n" maxlength="20">
+                <input type="text"  id="direccion" placeholder="Ej: Av los valles 234" maxlength="50">
             </div>
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                E-mail
+                E-mail (*)
             </div>
             <div class="contenedor-input">
-                <input type="text" id="mail" placeholder="E-mail" maxlength="40">
+                <input type="text" id="mail" placeholder="Ej: user@dominio.cl" maxlength="40">
             </div>
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Fecha nacimiento
+                Fecha nacimiento (*)
             </div>
             <div class="contenedor-input">
-                <input type="text" id="nacimiento" placeholder="Fecha nacimiento">
+                <input type="text" id="nacimiento" placeholder="Ej: 01/01/2018">
             </div>
         </div>
     </div>
     <div class="contenedor-img">
         <div class="imagen"></div>
+        <div class="info">(Imagen recomendada 150x150)</div>
         <input type="hidden" id="imagenOculta">
         <form id="formImagen" enctype="multipart/form-data" method="POST" 
               onsubmit="subirFichero(event,$('#formImagen'),'source/util/subirFichero.php?tipo=img&archivo='+$('#imagenOculta').val(),succesSubirImagen())">
@@ -96,6 +105,9 @@
             Contrato
         </div>
         <input type="hidden" id="contratoOculta">
+        <div id="contenedor_contrato">
+            
+        </div>
             <form id="formContrato" enctype="multipart/form-data" method="POST" 
                   onsubmit="subirFichero(event,$('#formContrato'),'source/util/subirFichero.php?tipo=pdf&archivo='+$('#contratoOculta').val(),succesSubirContrato())">
                 <input name="contrato" type="file" class="file" id="contratoConductor" accept="application/pdf" onchange="enviarFormFile($('#contratoConductor').val(),$('#contratoOculta'),$('#formContrato'))">         
@@ -106,17 +118,14 @@
         </div>
     </div>
 </div>
-<div class="titulo_pagina_general">
-    Contrato
-</div>
-<div class="contenedor-info contrato">
+<div class="contenedor-info contrato" id="cont_contrato">
     <div class="contenedor-formulario">
         <div class="contenedor-fila">
         <div class="contenedor-pre-input">
-            Tipo licencia
+            Tipo licencia (*)
         </div>
         <div class="contenedor-input">
-            <input type="text" list="llicencia" id="tipoLicencia" placeholder="Tipo licencia" maxlength="2">
+            <input type="text" list="llicencia" id="tipoLicencia" placeholder="Ej: A1" maxlength="2">
             <datalist id="llicencia" >
                 <option value="A1">A1</option>
                 <option value="A2">A2</option>
@@ -128,18 +137,18 @@
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Renta imponible
+                Renta imponible (*)
             </div>
             <div class="contenedor-input">
-                <input type="text" id="renta" placeholder="Renta" maxlength="10">
+                <input type="text" id="renta" placeholder="Ej: 100000" maxlength="10">
             </div>
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Tipo contrato
+                Tipo contrato (*)
             </div>
             <div class="contenedor-input">
-                <input type="text" list="lcontrato" id="tipoContrato" placeholder="Tipo contrato" maxlength="20">
+                <input type="text" list="lcontrato" id="tipoContrato" placeholder="Ej: Indefinido" maxlength="20">
                 <datalist id="lcontrato" >
                     <option value="Indefinido">Indefinido</option>
                     <option value="Plazo fijo">Plazo fijo</option>
@@ -148,10 +157,10 @@
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Institucion previsional
+                Inst. previsional (*)
             </div>
             <div class="contenedor-input">
-                <input type="text" list="lafp" id="afp" placeholder="Institución previsional" maxlength="20">
+                <input type="text" list="lafp" id="afp" placeholder="Ej: Modelo" maxlength="20">
                 <datalist id="lafp" >
                     <option value="Modelo">Modelo</option>
                     <option value="Capital">Capital</option>
@@ -163,10 +172,10 @@
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Isapre
+                Isapre (*)
             </div>
             <div class="contenedor-input">
-                <input type="text" list="lisapre" id="isapre" placeholder="Isapre" maxlength="20">
+                <input type="text" list="lisapre" id="isapre" placeholder="Ej: Consalud" maxlength="20">
                 <datalist id="lisapre" >
                     <option value="Banmédica">Banm&eacute;dica</option>
                     <option value="Colmena Golden Cross">Colmena Golden Cross</option>
@@ -180,26 +189,26 @@
     <div class="contenedor-formulario">
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Mutual (% descuento)
+                Mutual (%) (*)
             </div>
             <div class="contenedor-input">
-                <input type="text" id="mutual" placeholder="% Descuento" maxlength="10">
+                <input type="text" id="mutual" placeholder="Ej: 34" maxlength="10">
             </div>
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Inicio Seguro
+                Inicio Seguro (*)
             </div>
             <div class="contenedor-input">
-                <input type="text" id="seguroInicio" placeholder="Inicio">
+                <input type="text" id="seguroInicio" placeholder="Ej: 01/01/2018">
             </div>
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Renovaci&oacute;n Seguro
+                Renovaci&oacute;n Seguro (*)
             </div>
             <div class="contenedor-input">
-                <input type="text" id="seguroRenovacion" placeholder="Renovaci&oacute;n">
+                <input type="text" id="seguroRenovacion" placeholder="Ej: 01/01/2018">
             </div>
         </div>
         <div class="contenedor-fila">
@@ -207,7 +216,7 @@
                 % Descuento
             </div>
             <div class="contenedor-input">
-                <input type="text" id="descuento" placeholder="% Descuento" maxlength="10">
+                <input type="text" id="descuento" placeholder="Ej: 45" maxlength="10">
             </div>
         </div>
         <div class="contenedor-fila">
@@ -215,28 +224,25 @@
                 Anticipos
             </div>
             <div class="contenedor-input">
-                <input type="text" id="anticipo" placeholder="Anticipo" maxlength="10">
+                <input type="text" id="anticipo" placeholder="Ej: 50000" maxlength="10">
             </div>
         </div>
     </div>
 </div>
-<div class="titulo_pagina_general">
-    Aplicaci&oacute;n
-</div>
-<div class="contenedor-info aplicacion">
+<div class="contenedor-info aplicacion" id="cont_app">
     <div class="contenedor-formulario">
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Nick
+                Nick (*)
             </div>
             <div class="contenedor-input">
                 <input type="password" id="nick_" style="display: none">
-                <input type="text" id="nick" placeholder="Nick" maxlength="20">
+                <input type="text" id="nick" placeholder="Ej: atorres" maxlength="20">
             </div>
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Password
+                Password (*)
             </div>
             <div class="contenedor-input">
                 <input type="password" id="password_" style="display: none">
@@ -245,7 +251,7 @@
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Repite Password
+                Repite Password (*)
             </div>
             <div class="contenedor-input">
                 <input type="password" id="password2" placeholder="Repite Password" maxlength="20" autocomplete="off">
