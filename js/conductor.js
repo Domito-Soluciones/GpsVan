@@ -304,20 +304,20 @@ function eliminarConductor()
 
 function succesSubirImagen()
 {
-    var archivo = $("#archivo").val();
+    var archivo = $("#imagenOculta").val();
     var ext = archivo.split("\.");
     if(ext !== 'png' || ext !== 'png'){
-        alertify.alert("Archivo invalido");
+        alertify.error("Archivo invalido");
         return;
     }
     cambiarPropiedad($(".imagen"),"background-image","url('source/util/img/"+archivo+"')");
 }
 function succesSubirContrato()
 {
-    var archivo = $("#archivo").val();
+    var archivo = $("#contratoOculta").val();
     var ext = archivo.split("\.");
     if(ext !== 'pdf'){
-        alertify.alert("Archivo invalido");
+        alertify.error("Archivo invalido");
         return;
     }
 }
