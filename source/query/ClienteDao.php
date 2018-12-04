@@ -5,25 +5,17 @@ include '../../conexion/Conexion.php';
 include '../../dominio/Cliente.php';
 
 class ClienteDao {
-    public function getClientes($razon,$tipo,$rut)
+    public function getClientes($busqueda)
     {
         $array = array();
         $conn = new Conexion();
         try {
-            $where = "";
-            if($razon !== '')
-            {
-                $where .= " AND cliente_razon_social like '%$razon%' ";
-            }
-            if($tipo !== '')
-            {
-                $where .= " AND cliente_tipo like '%$tipo%' ";
-            }
-            if($rut !== '')
-            {
-                $where .= " AND cliente_rut like '%$rut%' ";
-            }
-            $query = "SELECT * FROM tbl_cliente WHERE 1=1 ".$where." LIMIT 20"; 
+            $query = "SELECT * FROM tbl_cliente WHERE "
+                    . "cliente_rut LIKE '%".$busqueda."%' OR "
+                    . "cliente_razon_social LIKE '%".$busqueda."%' OR "
+                    . "cliente_tipo LIKE '%".$busqueda."%' OR "
+                    . "cliente_nombre_contacto LIKE '%".$busqueda."%' OR "
+                    . "cliente_mail_contacto LIKE '%".$busqueda."%'";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
             while($row = mysqli_fetch_array($result)) {
@@ -46,7 +38,7 @@ class ClienteDao {
         return $array;
     }
     
-    public function addCliente($cliente)
+    public function agregarCliente($cliente)
     {
         $razon = $cliente->getRazon();
         $tipo = $cliente->getTipo();
@@ -72,6 +64,39 @@ class ClienteDao {
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
+    }
+    
+    public function modificarCliente($cliente)
+    {
+        $id = 0;
+        $razon = $cliente->getRazon();
+        $tipo = $cliente->getTipo();
+        $rut = $cliente->getRut();
+        $direccion = $cliente->getDireccion();
+        $nombre = $cliente->getNombreContacto();
+        $telefono = $cliente->getFonoContacto();
+        $mail = $cliente->getMailContacto();
+        $mail2 = $cliente->getMailFacturacion();
+        $centro = $cliente->getCentroCosto();
+        $conn = new Conexion();
+        try {
+            $query = "UPDATE tbl_cliente SET cliente_razon_social = '$razon',"
+                    . "cliente_tipo = '$tipo',"
+                    . "cliente_direccion = '$direccion', cliente_nombre_contacto = '$nombre',"
+                    . "cliente_fono_contacto = '$telefono',cliente_mail_contacto = '$mail',"
+                    . "cliente_mail_facturacion = '$mail2', cliente_centro_costo = '$centro'"
+                    ." WHERE cliente_rut = '$rut'";
+                    echo $query;
+            $conn->conectar();
+            if (mysqli_query($conn->conn,$query)) {
+                $id = mysqli_insert_id($conn->conn);
+            } else {
+                echo mysqli_error($conn->conn);
+            }           
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $id;
     }
     
    

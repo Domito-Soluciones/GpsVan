@@ -4,30 +4,7 @@ include '../../util/validarPeticion.php';
 include '../../query/ClienteDao.php';
 
 header('Content-Type: application/json');
-if(isset($_REQUEST['cliente']))
-{
-    $razon = $_REQUEST['cliente'];
-}
-else
-{
-    $razon = '';
-}
-if(isset($_REQUEST['rut']))
-{
-    $rut = $_REQUEST['rut'];
-}
-else
-{
-    $rut = '';
-}
-if(isset($_REQUEST['tipo']))
-{
-    $tipo = $_REQUEST['tipo'];
-}
-else
-{
-     $tipo = '';
-}
+$busqueda = $_REQUEST['busqueda'];
 $clienteDao = new ClienteDao();
 $clientes = $clienteDao->getClientes($razon,$tipo,$rut);
 echo "[";
