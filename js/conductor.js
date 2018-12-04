@@ -360,6 +360,7 @@ function validarTipoDato()
     var renta = $("#renta").val();
     var mutual = $("#mutual").val();
     var descuento = $("#descuento").val() === '' ? '0' : $("#descuento").val();
+    var anticipo = $("#anticipo").val() === '' ? '0' : $("#anticipo").val();
     if(!validarRut(rut))
     {
         alertify.error('Rut invalido');
@@ -395,7 +396,6 @@ function validarTipoDato()
         alertify.error('% Descuento debe ser numerico');
         return false;
     }
-    var anticipo = $("#anticipo").val() === '' ? '0' : $("#anticipo").val();
     if(!validarNumero(anticipo))
     {
         alertify.error('Anticipo debe ser numerico');

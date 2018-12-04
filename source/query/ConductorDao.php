@@ -114,7 +114,7 @@ class ConductorDao {
         $array = array();
         $conn = new Conexion();
         try {
-            $query = "SELECT * FROM tbl_conductor conductor_rut WHERE "
+            $query = "SELECT * FROM tbl_conductor WHERE "
                     . "conductor_rut LIKE '%".$busqueda."%' OR "
                     . "conductor_nombre LIKE '%".$busqueda."%' OR "
                     . "conductor_papellido LIKE '%".$busqueda."%' OR "

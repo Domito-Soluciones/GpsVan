@@ -13,7 +13,6 @@ if(isset($_REQUEST['password']))
 {
     $password = $_REQUEST['password'];
 }
-echo $password;
 $telefono = $_REQUEST['telefono'];
 $celular = $_REQUEST['celular'];
 $direccion = $_REQUEST['direccion'];
