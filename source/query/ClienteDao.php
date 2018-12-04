@@ -86,7 +86,24 @@ class ClienteDao {
                     . "cliente_fono_contacto = '$telefono',cliente_mail_contacto = '$mail',"
                     . "cliente_mail_facturacion = '$mail2', cliente_centro_costo = '$centro'"
                     ." WHERE cliente_rut = '$rut'";
-                    echo $query;
+            $conn->conectar();
+            if (mysqli_query($conn->conn,$query)) {
+                $id = mysqli_insert_id($conn->conn);
+            } else {
+                echo mysqli_error($conn->conn);
+            }           
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $id;
+    }
+        
+    function eliminarCliente($rut)
+    {
+        $id = 0;
+        $conn = new Conexion();
+        try {
+            $query = "DELETE FROM tbl_cliente WHERE cliente_rut = '$rut'"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);

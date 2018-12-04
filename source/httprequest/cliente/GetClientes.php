@@ -1,12 +1,12 @@
 <?php
 include '../../util/validarPeticion.php';
-
+include '../../util/validarSession.php';
 include '../../query/ClienteDao.php';
 
 header('Content-Type: application/json');
 $busqueda = $_REQUEST['busqueda'];
 $clienteDao = new ClienteDao();
-$clientes = $clienteDao->getClientes($razon,$tipo,$rut);
+$clientes = $clienteDao->getClientes($busqueda);
 echo "[";
 for ($i = 0 ; $i < count($clientes); $i++)
 {

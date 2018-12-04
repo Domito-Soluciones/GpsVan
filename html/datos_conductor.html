@@ -11,6 +11,9 @@
     <div class="titulo_pagina_general dispose" id="p_app">
         3. Aplicaci&oacute;n
     </div>
+    <div class="titulo_pagina_general dispose" id="p_movil">
+        4. Movil
+    </div>
 </div>
 <div class="contenedor-info general" id="cont_general">
     <div class="contenedor-formulario">
@@ -88,6 +91,21 @@
                 <input type="text" id="nacimiento" placeholder="Ej: 01/01/2018">
             </div>
         </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                Tipo licencia (*)
+            </div>
+            <div class="contenedor-input">
+                <input type="text" list="llicencia" id="tipoLicencia" placeholder="Ej: A1" maxlength="2">
+                <datalist id="llicencia" >
+                    <option value="A1">A1</option>
+                    <option value="A2">A2</option>
+                    <option value="A3">A3</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                </datalist>
+            </div>
+        </div>
     </div>
     <div class="contenedor-img">
         <div class="imagen"></div>
@@ -99,42 +117,12 @@
         </form>
         <div class="boton" id="adjuntarImagen" onclick="abrirFile(event,$('#fotoConductor:hidden'))">
             <img src="img/anadir.svg" width="12" height="12">
-            CARGAR
-        </div>
-        <div class="contenedor-contrato">
-            Contrato
-        </div>
-        <input type="hidden" id="contratoOculta">
-        <div id="contenedor_contrato">
-            
-        </div>
-            <form id="formContrato" enctype="multipart/form-data" method="POST" 
-                  onsubmit="subirFichero(event,$('#formContrato'),'source/util/subirFichero.php?tipo=pdf&archivo='+$('#contratoOculta').val(),succesSubirContrato())">
-                <input name="contrato" type="file" class="file" id="contratoConductor" accept="application/pdf" onchange="enviarFormFile($('#contratoConductor').val(),$('#contratoOculta'),$('#formContrato'))">         
-        </form>
-        <div class="boton" id="adjuntarContrato" onclick="abrirFile(event,$('#contratoConductor:hidden'))">
-            <img src="img/adjuntar.svg" width="12" height="12">
-            ADJUNTAR
+            Cargar
         </div>
     </div>
 </div>
 <div class="contenedor-info contrato" id="cont_contrato">
     <div class="contenedor-formulario">
-        <div class="contenedor-fila">
-        <div class="contenedor-pre-input">
-            Tipo licencia (*)
-        </div>
-        <div class="contenedor-input">
-            <input type="text" list="llicencia" id="tipoLicencia" placeholder="Ej: A1" maxlength="2">
-            <datalist id="llicencia" >
-                <option value="A1">A1</option>
-                <option value="A2">A2</option>
-                <option value="A3">A3</option>
-                <option value="B">B</option>
-                <option value="C">C</option>
-            </datalist>
-        </div>
-        </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
                 Renta imponible (*)
@@ -185,8 +173,6 @@
                 </datalist>
             </div>
         </div>
-    </div>
-    <div class="contenedor-formulario">
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
                 Mutual (%) (*)
@@ -195,6 +181,8 @@
                 <input type="text" id="mutual" placeholder="Ej: 34" maxlength="10">
             </div>
         </div>
+    </div>
+    <div class="contenedor-formulario">
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
                 Inicio Seguro (*)
@@ -225,6 +213,25 @@
             </div>
             <div class="contenedor-input">
                 <input type="text" id="anticipo" placeholder="Ej: 50000" maxlength="10">
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                Contrato
+            </div>
+            <div class="contenedor-input">
+                <input type="hidden" id="contratoOculta">
+                <div id="contenedor_contrato">
+
+                </div>
+                    <form id="formContrato" enctype="multipart/form-data" method="POST" 
+                          onsubmit="subirFichero(event,$('#formContrato'),'source/util/subirFichero.php?tipo=pdf&archivo='+$('#contratoOculta').val(),succesSubirContrato())">
+                        <input name="contrato" type="file" class="file" id="contratoConductor" accept="application/pdf" onchange="enviarFormFile($('#contratoConductor').val(),$('#contratoOculta'),$('#formContrato'))">         
+                </form>
+                <div class="boton" id="adjuntarContrato" onclick="abrirFile(event,$('#contratoConductor:hidden'))">
+                    <img src="img/adjuntar.svg" width="12" height="12">
+                    Adjuntar
+                </div>
             </div>
         </div>
     </div>
@@ -258,14 +265,34 @@
             </div>
         </div>
     </div>
+</div>
+<div class="contenedor-info aplicacion" id="cont_movil">
     <div class="contenedor-formulario">
-<!--        <div class="contenedor-fila">
+        <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Movil
+                Nick (*)
             </div>
             <div class="contenedor-input">
-                <input type="text" id="movil" placeholder="Movil" maxlength="20">
+                <input type="password" id="nick_" style="display: none">
+                <input type="text" id="nick" placeholder="Ej: atorres" maxlength="20">
             </div>
-        </div>-->
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                Password (*)
+            </div>
+            <div class="contenedor-input">
+                <input type="password" id="password_" style="display: none">
+                <input type="password" id="password" placeholder="Password" maxlength="20" autocomplete="off">
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                Repite Password (*)
+            </div>
+            <div class="contenedor-input">
+                <input type="password" id="password2" placeholder="Repite Password" maxlength="20" autocomplete="off">
+            </div>
+        </div>
     </div>
 </div>

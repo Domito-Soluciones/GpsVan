@@ -6,7 +6,6 @@ $(document).ready(function(){
     $("#menu").load("menu.html", function( response, status, xhr ) {
         agregarclase($("#conductor"),"menu-activo");
     });
-    
     buscarConductor();
     $("#agregar").click(function(){
         cambiarPropiedad($("#agregar"),"visibility","hidden");
@@ -411,30 +410,40 @@ function iniciarPestanias()
         cambiarPropiedad($("#cont_general"),"display","block");
         cambiarPropiedad($("#cont_contrato"),"display","none");
         cambiarPropiedad($("#cont_app"),"display","none");
+        cambiarPropiedad($("#cont_movil"),"display","none");
         quitarclase($(this),"dispose");
         agregarclase($("#p_contrato"),"dispose");
         agregarclase($("#p_app"),"dispose");
+        agregarclase($("#p_movil"),"dispose");
     });
     $("#p_contrato").click(function(){
         cambiarPropiedad($("#cont_general"),"display","none");
         cambiarPropiedad($("#cont_contrato"),"display","block");
         cambiarPropiedad($("#cont_app"),"display","none");
+        cambiarPropiedad($("#cont_movil"),"display","none");
         quitarclase($(this),"dispose");
         agregarclase($("#p_general"),"dispose");
         agregarclase($("#p_app"),"dispose");
+        agregarclase($("#p_movil"),"dispose");
     });
     $("#p_app").click(function(){
         cambiarPropiedad($("#cont_general"),"display","none");
         cambiarPropiedad($("#cont_contrato"),"display","none");
         cambiarPropiedad($("#cont_app"),"display","block");
+        cambiarPropiedad($("#cont_movil"),"display","none");
         quitarclase($(this),"dispose");
         agregarclase($("#p_contrato"),"dispose");
         agregarclase($("#p_general"),"dispose");
+        agregarclase($("#p_movil"),"dispose");
+    });
+    $("#p_movil").click(function(){
+        cambiarPropiedad($("#cont_general"),"display","none");
+        cambiarPropiedad($("#cont_contrato"),"display","none");
+        cambiarPropiedad($("#cont_app"),"display","none");
+        cambiarPropiedad($("#cont_app"),"display","block");
+        quitarclase($(this),"dispose");
+        agregarclase($("#p_contrato"),"dispose");
+        agregarclase($("#p_general"),"dispose");
+        agregarclase($("#p_app"), "dispose");
     });
 }
-
-function cambiarPestania(pestania)
-{
-    
-}
-

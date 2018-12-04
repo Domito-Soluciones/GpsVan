@@ -259,7 +259,7 @@ function validarExistencia(tipo,valor)
         }
         if(tipo === 'nick')
         {
-            if(valor === PASAJEROS[i].pasajero_rut)
+            if(valor === PASAJEROS[i].pasajero_nick)
             {
                 alertify.error("El nick "+valor+" no se encuentra disponible");
                 $("#nick").val("");

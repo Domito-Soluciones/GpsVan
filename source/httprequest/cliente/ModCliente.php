@@ -23,4 +23,4 @@ $cliente->setMailContacto($mail);
 $cliente->setMailFacturacion($mail2);
 $cliente->setCentroCosto($centro);
 $clienteDao = new ClienteDao();
-$conductorDao->modificarCliente($conductor);
+$clienteDao->modificarCliente($cliente);

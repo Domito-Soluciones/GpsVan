@@ -1,17 +1,17 @@
 /* global urlBase, alertify */
-var CLIENTES;
+var TRANSPORTISTAS;
 var AGREGAR = true;
-var PAGINA = 'CLIENTES';
+var PAGINA = 'TRANSPORTISTAS';
 $(document).ready(function(){
     $("#menu").load("menu.html", function( response, status, xhr ) {
-        agregarclase($("#cliente"),"menu-activo");
+        agregarclase($("#transportista"),"menu-activo");
     });
-    
-    buscarCliente();
+    buscarTransportista();
     $("#agregar").click(function(){
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
-        $("#contenedor_central").load("html/datos_cliente.html", function( response, status, xhr ) {
+        $("#contenedor_central").load("html/datos_transportista.html", function( response, status, xhr ) {
+            iniciarPestaniasTransportista();
             $("#rut").blur(function (){
                 if(validarExistencia('rut',$(this).val()))
                 {
@@ -32,37 +32,35 @@ $(document).ready(function(){
     $("#guardar").click(function(){
         if(AGREGAR)
         {
-            agregarCliente();
+            agregarTransportista();
         }
         else
         {
-            modificarCliente();
+            modificarTransportista();
         }
     });
     $("#busqueda").keyup(function(){
-        buscarCliente($(this).val());
+        buscarTransportista($(this).val());
     });
     
     $("#eliminar").click(function (){
-            alertify.confirm("Eliminar cliente","Esta seguro que desea eliminar al cliente "+$("#rut").val(),
+            alertify.confirm("Eliminar transportista","Esta seguro que desea eliminar al transportista "+$("#rut").val(),
             function(){
-                eliminarCliente();
+                eliminarTransportista();
             },null);
     });
 });
 
-function agregarCliente()
+function agregarTransportista()
 {
     var razon = $("#razon").val();
-    var tipo = $("#tipo").val();
     var rut = $("#rut").val();
     var direccion = $("#direccion").val();
     var nombre = $("#nombre").val();
     var telefono = $("#telefono").val();
     var mail = $("#mail").val();
     var mail2 = $("#mail2").val();
-    var cc = $("#centros").val();
-    var array = [razon,tipo,rut,direccion,nombre,telefono,mail,mail2,cc];
+    var array = [razon,rut,direccion,nombre,telefono,mail,mail2];
     if(!validarCamposOr(array))
     {
         alertify.error("Ingrese todos los campos necesarios");
@@ -70,34 +68,32 @@ function agregarCliente()
     }
     if(validarTipoDato())
     {
-        var data = "razon="+razon+"&tipo="+tipo+"&rut="+rut+"&direccion="+direccion+"&nombre="+nombre+
-                "&telefono="+telefono+"&mail="+mail+"&mail2="+mail2+"&centros="+cc;
-        var url = urlBase+"/cliente/AddCliente.php?"+data;
+        var data = "razon="+razon+"&rut="+rut+"&direccion="+direccion+"&nombre="+nombre+
+                "&telefono="+telefono+"&mail="+mail+"&mail2="+mail2;
+        var url = urlBase+"/transportista/AddTransportista.php?"+data;
         var success = function(response)
         {
             cerrarSession(response);
-            alertify.success("Cliente Agregado");
+            alertify.success("Transportista Agregado");
             vaciarFormulario($("#agregar input"));
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
             resetFormulario(PAGINA);
-            buscarCliente();
+            buscarTransportista();
         };
         postRequest(url,success);
     }
 }
 
-function modificarCliente()
+function modificarTransportista()
 {
     var razon = $("#razon").val();
-    var tipo = $("#tipo").val();
     var rut = $("#rut").val();
     var direccion = $("#direccion").val();
     var nombre = $("#nombre").val();
     var telefono = $("#telefono").val();
     var mail = $("#mail").val();
     var mail2 = $("#mail2").val();
-    var cc = $("#centros").val();
-    var array = [razon,tipo,rut,direccion,nombre,telefono,mail,mail2,cc];
+    var array = [razon,rut,direccion,nombre,telefono,mail,mail2];
     if(!validarCamposOr(array))
     {
         alertify.error("Ingrese todos los campos necesarios");
@@ -105,33 +101,33 @@ function modificarCliente()
     }
     if(validarTipoDato())
     {
-        var data = "razon="+razon+"&tipo="+tipo+"&rut="+rut+"&direccion="+direccion+"&nombre="+nombre
-                +"&telefono="+telefono+"&mail="+mail+"&mail2="+mail2+"&centros="+cc;
-        var url = urlBase + "/cliente/ModCliente.php?"+data;
+        var data = "razon="+razon+"&rut="+rut+"&direccion="+direccion+"&nombre="+nombre
+                +"&telefono="+telefono+"&mail="+mail+"&mail2="+mail2;
+        var url = urlBase + "/transportista/ModTransportista.php?"+data;
         var success = function(response)
         {
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
             resetBotones();
             cerrarSession(response);
-            alertify.success("Cliente Modificado");
+            alertify.success("Transportista Modificado");
             vaciarFormulario($("#agregar input"));
             resetFormulario(PAGINA);
-            buscarCliente();
+            buscarTransportista();
         };
         postRequest(url,success);
     }
 }
 
-function buscarCliente()
+function buscarTransportista()
 {
     var busqueda = $("#busqueda").val();
-    var url = urlBase + "/cliente/GetClientes.php?busqueda="+busqueda;
+    var url = urlBase + "/transportista/GetTransportistas.php?busqueda="+busqueda;
     var success = function(response)
     {
         cerrarSession(response);
-        var clientes = $("#lista_busqueda");
-        clientes.html("");
-        CLIENTES = response;
+        var transportistas = $("#lista_busqueda");
+        transportistas.html("");
+        TRANSPORTISTAS = response;
         if(response.length === 0)
         {
             alertify.error("No hay registros que mostrar");
@@ -139,9 +135,9 @@ function buscarCliente()
         }
         for(var i = 0 ; i < response.length; i++)
         {
-            var id = response[i].cliente_id;
-            var nombre = response[i].cliente_razon;
-            clientes.append("<div class=\"fila_contenedor\" onClick=\"abrirModificar('"+id+"')\">"+nombre+"</div>");
+            var id = response[i].transportista_id;
+            var nombre = response[i].transportista_razon;
+            transportistas.append("<div class=\"fila_contenedor\" onClick=\"abrirModificar('"+id+"')\">"+nombre+"</div>");
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
@@ -151,7 +147,8 @@ function buscarCliente()
 function abrirModificar(id)
 {
     AGREGAR = false;
-    $("#contenedor_central").load("html/datos_cliente.html", function( response, status, xhr ) {
+    $("#contenedor_central").load("html/datos_transportista.html", function( response, status, xhr ) {
+        iniciarPestaniasTransportista();
         $("#nick").blur(function (){
             if(validarExistencia('rut',$(this).val()))
             {
@@ -166,25 +163,25 @@ function abrirModificar(id)
                 return;
             }
         });
-        var cliente;
-        for(var i = 0 ; i < CLIENTES.length; i++)
+        var transportista;
+        for(var i = 0 ; i < TRANSPORTISTAS.length; i++)
         {
-            if(CLIENTES[i].cliente_id === id)
+            if(TRANSPORTISTAS[i].transportista_id === id)
             {
-                cliente = CLIENTES[i];
+                transportista = TRANSPORTISTAS[i];
             }
         }
-        $("#razon").val(cliente.cliente_razon);
+        $("#razon").val(transportista.transportista_razon);
         $("#razon").prop("readonly",true);
-        $("#rut").val(cliente.cliente_rut);
+        $("#rut").val(transportista.transportista_rut);
         $("#rut").prop("readonly",true);
-        $("#tipo").val(cliente.cliente_tipo);
-        $("#nombre").val(cliente.cliente_nombre_contacto);
-        $("#telefono").val(cliente.cliente_fono_contacto);
-        $("#direccion").val(cliente.cliente_direccion);
-        $("#mail").val(cliente.cliente_mail_contacto);
-        $("#mail2").val(cliente.cliente_mail_facturacion);
-        $("#centros").val(cliente.cliente_centro_costo);
+        $("#tipo").val(transportista.transportista_tipo);
+        $("#nombre").val(transportista.transportista_nombre_contacto);
+        $("#telefono").val(transportista.transportista_fono_contacto);
+        $("#direccion").val(transportista.transportista_direccion);
+        $("#mail").val(transportista.transportista_mail_contacto);
+        $("#mail2").val(transportista.transportista_mail_facturacion);
+        $("#centros").val(transportista.transportista_centro_costo);
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
         cambiarPropiedad($("#eliminar"),"visibility","visible");
@@ -192,29 +189,29 @@ function abrirModificar(id)
     });
 }
 
-function eliminarCliente()
+function eliminarTransportista()
 {
     var rut = $("#rut").val();
-    var url = urlBase + "/cliente/DelCliente.php?rut="+rut;
+    var url = urlBase + "/transportista/DelTransportista.php?rut="+rut;
     var success = function(response)
     {
-        alertify.success("Cliente eliminado");
+        alertify.success("Transportista eliminado");
         cerrarSession(response);
         resetFormulario(PAGINA);
         cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
         resetBotones();
-        buscarCliente();
+        buscarTransportista();
     };
     getRequest(url,success);
 }
 
 function validarExistencia(tipo,valor)
 {
-    for(var i = 0 ; i < CLIENTES.length ; i++)
+    for(var i = 0 ; i < TRANSPORTISTAS.length ; i++)
     {
         if(tipo === 'rut')
         {
-            if(valor === CLIENTES[i].cliente_rut)
+            if(valor === TRANSPORTISTAS[i].transportista_rut)
             {
                 return true;
             }
@@ -250,4 +247,20 @@ function validarTipoDato()
     }
     
     return true;
+}
+
+function iniciarPestaniasTransportista()
+{
+    $("#p_general").click(function(){
+        cambiarPropiedad($("#cont_general"),"display","block");
+        cambiarPropiedad($("#cont_conductor"),"display","none");
+        quitarclase($(this),"dispose");
+        agregarclase($("#p_conductor"),"dispose");
+    });
+    $("#p_conductor").click(function(){
+        cambiarPropiedad($("#cont_general"),"display","none");
+        cambiarPropiedad($("#cont_conductor"),"display","block");
+        quitarclase($(this),"dispose");
+        agregarclase($("#p_general"),"dispose");
+    });
 }

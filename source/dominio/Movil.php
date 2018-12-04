@@ -3,6 +3,9 @@ include '../../util/validarPeticion.php';
 
 class Movil {
     private $id;
+    private $patente;
+    private $marca;
+    private $modelo;
     private $nombre;
     private $transportista;
     private $estado;
@@ -13,6 +16,18 @@ class Movil {
     
     function getId() {
         return $this->id;
+    }
+
+    function getPatente() {
+        return $this->patente;
+    }
+
+    function getMarca() {
+        return $this->marca;
+    }
+
+    function getModelo() {
+        return $this->modelo;
     }
 
     function getNombre() {
@@ -47,6 +62,18 @@ class Movil {
         $this->id = $id;
     }
 
+    function setPatente($patente) {
+        $this->patente = $patente;
+    }
+
+    function setMarca($marca) {
+        $this->marca = $marca;
+    }
+
+    function setModelo($modelo) {
+        $this->modelo = $modelo;
+    }
+
     function setNombre($nombre) {
         $this->nombre = $nombre;
     }
@@ -74,7 +101,6 @@ class Movil {
     function setServicio($servicio) {
         $this->servicio = $servicio;
     }
-
 
 
 

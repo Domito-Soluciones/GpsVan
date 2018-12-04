@@ -3,6 +3,7 @@ var bordeAzul = "solid 1px #0b41d3";
 var bordeRojo = "solid 1px red";
 var bordeBlanco = "solid 1px white";
 var urlBase= "source/httprequest";
+var urlUtil= "source/util";
 
 
 function darFoco(elemento)
@@ -133,14 +134,12 @@ function formato_humano(texto){
 
 function getfecha()
 {
-    var date = new Date();
-    var day = date.getDate() < 10 ? '0'+date.getDate() : date.getDate();
-    var monthIndex = date.getMonth() < 10 ? '0'+date.getMonth() : date.getMonth();
-    var year = date.getFullYear();
-    var hour = date.getHours();
-    var minute = date.getMinutes();
-    
-    return day+"/"+(monthIndex+1)+"/"+year + " " + hour + ":" +minute;
+    var url = urlUtil + "/obtenerFecha.php";
+    var success = function(response)
+    {
+        $("#fecha").append(response);
+    }
+    getRequest(url,success);
 }
 
 function mensajeBienvenida(mensaje)
@@ -256,6 +255,21 @@ function validarNumero(numero)
     }
     return true;
 }
+
+function validarPatente(patente)
+{
+    if (/^[A-Z?]{4}-\d{2}$/.test(patente))
+    {
+        return true;
+    }
+    if (/^[A-Z?]{2}-\d{3}$/.test(patente)){
+        return true;
+    }
+    return false;
+}
+
+
+
 
 function resetBotones()
 {
