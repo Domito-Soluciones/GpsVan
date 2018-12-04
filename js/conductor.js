@@ -54,7 +54,7 @@ $(document).ready(function(){
     });
     
     $("#eliminar").click(function (){
-            alertify.confirm("Esta seguro que desea eliminar al conductor "+$("#rut").val(),
+            alertify.confirm("Eliminar conductor","Esta seguro que desea eliminar al conductor "+$("#rut").val(),
             function(){
                 eliminarConductor();
             },null);
@@ -184,11 +184,11 @@ function modificarConductor()
         var url = urlBase + "/conductor/ModConductor.php?"+data;
         var success = function(response)
         {
+            cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
             resetBotones();
             cerrarSession(response);
             alertify.success("Conductor Modificado");
             vaciarFormulario($("#agregar input"));
-            cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
             resetFormulario(PAGINA);
             buscarConductor();
         };
@@ -219,7 +219,6 @@ function buscarConductor()
             conductores.append("<div class=\"fila_contenedor\" onClick=\"abrirModificar('"+id+"')\">"+nombre+" "+papellido+"</div>");
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
-        addTexto($("#mensaje-error"),"");
     };
     getRequest(url,success);
 }
@@ -271,7 +270,7 @@ function abrirModificar(id)
         var contrato = conductor.conductor_contrato;
         if(imagen !== '')
         {
-            cambiarPropiedad($(".imagen"),"background-image","url('../img/conductor/"+imagen+"')");
+            cambiarPropiedad($(".imagen"),"background-image","url('source/util/img/"+imagen+"')");
         }
         if(contrato !== '')
         {
@@ -291,11 +290,10 @@ function eliminarConductor()
     var url = urlBase + "/conductor/DelConductor.php?rut="+rut;
     var success = function(response)
     {
-        alertify.alert("Conductor eliminado");
+        alertify.success("Conductor eliminado");
         cerrarSession(response);
         resetFormulario(PAGINA);
-        cambiarPropiedad($("#loader"),"visibility","hidden");
-        addTexto($("#mensaje-error"),"");
+        cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
         resetBotones();
         buscarConductor();
     };
@@ -305,20 +303,27 @@ function eliminarConductor()
 function succesSubirImagen()
 {
     var archivo = $("#imagenOculta").val();
-    var ext = archivo.split("\.");
-    if(ext !== 'png' || ext !== 'png'){
-        alertify.error("Archivo invalido");
-        return;
+    var ext = archivo.split("\.")[1];
+    if(ext !== 'png'){
+        if(ext !== 'jpg'){
+            alertify.error("Archivo invalido");
+            return;
+        }
     }
     cambiarPropiedad($(".imagen"),"background-image","url('source/util/img/"+archivo+"')");
 }
 function succesSubirContrato()
 {
     var archivo = $("#contratoOculta").val();
-    var ext = archivo.split("\.");
+    var ext = archivo.split("\.")[1];
     if(ext !== 'pdf'){
         alertify.error("Archivo invalido");
         return;
+    }
+    else
+    {
+        var enlace = "<a href=\"source/util/pdf/"+archivo+"\" target=\"_blanck\">Ver</a>";
+        $("#contenedor_contrato").html(enlace);
     }
 }
 

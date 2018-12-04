@@ -1,10 +1,16 @@
 <?php
 $archivo = $_REQUEST['archivo'];
-$ext = split ("\.", $$archivo)[1];
-if($ext != 'pdf' || $ext != 'png' || $ext != 'jpg')
+$ext = explode(".", $archivo)[1];
+if($ext != 'pdf')
 {
-    echo 'ERROR';
-    exit;
+    if($ext != 'png')
+    {
+        if($ext != 'jpg')
+        {
+            echo 'ERROR';
+            exit;
+        }
+    }
 }
 $tipo = $_REQUEST['tipo'];
 $dir_subida = 'img/';

@@ -50,7 +50,6 @@ function getRequest(url,success)
         },
         error: function (resposeError)
         {
-            $("#error").text(resposeError);
             cambiarPropiedad($("#loader"),"visibility","hidden");
         }
     });
@@ -147,7 +146,8 @@ function getfecha()
 function mensajeBienvenida(mensaje)
 {
     $("#contenedor_central").html("<div class=\"contenedor-loaderCentral\">\n\
-                                    <div class=\"loaderCentral\" id=\"loader\">Loading...</div>\n\
+                                    <div class=\"loaderCentral\" id=\"loader\"\n\
+                                    style=\"visibility=\"hidden\"\">Loading...</div>\n\
                                     </div><div class=\"mensaje_bienvenida\">\n\
                                     SELECCIONE OPCIONES PARA AGREGAR EDITAR Y/O MODIFICAR "+mensaje+"</div>");
 }
@@ -155,7 +155,7 @@ function mensajeBienvenida(mensaje)
 function resetFormulario(pagina) 
 {
     $("#contenedor_central").html("");
-    mensajeBienvenida(pagina+"</div>");
+    mensajeBienvenida(pagina);
 }
 
 function abrirFile(e,obj){
