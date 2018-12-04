@@ -440,7 +440,7 @@ function iniciarPestanias()
         cambiarPropiedad($("#cont_general"),"display","none");
         cambiarPropiedad($("#cont_contrato"),"display","none");
         cambiarPropiedad($("#cont_app"),"display","none");
-        cambiarPropiedad($("#cont_app"),"display","block");
+        cambiarPropiedad($("#cont_movil"),"display","block");
         quitarclase($(this),"dispose");
         agregarclase($("#p_contrato"),"dispose");
         agregarclase($("#p_general"),"dispose");
