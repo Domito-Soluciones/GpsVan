@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 03-12-2018 a las 03:22:34
+-- Tiempo de generación: 04-12-2018 a las 03:54:09
 -- Versión del servidor: 5.5.24-log
 -- Versión de PHP: 5.4.3
 
@@ -120,15 +120,7 @@ CREATE TABLE IF NOT EXISTS `tbl_conductor` (
   `conductor_contrato` varchar(50) NOT NULL,
   PRIMARY KEY (`conductor_id`),
   UNIQUE KEY `conductor_rut` (`conductor_rut`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
-
---
--- Volcado de datos para la tabla `tbl_conductor`
---
-
-INSERT INTO `tbl_conductor` (`conductor_id`, `conductor_nombre`, `conductor_papellido`, `conductor_mapellido`, `conductor_rut`, `conductor_nick`, `conductor_clave`, `conductor_estado`, `conductor_telefono`, `conductor_celular`, `conductor_direccion`, `conductor_mail`, `conductor_tipo_licencia`, `conductor_nacimiento`, `conductor_renta`, `conductor_tipo_contrato`, `conductor_prevision`, `conductor_isapre`, `conductor_mutual`, `conductor_seguro_inicio`, `conductor_seguro_renovacion`, `conductor_descuento`, `conductor_anticipo`, `conductor_imagen`, `conductor_contrato`) VALUES
-(2, 'Giovanni', 'Fuentes', '', 'gfuentes', '', '123', 0, '1', '1', '1', '1', 'A1', '0000-00-00', 1, 'Indefinido', 'Capital', 'BanmÃ©dica', '1', '0000-00-00', '0000-00-00', 1, 2, '', ''),
-(3, 'Robin', 'Rivera', '', 'rrivera', '', '123', 0, '2', '2', '2', '2', 'A2', '0000-00-00', 1, 'Indefinido', '1', '1', '1', '0000-00-00', '0000-00-00', 1, 1, '', '');
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=26 ;
 
 -- --------------------------------------------------------
 
@@ -163,6 +155,38 @@ INSERT INTO `tbl_movil` (`movil_id`, `movil_nombre`, `movil_transportista`, `mov
 (6, 'M302', '3', 1, -33.4504, 0, -70.7323, 0, '', '2018-11-13 00:52:16'),
 (7, 'M401', '4', 1, -33.3901, 0, -70.5902, 0, '', '2018-11-13 00:52:16'),
 (8, 'M402', '4', 1, -33.4337, 0, -70.5398, 0, '', '2018-11-13 00:52:16');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tbl_pasajero`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_pasajero` (
+  `pasajero_id` int(11) NOT NULL,
+  `pasajero_rut` varchar(10) NOT NULL,
+  `pasajero_nombre` varchar(20) NOT NULL,
+  `pasajero_papellido` varchar(20) NOT NULL,
+  `pasajero_mapellido` varchar(20) NOT NULL,
+  `pasajero_cliente` int(11) NOT NULL,
+  `pasajero_direccion` varchar(50) NOT NULL,
+  `pasajero_telefono` varchar(20) NOT NULL,
+  `pasajero_celular` varchar(20) NOT NULL,
+  `pasajero_mail` varchar(50) NOT NULL,
+  `pasajero_nick` varchar(20) NOT NULL,
+  `pasajero_password` varchar(20) NOT NULL,
+  `pasajero_estado` int(11) NOT NULL,
+  `pasajero_cargo` varchar(20) NOT NULL,
+  `pasajero_nivel` varchar(20) NOT NULL,
+  UNIQUE KEY `USUARIO_INDEX` (`pasajero_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `tbl_pasajero`
+--
+
+INSERT INTO `tbl_pasajero` (`pasajero_id`, `pasajero_rut`, `pasajero_nombre`, `pasajero_papellido`, `pasajero_mapellido`, `pasajero_cliente`, `pasajero_direccion`, `pasajero_telefono`, `pasajero_celular`, `pasajero_mail`, `pasajero_nick`, `pasajero_password`, `pasajero_estado`, `pasajero_cargo`, `pasajero_nivel`) VALUES
+(0, '18079717-3', '1', '1', '1', 0, '1', '', '1', '1@1.cl', 'jsanchez', '1', 0, '1', '1');
 
 -- --------------------------------------------------------
 
@@ -228,38 +252,6 @@ INSERT INTO `tbl_transportista` (`transportista_id`, `transportista_nombre`) VAL
 (2, 'T200'),
 (3, 'T300'),
 (4, 'T400');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `tbl_usuario`
---
-
-CREATE TABLE IF NOT EXISTS `tbl_usuario` (
-  `usuario_id` int(11) NOT NULL,
-  `usuario_nombre` varchar(20) NOT NULL,
-  `usuario_cliente` int(11) NOT NULL,
-  `usuario_direccion` varchar(50) NOT NULL,
-  `usuario_celular` varchar(20) NOT NULL,
-  `usuario_nick` varchar(20) NOT NULL,
-  `usuario_password` varchar(20) NOT NULL,
-  `usuario_estado` int(11) NOT NULL,
-  UNIQUE KEY `USUARIO_INDEX` (`usuario_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `tbl_usuario`
---
-
-INSERT INTO `tbl_usuario` (`usuario_id`, `usuario_nombre`, `usuario_cliente`, `usuario_direccion`, `usuario_celular`, `usuario_nick`, `usuario_password`, `usuario_estado`) VALUES
-(1, 'usuario1', 0, 'av 123', '981755792', 'user', 'user', 1),
-(2, 'usuario2', 0, '', '', '', '', 0),
-(3, 'usuario3', 0, '', '', '', '', 0),
-(4, 'usuario4', 0, '', '', '', '', 0),
-(5, 'usuario5', 0, '', '', '', '', 0),
-(6, 'usuario6', 0, '', '', '', '', 0),
-(7, 'usuario7', 0, '', '', '', '', 0),
-(8, 'robin', 0, '', '', '', '', 0);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
