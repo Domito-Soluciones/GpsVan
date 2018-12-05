@@ -26,6 +26,7 @@ class Conductor {
     private $anticipo;
     private $imagenAdjunta;
     private $contratoAdjunto;
+    private $movil;
     
     function getId() {
         return $this->id;
@@ -123,6 +124,10 @@ class Conductor {
         return $this->contratoAdjunto;
     }
 
+    function getMovil() {
+        return $this->movil;
+    }
+
     function setId($id) {
         $this->id = $id;
     }
@@ -218,6 +223,11 @@ class Conductor {
     function setContratoAdjunto($contratoAdjunto) {
         $this->contratoAdjunto = $contratoAdjunto;
     }
+
+    function setMovil($movil) {
+        $this->movil = $movil;
+    }
+
 
 
 }

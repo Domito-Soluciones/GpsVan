@@ -3,6 +3,7 @@ include '../../util/validarPeticion.php';
 
 include '../../conexion/Conexion.php';
 include '../../dominio/Conductor.php';
+include '../../dominio/Movil.php';
 
 class ConductorDao {
     
@@ -38,9 +39,9 @@ class ConductorDao {
                     . "conductor_mapellido,conductor_rut,conductor_nick,conductor_clave,conductor_telefono,"
                     . "conductor_celular,conductor_direccion,conductor_mail,conductor_tipo_licencia,"
                     . "conductor_nacimiento,conductor_renta,conductor_tipo_contrato, conductor_prevision ,conductor_isapre,conductor_mutual,"
-                    . "conductor_seguro_inicio,conductor_seguro_renovacion,conductor_descuento,conductor_anticipo,conductor_imagen,conductor_contrato) VALUES "
+                    . "conductor_seguro_inicio,conductor_seguro_renovacion,conductor_descuento,conductor_anticipo,conductor_imagen,conductor_contrato,conductor_movil) VALUES "
                     . "('$nombre','$papellido','$mapellido','$rut','$nick','$password','$telefono','$celular','$direccion','$mail','$tipoLicencia',"
-                    . "'$nacimiento',$renta,'$contrato','$afp','$isapre','$mutual','$seguroInicio','$seguroRenovacion','$descuento','$anticipo','$imagen','$archivoContrato')"; 
+                    . "'$nacimiento',$renta,'$contrato','$afp','$isapre','$mutual','$seguroInicio','$seguroRenovacion','$descuento','$anticipo','$imagen','$archivoContrato',0)"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -114,7 +115,7 @@ class ConductorDao {
         $array = array();
         $conn = new Conexion();
         try {
-            $query = "SELECT * FROM tbl_conductor WHERE "
+            $query = "SELECT * FROM tbl_conductor LEFT JOIN tbl_movil ON conductor_movil = movil_id WHERE "
                     . "conductor_rut LIKE '%".$busqueda."%' OR "
                     . "conductor_nombre LIKE '%".$busqueda."%' OR "
                     . "conductor_papellido LIKE '%".$busqueda."%' OR "
@@ -147,6 +148,12 @@ class ConductorDao {
                 $conductor->setAnticipo($row["conductor_anticipo"]);
                 $conductor->setImagenAdjunta($row["conductor_imagen"]);
                 $conductor->setContratoAdjunto($row["conductor_contrato"]);
+                $movil = new Movil();
+                $movil->setId($row["movil_id"]);
+                $movil->setPatente($row["movil_patente"]);
+                $movil->setMarca($row["movil_marca"]);
+                $movil->setModelo($row["movil_modelo"]);
+                $conductor->setMovil($movil);
                 array_push($array, $conductor);
             }
         } catch (Exception $exc) {

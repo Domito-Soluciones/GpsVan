@@ -185,3 +185,15 @@ function validarExistencia(tipo,valor)
         }
     }    
 }
+function validarTipoDato()
+{
+    var patente = $("#patente").val();
+    if(!validarPatente(patente))
+    {
+        alertify.error('Patente invalida');
+        return false;
+    }
+   
+    
+    return true;
+}

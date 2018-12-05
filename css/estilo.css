@@ -25,6 +25,19 @@ input[type=text],input[type=password]
 {
     border-radius: 5px;
 }
+select
+{
+    -webkit-appearance: none;
+    -ms-appearance: none;
+    cursor: pointer;
+    -moz-appearance: none;
+    border-radius: 5px;
+    width: 150px;
+    height: 30px;
+    background: #FFFFFF url("../img/flecha-abajo.svg")no-repeat right;
+    background-size: 10px;
+    background-position: 125px, 0;
+}
 .button-succes
 {
     text-align: center;
@@ -343,19 +356,8 @@ input[type=text],input[type=password]
     border-bottom: solid 1px silver;
 }
 
-.conductor
+.contenedor_oculto
 {
-    display: none;
-    
-}
-.contrato
-{
-    display: none;
-    
-}
-.aplicacion
-{
-    padding-top: 20px;
     display: none;
 }
 .titulo_pagina

@@ -33,6 +33,10 @@ for ($i = 0 ; $i < count($conductores); $i++)
     $anticipo = $conductores[$i]->getAnticipo();
     $imagen = $conductores[$i]->getImagenAdjunta();
     $contrato = $conductores[$i]->getContratoAdjunto();
+    $movil = $conductores[$i]->getMovil();
+    $patente = $movil->getPatente();
+    $marca = $movil->getMarca();
+    $modelo = $movil->getModelo();
     echo "{\"conductor_id\":\"".$cId."\","
         . "\"conductor_nombre\":\"".$nombre."\","
         . "\"conductor_papellido\":\"".$papellido."\","
@@ -55,7 +59,10 @@ for ($i = 0 ; $i < count($conductores); $i++)
         . "\"conductor_descuento\":\"".$descuento."\","
         . "\"conductor_anticipo\":\"".$anticipo."\","
         . "\"conductor_imagen\":\"".$imagen."\","
-        . "\"conductor_contrato\":\"".$contrato."\""
+        . "\"conductor_contrato\":\"".$contrato."\","
+        . "\"conductor_movil\":{\"movil_patente\":\"".$patente."\","
+            . "\"movil_marca\":\"".$marca."\","
+            . "\"movil_modelo\":\"".$modelo."\"}"
         . "}";
     if (($i+1) != count($conductores))
     {
