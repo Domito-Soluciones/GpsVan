@@ -33,6 +33,7 @@ class ConductorDao {
         $anticipo = $conductor->getAnticipo();
         $imagen = $conductor->getImagenAdjunta();
         $archivoContrato = $conductor->getContratoAdjunto();
+        $patente = $conductor->getMovil()->getPatente();
         $conn = new Conexion();
         try {
             $query = "INSERT INTO tbl_conductor (conductor_nombre,conductor_papellido,"
@@ -41,7 +42,7 @@ class ConductorDao {
                     . "conductor_nacimiento,conductor_renta,conductor_tipo_contrato, conductor_prevision ,conductor_isapre,conductor_mutual,"
                     . "conductor_seguro_inicio,conductor_seguro_renovacion,conductor_descuento,conductor_anticipo,conductor_imagen,conductor_contrato,conductor_movil) VALUES "
                     . "('$nombre','$papellido','$mapellido','$rut','$nick','$password','$telefono','$celular','$direccion','$mail','$tipoLicencia',"
-                    . "'$nacimiento',$renta,'$contrato','$afp','$isapre','$mutual','$seguroInicio','$seguroRenovacion','$descuento','$anticipo','$imagen','$archivoContrato',0)"; 
+                    . "'$nacimiento',$renta,'$contrato','$afp','$isapre','$mutual','$seguroInicio','$seguroRenovacion','$descuento','$anticipo','$imagen','$archivoContrato','$patente')"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -80,6 +81,7 @@ class ConductorDao {
         $anticipo = $conductor->getAnticipo();
         $imagen = $conductor->getImagenAdjunta();
         $archivoContrato = $conductor->getContratoAdjunto();
+        $patente = $conductor->getMovil()->getPatente();
         $conn = new Conexion();
         try {
             $query = "UPDATE tbl_conductor SET conductor_nombre = '$nombre',"
@@ -96,8 +98,7 @@ class ConductorDao {
                     . "conductor_prevision = '$afp',conductor_isapre = '$isapre',conductor_mutual = '$mutual',"
                     . "conductor_seguro_inicio = '$seguroInicio',conductor_seguro_renovacion = '$seguroRenovacion',"
                     . "conductor_descuento = '$descuento',conductor_anticipo = '$anticipo',conductor_imagen = '$imagen',"
-                    . "conductor_contrato = '$archivoContrato' WHERE conductor_rut = '$rut'";           
-                    echo $query;
+                    . "conductor_contrato = '$archivoContrato',conductor_movil='$patente' WHERE conductor_rut = '$rut'";           
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -115,7 +116,7 @@ class ConductorDao {
         $array = array();
         $conn = new Conexion();
         try {
-            $query = "SELECT * FROM tbl_conductor LEFT JOIN tbl_movil ON conductor_movil = movil_id WHERE "
+            $query = "SELECT * FROM tbl_conductor WHERE "
                     . "conductor_rut LIKE '%".$busqueda."%' OR "
                     . "conductor_nombre LIKE '%".$busqueda."%' OR "
                     . "conductor_papellido LIKE '%".$busqueda."%' OR "
@@ -148,12 +149,7 @@ class ConductorDao {
                 $conductor->setAnticipo($row["conductor_anticipo"]);
                 $conductor->setImagenAdjunta($row["conductor_imagen"]);
                 $conductor->setContratoAdjunto($row["conductor_contrato"]);
-                $movil = new Movil();
-                $movil->setId($row["movil_id"]);
-                $movil->setPatente($row["movil_patente"]);
-                $movil->setMarca($row["movil_marca"]);
-                $movil->setModelo($row["movil_modelo"]);
-                $conductor->setMovil($movil);
+                $conductor->setMovil($row["conductor_movil"]);
                 array_push($array, $conductor);
             }
         } catch (Exception $exc) {
@@ -236,6 +232,28 @@ class ConductorDao {
             echo $exc->getTraceAsString();
         }
         return $id;
+    }
+    
+    public function getMoviles()
+    {
+        $array = array();
+        $conn = new Conexion();
+        try {
+            $query = "SELECT * FROM tbl_movil";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            while($row = mysqli_fetch_array($result)) {
+                $moviles = new Movil();
+                $moviles->setId($row["movil_id"]);
+                $moviles->setPatente($row["movil_patente"]);
+                $moviles->setMarca($row["movil_marca"]);
+                $moviles->setModelo($row["movil_modelo"]);
+                array_push($array, $moviles);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $array;
     }
     
 }

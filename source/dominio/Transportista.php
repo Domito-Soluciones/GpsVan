@@ -3,6 +3,7 @@ include '../../util/validarPeticion.php';
 
 class Transportista {
     private $id;
+    private $nombre;
     private $razon;
     private $rut;
     private $direccion;
@@ -10,9 +11,12 @@ class Transportista {
     private $fonoContacto;
     private $mailContacto;
     private $mailFacturacion;
-
     function getId() {
         return $this->id;
+    }
+
+    function getNombre() {
+        return $this->nombre;
     }
 
     function getRazon() {
@@ -45,6 +49,10 @@ class Transportista {
 
     function setId($id) {
         $this->id = $id;
+    }
+
+    function setNombre($nombre) {
+        $this->nombre = $nombre;
     }
 
     function setRazon($razon) {

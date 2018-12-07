@@ -6,7 +6,6 @@ var transportistas = new Array();
 var moviles = new Array();
 
 $(document).ready(function(){
-    $("#cabecera").load("html/cabecera.html");
     $("#menu").load("html/menu.html", function( response, status, xhr ) {
         agregarclase($("#servicios"),"menu-activo");
     });

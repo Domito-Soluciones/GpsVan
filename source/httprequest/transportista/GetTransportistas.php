@@ -14,16 +14,18 @@ for ($i = 0 ; $i < count($transportistas); $i++)
     $transportistaId = $transportista->getId();
     $razon = $transportista->getRazon();
     $rut = $transportista->getRut();
+    $nombre = $transportista->getNombre();
     $direccion = $transportista->getDireccion();
-    $nombre = $transportista->getNombreContacto();
+    $nombreContacto = $transportista->getNombreContacto();
     $telefono = $transportista->getFonoContacto();
     $mail = $transportista->getMailContacto();
     $mail2 = $transportista->getMailFacturacion();
     echo "{\"transportista_id\":\"".$transportistaId."\","
         . "\"transportista_razon\":\"".$razon."\","
         . "\"transportista_rut\":\"".$rut."\","
+        . "\"transportista_nombre\":\"".$nombre."\","
         . "\"transportista_direccion\":\"".$direccion."\","
-        . "\"transportista_nombre_contacto\":\"".$nombre."\","
+        . "\"transportista_nombre_contacto\":\"".$nombreContacto."\","
         . "\"transportista_fono_contacto\":\"".$telefono."\","
         . "\"transportista_mail_contacto\":\"".$mail."\","
         . "\"transportista_mail_facturacion\":\"".$mail2."\""

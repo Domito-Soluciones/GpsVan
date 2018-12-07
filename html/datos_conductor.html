@@ -12,7 +12,7 @@
         3. Aplicaci&oacute;n
     </div>
     <div class="titulo_pagina_general dispose" id="p_movil">
-        4. Movil
+        4. Veh&iacute;culo
     </div>
 </div>
 <div class="contenedor-info general" id="cont_general">
@@ -269,6 +269,32 @@
 <div class="contenedor-info contenedor_oculto" id="cont_movil">
     <div class="contenedor-formulario">
         <div class="contenedor-fila">
-
+            <div class="contenedor-fila">
+                <div class="contenedor-pre-input">
+                    Patente (*)
+                </div>
+                <div class="contenedor-input">
+                    <select id="moviles" onchange="cambiarMovil()">
+                        
+                    </select>
+                </div>
+            </div>
+            <div class="contenedor-fila">
+                <div class="contenedor-pre-input">
+                    Marca (*)
+                </div>
+                <div class="contenedor-input">
+                    <input type="text" id="marca" placeholder="Ej: Kia" maxlength="20" readonly>
+                </div>
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                Modelo (*)
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="modelo" placeholder="Ej: Cerato" maxlength="20" readonly>
+            </div>
+        </div>
     </div>
 </div>

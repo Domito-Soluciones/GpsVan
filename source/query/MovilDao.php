@@ -75,15 +75,17 @@ class MovilDao {
             while($row = mysqli_fetch_array($result)) {
                 $moviles = new Movil();
                 $moviles->setId($row["movil_id"]);
+                $moviles->setNombre($row["movil_nombre"]);
                 $moviles->setPatente($row["movil_patente"]);
                 $moviles->setMarca($row["movil_marca"]);
                 $moviles->setModelo($row["movil_modelo"]);
-//                $moviles->setNombre($row["movil_nombre"]);
-//                $moviles->setTransportista($row["movil_transportista"]);
-//                $moviles->setEstado($row['movil_estado']);
-//                $moviles->setLat($row['movil_lat']);
-//                $moviles->setLon($row['movil_lon']);
-//                $moviles->setServicio($row['servicio_id']);
+                $moviles->setNombre($row["movil_nombre"]);
+                $moviles->setTransportista($row["movil_transportista"]);
+                $moviles->setEstado($row['movil_estado']);
+                $moviles->setLat($row['movil_lat']);
+                $moviles->setLon($row['movil_lon']);
+                $moviles->setServicio($row['movil_servicio']);
+                
                 array_push($array, $moviles);
             }
         } catch (Exception $exc) {

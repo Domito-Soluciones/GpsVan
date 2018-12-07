@@ -1,5 +1,6 @@
 /* global urlBase, alertify */
 var CONDUCTORES;
+var MOVILES;
 var AGREGAR = true;
 var PAGINA = 'CONDUCTORES';
 $(document).ready(function(){
@@ -8,6 +9,7 @@ $(document).ready(function(){
     });
     buscarConductor();
     $("#agregar").click(function(){
+        buscarMovil('');
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
         $("#contenedor_central").load("html/datos_conductor.html", function( response, status, xhr ) {
@@ -34,6 +36,7 @@ $(document).ready(function(){
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
     });
+    
     $("#cancelar").click(function(){
         resetFormulario(PAGINA);
         resetBotones();
@@ -84,6 +87,7 @@ function agregarConductor()
     var seguroRenovacion = formato_fecha($("#seguroRenovacion").val());
     var descuento = $("#descuento").val() === '' ? '0' : $("#descuento").val();
     var anticipo = $("#anticipo").val() === '' ? '0' : $("#anticipo").val();
+    var patente = $("#moviles").val();
     var array = [nombre,papellido,mapellido,rut,celular,direccion,mail,
         tipoLicencia,nacimiento,renta,contrato,afp,isapre,mutual,seguroInicio,
         seguroRenovacion,nick,password,password2];
@@ -106,7 +110,7 @@ function agregarConductor()
         +"&mail="+mail+"&tipoLicencia="+tipoLicencia+"&nacimiento="+nacimiento
         +"&renta="+renta+"&contrato="+contrato+"&afp="+afp+"&isapre="+isapre
         +"&mutual="+mutual+"&seguroInicio="+seguroInicio+"&seguroRenovacion="+seguroRenovacion
-        +"&descuento="+descuento+"&anticipo="+anticipo+"&imagen="+imagen+"&archivoContrato="+archivoContrato;
+        +"&descuento="+descuento+"&anticipo="+anticipo+"&imagen="+imagen+"&archivoContrato="+archivoContrato+"&patente="+patente;
         var url = urlBase + "/conductor/AddConductor.php?"+data;
         var success = function(response)
         {
@@ -145,6 +149,7 @@ function modificarConductor()
     var seguroRenovacion = $("#seguroRenovacion").val();
     var descuento = $("#descuento").val();
     var anticipo = $("#anticipo").val();
+    var patente = $("#moviles").val();
     var array;
     var claveData = '';
     if(password !== '' || password2 !== '')
@@ -179,7 +184,7 @@ function modificarConductor()
         +"&mail="+mail+"&tipoLicencia="+tipoLicencia+"&nacimiento="+nacimiento
         +"&renta="+renta+"&contrato="+contrato+"&afp="+afp+"&isapre="+isapre
         +"&mutual="+mutual+"&seguroInicio="+seguroInicio+"&seguroRenovacion="+seguroRenovacion
-        +"&descuento="+descuento+"&anticipo="+anticipo+"&imagen="+imagen+"&archivoContrato="+archivoContrato;
+        +"&descuento="+descuento+"&anticipo="+anticipo+"&imagen="+imagen+"&archivoContrato="+archivoContrato+"&patente="+patente;
         var url = urlBase + "/conductor/ModConductor.php?"+data;
         var success = function(response)
         {
@@ -276,6 +281,7 @@ function abrirModificar(id)
             var enlace = "<a href=\"source/util/pdf/"+contrato+"\" target=\"_blanck\">Ver</a>";
             $("#contenedor_contrato").html(enlace);
         }
+        buscarMovil(conductor.conductor_movil);
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
         cambiarPropiedad($("#eliminar"),"visibility","visible");
@@ -446,4 +452,44 @@ function iniciarPestanias()
         agregarclase($("#p_general"),"dispose");
         agregarclase($("#p_app"), "dispose");
     });
+}
+
+function buscarMovil(movil)
+{
+    var url = urlBase + "/conductor/GetMovilesConductor.php";
+    var success = function(response)
+    {
+        cerrarSession(response);
+        var moviles = $("#moviles");
+        moviles.html("");
+        MOVILES = response;
+        moviles.append("<option value=\"\">Seleccione</option>");
+        for(var i = 0 ; i < MOVILES.length; i++)
+        {
+            var patente = response[i].movil_patente;
+            if(patente === movil)
+            {
+                moviles.append("<option value=\""+patente+"\" selected>"+patente+"</option>");
+            }
+            else
+            {
+                moviles.append("<option value=\""+patente+"\">"+patente+"</option>");                
+            }
+        }
+        cambiarMovil();
+    };
+    getRequest(url,success);
+}
+
+function cambiarMovil()
+{
+    var patente = $("#moviles").val();
+    for(var i = 0 ; i < MOVILES.length; i++)
+    {
+        if(MOVILES[i].movil_patente === patente)
+        {
+            $("#marca").val(MOVILES[i].movil_marca);
+            $("#modelo").val(MOVILES[i].movil_modelo);
+        }
+    }
 }

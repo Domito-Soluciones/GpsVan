@@ -18,6 +18,7 @@ if(!isset($_SESSION['agente']))
         <link rel="stylesheet" href="css/alertify.css">
         <link rel="stylesheet" href="css/jquery.datetimepicker.css">
         <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
+        <link rel="icon" type="image/png" href="img/ico.png" />
         <script src="js/jquery.js" type="text/javascript"></script>
         <script src="js/alertify.js" type="text/javascript"></script>
         <script src="js/funciones.js" type="text/javascript"></script>
@@ -47,5 +48,6 @@ if(!isset($_SESSION['agente']))
         <div id="contenido-central" class="contenido-central">
             
         </div>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDcQylEsZAzuEw3EHBdWbsDAynXvU2Ljzs&libraries=places&callback"></script>
     </body>
 </html>

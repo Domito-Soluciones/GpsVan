@@ -1,111 +1,127 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script src="js/servicio.js"></script>
     </head>
     <body>
-        <div class="contenedor-lateral">
-            <div class="lateral">
-                <div class="contenedor-pre-input">
-                    Id Servicio
+        <div class="contenedor-inicial">
+            <div class="contenedor-formulario cont-serv">
+                <div class="contenedor-fila">
+                    <div class="contenedor-fila">
+                        <div class="contenedor-pre-input">
+                            Id servicio
+                        </div>
+                        <div class="contenedor-input">
+                            <input type="text" list="lids" id="ids" placeholder="Ej: 10000" onkeyup="cargarIds()">
+                            <datalist id="lids"></datalist>
+                        </div>
+                    </div>
                 </div>
-                <div class="contenedor-input">
-                    <input type="text" list="lids" id="ids" placeholder="Id servicio" onkeyup="cargarIds()">
-                    <datalist id="lids"></datalist>
+                <div class="contenedor-fila">
+                    <div class="contenedor-pre-input">
+                        Cliente coorporativo
+                    </div>
+                    <div class="contenedor-input">
+                        <input type="text" list="lcliente" id="cliente" placeholder="Ej: Falabella">
+                        <datalist id="lcliente" ></datalist>
+                    </div>
                 </div>
-                <div class="contenedor-pre-input">
-                    Empresa cliente
+                <div class="contenedor-fila">
+                    <div class="contenedor-pre-input">
+                        Pasajero
+                    </div>
+                    <div class="contenedor-input">
+                        <input type="text" list="lusuario" id="usuario" placeholder="Ej: Juan Lopez" autocomplete="off">
+                        <datalist id="lusuario" ></datalist>
+                    </div>
                 </div>
-                <div class="contenedor-input">
-                    <input type="text" list="lcliente" id="cliente" placeholder="Empresa cliente">
-                    <datalist id="lcliente" ></datalist>
+            </div>
+            <div class="contenedor-formulario cont-serv">
+                <div class="contenedor-fila">
+                    <div class="contenedor-pre-input">
+                        Transportista
+                    </div>
+                    <div class="contenedor-input">
+                        <input type="text" list="ltransportista" id="transportista" placeholder="Ej: T200">
+                        <datalist id="ltransportista"></datalist>
+                    </div>
                 </div>
-                <div class="contenedor-pre-input">
-                    Pasajero
+                <div class="contenedor-fila">
+                    <div class="contenedor-pre-input">
+                        Vehiculo
+                    </div>
+                    <div class="contenedor-input">
+                        <input type="text" list="lmovil" id="movil" placeholder="Ej: QWER-34">
+                        <datalist id="lmovil"></datalist>
+                    </div>
                 </div>
-                <div class="contenedor-input">
-                    <input type="text" list="lusuario" id="usuario" placeholder="Pasajero" autocomplete="off">
-                    <datalist id="lusuario" ></datalist>
+            </div>
+            <div class="contenedor-formulario cont-serv">
+                <div class="contenedor-fila">
+                    <div class="contenedor-pre-input">
+                        Fecha hasta
+                    </div>
+                    <div class="contenedor-input">
+                        <input type="text" id="hasta" placeholder="Fecha hasta">
+                    </div>
                 </div>
-                <div class="contenedor-pre-input">
-                    Transportista
+                <div class="contenedor-fila">
+                    <div class="contenedor-pre-input">
+                        Fecha desde
+                    </div>
+                    <div class="contenedor-input">
+                        <input type="text" id="desde" placeholder="Ej: 12/12/2016">
+                    </div>
                 </div>
-                <div class="contenedor-input">
-                    <input type="text" list="ltransportista" id="transportista" placeholder="Transportista">
-                    <datalist id="ltransportista"></datalist>
-                </div>
-                <div class="contenedor-pre-input">
-                    N° movil
-                </div>
-                <div class="contenedor-input">
-                    <input type="text" list="lmovil" id="movil" placeholder="N° movil">
-                    <datalist id="lmovil"></datalist>
-                </div>
-                <div class="contenedor-pre-input">
-                    Fecha desde
-                </div>
-                <div class="contenedor-input">
-                    <input type="text" id="desde" placeholder="Fecha desde">
-
-                </div>
-                <div class="contenedor-pre-input">
-                    Fecha hasta
-                </div>
-                <div class="contenedor-input">
-                    <input type="text" id="hasta" placeholder="Fecha hasta">
-
-                </div>
-                <div class="contenedor-boton">
-                    <div class="button-succes" id="boton-buscar">
-                        <a class="enlace-succes">
-                            BUSCAR
-                        </a>
+                <div class="contenedor-fila">
+                    <div class="boton" id="boton-buscar">
+                        <img src="img/buscar.svg" width="12" height="12">
+                        Buscar
+                    </div>
+                    <div class="boton" id="cancelar">
+                        <img src="img/icon.svg" width="12" height="12">
+                        Exportar
                     </div>
                 </div>
             </div>
         </div>
-        <div class="contendor_central">
-            <table id="tabla" class="tabla-central">
-                <thead>
-                    <tr class="tr_titulo">
-                        <th>
-                            ID Serv.
-                        </th>
-                        <th>
-                            Estado Serv.
-                        </th>
-                        <th>
-                            Fecha/Hora
-                        </th>
-                        <th>
-                            N° Movil
-                        </th>
-                        <th>
-                            Pasajero
-                        </th>
-                        <th>
-                            Tipo
-                        </th>
-                        <th>
-                            Tarifa
-                        </th>
-                        <th>
-                            Partida
-                        </th>
-                        <th>
-                            Destino
-                        </th>
-                        <th>
-                            Cliente
-                        </th>
-                        <th>
-                            Transportista
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                </tbody>
-            </table>
-        </div>   
+        <div id="tablaConductores" class="tabla-general">
+            <div class="tablaCabecera servicio">
+                <div>
+                    ID Serv.
+                </div>
+                <div>
+                    Estado Serv.
+                </div>
+                <div>
+                    Fecha/Hora
+                </div>
+                <div>
+                    Veh&iacute;culo
+                </div>
+                <div>
+                    Pasajero
+                </div>
+                <div>
+                    Tipo
+                </div>
+                <div>
+                    Tarifa
+                </div>
+                <div>
+                    Partida
+                </div>
+                <div>
+                    Destino
+                </div>
+                <div>
+                    Cliente
+                </div>
+                <div>
+                    Transportista
+                </div>
+            </div>
+            <div id="tablaContenido"></div>
+        </div>
     </body>
 </html>

@@ -43,7 +43,7 @@ $(document).ready(function(){
     });
     
     $("#eliminar").click(function (){
-            alertify.confirm("Eliminar movil","Esta seguro que desea eliminar el movil "+$("#patente").val(),
+            alertify.confirm("Eliminar veh&iacute;culo","Esta seguro que desea eliminar el veh&iacute;culo "+$("#patente").val(),
             function(){
                 eliminarMovil();
             },null);
@@ -68,7 +68,7 @@ function agregarMovil()
         var success = function(response)
         {
             cerrarSession(response);
-            alertify.success("Movil Agregado");
+            alertify.success("Veh&iacute;culo Agregado");
             vaciarFormulario($("#agregar input"));
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
             resetFormulario(PAGINA);
@@ -98,7 +98,7 @@ function modificarMovil()
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
             resetBotones();
             cerrarSession(response);
-            alertify.success("Movil Modificado");
+            alertify.success("Veh&iacute;culo Modificado");
             vaciarFormulario($("#agregar input"));
             resetFormulario(PAGINA);
             buscarMovil();
@@ -162,7 +162,7 @@ function eliminarMovil()
     var url = urlBase + "/movil/DelMovil.php?patente="+patente;
     var success = function(response)
     {
-        alertify.success("Movil eliminado");
+        alertify.success("Veh&iacute;culo eliminado");
         cerrarSession(response);
         resetFormulario(PAGINA);
         cambiarPropiedad($("#loaderCentral"),"visibility","hidden");

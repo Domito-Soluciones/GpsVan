@@ -279,3 +279,17 @@ function resetBotones()
     cambiarPropiedad($("#eliminar"),"visibility","hidden");
 }
 
+function seleccionar(div)
+{
+    if(div.attr("class") === "tablaFila no-seleccionado")
+    {
+        quitarclase(div,"no-seleccionado");
+        agregarclase(div,"seleccionado");
+    }
+    else
+    {
+        quitarclase(div,"seleccionado");
+        agregarclase(div,"no-seleccionado");
+    }
+}
+

@@ -121,7 +121,7 @@ function getBar()
             options: {
                 title: {
                     display: true,
-                    text: 'Cantidad Servicios por Movil Mensual',
+                    text: 'Cantidad Servicios por Veh&iacute;culo Mensual',
                     fontColor: "white",
                     fontSize: 25
                 },

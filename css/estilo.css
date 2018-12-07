@@ -32,6 +32,7 @@ select
     cursor: pointer;
     -moz-appearance: none;
     border-radius: 5px;
+    padding-left: 20px;
     width: 150px;
     height: 30px;
     background: #FFFFFF url("../img/flecha-abajo.svg")no-repeat right;
@@ -75,16 +76,6 @@ select
     width: 65%;
 }
 /* menu */
-.opcion-menu-titulo
-{
-    background-color: #f9f9f9;
-    border-right: solid 2px #f9f9f9;
-    border-bottom: solid 1px #8a9cb2;
-    height: 46px;
-    font-size: 15px;
-    min-width: 180px;
-    color: #8a9cb2;
-}
 .opcion-menu
 {
     background-color: #f9f9f9;
@@ -214,6 +205,12 @@ select
     min-width: 250px;
     border-right: solid 1px silver;
     overflow-y: auto;
+}
+.contenedor-inicial
+{
+    position: relative;
+    width: 95%;
+    height: 175px;
 }
 .pie
 {
@@ -461,4 +458,69 @@ select
 {
     margin-top: 5px;
     font-size: 11px;
+}
+
+.tabla-general
+{
+    position: relative;
+    width: 100%;
+    overflow-y: auto;
+}
+.tablaCabecera,.tablaFila
+{
+    width: 100%;
+}
+.tablaCabecera div
+{
+    width: 22%;
+    font-size: 15px;
+    color: #0099ff;
+    text-align: center;
+    height: 20px;
+    display: inline-block;
+}
+.tablaFila div
+{
+    width: 22%;
+    font-size: 15px;
+    color: #a7b9bd;
+    text-align: center;
+    height: 20px;
+    display: inline-block;
+    cursor: pointer;
+}
+.seleccionado
+{
+    background-color: #0099ff;
+}
+.seleccionado div
+{
+    color: white !important;
+}
+.no-seleccionado
+{
+    background-color: #ffffff;
+
+}
+.no-seleccionado div
+{
+    color: #a7b9bd;
+}
+
+.mensaje-info
+{
+    margin-left: 20px;
+    font-size: 12px;
+}
+.servicio
+{
+    background-color: white;
+}
+.servicio div
+{
+    width: 8%;
+}
+.cont-serv
+{
+    width: 28%;
 }

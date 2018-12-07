@@ -1,5 +1,6 @@
 /* global urlBase, alertify */
 var TRANSPORTISTAS;
+var CONDUCTORES;
 var AGREGAR = true;
 var PAGINA = 'TRANSPORTISTAS';
 $(document).ready(function(){
@@ -7,6 +8,7 @@ $(document).ready(function(){
         agregarclase($("#transportista"),"menu-activo");
     });
     buscarTransportista();
+    buscarConductores();
     $("#agregar").click(function(){
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
@@ -55,12 +57,13 @@ function agregarTransportista()
 {
     var razon = $("#razon").val();
     var rut = $("#rut").val();
-    var direccion = $("#direccion").val();
     var nombre = $("#nombre").val();
+    var direccion = $("#direccion").val();
+    var nombreContacto = $("#nombreContacto").val();
     var telefono = $("#telefono").val();
     var mail = $("#mail").val();
     var mail2 = $("#mail2").val();
-    var array = [razon,rut,direccion,nombre,telefono,mail,mail2];
+    var array = [razon,rut,nombre,direccion,nombreContacto,telefono,mail,mail2];
     if(!validarCamposOr(array))
     {
         alertify.error("Ingrese todos los campos necesarios");
@@ -68,7 +71,8 @@ function agregarTransportista()
     }
     if(validarTipoDato())
     {
-        var data = "razon="+razon+"&rut="+rut+"&direccion="+direccion+"&nombre="+nombre+
+        var data = "razon="+razon+"&rut="+rut+"&nombre="+nombre+"&direccion="+
+                direccion+"&nombre_contacto="+nombreContacto+
                 "&telefono="+telefono+"&mail="+mail+"&mail2="+mail2;
         var url = urlBase+"/transportista/AddTransportista.php?"+data;
         var success = function(response)
@@ -88,11 +92,17 @@ function modificarTransportista()
 {
     var razon = $("#razon").val();
     var rut = $("#rut").val();
-    var direccion = $("#direccion").val();
     var nombre = $("#nombre").val();
+    var direccion = $("#direccion").val();
+    var nombreContacto = $("#nombreContacto").val();
     var telefono = $("#telefono").val();
     var mail = $("#mail").val();
     var mail2 = $("#mail2").val();
+    var conductores = "";
+    $(".seleccionado").each(function(i){
+       conductores += $(this).attr("id") + ",";
+    });
+
     var array = [razon,rut,direccion,nombre,telefono,mail,mail2];
     if(!validarCamposOr(array))
     {
@@ -101,8 +111,9 @@ function modificarTransportista()
     }
     if(validarTipoDato())
     {
-        var data = "razon="+razon+"&rut="+rut+"&direccion="+direccion+"&nombre="+nombre
-                +"&telefono="+telefono+"&mail="+mail+"&mail2="+mail2;
+        var data = "razon="+razon+"&rut="+rut+"&nombre="+nombre+"&direccion="+
+                direccion+"&nombre_contacto="+nombreContacto+
+                "&telefono="+telefono+"&mail="+mail+"&mail2="+mail2+"&conductores="+conductores;
         var url = urlBase + "/transportista/ModTransportista.php?"+data;
         var success = function(response)
         {
@@ -136,8 +147,9 @@ function buscarTransportista()
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].transportista_id;
-            var nombre = response[i].transportista_razon;
-            transportistas.append("<div class=\"fila_contenedor\" onClick=\"abrirModificar('"+id+"')\">"+nombre+"</div>");
+            var rut = response[i].transportista_rut;
+            var nombre = response[i].transportista_nombre;
+            transportistas.append("<div class=\"fila_contenedor\" onClick=\"abrirModificar('"+id+"')\">"+rut+" "+nombre+"</div>");
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
@@ -148,7 +160,7 @@ function abrirModificar(id)
 {
     AGREGAR = false;
     $("#contenedor_central").load("html/datos_transportista.html", function( response, status, xhr ) {
-        iniciarPestaniasTransportista();
+        iniciarPestaniasTransportista(id);
         $("#nick").blur(function (){
             if(validarExistencia('rut',$(this).val()))
             {
@@ -172,13 +184,13 @@ function abrirModificar(id)
             }
         }
         $("#razon").val(transportista.transportista_razon);
-        $("#razon").prop("readonly",true);
         $("#rut").val(transportista.transportista_rut);
         $("#rut").prop("readonly",true);
         $("#tipo").val(transportista.transportista_tipo);
-        $("#nombre").val(transportista.transportista_nombre_contacto);
+        $("#nombre").val(transportista.transportista_nombre);
         $("#telefono").val(transportista.transportista_fono_contacto);
         $("#direccion").val(transportista.transportista_direccion);
+        $("#nombreContacto").val(transportista.transportista_nombre_contacto);
         $("#mail").val(transportista.transportista_mail_contacto);
         $("#mail2").val(transportista.transportista_mail_facturacion);
         $("#centros").val(transportista.transportista_centro_costo);
@@ -249,7 +261,7 @@ function validarTipoDato()
     return true;
 }
 
-function iniciarPestaniasTransportista()
+function iniciarPestaniasTransportista(id)
 {
     $("#p_general").click(function(){
         cambiarPropiedad($("#cont_general"),"display","block");
@@ -262,5 +274,53 @@ function iniciarPestaniasTransportista()
         cambiarPropiedad($("#cont_conductor"),"display","block");
         quitarclase($(this),"dispose");
         agregarclase($("#p_general"),"dispose");
+        cargarConductores(id);
     });
+}
+
+function buscarConductores()
+{
+    var url = urlBase + "/conductor/GetConductores.php?busqueda=";
+    var success = function(response)
+    {
+        cerrarSession(response);
+        CONDUCTORES = response;
+    };
+    getRequest(url,success);
+}
+
+function cargarConductores(idT)
+{
+    var conductor = $("#tablaContenido");
+    if(conductor.html() === '')
+    {
+        var url = urlBase + "/transportista/GetTransportistaConductor.php?id="+idT;
+        var success = function(response)
+        {
+            cambiarPropiedad($("#loader"),"visibility","hidden");
+            var conductores = response;
+            for(var i = 0 ; i < CONDUCTORES.length; i++)
+            {
+                var id = CONDUCTORES[i].conductor_id;
+                var rut = CONDUCTORES[i].conductor_rut;
+                var nombre = CONDUCTORES[i].conductor_nombre;
+                var papellido = CONDUCTORES[i].conductor_papellido;
+                var movil = CONDUCTORES[i].conductor_movil;
+                var imagen = "";
+                var clase = "";
+                if(conductores.conductor_id === id)
+                {
+                    imagen = "<img src=\"img/guardar.svg\">";
+                    clase = "seleccionado";
+                }
+                else
+                {
+                    clase = "no-seleccionado";
+                }
+                conductor.append("<div onClick=\"seleccionar($(this))\" id=\""+rut+"\" class=\"tablaFila "+clase+"\"><div>"+imagen+"</div><div>"
+                            +rut+"</div><div>"+nombre+" "+papellido+"</div><div>"+movil+"</div></div>");
+            }  
+        };
+        getRequest(url,success);
+    }
 }
