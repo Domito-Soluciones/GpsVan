@@ -1,5 +1,5 @@
 <div class="titulo_pagina">
-    Informaci&oacute;n Pasajero
+    Informaci&oacute;n Administrador
 </div>
 <div class="contenedor-titulo">
     <div class="titulo_pagina_general" id="p_general">
@@ -31,7 +31,7 @@
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Apellido Paterno (*)
+                Apellido paterno (*)
             </div>
             <div class="contenedor-input">
                 <input type="text" id="papellido" placeholder="Ej: Soto" maxlength="20">
@@ -39,7 +39,7 @@
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Apellido Materno (*)
+                Apellido materno (*)
             </div>
             <div class="contenedor-input">
                 <input type="text" id="mapellido" placeholder="Ej: Vergara" maxlength="20">
@@ -75,7 +75,7 @@
             </div>
             <div class="contenedor-input">
                 <input type="text" id="mail" placeholder="Ej: user@dominio.cl" maxlength="40">
-            </div>
+            </div> 
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
@@ -87,11 +87,15 @@
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                <!--Nivel atribuciones (*)-->
+                Perfil (*)
             </div>
             <div class="contenedor-input">
-                <input type="hidden" id="nivel">
-                <!--<input type="text" id="nivel" placeholder="Ej: elevado" maxlength="40">-->
+                <select id="nivel">
+                    <option value="">Seleccione</option>
+                    <option value="Usuario">Usuario</option>
+                    <option value="Administrador">Administrador</option>
+                    <option value="Super Administrador">Super Administrador</option>
+                </select>
             </div>
         </div>
     </div>

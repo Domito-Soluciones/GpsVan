@@ -4,11 +4,29 @@
         <script src="js/monitoreo.js" type="text/javascript"></script>
     </head>
     <body>
-        <div class="map" id="map">
-            <!--
-                aqui va el mapa
-            -->
-        </div> 
+        <div class="contenedor-lateral">
+            <div class="buscador">
+                Buscar: <input type="text" id="busqueda">                    
+            </div>
+            <div class="buscador_titulo">
+                Servicios / Veh&iacute;culos
+            </div>
+            <div id="lista_busqueda" class="lista_busqueda">
+                <div class="contenedor-loader">
+                    <div class="loader" id="loader">Loading...</div>
+                </div>
+            </div>
+            <div id="mensaje-error" class="mensaje-error">
+
+            </div>
+        </div>
+        <div class="contenedor_central" id="contenedor_central">
+            <div class="map" id="map">
+                <!--
+                    aqui va el mapa
+                -->
+            </div> 
+        </div>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDcQylEsZAzuEw3EHBdWbsDAynXvU2Ljzs&libraries=places&callback=initMap"></script>
     </body>
 </html>

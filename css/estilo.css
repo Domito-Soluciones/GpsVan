@@ -32,7 +32,6 @@ select
     cursor: pointer;
     -moz-appearance: none;
     border-radius: 5px;
-    padding-left: 20px;
     width: 150px;
     height: 30px;
     background: #FFFFFF url("../img/flecha-abajo.svg")no-repeat right;
@@ -69,6 +68,12 @@ select
     margin-left: 50%;
     width: 65%;
 }
+.contenedor-loader-intro
+{
+    margin-top: 20px;
+    margin-left: 50%;
+    width: 50%;
+}
 .contenedor-loaderCentral
 {
     margin-top: 20%;
@@ -81,7 +86,7 @@ select
     background-color: #f9f9f9;
     border-right: solid 2px #f9f9f9;
     border-bottom: solid 1px #8a9cb2;
-    height: 35px;
+    height: 40px;
     font-size: 15px;
     min-width: 180px;
     cursor: pointer;
@@ -101,6 +106,7 @@ select
     background-color: #8a9cb2;
     color: white;
     border-right: solid 10px #257ABB;
+    cursor: initial;
 }
 .menu
 {
@@ -114,7 +120,7 @@ select
 }
 .contenido-menu
 {
-    padding-top: 4%;
+    padding-top: 5%;
     width: 100%;
     text-align: center;
 }
@@ -157,7 +163,7 @@ select
     margin-right: 1%;
     width: 10%;
 }
-.usuario
+.logOut
 {
     background-color: #999999;
     float: left;
@@ -336,20 +342,24 @@ select
     cursor: pointer;
     background-color: #dfe8e8;
 }
+.fila_contenedor_activa
+{
+    background-color: #cccccc;
+}
 .contenedor-info
 {
     border: solid 1px silver;
     background-color: white;
     height: calc(100% - 82px);
     padding-top: 20px;
-    min-height: 470px;
+    min-height: 460px;
 }
 .dispose
 {
     color: white !important;
     cursor: pointer;
     background-color: silver !important;
-    border-top: solid 1px silver !important;
+    border-top: none !important;
     border-bottom: solid 1px silver;
 }
 
@@ -373,10 +383,10 @@ select
 }
 .titulo_pagina_general
 {
-    width:120px;
+    width: auto;
     float: left;
     display: inline-block;
-    padding: 5px 0 5px 20px;
+    padding: 5px 20px 5px 20px;
     font-size: 17px;
     color: #0099ff;
     border-top: solid 2px #0099ff;
@@ -520,7 +530,52 @@ select
 {
     width: 8%;
 }
-.cont-serv
+.contenedor-fila-servicio
 {
     width: 28%;
+}
+
+.resultado_busqueda
+{
+    color: #0099ff;
+    width: 630px;
+}
+.sub-opcion:active
+{
+    background-color: #999999;
+}
+.sub-opcion
+{
+    cursor: pointer;
+    background-color: #cccccc;
+    border: solid 1px #0099ff;
+    text-align: center;
+    line-height: 200px;
+    width: 200px;
+    height: 200px;
+    display: inline-block;
+}
+.boton-izquierdo
+{
+    margin-left: 50px;
+    float: left;
+}
+.boton-derecho
+{
+    margin-right: 50px;
+    float: right;
+}
+.mensaje-eleccion
+{
+    width: 100%;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+}
+.botones-eleccion
+{
+    width: 60%;
+    height: 200px;
+    margin-left: 20%;
+    margin-right: 20%;
 }

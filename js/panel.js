@@ -1,9 +1,6 @@
 /* global alertify, directionsDisplay, urlBase, ORIGEN, GESTIONANDO_TICKET */
 
 $(document).ready(function(){
-    $("#menu").load("menu.html", function( response, status, xhr ) {
-        agregarclase($("#panel"),"menu-activo");
-    });    
 
     $("#entrar").click(function () {
         agregarServicio();

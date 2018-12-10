@@ -115,12 +115,43 @@ class TransportistaDao {
         $array = array();
         $conn = new Conexion();
         try {
-            $query = "SELECT transportista_conductor_id_conductor FROM tbl_transportista_conductor WHERE "
-                    . "transportista_conductor_id_transportista = ".$idTransportista;
+            $query = "SELECT conductor_rut FROM tbl_conductor WHERE "
+                    . "conductor_transportista = ".$idTransportista;
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query); 
             while($row = mysqli_fetch_array($result)) {
-                array_push($array,$row['transportista_conductor_id_conductor']);
+                $conductor = new Conductor();
+                $conductor->setId($row["conductor_id"]);
+                $conductor->setNombre($row["conductor_nombre"]);
+                $conductor->setPapellido($row["conductor_papellido"]);
+                $conductor->setMapellido($row["conductor_mapellido"]);
+                $conductor->setRut($row["conductor_rut"]);
+                $conductor->setMovil($row["conductor_movil"]);
+                array_push($array, $conductor);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $array;
+    }
+    
+    function getTransportistaMovil($idTransportista)
+    {
+        $array = array();
+        $conn = new Conexion();
+        try {
+            $query = "SELECT movil_patente FROM tbl_movil WHERE "
+                    . "movil_transportista = ".$idTransportista;
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query); 
+            while($row = mysqli_fetch_array($result)) {
+                $moviles = new Movil();
+                $moviles->setId($row["movil_id"]);
+                $moviles->setNombre($row["movil_nombre"]);
+                $moviles->setPatente($row["movil_patente"]);
+                $moviles->setMarca($row["movil_marca"]);
+                $moviles->setModelo($row["movil_modelo"]);
+                array_push($array, $moviles);
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

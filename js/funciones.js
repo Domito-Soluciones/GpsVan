@@ -102,10 +102,14 @@ function quitarclase(div,clase)
     div.removeClass(clase);
 }
 
-function cambiarModulo(pagina)
+function cambiarModulo(pagina,cambiar)
 {
+    if(cambiar)
+    {
+        quitarclase($(".opcion-menu"),"menu-activo");
+        agregarclase($("#"+pagina),"menu-activo");
+    }
     $("#contenido-central").load(pagina+".html");
-    agregarclase($("#"+pagina),"menu-activo");
 }
 
 function cerrarSession(response)
@@ -137,6 +141,7 @@ function getfecha()
     var url = urlUtil + "/obtenerFecha.php";
     var success = function(response)
     {
+        $("#fecha").html("");
         $("#fecha").append(response);
     }
     getRequest(url,success);

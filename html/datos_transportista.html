@@ -6,7 +6,10 @@
         1. General
     </div>
     <div class="titulo_pagina_general dispose" id="p_conductor">
-        2. Conductor
+        2. Asignar Conductor
+    </div>
+    <div class="titulo_pagina_general dispose" id="p_movil">
+        3. Asignar Veh&iacute;culo
     </div>
 </div>
 <div class="contenedor-info general" id="cont_general">
@@ -22,7 +25,7 @@
             </div>
             <div class="contenedor-fila">
                 <div class="contenedor-pre-input">
-                    Razon social (*)
+                    Razon Social (*)
                 </div>
                 <div class="contenedor-input">
                     <input type="text" id="razon" placeholder="Ej: Los alamos S.A." maxlength="20">
@@ -47,7 +50,7 @@
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Nombre contacto (*)
+                Nombre Contacto (*)
             </div>
             <div class="contenedor-input">
                 <input type="text" id="nombreContacto" placeholder="Ej: Juan perez" maxlength="10">                    
@@ -55,7 +58,7 @@
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Tel&eacute;fono contacto (*)
+                Tel&eacute;fono Contacto (*)
             </div>
             <div class="contenedor-input">
                 <input type="text" id="telefono" placeholder="Ej: 224337865" maxlength="10">                    
@@ -63,7 +66,7 @@
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                E-mail contacto (*)
+                E-mail Contacto (*)
             </div>
             <div class="contenedor-input">
                 <input type="text" id="mail" placeholder="Ej: user@dominio.cl" maxlength="40">
@@ -71,7 +74,7 @@
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                E-mail facturaci&oacute;n (*)
+                E-mail Facturaci&oacute;n (*)
             </div>
             <div class="contenedor-input">
                 <input type="text" id="mail2" placeholder="Ej: user@dominio.cl" maxlength="40">
@@ -80,14 +83,12 @@
     </div>
 </div>
 <div class="contenedor-info contenedor_oculto" id="cont_conductor">
-    <div class="mensaje-info">
-        (*) Seleccione los conductores que perteneces a este transportista        
+    <div class="boton" id="asignarConductor">
+        <img src="img/anadir.svg" width="12" height="12">
+        Asociar Conductor
     </div>
     <div id="tablaConductores" class="tabla-general">
         <div class="tablaCabecera">
-            <div>
-                
-            </div>
             <div>
                 Rut
             </div>
@@ -95,12 +96,41 @@
                 Nombre
             </div>
             <div>
+                Apellido
+            </div>
+            <div>
                 Veh&iacute;culo
             </div>
         </div>
-        <div id="tablaContenido"></div>
+        <div id="tablaContenidoConductor"></div>
     </div>
-    <div class="contenedor-loader">
-        <div class="loader" id="loader">Loading...</div>
+    <div class="contenedor-loader-intro">
+        <div class="loader" id="loaderC">Loading...</div>
+    </div>
+</div>
+<div class="contenedor-info contenedor_oculto" id="cont_movil">
+    <div class="boton" id="asignarMovil">
+        <img src="img/anadir.svg" width="12" height="12">
+        Asociar Veh&iacute;culo
+    </div>
+    <div id="tablaConductores" class="tabla-general">
+        <div class="tablaCabecera">
+            <div>
+                N&deg; Veh&iacute;culo
+            </div>
+            <div>
+                Patente
+            </div>
+            <div>
+                Marca
+            </div>
+            <div>
+                Modelo
+            </div>
+        </div>
+        <div id="tablaContenidoMovil"></div>
+    </div>
+    <div class="contenedor-loader-intro">
+        <div class="loader" id="loaderV">Loading...</div>
     </div>
 </div>

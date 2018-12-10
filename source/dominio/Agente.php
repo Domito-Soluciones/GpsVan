@@ -7,11 +7,12 @@ class Agente {
     private $apellidoPat;
     private $apellidoMat;
     private $rut;
+    private $nick;
     private $clave;
     private $telefono;
     private $celular;
     private $direccion;
-    private $email;
+    private $mail;
     private $cargo;
     private $perfil;
 
@@ -35,6 +36,10 @@ class Agente {
         return $this->rut;
     }
 
+    function getNick() {
+        return $this->nick;
+    }
+
     function getClave() {
         return $this->clave;
     }
@@ -51,8 +56,8 @@ class Agente {
         return $this->direccion;
     }
 
-    function getEmail() {
-        return $this->email;
+    function getMail() {
+        return $this->mail;
     }
 
     function getCargo() {
@@ -83,6 +88,10 @@ class Agente {
         $this->rut = $rut;
     }
 
+    function setNick($nick) {
+        $this->nick = $nick;
+    }
+
     function setClave($clave) {
         $this->clave = $clave;
     }
@@ -99,8 +108,8 @@ class Agente {
         $this->direccion = $direccion;
     }
 
-    function setEmail($email) {
-        $this->email = $email;
+    function setMail($mail) {
+        $this->mail = $mail;
     }
 
     function setCargo($cargo) {
@@ -113,5 +122,4 @@ class Agente {
 
 
 
-    
 }

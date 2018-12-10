@@ -81,42 +81,20 @@ class ServicioDao {
         return $array;
     }
     
-    public function getServicios($id,$cliente,$usuario,$transportista,$movil,$desde,$hasta,$limit)
+    public function getServicios($busqueda)
     {
         $array = array();
         $conn = new Conexion();
         try {
             
-            $query = "SELECT * FROM tbl_servicio WHERE 1=1 ";
-            if($id != '')
-            {
-                $query .= " AND servicio_id = '".$id."'";
-            }
-            if($cliente != '')
-            {
-                $query .= " AND servicio_cliente like '".$cliente."%' ";
-            }
-            if($usuario != '')
-            {
-                $query .= " AND servicio_usuario like '".$usuario."%' ";
-            }
-            if($transportista != '')
-            {
-                $query .= " AND servicio_transportista like '".$transportista."%' ";
-            }
-            if($movil != '')
-            {
-                $query .= " AND servicio_movil like '".$movil."%' " ;
-            }
-            if($desde != '')
-            {
-                $query .= " AND servicio_fecha >= '".$desde."' ";
-            }
-            if($hasta != '')
-            {
-                $query .= " AND servicio_fecha <= '".$hasta."' ";
-            }
-            $query .= " ORDER BY servicio_fecha DESC LIMIT ".$limit;
+            $query = "SELECT * FROM tbl_servicio WHERE "
+                    . "servicio_id LIKE '%$busqueda%' OR "
+                    . "servicio_partida LIKE '%$busqueda%' OR "
+                    . "servicio_destino LIKE '%$busqueda%' OR "
+                    . "servicio_cliente LIKE '%$busqueda%' OR "
+                    . "servicio_usuario LIKE '%$busqueda%' OR "
+                    . "servicio_transportista LIKE '%$busqueda%' OR "
+                    . "servicio_movil LIKE '%$busqueda%' ORDER BY servicio_fecha DESC LIMIT 20";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
             while($row = mysqli_fetch_array($result)) {

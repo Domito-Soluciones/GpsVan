@@ -2,9 +2,7 @@
 var markers = [];
 var position = [-33.440616, -70.6514212];
 $(document).ready(function(){
-    $("#menu").load("menu.html", function( response, status, xhr ) {
-        agregarclase($("#monitoreo"),"menu-activo");
-    });
+   
     
 });
 

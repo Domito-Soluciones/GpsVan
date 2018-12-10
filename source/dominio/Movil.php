@@ -13,7 +13,13 @@ class Movil {
     private $lon;
     private $ultimaAsignacion;
     private $servicio;
-    
+    private $anio;
+    private $venRevTec;
+    private $segOb;
+    private $venSegOb;
+    private $segAd;
+    private $kilometraje;
+   
     function getId() {
         return $this->id;
     }
@@ -56,6 +62,30 @@ class Movil {
 
     function getServicio() {
         return $this->servicio;
+    }
+
+    function getAnio() {
+        return $this->anio;
+    }
+
+    function getVenRevTec() {
+        return $this->venRevTec;
+    }
+
+    function getSegOb() {
+        return $this->segOb;
+    }
+
+    function getVenSegOb() {
+        return $this->venSegOb;
+    }
+
+    function getSegAd() {
+        return $this->segAd;
+    }
+
+    function getKilometraje() {
+        return $this->kilometraje;
     }
 
     function setId($id) {
@@ -102,6 +132,28 @@ class Movil {
         $this->servicio = $servicio;
     }
 
+    function setAnio($anio) {
+        $this->anio = $anio;
+    }
 
+    function setVenRevTec($venRevTec) {
+        $this->venRevTec = $venRevTec;
+    }
+
+    function setSegOb($segOb) {
+        $this->segOb = $segOb;
+    }
+
+    function setVenSegOb($venSegOb) {
+        $this->venSegOb = $venSegOb;
+    }
+
+    function setSegAd($segAd) {
+        $this->segAd = $segAd;
+    }
+
+    function setKilometraje($kilometraje) {
+        $this->kilometraje = $kilometraje;
+    }
 
 }

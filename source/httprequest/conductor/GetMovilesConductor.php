@@ -10,6 +10,7 @@ for ($i = 0 ; $i < count($moviles); $i++)
 {
     $movilId = $moviles[$i]->getId();
     $movilPatente = $moviles[$i]->getPatente();
+    $movilNombre = $moviles[$i]->getNombre();
     $movilMarca = $moviles[$i]->getMarca();
     $movilModelo = $moviles[$i]->getModelo();
     $movilTransportista = $moviles[$i]->getTransportista();
@@ -19,6 +20,7 @@ for ($i = 0 ; $i < count($moviles); $i++)
     $movilServicio = $moviles[$i]->getServicio();
     echo "{\"movil_id\":\"".$movilId."\","
         . "\"movil_patente\":\"".$movilPatente."\","
+        . "\"movil_nombre\":\"".$movilNombre."\","
         . "\"movil_marca\":\"".$movilMarca."\","
         . "\"movil_modelo\":\"".$movilModelo."\","
         . "\"movil_transportista\":\"".$movilTransportista."\","

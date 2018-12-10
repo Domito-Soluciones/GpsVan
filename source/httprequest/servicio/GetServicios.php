@@ -1,53 +1,18 @@
 <?php
 include '../../util/validarPeticion.php';
-
 include '../../query/ServicioDao.php';
 include '../../dominio/Servicio.php';
 
-
 header('Content-Type: application/json; charset=utf-8');
-$id = $_REQUEST['id'];
-$cliente = $_REQUEST['cliente'];
-$usuario = $_REQUEST['usuario'];
-$transportista = $_REQUEST['transportista'];
-$movil = $_REQUEST['movil'];
-$hoy = getdate();
-$desde = $_REQUEST['desde'];
-
-if($desde == '')
-{
-    if(($id != '' || $cliente != '' || $usuario != '' || $transportista != '' 
-        || $movil != ''))
-    {
-        $desde = '2000-01-01 00:00:00';
-    }
-    else            
-    {
-    $desde = $hoy['year'] . "-" . $hoy['mon'] . "-" . $hoy['mday']. ' 00:00:00';
-    }
-}
-$hasta = $_REQUEST['hasta'];
-if($hasta == '')
-{
-    if(($id != '' || $cliente != '' || $usuario != '' || $transportista != '' 
-        || $movil != ''))
-    {
-        $hasta = '2100-01-01 00:00:00';
-    }
-    else            
-    {
-        $hasta = $hoy['year'] . "-" . $hoy['mon'] . "-" . $hoy['mday']. ' 23:59:59';    
-    }
-}
-$limit = $_REQUEST['limit'];
+$busqueda = $_REQUEST['busqueda'];
 $servicioDao = new ServicioDao();
-$servicios = $servicioDao->getServicios($id,$cliente,$usuario,$transportista,$movil,$desde,$hasta,$limit);
+$servicios = $servicioDao->getServicios($busqueda);
 echo "[";
 for ($i = 0 ; $i < count($servicios); $i++)
 {
     $servicioId = $servicios[$i]->getId();
-    $servicioPartida = utf8_encode(urldecode($servicios[$i]->getPartida()));
-    $servicioDestino = utf8_encode(urldecode($servicios[$i]->getDestino()));
+    $servicioPartida = urldecode($servicios[$i]->getPartida());
+    $servicioDestino = urldecode($servicios[$i]->getDestino());
     $servicioCliente = $servicios[$i]->getCliente();
     $servicioUsuario = $servicios[$i]->getUsuario_nombre();
     $servicioTransportista = $servicios[$i]->getTransportista();

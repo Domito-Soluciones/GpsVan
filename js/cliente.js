@@ -3,10 +3,6 @@ var CLIENTES;
 var AGREGAR = true;
 var PAGINA = 'CLIENTES';
 $(document).ready(function(){
-    $("#menu").load("menu.html", function( response, status, xhr ) {
-        agregarclase($("#cliente"),"menu-activo");
-    });
-    
     buscarCliente();
     $("#agregar").click(function(){
         cambiarPropiedad($("#agregar"),"visibility","hidden");
@@ -141,7 +137,7 @@ function buscarCliente()
         {
             var id = response[i].cliente_id;
             var nombre = response[i].cliente_razon;
-            clientes.append("<div class=\"fila_contenedor\" onClick=\"abrirModificar('"+id+"')\">"+nombre+"</div>");
+            clientes.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"abrirModificar('"+id+"')\">"+nombre+"</div>");
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
@@ -151,6 +147,8 @@ function buscarCliente()
 function abrirModificar(id)
 {
     AGREGAR = false;
+    quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
+    agregarclase($("#"+id),"fila_contenedor_activa");
     $("#contenedor_central").load("html/datos_cliente.html", function( response, status, xhr ) {
         $("#nick").blur(function (){
             if(validarExistencia('rut',$(this).val()))

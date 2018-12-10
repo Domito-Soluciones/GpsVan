@@ -37,7 +37,7 @@ if(!isset($_SESSION['agente']))
             <div class="fecha" id="fecha">
                 
             </div>
-            <div class="usuario" id="usuario">
+            <div class="logOut" id="logOut">
                 
             </div>
 
@@ -48,6 +48,6 @@ if(!isset($_SESSION['agente']))
         <div id="contenido-central" class="contenido-central">
             
         </div>
-        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDcQylEsZAzuEw3EHBdWbsDAynXvU2Ljzs&libraries=places&callback"></script>
+        <!--<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDcQylEsZAzuEw3EHBdWbsDAynXvU2Ljzs&libraries=places&callback"></script>-->
     </body>
 </html>

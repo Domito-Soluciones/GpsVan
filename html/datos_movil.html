@@ -5,25 +5,34 @@
     <div class="titulo_pagina_general" id="p_general">
         1. General
     </div>
+    <div class="titulo_pagina_general dispose" id="p_seguro">
+        2. Seguro
+    </div>
 </div>
 <div class="contenedor-info general" id="cont_general">
     <div class="contenedor-formulario">
         <div class="contenedor-fila">
-            <div class="contenedor-fila">
-                <div class="contenedor-pre-input">
-                    Patente (*)
-                </div>
-                <div class="contenedor-input">
-                    <input type="text" id="patente" placeholder="Ej: BFTR-56"  autocomplete="off" maxlength="10">
-                </div>
+            <div class="contenedor-pre-input">
+                Patente (*)
             </div>
-            <div class="contenedor-fila">
-                <div class="contenedor-pre-input">
-                    Marca (*)
-                </div>
-                <div class="contenedor-input">
-                    <input type="text" id="marca" placeholder="Ej: Kia" maxlength="20">
-                </div>
+            <div class="contenedor-input">
+                <input type="text" id="patente" placeholder="Ej: BFTR-56"  autocomplete="off" maxlength="10">
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                 N&deg; Veh&iacute;culo (*)
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="nombre" placeholder="Ej: M102"  autocomplete="off" maxlength="10">
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                Marca (*)
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="marca" placeholder="Ej: Kia" maxlength="20">
             </div>
         </div>
         <div class="contenedor-fila">
@@ -34,6 +43,57 @@
                 <input type="text" id="modelo" placeholder="Ej: Cerato" maxlength="20">
             </div>
         </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                A&ntilde;o (*)
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="anio" placeholder="Ej: 2018" maxlength="4">
+            </div>
+        </div>
     </div>
 </div>
-   
+<div class="contenedor-info contenedor_oculto" id="cont_seguro">
+    <div class="contenedor-formulario">
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                V. Revisi&oacute;n Tecnica (*)
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="venRevTec" placeholder="Ej: 01/01/2018" maxlength="4">
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                Seguro Obligatorio (*)
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="SegOb" placeholder="Ej: Municipal" maxlength="4">
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                V. Seg. Obligatorio (*)
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="venSegOb" placeholder="Ej: 01/01/2018" maxlength="4">
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                Seguro Adicional
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="SegAd" placeholder="Ej: Privado" maxlength="4">
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                Kilometraje
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="kilo" placeholder="Ej: 100" maxlength="4">
+            </div>
+        </div>
+    </div>
+</div>

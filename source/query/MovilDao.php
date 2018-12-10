@@ -20,13 +20,24 @@ class MovilDao {
     {
         $id = 0;
         $patente = $movil->getPatente();
+        $nombre = $movil->getNombre();
         $marca = $movil->getMarca();
         $modelo = $movil->getModelo();
+        $anio = $movil->getAnio();
+        $venRevTec = $movil->getVenRevTec();
+        $segOb = $movil->getSegOb();
+        $venSegOb = $movil->getVenSegOb();
+        $segAd = $movil->getSegAd();
+        $kilo = $movil->getKilometraje();
         $conn = new Conexion();
         try {
-            $query = "INSERT INTO tbl_movil (movil_patente,movil_marca,movil_modelo,"
+            $query = "INSERT INTO tbl_movil (movil_patente,movil_nombre,movil_marca,movil_modelo,"
+                    . "movil_anio,movil_venc_rev_tecnica,movil_seguro_obligatorio,movil_venc_seguro_obligatorio,movil_seguro_adicional,movil_kilometraje,"
                     . "movil_transportista,movil_estado,movil_lat,movil_lon,movil_last_lat,movil_last_lon,movil_conductor,movil_ultima_asignacion)"
-                    . " VALUES ('$patente','$marca','$modelo','0',0,'','','','',0,CURRENT_TIMESTAMP)"; 
+                    . " VALUES ('$patente','$nombre','$marca','$modelo',"
+                    . "$anio,'$venRevTec','$segOb','$venSegOb','$segAd',$kilo,"
+                    . "0,0,'','','','',0,CURRENT_TIMESTAMP)"; 
+            echo $query;
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -44,11 +55,22 @@ class MovilDao {
         $id = 0;
         $patente = $movil->getPatente();
         $marca = $movil->getMarca();
+        $nombre = $movil->getNombre();
         $modelo = $movil->getModelo();
+        $anio = $movil->getAnio();
+        $venRevTec = $movil->getVenRevTec();
+        $segOb = $movil->getSegOb();
+        $venSegOb = $movil->getVenSegOb();
+        $segAd = $movil->getSegAd();
+        $kilo = $movil->getKilometraje();
         $conn = new Conexion();
         try {
             $query = "UPDATE tbl_movil SET movil_marca = '$marca',"
-                    . "movil_modelo = '$modelo' WHERE movil_patente = '$patente'";           
+                    . "movil_nombre = '$nombre',movil_modelo = '$modelo',"
+                    . "movil_anio = $anio,movil_venc_rev_tecnica = '$venRevTec',"
+                    . "movil_seguro_obligatorio = '$segOb',movil_venc_seguro_obligatorio = '$venSegOb',movil_seguro_adicional = '$segAd'"
+                    . ",movil_kilometraje = $kilo WHERE movil_patente = '$patente'";           
+            echo $query;
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -69,7 +91,9 @@ class MovilDao {
             $query = "SELECT * FROM tbl_movil WHERE "
                     . "movil_patente LIKE '%".$busqueda."%' OR "
                     . "movil_marca LIKE '%".$busqueda."%' OR "
-                    . "movil_modelo LIKE '%".$busqueda."%'";
+                    . "movil_modelo LIKE '%".$busqueda."%' OR "
+                    . "movil_nombre LIKE '%$busqueda%' OR "
+                    . "movil_anio LIKE '%$busqueda%' LIMIT 20";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
             while($row = mysqli_fetch_array($result)) {
@@ -80,6 +104,13 @@ class MovilDao {
                 $moviles->setMarca($row["movil_marca"]);
                 $moviles->setModelo($row["movil_modelo"]);
                 $moviles->setNombre($row["movil_nombre"]);
+                $moviles->setAnio($row["movil_anio"]);
+                $moviles->setVenRevTec($row["movil_venc_rev_tecnica"]);
+                $moviles->setSegOb($row["movil_seguro_obligatorio"]);
+                $moviles->setVenSegOb($row["movil_venc_seguro_obligatorio"]);                
+                $moviles->setSegAd($row["movil_seguro_adicional"]);
+                $moviles->setKilometraje($row["movil_kilometraje"]);
+                
                 $moviles->setTransportista($row["movil_transportista"]);
                 $moviles->setEstado($row['movil_estado']);
                 $moviles->setLat($row['movil_lat']);

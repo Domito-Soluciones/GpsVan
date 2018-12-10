@@ -245,6 +245,7 @@ class ConductorDao {
             while($row = mysqli_fetch_array($result)) {
                 $moviles = new Movil();
                 $moviles->setId($row["movil_id"]);
+                $moviles->setNombre($row["movil_nombre"]);
                 $moviles->setPatente($row["movil_patente"]);
                 $moviles->setMarca($row["movil_marca"]);
                 $moviles->setModelo($row["movil_modelo"]);

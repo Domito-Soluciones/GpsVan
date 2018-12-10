@@ -4,9 +4,6 @@ var MOVILES;
 var AGREGAR = true;
 var PAGINA = 'CONDUCTORES';
 $(document).ready(function(){
-    $("#menu").load("menu.html", function( response, status, xhr ) {
-        agregarclase($("#conductor"),"menu-activo");
-    });
     buscarConductor();
     $("#agregar").click(function(){
         buscarMovil('');
@@ -220,7 +217,7 @@ function buscarConductor()
             var id = response[i].conductor_id;
             var nombre = response[i].conductor_nombre;
             var papellido = response[i].conductor_papellido;
-            conductores.append("<div class=\"fila_contenedor\" onClick=\"abrirModificar('"+id+"')\">"+nombre+" "+papellido+"</div>");
+            conductores.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"abrirModificar('"+id+"')\">"+nombre+" "+papellido+"</div>");
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
@@ -230,6 +227,8 @@ function buscarConductor()
 function abrirModificar(id)
 {
     AGREGAR = false;
+    quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
+    agregarclase($("#"+id),"fila_contenedor_activa");
     $("#contenedor_central").load("html/datos_conductor.html", function( response, status, xhr ) {
         iniciarPestanias();
         iniciarFecha(['#nacimiento','#seguroInicio','#seguroRenovacion']);
@@ -488,6 +487,7 @@ function cambiarMovil()
     {
         if(MOVILES[i].movil_patente === patente)
         {
+            $("#nombreM").val(MOVILES[i].movil_nombre);
             $("#marca").val(MOVILES[i].movil_marca);
             $("#modelo").val(MOVILES[i].movil_modelo);
         }

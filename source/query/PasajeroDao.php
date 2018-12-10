@@ -4,89 +4,89 @@ include '../../conexion/Conexion.php';
 include '../../dominio/Pasajero.php';
 
 class PasajeroDao {
-    public function getUsuarios($id)
-    {
-        $array = array();
-        $conn = new Conexion();
-        try {
-            $where = "";
-            if($id != "")
-            {
-                $where = " WHERE usuario_cliente = '".$id."'";
-            }
-            $query = "SELECT * FROM tbl_usuario ".$where." LIMIT 20"; 
-            $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die; 
-            while($row = mysqli_fetch_array($result)) {
-                $usuario = new Usuario();
-                $usuario->setId($row["usuario_id"]);
-                $usuario->setNombre($row["usuario_nombre"]);
-                array_push($array, $usuario);
-            }
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-        return $array;
-    }
-    
-        public function cambiarEstadoUsuario($estado,$usuario)
-    {
-        $id = 0;
-        $conn = new Conexion();
-        try {
-            $query = "UPDATE tbl_usuario SET usuario_estado = $estado WHERE usuario_nick = '$usuario'"; 
-            $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
-                $id = mysqli_insert_id($conn->conn);
-            } else {
-                echo mysqli_error($conn->conn);
-            }           
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-        return $id;
-    }
-    
-    public function getUsuario($nombre,$clave)
-    {
-        $conn = new Conexion();
-        $id = 0;
-        try {
-            $query = "SELECT * FROM tbl_usuario WHERE usuario_nick = '$nombre' and usuario_password = '$clave'"; 
-            $conn->conectar();
-            $result = mysqli_query($conn->conn,$query); 
-            while($row = mysqli_fetch_array($result)) {
-                $id = $row["usuario_id"];
-            }
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-        return $id;
-    }
-    
-    public function getUsuarioDatos($user)
-    {
-        $conn = new Conexion();
-        $usuario = new Usuario();
-        try {
-            $query = "SELECT * FROM tbl_usuario WHERE usuario_nick = '$user'"; 
-            $conn->conectar();
-            $result = mysqli_query($conn->conn,$query); 
-            while($row = mysqli_fetch_array($result)) {
-                $usuario->setId($row["usuario_id"]);
-                $usuario->setNombre($row["usuario_nombre"]);
-                $usuario->setCliente($row["usuario_cliente"]);
-                $usuario->setCelular($row["usuario_celular"]);
-                $usuario->setDireccion($row["usuario_direccion"]);
-                $usuario->setNick($row['usuario_nick']);
-                $usuario->setPassword($row["usuario_password"]);
-                $usuario->setEstado($row["usuario_estado"]);
-            }
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-        return $usuario;
-    }
+//    public function getUsuarios($id)
+//    {
+//        $array = array();
+//        $conn = new Conexion();
+//        try {
+//            $where = "";
+//            if($id != "")
+//            {
+//                $where = " WHERE usuario_cliente = '".$id."'";
+//            }
+//            $query = "SELECT * FROM tbl_usuario ".$where." LIMIT 20"; 
+//            $conn->conectar();
+//            $result = mysqli_query($conn->conn,$query) or die; 
+//            while($row = mysqli_fetch_array($result)) {
+//                $usuario = new Usuario();
+//                $usuario->setId($row["usuario_id"]);
+//                $usuario->setNombre($row["usuario_nombre"]);
+//                array_push($array, $usuario);
+//            }
+//        } catch (Exception $exc) {
+//            echo $exc->getTraceAsString();
+//        }
+//        return $array;
+//    }
+//    
+//        public function cambiarEstadoUsuario($estado,$usuario)
+//    {
+//        $id = 0;
+//        $conn = new Conexion();
+//        try {
+//            $query = "UPDATE tbl_usuario SET usuario_estado = $estado WHERE usuario_nick = '$usuario'"; 
+//            $conn->conectar();
+//            if (mysqli_query($conn->conn,$query)) {
+//                $id = mysqli_insert_id($conn->conn);
+//            } else {
+//                echo mysqli_error($conn->conn);
+//            }           
+//        } catch (Exception $exc) {
+//            echo $exc->getTraceAsString();
+//        }
+//        return $id;
+//    }
+//    
+//    public function getUsuario($nombre,$clave)
+//    {
+//        $conn = new Conexion();
+//        $id = 0;
+//        try {
+//            $query = "SELECT * FROM tbl_usuario WHERE usuario_nick = '$nombre' and usuario_password = '$clave'"; 
+//            $conn->conectar();
+//            $result = mysqli_query($conn->conn,$query); 
+//            while($row = mysqli_fetch_array($result)) {
+//                $id = $row["usuario_id"];
+//            }
+//        } catch (Exception $exc) {
+//            echo $exc->getTraceAsString();
+//        }
+//        return $id;
+//    }
+//    
+//    public function getUsuarioDatos($user)
+//    {
+//        $conn = new Conexion();
+//        $usuario = new Usuario();
+//        try {
+//            $query = "SELECT * FROM tbl_usuario WHERE usuario_nick = '$user'"; 
+//            $conn->conectar();
+//            $result = mysqli_query($conn->conn,$query); 
+//            while($row = mysqli_fetch_array($result)) {
+//                $usuario->setId($row["usuario_id"]);
+//                $usuario->setNombre($row["usuario_nombre"]);
+//                $usuario->setCliente($row["usuario_cliente"]);
+//                $usuario->setCelular($row["usuario_celular"]);
+//                $usuario->setDireccion($row["usuario_direccion"]);
+//                $usuario->setNick($row['usuario_nick']);
+//                $usuario->setPassword($row["usuario_password"]);
+//                $usuario->setEstado($row["usuario_estado"]);
+//            }
+//        } catch (Exception $exc) {
+//            echo $exc->getTraceAsString();
+//        }
+//        return $usuario;
+//    }
     
     public function agregarPasajero($pasajero)
     {
@@ -170,7 +170,7 @@ class PasajeroDao {
                     . "pasajero_nombre LIKE '%".$busqueda."%' OR "
                     . "pasajero_papellido LIKE '%".$busqueda."%' OR "
                     . "pasajero_mapellido LIKE '%".$busqueda."%' OR "
-                    . "pasajero_mail LIKE '%".$busqueda."%'";
+                    . "pasajero_mail LIKE '%".$busqueda."%' LIMIT 20";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
             while($row = mysqli_fetch_array($result)) {
