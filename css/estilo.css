@@ -242,7 +242,11 @@ select
     overflow-x: auto;
     white-space: nowrap;
 }
-
+.tablaContenido
+{
+    height: 300px;
+    overflow: auto;
+}
 .tr_titulo
 {
     width: 100%;
@@ -475,6 +479,7 @@ select
     position: relative;
     width: 100%;
     overflow-y: auto;
+    padding-top: 10px;
 }
 .tablaCabecera,.tablaFila
 {
@@ -578,4 +583,34 @@ select
     height: 200px;
     margin-left: 20%;
     margin-right: 20%;
+}
+.titulo-asignar
+{
+    font-size: 15px;
+    color: #0099ff;
+    padding-right: 20px;
+}
+.titulo-asignar input
+{
+    margin-left: 20px;
+}
+.resultado-asignar
+{
+    padding-top: 10px;
+    width: 80%;
+}
+.contenedor-asignar
+{
+    padding-left: 20px;
+    width: 95%;
+}
+.cuadro_asignar
+{
+    padding: 10px;
+    width: 200px;
+    height: 50px;
+    border: solid 1px #0099ff;
+    background-color: #999999;
+    color: white;
+    cursor: pointer;
 }

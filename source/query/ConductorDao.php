@@ -150,6 +150,7 @@ class ConductorDao {
                 $conductor->setImagenAdjunta($row["conductor_imagen"]);
                 $conductor->setContratoAdjunto($row["conductor_contrato"]);
                 $conductor->setMovil($row["conductor_movil"]);
+                $conductor->setTransportista($row["conductor_transportista"]);
                 array_push($array, $conductor);
             }
         } catch (Exception $exc) {
