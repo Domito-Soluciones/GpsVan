@@ -614,3 +614,9 @@ select
     color: white;
     cursor: pointer;
 }
+
+.cabecera_fila
+{
+    width: 20px !important;
+    padding-left: 20px;
+}
