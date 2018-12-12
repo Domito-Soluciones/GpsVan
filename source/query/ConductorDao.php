@@ -33,16 +33,20 @@ class ConductorDao {
         $anticipo = $conductor->getAnticipo();
         $imagen = $conductor->getImagenAdjunta();
         $archivoContrato = $conductor->getContratoAdjunto();
-        $patente = $conductor->getMovil()->getPatente();
+        $patente = '';
+        if($conductor->getMovil() != null)
+        {
+            $patente = $conductor->getMovil()->getPatente();
+        }
         $conn = new Conexion();
         try {
             $query = "INSERT INTO tbl_conductor (conductor_nombre,conductor_papellido,"
                     . "conductor_mapellido,conductor_rut,conductor_nick,conductor_clave,conductor_telefono,"
                     . "conductor_celular,conductor_direccion,conductor_mail,conductor_tipo_licencia,"
                     . "conductor_nacimiento,conductor_renta,conductor_tipo_contrato, conductor_prevision ,conductor_isapre,conductor_mutual,"
-                    . "conductor_seguro_inicio,conductor_seguro_renovacion,conductor_descuento,conductor_anticipo,conductor_imagen,conductor_contrato,conductor_movil) VALUES "
+                    . "conductor_seguro_inicio,conductor_seguro_renovacion,conductor_descuento,conductor_anticipo,conductor_imagen,conductor_contrato,conductor_movil,conductor_transportista) VALUES "
                     . "('$nombre','$papellido','$mapellido','$rut','$nick','$password','$telefono','$celular','$direccion','$mail','$tipoLicencia',"
-                    . "'$nacimiento',$renta,'$contrato','$afp','$isapre','$mutual','$seguroInicio','$seguroRenovacion','$descuento','$anticipo','$imagen','$archivoContrato','$patente')"; 
+                    . "'$nacimiento',$renta,'$contrato','$afp','$isapre','$mutual','$seguroInicio','$seguroRenovacion','$descuento','$anticipo','$imagen','$archivoContrato','$patente',0)"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);

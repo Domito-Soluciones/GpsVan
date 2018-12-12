@@ -5,6 +5,8 @@ var MOVILES;
 var AGREGAR = true;
 var PAGINA = 'TRANSPORTISTAS';
 var ID_TRANSPORTISTA;
+var ARRAY_ELIMINAR_CONDUCTORES = [];
+var ARRAY_ELIMINAR_MOVILES = [];
 $(document).ready(function(){
     buscarTransportista();
     buscarConductores();
@@ -119,10 +121,18 @@ function modificarTransportista()
     }
     if(validarTipoDato())
     {
-        var data = "razon="+razon+"&rut="+rut+"&nombre="+nombre+"&direccion="+
+        var conductores = "&conductores=";
+        $("#tablaContenidoConductor .tablaFila").each(function(index) {
+            conductores +=$(this).attr("id")+",";
+        });
+        var moviles = "&moviles=";
+        $("#tablaContenidoMovil .tablaFila").each(function(index) {
+            moviles +=$(this).attr("id")+",";
+        });
+        var data = "id="+ID_TRANSPORTISTA+"&razon="+razon+"&rut="+rut+"&nombre="+nombre+"&direccion="+
                 direccion+"&nombre_contacto="+nombreContacto+
                 "&telefono="+telefono+"&mail="+mail+"&mail2="+mail2+"&conductores="+conductores;
-        var url = urlBase + "/transportista/ModTransportista.php?"+data;
+        var url = urlBase + "/transportista/ModTransportista.php?"+data+conductores+moviles;
         var success = function(response)
         {
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
@@ -171,7 +181,7 @@ function abrirModificar(id)
     quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
     agregarclase($("#"+id),"fila_contenedor_activa");
     $("#contenedor_central").load("html/datos_transportista.html", function( response, status, xhr ) {
-        iniciarPestaniasTransportista(id);
+        iniciarPestaniasTransportista();
         $("#nick").blur(function (){
             if(validarExistencia('rut',$(this).val()))
             {
@@ -272,7 +282,7 @@ function validarTipoDato()
     return true;
 }
 
-function iniciarPestaniasTransportista(id)
+function iniciarPestaniasTransportista()
 {
     $("#p_general").click(function(){
         cambiarPropiedad($("#cont_general"),"display","block");
@@ -373,12 +383,16 @@ function cargarConductores()
                 var transportista = CONDUCTORES[i].conductor_transportista;
                 if(ID_TRANSPORTISTA === transportista && movil !== '')
                 {
-                    tablaConductor.append("<div id=\""+rut+"\" class=\"tablaFila\"><div>"
-                            +rut+"</div><div>"+nombre+" "+papellido+"</div><div>"+movil+"</div></div>");
+                    tablaConductor.append("<div id=\""+rut+"\" class=\"tablaFila\"><div class=\"cabecera_fila\"><img onclick=\"eliminarFilaConductor('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"20\" height=\"20\"></div><div>"
+                            +rut+"</div><div>"+nombre+"</div><div>"+papellido+"</div><div>"+movil+"</div></div>");
                 }
                 else if(movil !== '')
                 {
                     datalistConductor.append("<option value=\""+rut+"\">"+rut+"</option>");
+                }
+                else
+                {
+                    alertify.error("No hay conductores con veh&iacute;culos asociados");    
                 }
             }
         }
@@ -386,7 +400,7 @@ function cargarConductores()
 }
 
 function cargarMoviles()
-{   
+{
     var tablaMovil = $("#tablaContenidoMovil");
     var datalistMovil = $("#patenteMovilL");
     datalistMovil.html("");
@@ -406,11 +420,14 @@ function cargarMoviles()
                 var marca = MOVILES[i].movil_marca;
                 var modelo = MOVILES[i].movil_modelo;
                 var transportista = MOVILES[i].movil_transportista;
-                datalistMovil.append("<option value=\""+patente+"\">"+patente+"</option>");
                 if(ID_TRANSPORTISTA === transportista)
                 {
-                    tablaMovil.append("<div id=\""+patente+"\" class=\"tablaFila\"><div>\n\
-                        <div>"+patente+"</div>"+nombre+"</div><div>"+marca+" "+modelo+"</div></div>");
+                    tablaMovil.append("<div id=\""+patente+"\" class=\"tablaFila\"><div class=\"cabecera_fila\"><img onclick=\"eliminarFilaMovil('"+patente+"')\" src=\"img/eliminar-negro.svg\" width=\"20\" height=\"20\"></div><div>"
+                        +patente+"</div><div>"+nombre+"</div><div>"+marca+"</div><div>"+modelo+"</div></div>");
+                }
+                else
+                {
+                    datalistMovil.append("<option value=\""+patente+"\">"+patente+"</option>");
                 }
             }
         }
@@ -451,7 +468,7 @@ function encontrarConductor(){
 function agregarConductor(rut,nombre,apelllido,movil)
 {
     $("#rutConductor").val("");
-    $("#tablaContenidoConductor").append("<div id=\""+rut+"\" class=\"tablaFila\"><div>"
+    $("#tablaContenidoConductor").append("<div id=\""+rut+"\" class=\"tablaFila\"><div class=\"cabecera_fila\"><img onclick=\"eliminarFilaConductor('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"20\" height=\"20\"></div><div>"
             +rut+"</div><div>"+nombre+"</div><div>"+apelllido+"</div><div>"+movil+"</div></div>");
     $(".cuadro_asignar").remove();
 }
@@ -490,7 +507,21 @@ function encontrarMovil(){
 function agregarMovil(patente,nombre,marca,modelo)
 {
     $("#patenteMovil").val("");
-    $("#tablaContenidoMovil").append("<div id=\""+patente+"\" class=\"tablaFila\"><div>"
+    $("#tablaContenidoMovil").append("<div id=\""+patente+"\" class=\"tablaFila\"><div class=\"cabecera_fila\"><img onclick=\"eliminarFilaMovil('"+patente+"')\" src=\"img/eliminar-negro.svg\" width=\"20\" height=\"20\"></div><div>"
             +patente+"</div><div>"+nombre+"</div><div>"+marca+"</div><div>"+modelo+"</div></div>");
     $(".cuadro_asignar").remove();
+}
+
+function eliminarFilaConductor(obj)
+{
+    ARRAY_ELIMINAR_CONDUCTORES.push(obj);
+    $("#"+obj).remove();
+    $("#rutConductorL").append("<option value=\""+obj+"\">"+obj+"</option>");
+}
+
+function eliminarFilaMovil(obj)
+{
+    ARRAY_ELIMINAR_MOVILES.push(obj);
+    $("#"+obj).remove();
+    $("#patenteMovilL").append("<option value=\""+obj+"\">"+obj+"</option>");
 }
