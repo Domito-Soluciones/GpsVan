@@ -2,6 +2,7 @@
 var MOVILES;
 var AGREGAR = true;
 var PAGINA = 'MOVILES';
+var CAMPOS = ["patente","marca","nombre","modelo","anio","venRevTec","SegOb","venSegOb"];
 $(document).ready(function(){
     buscarMovil();
     $("#agregar").click(function(){
@@ -63,6 +64,7 @@ function agregarMovil()
     var array = [patente,marca,nombre,modelo,anio,venRevTec,segOb,venSegOb];
     if(!validarCamposOr(array))
     {
+        activarPestania(array);
         alertify.error("Ingrese todos los campos necesarios");
         return;
     }
@@ -99,6 +101,7 @@ function modificarMovil()
     var array = [patente,marca,nombre,modelo,anio,venRevTec,segOb,venSegOb];
     if(!validarCamposOr(array))
     {
+        activarPestania(array);
         alertify.error("Ingrese todos los campos necesarios");
         return;
     }
@@ -212,23 +215,45 @@ function validarExistencia(tipo,valor)
 }
 function validarTipoDato()
 {
-    var patente = $("#patente").val();
-    var anio = $("#anio").val();
-    var kilo = $("#kilo").val();
-    if(!validarPatente(patente))
+    for(var i = 0 ; i < CAMPOS.length ; i++)
     {
+        marcarCampoOk($("#"+CAMPOS[i]));
+    }
+    var patente = $("#patente");
+    var anio = $("#anio");
+    var kilo = $("#kilo");
+    if(!validarPatente(patente.val()))
+    {
+        cambiarPestaniaGeneral();
+        marcarCampoError(patente);
         alertify.error('Patente invalida');
         return false;
     }
-    if(!validarNumero(anio))
+    else
     {
+        marcarCampoOk(patente);
+    }
+    if(!validarNumero(anio.val()))
+    {
+        cambiarPestaniaGeneral();
+        marcarCampoError(anio);
         alertify.error('A&ntilde;o debe ser numerico');
         return false;
     }
-    if(!validarNumero(kilo))
+    else
     {
+        marcarCampoOk(anio);
+    }
+    if(!validarNumero(kilo.val()))
+    {
+        cambiarPestaniaSeguro();
+        marcarCampoError(kilo);
         alertify.error('Kilometraje debe ser numerico');
         return false;
+    }
+    else
+    {
+        marcarCampoOk(kilo);
     }
     
     return true;
@@ -248,4 +273,57 @@ function iniciarPestanias()
         quitarclase($(this),"dispose");
         agregarclase($("#p_general"), "dispose");
     });
+}
+
+function activarPestania(array)
+{
+    var general = false;
+    var seguro = false;
+    for(var i = 0 ; i < CAMPOS.length ; i++)
+    {
+        if(array[i] === '')
+        {
+            if(i < 5)
+            {
+                general = true;
+            }
+            else if(i > 4)
+            {
+                if(!general)
+                {
+                    seguro = true;
+                }
+            }
+            marcarCampoError($("#"+CAMPOS[i]));
+        }
+        else
+        {
+            marcarCampoOk($("#"+CAMPOS[i]));
+        }
+    }
+    
+    if(general)
+    {
+        cambiarPestaniaGeneral();
+    }
+    else if(seguro)
+    {
+        cambiarPestaniaSeguro();
+    }
+}
+
+function cambiarPestaniaGeneral()
+{
+    cambiarPropiedad($("#cont_general"),"display","block");
+    cambiarPropiedad($("#cont_seguro"),"display","none");
+    quitarclase($("#p_general"),"dispose");
+    agregarclase($("#p_seguro"),"dispose");
+}
+
+function cambiarPestaniaSeguro()
+{
+    cambiarPropiedad($("#cont_general"),"display","none");
+    cambiarPropiedad($("#cont_seguro"),"display","block");
+    quitarclase($("#p_seguro"),"dispose");
+    agregarclase($("#p_general"), "dispose");
 }

@@ -22,6 +22,13 @@ function isTeclaEnter(e){
     }
     return false;
 }
+function isTeclaTab(e){
+    e.preventDefault();
+    if(e.keyCode === 9){
+        return true;
+    }
+    return false;
+}
 
 function postRequest(url,success)
 {
@@ -296,5 +303,17 @@ function seleccionar(div)
         quitarclase(div,"seleccionado");
         agregarclase(div,"no-seleccionado");
     }
+}
+
+function marcarCampoError(campo)
+{
+    cambiarPropiedad(campo,"backgroundColor","red");
+    cambiarPropiedad(campo,"color","white");
+}
+
+function marcarCampoOk(campo)
+{
+    cambiarPropiedad(campo,"backgroundColor","white");
+    cambiarPropiedad(campo,"color","black");
 }
 

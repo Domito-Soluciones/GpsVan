@@ -3,6 +3,10 @@ var CONDUCTORES;
 var MOVILES;
 var AGREGAR = true;
 var PAGINA = 'CONDUCTORES';
+var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","mail","nacimiento","tipoLicencia",
+                "renta","tipoContrato","afp","isapre","mutual","seguroInicio","seguroRenovacion",
+                "nick","password","password2"];
+
 $(document).ready(function(){
     buscarConductor();
     $("#agregar").click(function(){
@@ -58,7 +62,7 @@ $(document).ready(function(){
                 eliminarConductor();
             },null);
     });
-    });
+});
 
 function agregarConductor()
 {
@@ -70,10 +74,6 @@ function agregarConductor()
     var celular = $("#celular").val();
     var direccion = $("#direccion").val();
     var mail = $("#mail").val();
-    var nick = $("#nick").val();
-    var password = $("#password").val();
-    var password2 = $("#password2").val();
-    var tipoLicencia = $("#tipoLicencia").val();
     var nacimiento = formato_fecha($("#nacimiento").val());
     var renta = $("#renta").val();
     var contrato = $("#tipoContrato").val();
@@ -84,17 +84,24 @@ function agregarConductor()
     var seguroRenovacion = formato_fecha($("#seguroRenovacion").val());
     var descuento = $("#descuento").val() === '' ? '0' : $("#descuento").val();
     var anticipo = $("#anticipo").val() === '' ? '0' : $("#anticipo").val();
+    var nick = $("#nick").val();
+    var password = $("#password").val();
+    var password2 = $("#password2").val();
+    var tipoLicencia = $("#tipoLicencia").val();
     var patente = $("#moviles").val();
-    var array = [nombre,papellido,mapellido,rut,celular,direccion,mail,
-        tipoLicencia,nacimiento,renta,contrato,afp,isapre,mutual,seguroInicio,
-        seguroRenovacion,nick,password,password2];
+    var array = [rut,nombre,papellido,mapellido,celular,direccion,mail,nacimiento,tipoLicencia,
+                renta,contrato,afp,isapre,mutual,seguroInicio,seguroRenovacion,
+                nick,password,password2];
     if(!validarCamposOr(array))
     {
+        activarPestania(array);
         alertify.error("Ingrese todos los campos necesarios");
         return;
     }
     if(password !== password2)
     {
+        marcarCampoError($("#password"));
+        marcarCampoError($("#password2"));
         alertify.error("La password no coincide");
         return;
     }
@@ -169,6 +176,7 @@ function modificarConductor()
     }
     if(!validarCamposOr(array))
     {
+        activarPestania(array);
         alertify.error("Ingrese todos los campos necesarios");
         return;
     }
@@ -357,51 +365,74 @@ function validarExistencia(tipo,valor)
 
 function validarTipoDato()
 {
-    var rut = $("#rut").val();
-    var telefono = $("#telefono").val();
-    var celular = $("#celular").val();
-    var mail = $("#mail").val();
-    var renta = $("#renta").val();
-    var mutual = $("#mutual").val();
-    var descuento = $("#descuento").val() === '' ? '0' : $("#descuento").val();
-    var anticipo = $("#anticipo").val() === '' ? '0' : $("#anticipo").val();
-    if(!validarRut(rut))
+    for(var i = 0 ; i < CAMPOS.length ; i++)
     {
+        marcarCampoOk($("#"+CAMPOS[i]));
+    }
+    var rut = $("#rut");
+    var telefono = $("#telefono");
+    var celular = $("#celular");
+    var mail = $("#mail");
+    var renta = $("#renta");
+    var mutual = $("#mutual");
+    var descuento = $("#descuento");
+    var anticipo = $("#anticipo");
+    if(!validarRut(rut.val()))
+    {
+        cambiarPestaniaGeneral();
+        marcarCampoError(rut);
         alertify.error('Rut invalido');
         return false;
     }
-    if(!validarNumero(telefono))
+    if(!validarNumero(telefono.val()))
     {
+        marcarCampoOk(telefono);
+        cambiarPestaniaGeneral();
+        marcarCampoError(telefono);
         alertify.error('Telefono debe ser numerico');
         return false;
     }
-    if(!validarNumero(celular))
+    if(!validarNumero(celular.val()))
     {
+        cambiarPestaniaGeneral();
+        marcarCampoError(celular);
         alertify.error('Celular debe ser numerico');
         return false;
     }
-    if(!validarEmail(mail))
+    if(!validarEmail(mail.val()))
     {
+        cambiarPestaniaGeneral();
+        marcarCampoError(mail);
         alertify.error('E-mail invalido');
         return false;
     }
-    if(!validarNumero(renta))
+    if(!validarNumero(renta.val()))
     {
+        cambiarPestaniaContrato();
+        marcarCampoError(renta);
         alertify.error('Renta debe ser numerico');
         return false;
     }
-    if(!validarNumero(mutual))
+    if(!validarNumero(mutual.val()))
     {
+        cambiarPestaniaContrato();
+        marcarCampoError(mutual);
         alertify.error('% Mutual debe ser numerico');
         return false;
     }
-    if(!validarNumero(descuento))
+    if(!validarNumero(descuento.val() === '' ? '0' : descuento.val()))
     {
+        marcarCampoOk(descuento);
+        cambiarPestaniaContrato();
+        marcarCampoError(descuento);
         alertify.error('% Descuento debe ser numerico');
         return false;
     }
-    if(!validarNumero(anticipo))
+    if(!validarNumero(anticipo.val() === '' ? '0' : anticipo.val()))
     {
+        marcarCampoOk(anticipo);
+        cambiarPestaniaContrato();
+        marcarCampoError(anticipo);
         alertify.error('Anticipo debe ser numerico');
         return false;
     }
@@ -493,3 +524,90 @@ function cambiarMovil()
         }
     }
 }
+
+function activarPestania(array)
+{
+    var general = false;
+    var contrato = false;
+    var aplicacion = false;
+    for(var i = 0 ; i < CAMPOS.length ; i++)
+    {
+        if(array[i] === '')
+        {
+            if(i < 9)
+            {
+                general = true;
+            }
+            if(i > 8 && i < 16)
+            {
+                if(!general)
+                {
+                    contrato = true;
+                }
+            }
+            if(i > 15)
+            {
+                if(!contrato)
+                {
+                    aplicacion = true;
+                }
+            }
+            marcarCampoError($("#"+CAMPOS[i]));
+        }
+        else
+        {
+            marcarCampoOk($("#"+CAMPOS[i]));
+        }
+    }
+    alert(general+" "+contrato +" "+aplicacion);
+    if(general)
+    {
+        cambiarPestaniaGeneral();
+    }
+    if(contrato)
+    {
+        cambiarPestaniaContrato();
+    }
+    if(aplicacion)
+    {
+        cambiarPestaniaAplicacion();
+    }
+    
+}
+function cambiarPestaniaGeneral()
+{
+    cambiarPropiedad($("#cont_general"),"display","block");
+    cambiarPropiedad($("#cont_contrato"),"display","none");
+    cambiarPropiedad($("#cont_app"),"display","none");
+    cambiarPropiedad($("#cont_movil"),"display","none");
+    quitarclase($("#p_general"),"dispose");
+    agregarclase($("#p_contrato"),"dispose");
+    agregarclase($("#p_app"),"dispose");
+    agregarclase($("#p_movil"),"dispose");
+}
+
+
+function cambiarPestaniaContrato()
+{
+    cambiarPropiedad($("#cont_general"),"display","none");
+    cambiarPropiedad($("#cont_contrato"),"display","block");
+    cambiarPropiedad($("#cont_app"),"display","none");
+    cambiarPropiedad($("#cont_movil"),"display","none");
+    quitarclase($("#p_contrato"),"dispose");
+    agregarclase($("#p_general"),"dispose");
+    agregarclase($("#p_app"),"dispose");
+    agregarclase($("#p_movil"),"dispose");
+}
+
+function cambiarPestaniaAplicacion()
+{
+    cambiarPropiedad($("#cont_general"),"display","none");
+    cambiarPropiedad($("#cont_contrato"),"display","none");
+    cambiarPropiedad($("#cont_app"),"display","block");
+    cambiarPropiedad($("#cont_movil"),"display","none");
+    quitarclase($("#p_app"),"dispose");
+    agregarclase($("#p_general"),"dispose");
+    agregarclase($("#p_contrato"),"dispose");
+    agregarclase($("#p_movil"),"dispose");
+}
+

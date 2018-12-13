@@ -2,6 +2,7 @@
 var AGENTES;
 var AGREGAR = true;
 var PAGINA = 'AGENTES';
+var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","mail","cargo","perfil","nick"];
 $(document).ready(function(){
     buscarAgente();
     $("#agregar").click(function(){
@@ -71,15 +72,17 @@ function agregarAgente()
     var password2 = $("#password2").val();
     var cargo = $("#cargo").val();
     var nivel = $("#nivel").val();
-    var array = [nombre,papellido,mapellido,rut,celular,direccion,mail,
-        nick,password,password2,cargo,nivel];
+    var array = [nombre,papellido,mapellido,rut,celular,direccion,mail,cargo,nivel,nick,password,password2];
     if(!validarCamposOr(array))
     {
+        activarPestania(array);
         alertify.error("Ingrese todos los campos necesarios");
         return;
     }
     if(password !== password2)
     {
+        marcarCampoError($("#password"));
+        marcarCampoError($("#password2"));
         alertify.error("La password no coincide");
         return;
     }
@@ -123,19 +126,21 @@ function modificarAgente()
     {
         if(password !== password2)
         {
+            marcarCampoError($("#password"));
+            marcarCampoError($("#password2"));
             alertify.error("La password no coincide");
             return;
         }
-        array = [nombre,papellido,mapellido,rut,celular,direccion,mail,
-        nick,password,password2,cargo,nivel];
+        array = [nombre,papellido,mapellido,rut,celular,direccion,mail,cargo,nivel,nick,password,password2];
         claveData = "&password="+password;
     }
     else
     {
-        array = [nombre,papellido,mapellido,rut,celular,direccion,mail,nick,cargo,nivel];   
+        array = [nombre,papellido,mapellido,rut,celular,direccion,mail,cargo,nivel,nick];   
     }
     if(!validarCamposOr(array))
     {
+        activarPestania(array);
         alertify.error("Ingrese todos los campos necesarios");
         return;
     }
@@ -270,27 +275,39 @@ function validarExistencia(tipo,valor)
 
 function validarTipoDato()
 {
-    var rut = $("#rut").val();
-    var telefono = $("#telefono").val();
-    var celular = $("#celular").val();
-    var mail = $("#mail").val();
-    if(!validarRut(rut))
+    for(var i = 0 ; i < CAMPOS.length ; i++)
     {
+        marcarCampoOk($("#"+CAMPOS[i]));
+    }
+    var rut = $("#rut");
+    var telefono = $("#telefono");
+    var celular = $("#celular");
+    var mail = $("#mail");
+    if(!validarRut(rut.val()))
+    {
+        cambiarPestaniaGeneral();
+        marcarCampoError(rut);
         alertify.error('Rut invalido');
         return false;
     }
-    if(!validarNumero(telefono))
+    if(!validarNumero(telefono.val()))
     {
+        cambiarPestaniaGeneral();
+        marcarCampoError(telefono);
         alertify.error('Telefono debe ser numerico');
         return false;
     }
-    if(!validarNumero(celular))
+    if(!validarNumero(celular.val()))
     {
+        cambiarPestaniaGeneral();
+        marcarCampoError(mail);
         alertify.error('Celular debe ser numerico');
         return false;
     }
-    if(!validarEmail(mail))
+    if(!validarEmail(mail.val()))
     {
+        cambiarPestaniaGeneral();
+        marcarCampoError(mail);
         alertify.error('E-mail invalido');
         return false;
     }
@@ -315,3 +332,55 @@ function iniciarPestaniasAgente()
 }
 
 
+function activarPestania(array)
+{
+    var general = false;
+    var app = false;
+    for(var i = 0 ; i < CAMPOS.length ; i++)
+    {
+        if(array[i] === '')
+        {
+            if(i < 9)
+            {
+                general = true;
+            }
+            else if(i > 8)
+            {
+                if(!general)
+                {
+                    app = true;
+                }
+            }
+            marcarCampoError($("#"+CAMPOS[i]));
+        }
+        else
+        {
+            marcarCampoOk($("#"+CAMPOS[i]));
+        }
+    }
+    
+    if(general)
+    {
+        cambiarPestaniaGeneral();
+    }
+    else if(app)
+    {
+        cambiarPestaniaAplicacion();
+    }
+}
+
+function cambiarPestaniaGeneral()
+{
+    cambiarPropiedad($("#cont_general"),"display","block");
+    cambiarPropiedad($("#cont_app"),"display","none");
+    quitarclase($("#p_general"),"dispose");
+    agregarclase($("#p_app"),"dispose");
+}
+
+function cambiarPestaniaAplicacion()
+{
+    cambiarPropiedad($("#cont_general"),"display","none");
+    cambiarPropiedad($("#cont_app"),"display","block");
+    quitarclase($("#p_app"),"dispose");
+    agregarclase($("#p_general"), "dispose");
+}

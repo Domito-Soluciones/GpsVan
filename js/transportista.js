@@ -7,6 +7,7 @@ var PAGINA = 'TRANSPORTISTAS';
 var ID_TRANSPORTISTA;
 var ARRAY_ELIMINAR_CONDUCTORES = [];
 var ARRAY_ELIMINAR_MOVILES = [];
+var CAMPOS = ["rut","razon","nombre","direccion","nombreContacto","telefono","mail","mail2"];
 $(document).ready(function(){
     buscarTransportista();
     buscarConductores();
@@ -68,6 +69,7 @@ function agregarTransportista()
     var array = [razon,rut,nombre,direccion,nombreContacto,telefono,mail,mail2];
     if(!validarCamposOr(array))
     {
+        activarPestania(array);
         alertify.error("Ingrese todos los campos necesarios");
         return;
     }
@@ -116,6 +118,7 @@ function modificarTransportista()
     var array = [razon,rut,direccion,nombre,telefono,mail,mail2];
     if(!validarCamposOr(array))
     {
+        activarPestania(array);
         alertify.error("Ingrese todos los campos necesarios");
         return;
     }
@@ -129,10 +132,18 @@ function modificarTransportista()
         $("#tablaContenidoMovil .tablaFila").each(function(index) {
             moviles +=$(this).attr("id")+",";
         });
+        var deleteConductor = "&delConductor=";
+        for(var i = 0; i < ARRAY_ELIMINAR_CONDUCTORES.length;i++) {
+            deleteConductor += ARRAY_ELIMINAR_CONDUCTORES[i]+",";
+        };
+        var deleteMovil = "&delMovil=";
+        for(var i = 0; i < ARRAY_ELIMINAR_MOVILES.length;i++) {
+            deleteMovil += ARRAY_ELIMINAR_MOVILES[i]+",";
+        };
         var data = "id="+ID_TRANSPORTISTA+"&razon="+razon+"&rut="+rut+"&nombre="+nombre+"&direccion="+
                 direccion+"&nombre_contacto="+nombreContacto+
                 "&telefono="+telefono+"&mail="+mail+"&mail2="+mail2+"&conductores="+conductores;
-        var url = urlBase + "/transportista/ModTransportista.php?"+data+conductores+moviles;
+        var url = urlBase + "/transportista/ModTransportista.php?"+data+conductores+moviles+deleteConductor+deleteMovil;
         var success = function(response)
         {
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
@@ -254,27 +265,39 @@ function validarExistencia(tipo,valor)
 
 function validarTipoDato()
 {
-    var rut = $("#rut").val();
-    var telefono = $("#telefono").val();
-    var mail = $("#mail").val();
-    var mail2 = $("#mail2").val();
-    if(!validarRut(rut))
+    for(var i = 0 ; i < CAMPOS.length ; i++)
     {
+        marcarCampoOk($("#"+CAMPOS[i]));
+    }
+    var rut = $("#rut");
+    var telefono = $("#telefono");
+    var mail = $("#mail");
+    var mail2 = $("#mail2");
+    if(!validarRut(rut.val()))
+    {
+        cambiarPestaniaGeneral();
+        marcarCampoError(rut);
         alertify.error('Rut invalido');
         return false;
     }
-    if(!validarNumero(telefono))
+    if(!validarNumero(telefono.val()))
     {
+        cambiarPestaniaGeneral();
+        marcarCampoError(telefono);
         alertify.error('Telefono debe ser numerico');
         return false;
     }
-    if(!validarEmail(mail))
+    if(!validarEmail(mail.val()))
     {
+        cambiarPestaniaGeneral();
+        marcarCampoError(mail);
         alertify.error('E-mail contacto invalido');
         return false;
     }
-    if(!validarEmail(mail2))
+    if(!validarEmail(mail2.val()))
     {
+        cambiarPestaniaGeneral();
+        marcarCampoError(mail2);
         alertify.error('E-mail facturaci&oacute;n invalido');
         return false;
     }
@@ -467,6 +490,12 @@ function encontrarConductor(){
 }
 function agregarConductor(rut,nombre,apelllido,movil)
 {
+    for(var i = 0; i < ARRAY_ELIMINAR_CONDUCTORES.length;i++) {
+        if(rut === ARRAY_ELIMINAR_CONDUCTORES[i])
+        {
+            delete ARRAY_ELIMINAR_CONDUCTORES[i];
+        }
+    };
     $("#rutConductor").val("");
     $("#tablaContenidoConductor").append("<div id=\""+rut+"\" class=\"tablaFila\"><div class=\"cabecera_fila\"><img onclick=\"eliminarFilaConductor('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"20\" height=\"20\"></div><div>"
             +rut+"</div><div>"+nombre+"</div><div>"+apelllido+"</div><div>"+movil+"</div></div>");
@@ -506,6 +535,12 @@ function encontrarMovil(){
 
 function agregarMovil(patente,nombre,marca,modelo)
 {
+    for(var i = 0; i < ARRAY_ELIMINAR_MOVILES.length;i++) {
+        if(patente === ARRAY_ELIMINAR_MOVILES[i])
+        {
+            delete ARRAY_ELIMINAR_MOVILES[i];
+        }
+    };
     $("#patenteMovil").val("");
     $("#tablaContenidoMovil").append("<div id=\""+patente+"\" class=\"tablaFila\"><div class=\"cabecera_fila\"><img onclick=\"eliminarFilaMovil('"+patente+"')\" src=\"img/eliminar-negro.svg\" width=\"20\" height=\"20\"></div><div>"
             +patente+"</div><div>"+nombre+"</div><div>"+marca+"</div><div>"+modelo+"</div></div>");
@@ -524,4 +559,31 @@ function eliminarFilaMovil(obj)
     ARRAY_ELIMINAR_MOVILES.push(obj);
     $("#"+obj).remove();
     $("#patenteMovilL").append("<option value=\""+obj+"\">"+obj+"</option>");
+}
+
+function cambiarPestaniaGeneral()
+{
+    cambiarPropiedad($("#cont_general"),"display","block");
+    cambiarPropiedad($("#cont_conductor"),"display","none");
+    cambiarPropiedad($("#cont_movil"),"display","none");
+    quitarclase($("#p_general"),"dispose");
+    agregarclase($("#p_conductor"),"dispose");
+    agregarclase($("#p_movil"),"dispose");
+}
+
+
+function activarPestania(array)
+{
+    for(var i = 0 ; i < CAMPOS.length ; i++)
+    {
+        if(array[i] === '')
+        {
+            marcarCampoError($("#"+CAMPOS[i]));
+        }
+        else
+        {
+            marcarCampoOk($("#"+CAMPOS[i]));
+        }
+    }
+    cambiarPestaniaGeneral();
 }

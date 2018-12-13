@@ -26,14 +26,24 @@ $transportistaDao = new TransportistaDao();
 $transportistaDao->modificarTransportista($transportista);
 $conductores = $_REQUEST['conductores'];
 $moviles = $_REQUEST['moviles'];
+$delConductor = $_REQUEST['delConductor'];
+$delMovil = $_REQUEST['delMovil'];
 if($id > 0)
 {
-    if($conductores !== '')
+    if($conductores != '')
     {
         $transportistaDao->asociarConductores($id,$conductores);
     }
-    if($moviles !== '')
+    if($moviles != '')
     {
         $transportistaDao->asociarMoviles($id,$moviles);
+    }
+    if($delConductor != '')
+    {
+        $transportistaDao->asociarConductores(0,$delConductor);
+    }
+    if($delMovil != '')
+    {
+        $transportistaDao->asociarMoviles(0,$delMovil);
     }
 }

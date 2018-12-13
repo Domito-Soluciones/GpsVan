@@ -2,6 +2,7 @@
 var CLIENTES;
 var AGREGAR = true;
 var PAGINA = 'CLIENTES';
+var CAMPOS = ["rut","razon","tipo","direccion","nombre","telefono","mail","mail2","centros"];
 $(document).ready(function(){
     buscarCliente();
     $("#agregar").click(function(){
@@ -61,6 +62,7 @@ function agregarCliente()
     var array = [razon,tipo,rut,direccion,nombre,telefono,mail,mail2,cc];
     if(!validarCamposOr(array))
     {
+        activarPestania(array);
         alertify.error("Ingrese todos los campos necesarios");
         return;
     }
@@ -96,6 +98,7 @@ function modificarCliente()
     var array = [razon,tipo,rut,direccion,nombre,telefono,mail,mail2,cc];
     if(!validarCamposOr(array))
     {
+        activarPestania(array);
         alertify.error("Ingrese todos los campos necesarios");
         return;
     }
@@ -222,30 +225,52 @@ function validarExistencia(tipo,valor)
 
 function validarTipoDato()
 {
-    var rut = $("#rut").val();
-    var telefono = $("#telefono").val();
-    var mail = $("#mail").val();
-    var mail2 = $("#mail2").val();
-    if(!validarRut(rut))
+    for(var i = 0 ; i < CAMPOS.length ; i++)
     {
+        marcarCampoOk($("#"+CAMPOS[i]));
+    }
+    var rut = $("#rut");
+    var telefono = $("#telefono");
+    var mail = $("#mail");
+    var mail2 = $("#mail2");
+    if(!validarRut(rut.val()))
+    {
+        marcarCampoError(rut);
         alertify.error('Rut invalido');
         return false;
     }
-    if(!validarNumero(telefono))
+    if(!validarNumero(telefono.val()))
     {
+        marcarCampoError(telefono);
         alertify.error('Telefono debe ser numerico');
         return false;
     }
-    if(!validarEmail(mail))
+    if(!validarEmail(mail.val()))
     {
+        marcarCampoError(mail);
         alertify.error('E-mail contacto invalido');
         return false;
     }
-    if(!validarEmail(mail2))
+    if(!validarEmail(mail2.val()))
     {
+        marcarCampoError(mail2);
         alertify.error('E-mail facturaci&oacute;n invalido');
         return false;
     }
     
     return true;
+}
+function activarPestania(array)
+{
+    for(var i = 0 ; i < CAMPOS.length ; i++)
+    {
+        if(array[i] === '')
+        {
+            marcarCampoError($("#"+CAMPOS[i]));
+        }
+        else
+        {
+            marcarCampoOk($("#"+CAMPOS[i]));
+        }
+    }
 }

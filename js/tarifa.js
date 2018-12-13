@@ -2,6 +2,7 @@
 var TARIFAS;
 var AGREGAR = true;
 var PAGINA = 'TARIFAS';
+var CAMPOS = ["nombre","origen","destino","valor1","valor2"];
 $(document).ready(function(){
     buscarTarifa();
     $("#agregar").click(function(){
@@ -56,6 +57,7 @@ function agregarTarifa()
     var array = [nombre,origen,destino,valor1,valor2];
     if(!validarCamposOr(array))
     {
+        activarPestania(array);
         alertify.error("Ingrese todos los campos necesarios");
         return;
     }
@@ -87,6 +89,7 @@ function modificarTarifa()
     var array = [nombre,origen,destino,valor1,valor2];
     if(!validarCamposOr(array))
     {
+        activarPestania(array);
         alertify.error("Ingrese todos los campos necesarios");
         return;
     }
@@ -194,19 +197,40 @@ function validarExistencia(tipo,valor)
 
 function validarTipoDato()
 {
-    var valor1 = $("#valor1").val();
-    var valor2 = $("#valor2").val();
-    if(!validarNumero(valor1))
+    for(var i = 0 ; i < CAMPOS.length ; i++)
     {
+        marcarCampoOk($("#"+CAMPOS[i]));
+    }
+    var valor1 = $("#valor1");
+    var valor2 = $("#valor2");
+    if(!validarNumero(valor1.val()))
+    {
+        marcarCampoError(valor1);
         alertify.error('Valor 1 debe ser numerico');
         return false;
     }
-    if(!validarNumero(valor2))
+    if(!validarNumero(valor2.val()))
     {
+        marcarCampoError(valor2);
         alertify.error('Valor 2 debe ser numerico');
         return false;
     }
     return true;
+}
+
+function activarPestania(array)
+{
+    for(var i = 0 ; i < CAMPOS.length ; i++)
+    {
+        if(array[i] === '')
+        {
+            marcarCampoError($("#"+CAMPOS[i]));
+        }
+        else
+        {
+            marcarCampoOk($("#"+CAMPOS[i]));
+        }
+    }
 }
 
 
