@@ -7,6 +7,7 @@ $(document).ready(function(){
     
     buscarPasajero();
     $("#agregar").click(function(){
+        MODIFICADO = true;
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
         $("#contenedor_central").load("html/datos_pasajero.html", function( response, status, xhr ) {
@@ -45,6 +46,7 @@ $(document).ready(function(){
         {
             modificarPasajero();
         }
+        MODIFICADO = false;
     });
     $("#busqueda").keyup(function(){
         buscarPasajero($(this).val());
@@ -195,6 +197,7 @@ function buscarPasajero()
 
 function abrirModificar(id)
 {
+    MODIFICADO = true;
     AGREGAR = false;
     quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
     agregarclase($("#"+id),"fila_contenedor_activa");

@@ -6,6 +6,7 @@ var CAMPOS = ["rut","razon","tipo","direccion","nombre","telefono","mail","mail2
 $(document).ready(function(){
     buscarCliente();
     $("#agregar").click(function(){
+        MODIFICADO = true;
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
         $("#contenedor_central").load("html/datos_cliente.html", function( response, status, xhr ) {
@@ -35,6 +36,7 @@ $(document).ready(function(){
         {
             modificarCliente();
         }
+        MODIFICADO = false;
     });
     $("#busqueda").keyup(function(){
         buscarCliente($(this).val());
@@ -149,6 +151,7 @@ function buscarCliente()
 
 function abrirModificar(id)
 {
+    MODIFICADO = true;
     AGREGAR = false;
     quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
     agregarclase($("#"+id),"fila_contenedor_activa");

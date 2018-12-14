@@ -1,4 +1,7 @@
 
+/* global MODIFICADO, alertify */
+var MODIFICADO = false;
+
 var bordeAzul = "solid 1px #0b41d3";
 var bordeRojo = "solid 1px red";
 var bordeBlanco = "solid 1px white";
@@ -36,6 +39,7 @@ function postRequest(url,success)
         url: url,
         method:'POST',
         cache: false,
+        async: true,
         beforeSend: function (xhr) {
             cambiarPropiedad($("#loaderCentral"),"visibility","visible");
         },
@@ -47,14 +51,19 @@ function postRequest(url,success)
         }
     });
 }
-function getRequest(url,success)
+function getRequest(url,success,cargar = true)
 {
     $.ajax({
         url: url,
         method:'GET',
         success: success,
+        async: true,
+        cache: false,
         beforeSend: function (xhr) {
-            cambiarPropiedad($("#loader"),"visibility","visible");
+            if(cargar)
+            {
+                cambiarPropiedad($("#loader"),"visibility","visible");
+            }
         },
         error: function (resposeError)
         {
@@ -109,14 +118,34 @@ function quitarclase(div,clase)
     div.removeClass(clase);
 }
 
-function cambiarModulo(pagina,cambiar)
-{
-    if(cambiar)
+function cambiarModulo(pagina,cambiar){
+    if(MODIFICADO)
     {
-        quitarclase($(".opcion-menu"),"menu-activo");
-        agregarclase($("#"+pagina),"menu-activo");
+        alertify.confirm("Cambiar de modulo","¿Desea cambiar de modulo sin guardar los cambios?",
+            function(){
+                MODIFICADO = false;
+                if(cambiar)
+                {
+                    quitarclase($(".opcion-menu"),"menu-activo");
+                    agregarclase($("#"+pagina),"menu-activo");
+                }
+                $("#contenido-central").html("");
+                $("#contenido-central").load(pagina+".html");
+            },
+            function(){
+                alertify.confirm().close();
+            });
     }
-    $("#contenido-central").load(pagina+".html");
+    else
+    {
+        if(cambiar)
+        {
+            quitarclase($(".opcion-menu"),"menu-activo");
+            agregarclase($("#"+pagina),"menu-activo");
+        }
+        $("#contenido-central").html("");
+        $("#contenido-central").load(pagina+".html");
+    }
 }
 
 function cerrarSession(response)
@@ -151,7 +180,7 @@ function getfecha()
         $("#fecha").html("");
         $("#fecha").append(response);
     }
-    getRequest(url,success);
+    getRequest(url,success,false);
 }
 
 function mensajeBienvenida(mensaje)
@@ -165,6 +194,7 @@ function mensajeBienvenida(mensaje)
 
 function resetFormulario(pagina) 
 {
+    MODIFICADO = false;
     $("#contenedor_central").html("");
     mensajeBienvenida(pagina);
 }

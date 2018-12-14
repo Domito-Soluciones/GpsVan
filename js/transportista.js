@@ -13,6 +13,7 @@ $(document).ready(function(){
     buscarConductores();
     buscarMoviles();
     $("#agregar").click(function(){
+        MODIFICADO = true;
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
         $("#contenedor_central").load("html/datos_transportista.html", function( response, status, xhr ) {
@@ -43,6 +44,7 @@ $(document).ready(function(){
         {
             modificarTransportista();
         }
+        MODIFICADO = false;
     });
     $("#busqueda").keyup(function(){
         buscarTransportista($(this).val());
@@ -95,6 +97,8 @@ function agregarTransportista()
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
             resetFormulario(PAGINA);
             buscarTransportista();
+            buscarConductores();
+            buscarMoviles();
         };
         postRequest(url,success);
     }
@@ -153,6 +157,7 @@ function modificarTransportista()
             vaciarFormulario($("#agregar input"));
             resetFormulario(PAGINA);
             buscarTransportista();
+
         };
         postRequest(url,success);
     }
@@ -187,6 +192,7 @@ function buscarTransportista()
 
 function abrirModificar(id)
 {
+    MODIFICADO = true;
     AGREGAR = false;
     ID_TRANSPORTISTA = id;
     quitarclase($(".fila_contenedor"),"fila_contenedor_activa");

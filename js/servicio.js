@@ -2,6 +2,7 @@
 var SERVICIOS;
 var PAGINA = 'SERVICIOS';
 $(document).ready(function(){
+    iniciarFecha([$("#desde"),$("#hasta")]);
     buscarServicio();
     $("#exportar").click(function(){
 
@@ -15,7 +16,10 @@ $(document).ready(function(){
 function buscarServicio()
 {
     var busqueda = $("#busqueda").val();
-    var url = urlBase + "/servicio/GetServicios.php?busqueda="+busqueda;
+    var desde = $("#desde").val();
+    var hasta = $("#hasta").val();
+    var url = urlBase + "/servicio/GetServicios.php?busqueda="+busqueda+
+            "&desde="+desde+"&hasta="+hasta;
     var success = function(response)
     {
         cerrarSession(response);

@@ -2,8 +2,11 @@
 var markers = [];
 var position = [-33.440616, -70.6514212];
 $(document).ready(function(){
-   
+    buscarServicio();
     
+    $("#busqueda").keyup(function(){
+        buscarServicio(); 
+    });
 });
 
 function initMap() {
@@ -17,6 +20,32 @@ function initMap() {
     cargarMovilesMapa();
     setInterval('moverMovilesMapa()',5000);
 
+}
+
+function buscarServicio()
+{
+    var busqueda = $("#busqueda").val();
+    var url = urlBase + "/servicio/GetServicios.php?busqueda="+busqueda;
+    var success = function(response)
+    {
+        cerrarSession(response);
+        var servicios = $("#lista_busqueda");
+        servicios.html("");
+        SERVICIOS = response;
+        if(response.length === 0)
+        {
+            alertify.error("No hay registros que mostrar");
+            return;
+        }
+        for(var i = 0 ; i < response.length; i++)
+        {
+            var id = response[i].servicio_id;
+            var movil = response[i].servicio_movil;
+            servicios.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"dibujarServicio('"+id+"','"+movil+"')\">"+id+" "+movil+"</div>");
+        }
+        cambiarPropiedad($("#loader"),"visibility","hidden");
+    };
+    getRequest(url,success);
 }
 
 function cargarMovilesMapa()
@@ -39,7 +68,7 @@ function cargarMovilesMapa()
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
-    getRequest(url,success);
+    getRequest(url,success,false);
 }
 
 function moverMovilesMapa()
@@ -69,7 +98,7 @@ function moverMovilesMapa()
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
-    getRequest(url,success);
+    getRequest(url,success,false);
 }
 
 function dibujarMarcador(id,lat,lon,nombre,servicio)

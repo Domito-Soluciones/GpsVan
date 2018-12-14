@@ -6,6 +6,7 @@ var CAMPOS = ["nombre","origen","destino","valor1","valor2"];
 $(document).ready(function(){
     buscarTarifa();
     $("#agregar").click(function(){
+        MODIFICADO = true;
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
         $("#contenedor_central").load("html/datos_tarifa.html", function( response, status, xhr ) {
@@ -34,6 +35,7 @@ $(document).ready(function(){
         {
             modificarTarifa();
         }
+        MODIFICADO = false;
     });
     $("#busqueda").keyup(function(){
         buscarTarifa($(this).val());
@@ -140,6 +142,7 @@ function buscarTarifa()
 
 function abrirModificar(id)
 {
+    MODIFICADO = true;
     AGREGAR = false;
     quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
     agregarclase($("#"+id),"fila_contenedor_activa");

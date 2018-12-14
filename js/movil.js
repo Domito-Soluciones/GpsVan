@@ -6,6 +6,7 @@ var CAMPOS = ["patente","marca","nombre","modelo","anio","venRevTec","SegOb","ve
 $(document).ready(function(){
     buscarMovil();
     $("#agregar").click(function(){
+        MODIFICADO = true;
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
         $("#contenedor_central").load("html/datos_movil.html", function( response, status, xhr ) {
@@ -36,6 +37,7 @@ $(document).ready(function(){
         {
             modificarMovil();
         }
+        MODIFICADO = false;
     });
     $("#busqueda").keyup(function(){
         buscarMovil($(this).val());
@@ -152,6 +154,7 @@ function buscarMovil()
 
 function abrirModificar(id)
 {
+    MODIFICADO = true;
     AGREGAR = false;
     quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
     agregarclase($("#"+id),"fila_contenedor_activa");

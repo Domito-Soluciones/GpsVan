@@ -66,7 +66,7 @@ select
 {
     margin-top: 20px;
     margin-left: 50%;
-    width: 65%;
+    width: 50%;
 }
 .contenedor-loader-intro
 {
@@ -232,6 +232,10 @@ select
     width: 74%;
     height: calc(100% - 50px);
     overflow: auto;
+}
+.monitoreo
+{
+    height: calc(100% - 0px) !important;    
 }
 
 .tabla-central
@@ -405,6 +409,10 @@ select
     width: 135px;
     height: 30px;
     display: inline-block;
+}
+.contenedor-pre-input-login
+{
+    width: 85px;
 }
 .contenedor-input
 {

@@ -6,6 +6,7 @@ var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","mail
 $(document).ready(function(){
     buscarAgente();
     $("#agregar").click(function(){
+        MODIFICADO = true;
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
         $("#contenedor_central").load("html/datos_agente.html", function( response, status, xhr ) {
@@ -44,6 +45,7 @@ $(document).ready(function(){
         {
             modificarAgente();
         }
+        MODIFICADO = false;
     });
     $("#busqueda").keyup(function(){
         buscarAgente($(this).val());
@@ -193,6 +195,7 @@ function buscarAgente()
 
 function abrirModificar(id)
 {
+    MODIFICADO = true;
     AGREGAR = false;
     quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
     agregarclase($("#"+id),"fila_contenedor_activa");

@@ -81,12 +81,11 @@ class ServicioDao {
         return $array;
     }
     
-    public function getServicios($busqueda)
+    public function getServicios($busqueda,$desde,$hasta)
     {
         $array = array();
         $conn = new Conexion();
         try {
-            
             $query = "SELECT * FROM tbl_servicio WHERE "
                     . "servicio_id LIKE '%$busqueda%' OR "
                     . "servicio_partida LIKE '%$busqueda%' OR "
@@ -94,7 +93,8 @@ class ServicioDao {
                     . "servicio_cliente LIKE '%$busqueda%' OR "
                     . "servicio_usuario LIKE '%$busqueda%' OR "
                     . "servicio_transportista LIKE '%$busqueda%' OR "
-                    . "servicio_movil LIKE '%$busqueda%' ORDER BY servicio_fecha DESC LIMIT 20";
+                    . "servicio_movil LIKE '%$busqueda%' AND servicio_fecha BETWEEN '".$desde."' AND '".$hasta
+                    ."' ORDER BY servicio_fecha DESC LIMIT 20";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
             while($row = mysqli_fetch_array($result)) {

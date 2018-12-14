@@ -10,6 +10,7 @@ var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","mail
 $(document).ready(function(){
     buscarConductor();
     $("#agregar").click(function(){
+        MODIFICADO = true;
         buscarMovil('');
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
@@ -40,7 +41,7 @@ $(document).ready(function(){
     
     $("#cancelar").click(function(){
         resetFormulario(PAGINA);
-        resetBotones();
+        reMODIFICADOsetBotones();
     });
     $("#guardar").click(function(){
         if(AGREGAR)
@@ -51,6 +52,7 @@ $(document).ready(function(){
         {
             modificarConductor();
         }
+        MODIFICADO = false;
     });
     $("#busqueda").keyup(function(){
         buscarConductor($(this).val());
@@ -234,6 +236,7 @@ function buscarConductor()
 
 function abrirModificar(id)
 {
+    MODIFICADO = true;
     AGREGAR = false;
     quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
     agregarclase($("#"+id),"fila_contenedor_activa");

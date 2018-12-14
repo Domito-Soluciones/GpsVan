@@ -19,17 +19,21 @@
             <img src="img/logo.png">
         </div>
         <div class="login">
-            <div class="contenedor-input">
-                <div class="mensaje-input">
+            <div class="contenedor-fila">
+                <div class="contenedor-pre-input contenedor-pre-input-login">
                     Usuario
                 </div>
-                <input class="input-text" type="text" id="usuario" name="usuario" placeholder="Ingrese usuario"/>
-            </div>
-            <div class="contenedor-input">
-                <div class="mensaje-input">
-                    Password
+                <div class="contenedor-input">
+                <input type="text" id="usuario" name="usuario" placeholder="Ingrese usuario"/>
                 </div>
-                <input class="input-text" type="password" id="password" name="password" placeholder="Ingrese clave" />
+            </div>
+            <div class="contenedor-fila">
+                <div class="contenedor-pre-input contenedor-pre-input-login">
+                     Password
+                </div>
+                <div class="contenedor-input">
+                    <input type="password" id="password" name="password" placeholder="Ingrese clave" />
+                </div>
             </div>
             <div class="contenedor-boton">
                 <div class="button-succes" id="entrar">

@@ -5,8 +5,18 @@ include '../../dominio/Servicio.php';
 
 header('Content-Type: application/json; charset=utf-8');
 $busqueda = $_REQUEST['busqueda'];
+$desde = '2000/01/01';
+$hasta = '2100/01/01';
+if(isset($_REQUEST['desde']))
+{
+    $desde = $_REQUEST['desde'];
+}
+if(isset($_REQUEST['hasta']))
+{
+    $desde = $_REQUEST['hasta'];
+}
 $servicioDao = new ServicioDao();
-$servicios = $servicioDao->getServicios($busqueda);
+$servicios = $servicioDao->getServicios($busqueda,$desde,$hasta);
 echo "[";
 for ($i = 0 ; $i < count($servicios); $i++)
 {
