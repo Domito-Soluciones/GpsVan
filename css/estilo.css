@@ -212,6 +212,7 @@ select
     border-right: solid 1px silver;
     overflow-y: auto;
 }
+
 .contenedor-inicial
 {
     position: relative;
@@ -235,8 +236,22 @@ select
 }
 .monitoreo
 {
-    height: calc(100% - 0px) !important;    
+    margin-left: 0 !important;
+    width: 100% !important;
+    height: calc(100% - 32px);
 }
+.monitoreo_buscador
+{
+    margin-left: 25% !important;
+    width: 74% !important;
+    height: calc(100% - 32px);
+}
+
+.buscador-monitoreo
+{
+    height: calc(100% - 10px);
+}
+
 
 .tabla-central
 {
@@ -627,4 +642,19 @@ select
 {
     width: 20px !important;
     padding-left: 20px;
+}
+
+.barra_monitoreo
+{
+    margin-left: 10% !important;
+}
+
+.input-monitoreo
+{
+    display: inline-block;
+}
+
+.cont-pre-monitor
+{
+    width: 100px !important;
 }

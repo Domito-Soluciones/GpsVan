@@ -4,76 +4,92 @@
 
     </head>
     <body>
-        <div class="contenedor-lateral">
-            <div class="asignar" id="asignar">
-                <div class="contenedor-pre-input">
-                    Partida
+        <div class="contenedor-lateral buscador-monitoreo">
+            <div class="buscador barra_monitoreo">
+                <div>
+                    <div class="cont-pre-monitor">
+                        Partida
+                    </div>
+                    <div class="input-monitoreo">
+                        <input type="text" id="partida" placeholder="Ej: Av los pinos 123">
+                        <input type="hidden" id="partida_hidden">
+                    </div>
                 </div>
-                <div class="contenedor-input">
-                    <input type="text" id="partida" placeholder="Partida">
-                    <input type="hidden" id="partida_hidden">
+                <div>
+                    <div class="cont-pre-monitor">
+                        Destino
+                    </div>
+                    <div class="input-monitoreo">
+                        <input type="text" id="destino" placeholder="Ej: Av los pinos 723">
+                        <input type="hidden" id="destino_hidden">
+                    </div>
                 </div>
-                <div class="contenedor-pre-input">
-                    Destino
+                 <div>
+                    <div class="cont-pre-monitor">
+                        Cliente
+                    </div>
+                     <div class="input-monitoreo">
+                        <input type="text" list="lcliente" id="cliente" placeholder="Ej: Falabella" onkeyup="cargarClientes()">
+                        <datalist id="lcliente" ></datalist>
+                    </div>
                 </div>
-                <div class="contenedor-input">
-                    <input type="text" id="destino" placeholder="Destino">
-                    <input type="hidden" id="destino_hidden">
+                <div>
+                    <div class="cont-pre-monitor">
+                        Pasajero
+                    </div>
+                     <div class="input-monitoreo">
+                        <input type="text" list="lusuario" id="usuario" placeholder="Ej: Juan Perez"  autocomplete="off">
+                        <datalist id="lusuario" ></datalist>
+                    </div>
                 </div>
-                <div class="contenedor-pre-input">
-                    Empresa cliente
+                <div>
+                    <div class="cont-pre-monitor">
+                        Transportista
+                    </div>
+                     <div class="input-monitoreo">
+                        <input type="text" list="ltransportista" id="transportista" placeholder="Ej: T100" onkeyup="cargarTransportistas()">
+                        <datalist id="ltransportista"></datalist>
+                    </div>
                 </div>
-                <div class="contenedor-input">
-                    <input type="text" list="lcliente" id="cliente" placeholder="Empresa cliente" onkeyup="cargarClientes()">
-                    <datalist id="lcliente" ></datalist>
+                <div>
+                    <div class="cont-pre-monitor">
+                        Veh&iacute;culo
+                    </div>
+                    <div class="input-monitoreo">
+                        <input type="text" list="lmovil" id="movil" placeholder="Ej: M100">
+                        <datalist id="lmovil"></datalist>
+                    </div>
                 </div>
-                <div class="contenedor-pre-input">
-                    Pasajero
+                <div>
+                    <div class="cont-pre-monitor">
+                        Tipo
+                    </div>
+                    <div class="input-monitoreo">
+                        <input type="text" list="ltipo" id="tipo" placeholder="Ej: Recogida">
+                        <datalist id="ltipo">
+                            <option value="Recogida">Recogida</option>
+                            <option value="Reparto">Reparto</option>
+                            <option value="Servicio Especial">Servicio especial</option>
+                        </datalist>
+                    </div>
                 </div>
-                <div class="contenedor-input">
-                    <input type="text" list="lusuario" id="usuario" placeholder="Pasajero"  autocomplete="off">
-                    <datalist id="lusuario" ></datalist>
-                </div>
-                <div class="contenedor-pre-input">
-                    Transportista
-                </div>
-                <div class="contenedor-input">
-                    <input type="text" list="ltransportista" id="transportista" placeholder="Transportista" onkeyup="cargarTransportistas()">
-                    <datalist id="ltransportista"></datalist>
-                </div>
-                <div class="contenedor-pre-input">
-                    N° movil
-                </div>
-                <div class="contenedor-input">
-                    <input type="text" list="lmovil" id="movil" placeholder="N° Movil">
-                    <datalist id="lmovil"></datalist>
-                </div>
-                <div class="contenedor-pre-input">
-                    Tipo servicio
-                </div>
-                <div class="contenedor-input">
-                    <input type="text" list="ltipo" id="tipo" placeholder="Tipo Servicio">
-                    <datalist id="ltipo">
-                        <option value="Recogida">Recogida</option>
-                        <option value="Reparto">Reparto</option>
-                        <option value="Servicio Especial">Servicio especial</option>
-                    </datalist>
-                </div>
-                <div class="contenedor-pre-input">
-                    Tarifa
-                </div>
-                <div class="contenedor-input">
-                    <input type="text" list="ltarifa" id="tarifa" placeholder="Tarifa">
-                    <datalist id="ltarifa">
-                        <option value="1000">1000</option>
-                        <option value="3000">3000</option>
-                        <option value="5000">5000</option>
-                        <option value="7000">7000</option>
-                        <option value="10000">10000</option>
-                        <option value="15000">15000</option>
-                        <option value="20000">20000</option>
-                        <option value="30000">30000</option>
-                    </datalist>
+                <div>
+                    <div class="cont-pre-monitor">
+                        Tarifa
+                    </div>
+                    <div class="input-monitoreo">
+                        <input type="text" list="ltarifa" id="tarifa" placeholder="Ej: 2000">
+                        <datalist id="ltarifa">
+                            <option value="1000">1000</option>
+                            <option value="3000">3000</option>
+                            <option value="5000">5000</option>
+                            <option value="7000">7000</option>
+                            <option value="10000">10000</option>
+                            <option value="15000">15000</option>
+                            <option value="20000">20000</option>
+                            <option value="30000">30000</option>
+                        </datalist>
+                    </div>
                 </div>
                 <div class="contenedor-boton">
                     <div class="button-succes" id="entrar">
@@ -84,7 +100,7 @@
                 </div>
             </div>
         </div>
-        <div class="contenedor_central monitoreo" id="contenedor_central">
+        <div class="contenedor_central monitoreo_buscador" id="contenedor_central">
             <div class="map" id="map">
                 <!--
                     aqui va el mapa

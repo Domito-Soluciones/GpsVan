@@ -47,22 +47,22 @@ class PasajeroDao {
 //        return $id;
 //    }
 //    
-//    public function getUsuario($nombre,$clave)
-//    {
-//        $conn = new Conexion();
-//        $id = 0;
-//        try {
-//            $query = "SELECT * FROM tbl_usuario WHERE usuario_nick = '$nombre' and usuario_password = '$clave'"; 
-//            $conn->conectar();
-//            $result = mysqli_query($conn->conn,$query); 
-//            while($row = mysqli_fetch_array($result)) {
-//                $id = $row["usuario_id"];
-//            }
-//        } catch (Exception $exc) {
-//            echo $exc->getTraceAsString();
-//        }
-//        return $id;
-//    }
+    public function getUsuario($nombre,$clave)
+    {
+        $conn = new Conexion();
+        $id = 0;
+        try {
+            $query = "SELECT * FROM tbl_pasajero WHERE pasajero_nick = '$nombre' AND pasajero_password = '$clave'"; 
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query); 
+            while($row = mysqli_fetch_array($result)) {
+                $id = $row["pasajero_id"];
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $id;
+    }
 //    
 //    public function getUsuarioDatos($user)
 //    {

@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="2">
-        <file>
-            <url>source/query/ServicioDao.php</url>
-            <bookmark id="1">
-                <name/>
-                <line>4</line>
-                <key/>
-            </bookmark>
-        </file>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="3">
         <file>
             <url>moviles.html</url>
             <bookmark id="2">
@@ -17,19 +9,27 @@
                 <key/>
             </bookmark>
         </file>
+        <file>
+            <url>source/query/ServicioDao.php</url>
+            <bookmark id="1">
+                <name/>
+                <line>3</line>
+                <key/>
+            </bookmark>
+        </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Jose/Documents/Proyectos/GPSVAN/GpsVan/source/query/ConductorDao.php</file>
-            <file>file:/C:/Users/Jose/Documents/Proyectos/GPSVAN/GpsVan/source/httprequest/transportista/AddTransportista.php</file>
-            <file>file:/C:/Users/Jose/Documents/Proyectos/GPSVAN/GpsVan/js/conductor.js</file>
-            <file>file:/C:/Users/Jose/Documents/Proyectos/GPSVAN/GpsVan/js/transportista.js</file>
-            <file>file:/C:/Users/Jose/Documents/Proyectos/GPSVAN/GpsVan/menu.html</file>
-            <file>file:/C:/Users/Jose/Documents/Proyectos/GPSVAN/GpsVan/source/httprequest/transportista/GetTransportistas.php</file>
-            <file>file:/C:/Users/Jose/Documents/Proyectos/GPSVAN/GpsVan/source/httprequest/transportista/ModTransportista.php</file>
             <file>file:/C:/Users/Jose/Documents/Proyectos/GPSVAN/GpsVan/source/query/TransportistaDao.php</file>
-            <file>file:/C:/Users/Jose/Documents/Proyectos/GPSVAN/GpsVan/source/dominio/Transportista.php</file>
-            <file>file:/C:/Users/Jose/Documents/Proyectos/GPSVAN/GpsVan/html/datos_transportista.html</file>
+            <file>file:/C:/Users/Jose/Documents/Proyectos/GPSVAN/GpsVan/source/httprequest/conductor/GetConductores.php</file>
+            <file>file:/C:/Users/Jose/Documents/Proyectos/GPSVAN/GpsVan/source/httprequest/servicio/AddServicioDetalle.php</file>
+            <file>file:/C:/Users/Jose/Documents/Proyectos/GPSVAN/GpsVan/source/httprequest/conductor/GetConductor.php</file>
+            <file>file:/C:/Users/Jose/Documents/Proyectos/GPSVAN/GpsVan/source/httprequest/servicio/DesAsignarServicio.php</file>
+            <file>file:/C:/Users/Jose/Documents/Proyectos/GPSVAN/GpsVan/source/dominio/ServicioDetalle.php</file>
+            <file>file:/C:/Users/Jose/Documents/Proyectos/GPSVAN/GpsVan/js/monitoreo.js</file>
+            <file>file:/C:/Users/Jose/Documents/Proyectos/GPSVAN/GpsVan/source/httprequest/servicio/GetServicios.php</file>
+            <file>file:/C:/Users/Jose/Documents/Proyectos/GPSVAN/GpsVan/source/query/ServicioDao.php</file>
+            <file>file:/C:/Users/Jose/Documents/Proyectos/GPSVAN/GpsVan/source/httprequest/servicio/GetDetalleServicio.php</file>
         </group>
     </open-files>
 </project-private>

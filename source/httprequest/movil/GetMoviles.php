@@ -25,6 +25,7 @@ for ($i = 0 ; $i < count($moviles); $i++)
     $movilEstado = $moviles[$i]->getEstado();
     $movilLat = $moviles[$i]->getLat();
     $movilLon = $moviles[$i]->getLon();
+    $movilServicio = $moviles[$i]->getServicio();
     echo "{\"movil_id\":\"".$movilId."\","
         . "\"movil_nombre\":\"".$movilNombre."\","
         . "\"movil_patente\":\"".$movilPatente."\","
@@ -40,7 +41,7 @@ for ($i = 0 ; $i < count($moviles); $i++)
         . "\"movil_estado\":\"".$movilEstado."\","
         . "\"movil_lat\":\"".$movilLat."\","
         . "\"movil_lon\":\"".$movilLon."\","
-        . "\"movil_servicio\":\"".$movilModelo."\""
+        . "\"movil_servicio\":\"".$movilServicio."\""
         . "}";
     if (($i+1) != count($moviles))
     {

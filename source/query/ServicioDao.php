@@ -2,7 +2,7 @@
 include '../../util/validarPeticion.php';
 
 include '../../conexion/Conexion.php';
-
+include '../../dominio/ServicioDetalle.php';
 class ServicioDao {
     public function addServicio($servicio)
     {
@@ -34,6 +34,26 @@ class ServicioDao {
         }
         return $id;
     }
+    
+    public function addServicioDetalle($lat,$lon,$id)
+    {
+        $conn = new Conexion();
+        try {
+            $query = "INSERT INTO tbl_servicio_detalle "
+                    . "(servicio_detalle_servicio,servicio_detalle_lat,servicio_detalle_lon)"
+                    . " VALUES ($id,'$lat','$lon')"; 
+            $conn->conectar();
+            if (mysqli_query($conn->conn,$query)) {
+                $id = mysqli_insert_id($conn->conn);
+            } else {
+                echo mysqli_error($conn->conn);
+            }           
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $id;
+    }
+    
     public function modServicio($idServicio,$servicio)
     {
         $id = 0;
@@ -118,6 +138,27 @@ class ServicioDao {
         }
         return $array;
     }
+    
+    public function getServiciosDetalle($id)
+    {
+        $servicioDetalle = new ServicioDetalle();
+        $conn = new Conexion();
+        try {
+            $query = "SELECT * FROM tbl_servicio_detalle WHERE "
+                    . "servicio_detalle_servicio = '$id'";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            while($row = mysqli_fetch_array($result)) {
+                $servicioDetalle->setId($row["servicio_detalle_id"]);          
+                $servicioDetalle->setLat($row["servicio_detalle_lat"]);
+                $servicioDetalle->setLon($row["servicio_detalle_lon"]);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $servicioDetalle;
+    }
+    
     public function getCountServicios($desde,$hasta)
     {
         $array = array();

@@ -110,7 +110,6 @@ class MovilDao {
                 $moviles->setVenSegOb($row["movil_venc_seguro_obligatorio"]);                
                 $moviles->setSegAd($row["movil_seguro_adicional"]);
                 $moviles->setKilometraje($row["movil_kilometraje"]);
-                
                 $moviles->setTransportista($row["movil_transportista"]);
                 $moviles->setEstado($row['movil_estado']);
                 $moviles->setLat($row['movil_lat']);
