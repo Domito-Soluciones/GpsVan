@@ -165,6 +165,8 @@ select
 }
 .logOut
 {
+    text-align: center;
+    line-height: 60px;
     background-color: #999999;
     float: left;
     width: 15%;
@@ -657,4 +659,12 @@ select
 .cont-pre-monitor
 {
     width: 100px !important;
+}
+
+.enlace-salir
+{
+    font-size: 14px;
+    color: white;
+    text-decoration: none;
+    
 }

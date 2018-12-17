@@ -38,9 +38,11 @@ if(!isset($_SESSION['agente']))
                 
             </div>
             <div class="logOut" id="logOut">
-                
+                <a class="enlace-salir">
+                    <?php echo $_SESSION['nick']?>
+                </a>
+                 - <a href="javascript:void(0)" class="enlace-salir" onclick="salir()">Salir</a>
             </div>
-
         </div>
         <div id="menu" class="menu">
            
@@ -48,6 +50,8 @@ if(!isset($_SESSION['agente']))
         <div id="contenido-central" class="contenido-central">
             
         </div>
-        <!--<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDcQylEsZAzuEw3EHBdWbsDAynXvU2Ljzs&libraries=places&callback"></script>-->
+        <div class="map" id="map">
+            <!--aqui va el mapa-->
+        </div> 
     </body>
 </html>

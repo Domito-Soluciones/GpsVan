@@ -19,6 +19,7 @@ class AgenteDao {
                 $agente->setApellidoPat($row["agente_papellido"]);
                 $agente->setApellidoMat($row["agente_mapellido"]);
                 $agente->setRut($row["agente_rut"]);
+                $agente->setNick($row["agente_nick"]);
                 $agente->setClave($row["agente_clave"]);
                 $agente->setTelefono($row["agente_telefono"]);
                 $agente->setCelular($row["agente_celular"]);

@@ -5,6 +5,9 @@
     <div class="titulo_pagina_general" id="p_general">
         1. General
     </div>
+    <div class="titulo_pagina_general dispose" id="p_pasajero">
+        2. Asignar Pasajeros
+    </div>
 </div>
 <div class="contenedor-info general" id="cont_general">
     <div class="contenedor-formulario">
@@ -86,5 +89,40 @@
                 <input type="text" id="centros" placeholder="Ej: Principal" maxlength="40">
             </div>
         </div>
+    </div>
+</div>
+<div class="contenedor-info contenedor_oculto" id="cont_pasajero">
+    <div class="contenedor-asignar">        
+        <div class="titulo-asignar">
+            Ingrese pasajero
+            <input type="text" id="rutPasajero" list="rutPasajeroL" placeholder="Ej: 11111111-1" maxlength="7">
+            <datalist id="rutPasajeroL"></datalist>
+        </div>
+        <div class="resultado-asignar" id="resultadoPasajero">
+
+        </div>
+    </div>
+    <div id="tablaConductores" class="tabla-general">
+        <div class="tablaCabecera">
+            <div class="cabecera_fila">
+                
+            </div>
+            <div>
+                Rut
+            </div>
+            <div>
+                Nombre
+            </div>
+            <div>
+                Apellido Paterno
+            </div>
+            <div>
+                Apellido Materno
+            </div>
+        </div>
+        <div class="tablaContenido" id="tablaContenidoPasajero"></div>
+    </div>
+    <div class="contenedor-loader-intro">
+        <div class="loader" id="loaderV">Loading...</div>
     </div>
 </div>

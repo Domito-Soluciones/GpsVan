@@ -1,15 +1,20 @@
 /* global urlBase, alertify */
 var CLIENTES;
+var PASAJEROS;
 var AGREGAR = true;
 var PAGINA = 'CLIENTES';
+var ID_CLIENTE;
+var ARRAY_ELIMINAR_PASAJEROS = [];
 var CAMPOS = ["rut","razon","tipo","direccion","nombre","telefono","mail","mail2","centros"];
 $(document).ready(function(){
     buscarCliente();
+    buscarPasajeros();
     $("#agregar").click(function(){
         MODIFICADO = true;
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
         $("#contenedor_central").load("html/datos_cliente.html", function( response, status, xhr ) {
+            iniciarPestaniasCliente();
             $("#rut").blur(function (){
                 if(validarExistencia('rut',$(this).val()))
                 {
@@ -153,9 +158,11 @@ function abrirModificar(id)
 {
     MODIFICADO = true;
     AGREGAR = false;
+    ID_CLIENTE = id;
     quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
     agregarclase($("#"+id),"fila_contenedor_activa");
     $("#contenedor_central").load("html/datos_cliente.html", function( response, status, xhr ) {
+        iniciarPestaniasCliente();
         $("#nick").blur(function (){
             if(validarExistencia('rut',$(this).val()))
             {
@@ -276,4 +283,133 @@ function activarPestania(array)
             marcarCampoOk($("#"+CAMPOS[i]));
         }
     }
+}
+
+function iniciarPestaniasCliente()
+{
+    $("#p_general").click(function(){
+        cambiarPropiedad($("#cont_general"),"display","block");
+        cambiarPropiedad($("#cont_movil"),"display","none");
+        quitarclase($(this),"dispose");
+        agregarclase($("#p_pasajero"),"dispose");
+    });
+    $("#p_pasajero").click(function(){
+        cambiarPropiedad($("#cont_general"),"display","none");
+        cambiarPropiedad($("#cont_pasajero"),"display","block");
+        quitarclase($(this),"dispose");
+        agregarclase($("#p_general"),"dispose");
+        cargarPasajeros();
+        $("#rutPasajero").on('keydown',function(e){
+            if(isTeclaEnter(e))
+            {
+                encontrarPasajero();
+            }
+        });
+        $("#rutPasajero").on('blur',function(){
+            if($(this).val() !== '')
+            {
+                encontrarPasajero();
+            }
+        });
+    });
+}
+function encontrarPasajero(){
+    $("#resultadoPasajero").html("");
+    var rutPasajero = $("#rutPasajero").val();
+    if(validarRut(rutPasajero))
+    {
+        for(var i = 0 ; i < PASAJEROS.length; i++)
+        {
+            var rut = PASAJEROS[i].pasajero_rut;
+            if(rutPasajero === rut)
+            {
+                var nombre = PASAJEROS[i].pasajero_nombre;
+                var papellido = PASAJEROS[i].pasajero_papellido;
+                var mapellido = PASAJEROS[i].pasajero_mapellido;
+                $("#resultadoPasajero").append(
+                    "<div class=\"cuadro_asignar\" onclick=\"agregarPasajero('"+
+                    rut+"','"+nombre+"','"+papellido+"','"+mapellido+"')\">\n\
+                        <div>Rut: "+rut+"</div><div>\n\
+                             Nombre: "+nombre+"</div><div>\n\
+                        </div>");
+            }
+            
+        }
+    }
+    else
+    {
+        $("#rutPasajero").val("");
+        $("#rutPasajero").focus();
+        $("#resultadoPasajero").append("No hay resultados para su busqueda");
+        alertify.error('Rut invalido');
+    }
+}
+
+function agregarPasajero(rut,nombre,papellido,mapellido)
+{
+    for(var i = 0; i < ARRAY_ELIMINAR_PASAJEROS.length;i++) {
+        if(rut === ARRAY_ELIMINAR_PASAJEROS[i])
+        {
+            delete ARRAY_ELIMINAR_PASAJEROS[i];
+        }
+    };
+    $("#rutPasajero").val("");
+    $("#tablaContenidoPasajero").append("<div id=\""+rut+"\" class=\"tablaFila\"><div class=\"cabecera_fila\"><img onclick=\"eliminarFilaPasajero('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"20\" height=\"20\"></div><div>"
+            +rut+"</div><div>"+nombre+"</div><div>"+papellido+"</div><div>"+mapellido+"</div></div>");
+    $(".cuadro_asignar").remove();
+}
+
+function buscarPasajeros()
+{
+    var url = urlBase + "/pasajero/GetPasajeros.php?busqueda=";
+    var success = function(response)
+    {
+        cambiarPropiedad($("#loader"),"visibility","hidden");
+        cerrarSession(response);
+        PASAJEROS = response;
+    };
+    getRequest(url,success);
+}
+
+function cargarPasajeros()
+{
+    var tablaPasajero = $("#tablaContenidoPasajero");
+    var datalistPasajero = $("#rutPasajeroL");
+    datalistPasajero.html("");
+    if(tablaPasajero.html() === '')
+    {
+        cambiarPropiedad($("#loaderV"),"visibility","hidden");
+        if (typeof PASAJEROS !== "undefined")
+        {
+            if(PASAJEROS.length === 0)
+            {
+                alertify.error("No hay pasajeros asociados");    
+            }
+            for(var i = 0 ; i < PASAJEROS.length; i++)
+            {
+                var rut = PASAJEROS[i].pasajero_rut;
+                var nombre = PASAJEROS[i].pasajero_nombre;
+                var papellido = PASAJEROS[i].pasajero_papellido;
+                var mapellido = PASAJEROS[i].pasajero_mapellido;
+                var cliente = PASAJEROS[i].pasajero_cliente;
+                if(ID_CLIENTE === cliente)
+                {
+                    tablaPasajero.append("<div id=\""+rut+"\" class=\"tablaFila\"><div class=\"cabecera_fila\"><img onclick=\"eliminarFilaPasajero('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"20\" height=\"20\"></div><div>"
+                        +rut+"</div><div>"+nombre+"</div><div>"+papellido+"</div><div>"+mapellido+"</div></div>");
+                }
+                else
+                {
+                    datalistPasajero.append("<option value=\""+rut+"\">"+rut+"</option>");
+                }
+            }
+        }
+        cambiarPropiedad($("#loader"),"visibility","hidden");
+    }
+}
+
+function eliminarFilaPasajero(obj)
+{
+    ARRAY_ELIMINAR_PASAJEROS.push(obj);
+    $("#"+obj).remove();
+    $("#rutPasajeroL").append("<option value=\""+obj+"\">"+obj+"</option>");
 }

@@ -11,6 +11,7 @@ if ($agente->getId() > 0)
 {
     session_start();
     $_SESSION['agente']=$agente->getId();
+    $_SESSION['nick']=$agente->getNick();
     $respuesta = $_SESSION['agente'];
 }
 

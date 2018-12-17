@@ -129,8 +129,17 @@ function cambiarModulo(pagina,cambiar){
                     quitarclase($(".opcion-menu"),"menu-activo");
                     agregarclase($("#"+pagina),"menu-activo");
                 }
+                if(pagina !== 'panel' || pagina !== 'monitoreo')
+                {
+                    ocultarMapa();
+                }
                 $("#contenido-central").html("");
-                $("#contenido-central").load(pagina+".html");
+                $("#contenido-central").load(pagina+".html",function( response, status, xhr ) {
+                    if(pagina === 'panel' || pagina === 'monitoreo')
+                    {
+                        mostrarMapa();
+                    }
+                });
             },
             function(){
                 alertify.confirm().close();
@@ -143,8 +152,17 @@ function cambiarModulo(pagina,cambiar){
             quitarclase($(".opcion-menu"),"menu-activo");
             agregarclase($("#"+pagina),"menu-activo");
         }
+        if(pagina !== 'panel' || pagina !== 'monitoreo')
+        {
+            ocultarMapa();
+        }
         $("#contenido-central").html("");
-        $("#contenido-central").load(pagina+".html");
+        $("#contenido-central").load(pagina+".html",function( response, status, xhr ) {
+            if(pagina === 'panel' || pagina === 'monitoreo')
+            {
+                mostrarMapa();
+            }
+        });
     }
 }
 
@@ -347,3 +365,23 @@ function marcarCampoOk(campo)
     cambiarPropiedad(campo,"color","black");
 }
 
+function mostrarMapa()
+{
+    $('#map').appendTo('#contenedor_mapa');
+    cambiarPropiedad($('#map'),"display","block");
+}
+function ocultarMapa()
+{
+    $('#map').appendTo('body');
+    cambiarPropiedad($('#map'),"display","none");
+}
+
+function salir()
+{
+    var url = urlBase + "/agente/Logout.php";
+    var success = function()
+    {
+        window.location.href = "index.php";
+    };
+    getRequest(url,success);
+}

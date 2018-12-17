@@ -1,31 +1,15 @@
 /* global urlBase, google, alertify */
-var map;
-var markers = [];
-var flightPath;
-var position = [-33.440616, -70.6514212];
 var servicios_diarios = [];
 var moviles_diarios = [];
 var pasajeros_diarios = [];
 $(document).ready(function(){
     iniciarPestaniasMonitoreo();
     buscarServicio();
-});
-
-function initMap() {
-    var latlng = new google.maps.LatLng(position[0], position[1]);
-    var myOptions = {
-        zoom: 11,
-        center: latlng,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        mapTypeControlOptions: { 
-            mapTypeIds: [google.maps.MapTypeId.ROADMAP] 
-        } 
-    };
-    map = new google.maps.Map(document.getElementById("map"), myOptions);
     cargarMovilesMapa();
     setInterval('moverMovilesMapa()',5000);
+});
 
-}
+
 
 function buscarServicio()
 {
