@@ -92,6 +92,10 @@ select
     cursor: pointer;
     color: #8a9cb2;
 }
+.menu-salir
+{
+    display: none;
+}
 #arco{
     z-index: 1;
 }
@@ -144,8 +148,9 @@ select
     float: left;
     margin-top: 21px;
     margin-left: 1%;
-    width: 68%;
+    width: 15%;
     height: 60%;
+    min-width: 200px;
 }
 .img-logo
 {
@@ -157,20 +162,22 @@ select
 }
 .fecha
 {
-    float: left;
+    float: right;
     font-size: 15px;
     margin-top: 20px;
     margin-right: 1%;
     width: 10%;
+    min-width: 120px;
 }
 .logOut
 {
+    float: right;
     text-align: center;
     line-height: 60px;
     background-color: #999999;
-    float: left;
     width: 15%;
     height: 60px;
+    min-width: 160px;
 }
 
 .buscador
@@ -666,5 +673,45 @@ select
     font-size: 14px;
     color: white;
     text-decoration: none;
+    
+}
+.menu-telefono
+{
+    float: right;
+    margin-top: 15px;
+    margin-right: 15px;
+    width: 30px;
+    height: 30px;
+    display: none;
+    cursor:pointer;
+}
+
+@media screen and (max-width:800px ) {
+    .fecha
+    {
+        display: none;
+    }
+    .logOut
+    {
+        display: none;
+    }
+    body{
+        /*background-color:red;*/
+    }
+    #salir
+    {
+        display: block;
+    }
+    .menu-telefono
+    {
+        display: inline;
+    }
+    #menu
+    {
+        position: absolute;
+        z-index: 2;
+        float: left;
+        display: none;
+    }
     
 }

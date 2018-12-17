@@ -10,10 +10,23 @@ $(document).ready(function(){
     $("#contenido-central").load("home.html");
     getfecha();
     setInterval(function(){getfecha();},5000);
-    $.getScript( 
-            "https://maps.googleapis.com/maps/api/js?key=AIzaSyDcQylEsZAzuEw3EHBdWbsDAynXvU2Ljzs&libraries=places&callback=initMap",
-    function( data, textStatus, jqxhr ) {
-        
+    $.getScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyDcQylEsZAzuEw3EHBdWbsDAynXvU2Ljzs&libraries=places&callback=initMap",null);
+    
+    $("#menu-telefono").click(function(){
+        if($("#menu-telefono").attr('src') === 'img/menu.svg')
+        {
+            cambiarPropiedad($("#menu"),"display","block");
+            $("#menu-telefono").attr("src","img/cancelar.svg");
+        }
+        else
+        {
+            cambiarPropiedad($("#menu"),"display","none");
+            $("#menu-telefono").attr("src","img/menu.svg");
+        }
+    });
+    
+    $("#enlace-salir").click(function() {
+        salir();
     });
     
 });
@@ -30,4 +43,8 @@ function initMap() {
     };
     map = new google.maps.Map(document.getElementById("map"), myOptions);
 
+}
+
+function abrirMenu()
+{
 }

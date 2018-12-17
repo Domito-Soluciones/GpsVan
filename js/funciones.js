@@ -164,6 +164,12 @@ function cambiarModulo(pagina,cambiar){
             }
         });
     }
+    
+    if($("#menu-telefono").css("display") === 'block')
+    {
+        cambiarPropiedad($("#menu"),"display","none");
+        $("#menu-telefono").attr("src","img/menu.svg");
+    }
 }
 
 function cerrarSession(response)

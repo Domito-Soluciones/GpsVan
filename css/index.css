@@ -10,8 +10,10 @@ html,body
     height: auto;
     margin-left: 35%;
     margin-right: 35%;
-    margin-top: 50px;
-    padding-left: 5%;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    padding-left: 2.5%;
+    padding-right: 2.5%;
     padding-top: 2%;
 }
 .img-login
