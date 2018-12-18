@@ -10,6 +10,7 @@ $(document).ready(function(){
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
         $("#contenedor_central").load("html/datos_tarifa.html", function( response, status, xhr ) {
+            cambioEjecutado();
             $("#nombre").blur(function (){
                 if(validarExistencia('nombre',$(this).val()))
                 {
@@ -23,7 +24,7 @@ $(document).ready(function(){
         cambiarPropiedad($("#cancelar"),"visibility","visible");
     });
     $("#cancelar").click(function(){
-        resetFormulario(PAGINA);
+        resetFormularioEliminar(PAGINA);
         resetBotones();
     });
     $("#guardar").click(function(){
@@ -42,7 +43,7 @@ $(document).ready(function(){
     });
     
     $("#eliminar").click(function (){
-            alertify.confirm("Eliminar tarifa","Esta seguro que desea eliminar la tarifa "+$("#nombre").val(),
+            confirmar("Eliminar tarifa","Esta seguro que desea eliminar la tarifa "+$("#nombre").val(),
             function(){
                 eliminarTarifa();
             },null);
@@ -74,7 +75,7 @@ function agregarTarifa()
             alertify.success("Tarifa Agregada");
             vaciarFormulario($("#agregar input"));
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
-            resetFormulario(PAGINA);
+            resetFormulario();
             buscarTarifa();
         };
         postRequest(url,success);
@@ -107,7 +108,7 @@ function modificarTarifa()
             cerrarSession(response);
             alertify.success("Tarifa Modificada");
             vaciarFormulario($("#agregar input"));
-            resetFormulario(PAGINA);
+            resetFormulario();
             buscarTarifa();
         };
         postRequest(url,success);
@@ -147,6 +148,7 @@ function abrirModificar(id)
     quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
     agregarclase($("#"+id),"fila_contenedor_activa");
     $("#contenedor_central").load("html/datos_tarifa.html", function( response, status, xhr ) {
+        cambioEjecutado();
         var tarifa;
         for(var i = 0 ; i < TARIFAS.length; i++)
         {
@@ -176,7 +178,7 @@ function eliminarTarifa()
     {
         alertify.success("Tarifa eliminada");
         cerrarSession(response);
-        resetFormulario(PAGINA);
+        resetFormularioEliminar(PAGINA);
         cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
         resetBotones();
         buscarTarifa();

@@ -6,11 +6,11 @@ var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","mail
 $(document).ready(function(){
     buscarAgente();
     $("#agregar").click(function(){
-        MODIFICADO = true;
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
         $("#contenedor_central").load("html/datos_agente.html", function( response, status, xhr ) {
             iniciarPestaniasAgente();
+            cambioEjecutado();
             $("#rut").blur(function (){
                 if(validarExistencia('rut',$(this).val()))
                 {
@@ -33,7 +33,7 @@ $(document).ready(function(){
         cambiarPropiedad($("#cancelar"),"visibility","visible");
     });
     $("#cancelar").click(function(){
-        resetFormulario(PAGINA);
+        resetFormularioEliminar(PAGINA);
         resetBotones();
     });
     $("#guardar").click(function(){
@@ -47,16 +47,19 @@ $(document).ready(function(){
         }
         MODIFICADO = false;
     });
+    
     $("#busqueda").keyup(function(){
         buscarAgente($(this).val());
     });
     
     $("#eliminar").click(function (){
-            alertify.confirm("Eliminar agente","Esta seguro que desea eliminar al agente "+$("#rut").val(),
+            confirmar("Eliminar agente",
+            "Esta seguro que desea eliminar al agente "+$("#rut").val(),
             function(){
                 eliminarAgente();
             },null);
     });
+    
 });
 
 function agregarAgente()
@@ -100,7 +103,7 @@ function agregarAgente()
             alertify.success("Agente Agregado");
             vaciarFormulario($("#agregar input"));
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
-            resetFormulario(PAGINA);
+            resetFormulario();
             buscarAgente();
         };
         postRequest(url,success);
@@ -159,7 +162,7 @@ function modificarAgente()
             cerrarSession(response);
             alertify.success("Agente Modificado");
             vaciarFormulario($("#agregar input"));
-            resetFormulario(PAGINA);
+            resetFormulario();
             buscarAgente();
         };
         postRequest(url,success);
@@ -195,12 +198,12 @@ function buscarAgente()
 
 function abrirModificar(id)
 {
-    MODIFICADO = true;
     AGREGAR = false;
     quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
     agregarclase($("#"+id),"fila_contenedor_activa");
     $("#contenedor_central").load("html/datos_agente.html", function( response, status, xhr ) {
         iniciarPestaniasAgente();
+        cambioEjecutado();
         $("#nick").blur(function (){
             if(validarExistencia('nick',$(this).val()))
             {
@@ -244,7 +247,7 @@ function eliminarAgente()
     {
         alertify.success("Agente eliminado");
         cerrarSession(response);
-        resetFormulario(PAGINA);
+        resetFormularioEliminar(PAGINA);
         cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
         resetBotones();
         buscarAgente();

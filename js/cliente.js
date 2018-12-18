@@ -15,6 +15,7 @@ $(document).ready(function(){
         AGREGAR = true;
         $("#contenedor_central").load("html/datos_cliente.html", function( response, status, xhr ) {
             iniciarPestaniasCliente();
+            cambioEjecutado();
             $("#rut").blur(function (){
                 if(validarExistencia('rut',$(this).val()))
                 {
@@ -29,7 +30,7 @@ $(document).ready(function(){
         cambiarPropiedad($("#cancelar"),"visibility","visible");
     });
     $("#cancelar").click(function(){
-        resetFormulario(PAGINA);
+        resetFormularioEliminar(PAGINA);
         resetBotones();
     });
     $("#guardar").click(function(){
@@ -48,8 +49,9 @@ $(document).ready(function(){
     });
     
     $("#eliminar").click(function (){
-            alertify.confirm("Eliminar cliente","Esta seguro que desea eliminar al cliente "+$("#rut").val(),
-            function(){
+        confirmar("Eliminar cliente"
+        ,"Esta seguro que desea eliminar al cliente "+$("#rut").val(),
+        function(){
                 eliminarCliente();
             },null);
     });
@@ -84,7 +86,7 @@ function agregarCliente()
             alertify.success("Cliente Agregado");
             vaciarFormulario($("#agregar input"));
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
-            resetFormulario(PAGINA);
+            resetFormulario();
             buscarCliente();
         };
         postRequest(url,success);
@@ -121,7 +123,7 @@ function modificarCliente()
             cerrarSession(response);
             alertify.success("Cliente Modificado");
             vaciarFormulario($("#agregar input"));
-            resetFormulario(PAGINA);
+            resetFormulario();
             buscarCliente();
         };
         postRequest(url,success);
@@ -163,6 +165,7 @@ function abrirModificar(id)
     agregarclase($("#"+id),"fila_contenedor_activa");
     $("#contenedor_central").load("html/datos_cliente.html", function( response, status, xhr ) {
         iniciarPestaniasCliente();
+        cambioEjecutado();
         $("#nick").blur(function (){
             if(validarExistencia('rut',$(this).val()))
             {
@@ -211,7 +214,7 @@ function eliminarCliente()
     {
         alertify.success("Cliente eliminado");
         cerrarSession(response);
-        resetFormulario(PAGINA);
+        resetFormularioEliminar(PAGINA);
         cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
         resetBotones();
         buscarCliente();

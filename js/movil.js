@@ -11,6 +11,7 @@ $(document).ready(function(){
         AGREGAR = true;
         $("#contenedor_central").load("html/datos_movil.html", function( response, status, xhr ) {
             iniciarPestanias();
+            cambioEjecutado();
             iniciarFecha(['#venRevTec','#venSegOb']);
             $("#patente").blur(function (){
                 if(validarExistencia('patente',$(this).val()))
@@ -25,7 +26,7 @@ $(document).ready(function(){
         cambiarPropiedad($("#cancelar"),"visibility","visible");
     });
     $("#cancelar").click(function(){
-        resetFormulario(PAGINA);
+        resetFormularioEliminar(PAGINA);
         resetBotones();
     });
     $("#guardar").click(function(){
@@ -44,7 +45,8 @@ $(document).ready(function(){
     });
     
     $("#eliminar").click(function (){
-            alertify.confirm("Eliminar veh&iacute;culo","Esta seguro que desea eliminar el veh&iacute;culo "+$("#patente").val(),
+        confirmar("Eliminar veh&iacute;culo",
+            "Esta seguro que desea eliminar el veh&iacute;culo "+$("#patente").val(),
             function(){
                 eliminarMovil();
             },null);
@@ -81,7 +83,7 @@ function agregarMovil()
             alertify.success("Veh&iacute;culo Agregado");
             vaciarFormulario($("#agregar input"));
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
-            resetFormulario(PAGINA);
+            resetFormulario();
             buscarMovil();
         };
         postRequest(url,success);
@@ -119,7 +121,7 @@ function modificarMovil()
             cerrarSession(response);
             alertify.success("Veh&iacute;culo Modificado");
             vaciarFormulario($("#agregar input"));
-            resetFormulario(PAGINA);
+            resetFormulario();
             buscarMovil();
         };
         postRequest(url,success);
@@ -160,6 +162,7 @@ function abrirModificar(id)
     agregarclase($("#"+id),"fila_contenedor_activa");
     $("#contenedor_central").load("html/datos_movil.html", function( response, status, xhr ) {
         iniciarPestanias();
+        cambioEjecutado();
         iniciarFecha(['#venRevTec','#venSegOb']);
         var movil;
         for(var i = 0 ; i < MOVILES.length; i++)
@@ -195,7 +198,7 @@ function eliminarMovil()
     {
         alertify.success("Veh&iacute;culo eliminado");
         cerrarSession(response);
-        resetFormulario(PAGINA);
+        resetFormularioEliminar(PAGINA);
         cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
         resetBotones();
         buscarMovil();

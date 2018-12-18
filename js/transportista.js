@@ -18,6 +18,7 @@ $(document).ready(function(){
         AGREGAR = true;
         $("#contenedor_central").load("html/datos_transportista.html", function( response, status, xhr ) {
             iniciarPestaniasTransportista();
+            cambioEjecutado();
             $("#rut").blur(function (){
                 if(validarExistencia('rut',$(this).val()))
                 {
@@ -32,7 +33,7 @@ $(document).ready(function(){
         cambiarPropiedad($("#cancelar"),"visibility","visible");
     });
     $("#cancelar").click(function(){
-        resetFormulario(PAGINA);
+        resetFormularioEliminar(PAGINA);
         resetBotones();
     });
     $("#guardar").click(function(){
@@ -51,7 +52,7 @@ $(document).ready(function(){
     });
     
     $("#eliminar").click(function (){
-            alertify.confirm("Eliminar transportista","Esta seguro que desea eliminar al transportista "+$("#rut").val(),
+            confirmar("Eliminar transportista","Esta seguro que desea eliminar al transportista "+$("#rut").val(),
             function(){
                 eliminarTransportista();
             },null);
@@ -95,7 +96,7 @@ function agregarTransportista()
             alertify.success("Transportista Agregado");
             vaciarFormulario($("#agregar input"));
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
-            resetFormulario(PAGINA);
+            resetFormulario();
             buscarTransportista();
             buscarConductores();
             buscarMoviles();
@@ -155,7 +156,7 @@ function modificarTransportista()
             cerrarSession(response);
             alertify.success("Transportista Modificado");
             vaciarFormulario($("#agregar input"));
-            resetFormulario(PAGINA);
+            resetFormulario();
             buscarTransportista();
 
         };
@@ -199,6 +200,7 @@ function abrirModificar(id)
     agregarclase($("#"+id),"fila_contenedor_activa");
     $("#contenedor_central").load("html/datos_transportista.html", function( response, status, xhr ) {
         iniciarPestaniasTransportista();
+        cambioEjecutado();
         $("#nick").blur(function (){
             if(validarExistencia('rut',$(this).val()))
             {
@@ -247,7 +249,7 @@ function eliminarTransportista()
     {
         alertify.success("Transportista eliminado");
         cerrarSession(response);
-        resetFormulario(PAGINA);
+        resetFormularioEliminar();
         cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
         resetBotones();
         buscarTransportista();

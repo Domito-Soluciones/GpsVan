@@ -121,7 +121,7 @@ function quitarclase(div,clase)
 function cambiarModulo(pagina,cambiar){
     if(MODIFICADO)
     {
-        alertify.confirm("Cambiar de modulo","¿Desea cambiar de modulo sin guardar los cambios?",
+        confirmar("Cambiar de modulo","¿Desea cambiar de modulo sin guardar los cambios?",
             function(){
                 MODIFICADO = false;
                 if(cambiar)
@@ -216,7 +216,12 @@ function mensajeBienvenida(mensaje)
                                     SELECCIONE OPCIONES PARA AGREGAR EDITAR Y/O MODIFICAR "+mensaje+"</div>");
 }
 
-function resetFormulario(pagina) 
+function resetFormulario() 
+{
+    MODIFICADO = false;
+}
+
+function resetFormularioEliminar(pagina) 
 {
     MODIFICADO = false;
     $("#contenedor_central").html("");
@@ -390,4 +395,21 @@ function salir()
         window.location.href = "index.php";
     };
     getRequest(url,success);
+}
+
+function confirmar(titulo,texto,si,no)
+{
+    alertify.confirm(titulo,texto,si,no).set('labels', {ok:'Si', cancel:'No'}); 
+}
+
+function cambioEjecutado()
+{
+    $("input").change(function()
+    {
+        MODIFICADO = true;
+    });
+    $("select").change(function()
+    {
+        MODIFICADO = true;
+    });
 }

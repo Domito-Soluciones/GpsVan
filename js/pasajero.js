@@ -12,6 +12,7 @@ $(document).ready(function(){
         AGREGAR = true;
         $("#contenedor_central").load("html/datos_pasajero.html", function( response, status, xhr ) {
             iniciarPestaniasPasajero();
+            cambioEjecutado();
             $("#rut").blur(function (){
                 if(validarExistencia('rut',$(this).val()))
                 {
@@ -34,7 +35,7 @@ $(document).ready(function(){
         cambiarPropiedad($("#cancelar"),"visibility","visible");
     });
     $("#cancelar").click(function(){
-        resetFormulario(PAGINA);
+        resetFormularioEliminar(PAGINA);
         resetBotones();
     });
     $("#guardar").click(function(){
@@ -53,7 +54,7 @@ $(document).ready(function(){
     });
     
     $("#eliminar").click(function (){
-            alertify.confirm("Eliminar pasajero","Esta seguro que desea eliminar al pasajero "+$("#rut").val(),
+            confirmar("Eliminar pasajero","Esta seguro que desea eliminar al pasajero "+$("#rut").val(),
             function(){
                 eliminarPasajero();
             },null);
@@ -101,7 +102,7 @@ function agregarPasajero()
             alertify.success("Pasajero Agregado");
             vaciarFormulario($("#agregar input"));
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
-            resetFormulario(PAGINA);
+            resetFormulario();
             buscarPasajero();
         };
         postRequest(url,success);
@@ -161,7 +162,7 @@ function modificarPasajero()
             cerrarSession(response);
             alertify.success("Pasajero Modificado");
             vaciarFormulario($("#agregar input"));
-            resetFormulario(PAGINA);
+            resetFormulario();
             buscarPasajero();
         };
         postRequest(url,success);
@@ -203,6 +204,7 @@ function abrirModificar(id)
     agregarclase($("#"+id),"fila_contenedor_activa");
     $("#contenedor_central").load("html/datos_pasajero.html", function( response, status, xhr ) {
         iniciarPestaniasPasajero();
+        cambioEjecutado();
         $("#nick").blur(function (){
             if(validarExistencia('nick',$(this).val()))
             {
@@ -246,7 +248,7 @@ function eliminarPasajero()
     {
         alertify.success("Pasajero eliminado");
         cerrarSession(response);
-        resetFormulario(PAGINA);
+        resetFormularioEliminar(PAGINA);
         cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
         resetBotones();
         buscarPasajero();

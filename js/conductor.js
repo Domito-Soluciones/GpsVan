@@ -16,6 +16,7 @@ $(document).ready(function(){
         AGREGAR = true;
         $("#contenedor_central").load("html/datos_conductor.html", function( response, status, xhr ) {
             iniciarPestanias();
+            cambioEjecutado();
             iniciarFecha(['#nacimiento','#seguroInicio','#seguroRenovacion']);
             $("#rut").blur(function (){
                 if(validarExistencia('rut',$(this).val()))
@@ -40,8 +41,8 @@ $(document).ready(function(){
     });
     
     $("#cancelar").click(function(){
-        resetFormulario(PAGINA);
-        reMODIFICADOsetBotones();
+        resetFormularioEliminar(PAGINA);
+        resetBotones();
     });
     $("#guardar").click(function(){
         if(AGREGAR)
@@ -59,8 +60,8 @@ $(document).ready(function(){
     });
     
     $("#eliminar").click(function (){
-            alertify.confirm("Eliminar conductor","Esta seguro que desea eliminar al conductor "+$("#rut").val(),
-            function(){
+        confirmar("Eliminar conductor","Esta seguro que desea eliminar al conductor "+$("#rut").val(),
+        function(){
                 eliminarConductor();
             },null);
     });
@@ -124,7 +125,7 @@ function agregarConductor()
             alertify.success("Conductor Agregado");
             vaciarFormulario($("#agregar input"));
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
-            resetFormulario(PAGINA);
+            resetFormulario();
             buscarConductor();
         };
         postRequest(url,success);
@@ -200,7 +201,7 @@ function modificarConductor()
             cerrarSession(response);
             alertify.success("Conductor Modificado");
             vaciarFormulario($("#agregar input"));
-            resetFormulario(PAGINA);
+            resetFormulario();
             buscarConductor();
         };
         postRequest(url,success);
@@ -242,6 +243,7 @@ function abrirModificar(id)
     agregarclase($("#"+id),"fila_contenedor_activa");
     $("#contenedor_central").load("html/datos_conductor.html", function( response, status, xhr ) {
         iniciarPestanias();
+        cambioEjecutado();
         iniciarFecha(['#nacimiento','#seguroInicio','#seguroRenovacion']);
         $("#nick").blur(function (){
             if(validarExistencia('nick',$(this).val()))
@@ -307,7 +309,7 @@ function eliminarConductor()
     {
         alertify.success("Conductor eliminado");
         cerrarSession(response);
-        resetFormulario(PAGINA);
+        resetFormularioEliminar(PAGINA);
         cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
         resetBotones();
         buscarConductor();
