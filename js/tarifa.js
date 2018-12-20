@@ -6,7 +6,6 @@ var CAMPOS = ["nombre","origen","destino","valor1","valor2"];
 $(document).ready(function(){
     buscarTarifa();
     $("#agregar").click(function(){
-        MODIFICADO = true;
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
         $("#contenedor_central").load("html/datos_tarifa.html", function( response, status, xhr ) {
@@ -15,7 +14,7 @@ $(document).ready(function(){
                 if(validarExistencia('nombre',$(this).val()))
                 {
                     alertify.error("El nombre "+$(this).val()+" ya existe");
-                    $("#rut").val("");
+                    $("#nombre").val("");
                     return;
                 }
             });
@@ -24,8 +23,7 @@ $(document).ready(function(){
         cambiarPropiedad($("#cancelar"),"visibility","visible");
     });
     $("#cancelar").click(function(){
-        resetFormularioEliminar(PAGINA);
-        resetBotones();
+        validarCancelar(PAGINA);
     });
     $("#guardar").click(function(){
         if(AGREGAR)
@@ -73,7 +71,7 @@ function agregarTarifa()
         {
             cerrarSession(response);
             alertify.success("Tarifa Agregada");
-            vaciarFormulario($("#agregar input"));
+            vaciarFormulario();
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
             resetFormulario();
             buscarTarifa();
@@ -104,10 +102,8 @@ function modificarTarifa()
         var success = function(response)
         {
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
-            resetBotones();
             cerrarSession(response);
             alertify.success("Tarifa Modificada");
-            vaciarFormulario($("#agregar input"));
             resetFormulario();
             buscarTarifa();
         };
@@ -134,16 +130,36 @@ function buscarTarifa()
         {
             var id = response[i].tarifa_id;
             var nombre = response[i].tarifa_nombre;
-            tarifas.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"abrirModificar('"+id+"')\">"+nombre+"</div>");
+            var titulo = recortar(nombre);
+            tarifas.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+titulo+"</div>");
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
     getRequest(url,success);
 }
-
+function cambiarFila(id)
+{
+    if(MODIFICADO)
+    {
+        confirmar("Cambio de tarifa",
+        "¿Desea cambiar de tarifa sin guardar los cambios?",
+        function()
+        {
+            MODIFICADO = false;
+            abrirModificar(id);
+        },
+        function()
+        {
+            MODIFICADO = true;
+        });
+    }
+    else
+    {
+        abrirModificar(id);
+    }
+}
 function abrirModificar(id)
 {
-    MODIFICADO = true;
     AGREGAR = false;
     quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
     agregarclase($("#"+id),"fila_contenedor_activa");

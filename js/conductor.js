@@ -1,4 +1,5 @@
 /* global urlBase, alertify */
+var ID_CONDUCTOR;
 var CONDUCTORES;
 var MOVILES;
 var AGREGAR = true;
@@ -10,7 +11,6 @@ var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","mail
 $(document).ready(function(){
     buscarConductor();
     $("#agregar").click(function(){
-        MODIFICADO = true;
         buscarMovil('');
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
@@ -41,8 +41,7 @@ $(document).ready(function(){
     });
     
     $("#cancelar").click(function(){
-        resetFormularioEliminar(PAGINA);
-        resetBotones();
+        validarCancelar();
     });
     $("#guardar").click(function(){
         if(AGREGAR)
@@ -123,7 +122,8 @@ function agregarConductor()
         {
             cerrarSession(response);
             alertify.success("Conductor Agregado");
-            vaciarFormulario($("#agregar input"));
+            cambiarPestaniaGeneral();
+            vaciarFormulario();
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
             resetFormulario();
             buscarConductor();
@@ -164,16 +164,18 @@ function modificarConductor()
         if(password !== password2)
         {
             alertify.error("La password no coincide");
+            marcarCampoError(password);
+            marcarCampoError(password2)
             return;
         }
-        array = [nombre,papellido,mapellido,rut,celular,direccion,mail,
+        array = [rut,nombre,papellido,mapellido,celular,direccion,mail,
         tipoLicencia,nacimiento,renta,contrato,afp,isapre,mutual,seguroInicio,
         seguroRenovacion,nick,password,password2];
         claveData = "&password="+password;
     }
     else
     {
-        array = [nombre,papellido,mapellido,rut,celular,direccion,mail,
+        array = [rut,nombre,papellido,mapellido,celular,direccion,mail,
         tipoLicencia,nacimiento,renta,contrato,afp,isapre,mutual,seguroInicio,
         seguroRenovacion,nick];   
     }
@@ -187,7 +189,7 @@ function modificarConductor()
     {
         var imagen = $("#imagenOculta").val();
         var archivoContrato = $("#contratoOculta").val();
-        var data = "nombre="+nombre+"&papellido="+papellido+"&mapellido="+mapellido
+        var data = "id="+ID_CONDUCTOR+"&nombre="+nombre+"&papellido="+papellido+"&mapellido="+mapellido
         +"&rut="+rut+"&nick="+nick+claveData+"&telefono="+telefono+"&celular="+celular+"&direccion="+direccion
         +"&mail="+mail+"&tipoLicencia="+tipoLicencia+"&nacimiento="+nacimiento
         +"&renta="+renta+"&contrato="+contrato+"&afp="+afp+"&isapre="+isapre
@@ -197,10 +199,9 @@ function modificarConductor()
         var success = function(response)
         {
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
-            resetBotones();
             cerrarSession(response);
+            cambiarPestaniaGeneral();
             alertify.success("Conductor Modificado");
-            vaciarFormulario($("#agregar input"));
             resetFormulario();
             buscarConductor();
         };
@@ -226,18 +227,49 @@ function buscarConductor()
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].conductor_id;
+            var rut = response[i].conductor_rut;
             var nombre = response[i].conductor_nombre;
             var papellido = response[i].conductor_papellido;
-            conductores.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"abrirModificar('"+id+"')\">"+nombre+" "+papellido+"</div>");
+            var mapellido = response[i].conductor_mapellido;
+            var titulo = recortar(rut+" / "+nombre+" "+papellido+" "+ mapellido);
+            if (typeof ID_CONDUCTOR !== "undefined" && ID_CONDUCTOR === id)
+            {
+                conductores.append("<div class=\"fila_contenedor fila_contenedor_activa\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+titulo+"</div>");
+            }
+            else
+            {
+            conductores.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+ titulo +"</div>");
+            }
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
     getRequest(url,success);
 }
+function cambiarFila(id)
+{
+    if(MODIFICADO)
+    {
+        confirmar("Cambio de conductor",
+        "¿Desea cambiar de conductor sin guardar los cambios?",
+        function()
+        {
+            MODIFICADO = false;
+            abrirModificar(id);
+        },
+        function()
+        {
+            MODIFICADO = true;
+        });
+    }
+    else
+    {
+        abrirModificar(id);
+    }
+}
 
 function abrirModificar(id)
 {
-    MODIFICADO = true;
+    ID_CONDUCTOR = id;
     AGREGAR = false;
     quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
     agregarclase($("#"+id),"fila_contenedor_activa");
@@ -564,7 +596,6 @@ function activarPestania(array)
             marcarCampoOk($("#"+CAMPOS[i]));
         }
     }
-    alert(general+" "+contrato +" "+aplicacion);
     if(general)
     {
         cambiarPestaniaGeneral();

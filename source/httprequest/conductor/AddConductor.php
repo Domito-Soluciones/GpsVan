@@ -3,6 +3,7 @@ include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/ConductorDao.php';
 
+header('Content-Type: application/json');
 $rut = $_REQUEST['rut'];
 $nombre = $_REQUEST['nombre'];
 $papellido = $_REQUEST['papellido'];
@@ -51,5 +52,6 @@ $conductor->setAnticipo($anticipo);
 $conductor->setImagenAdjunta($imagen);
 $conductor->setContratoAdjunto($archivoContrato);
 $conductorDao = new ConductorDao();
-$conductorDao->agregarConductor($conductor);
+$conductorId = $conductorDao->agregarConductor($conductor);
+echo "{\"conductor_id\":\"".$conductorId."\"}";
 

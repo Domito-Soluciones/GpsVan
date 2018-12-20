@@ -1,4 +1,5 @@
-/* global urlBase, alertify */
+/* global urlBase, alertify, ID_AGENTE */
+var ID_MOVIL;
 var MOVILES;
 var AGREGAR = true;
 var PAGINA = 'MOVILES';
@@ -6,7 +7,6 @@ var CAMPOS = ["patente","marca","nombre","modelo","anio","venRevTec","SegOb","ve
 $(document).ready(function(){
     buscarMovil();
     $("#agregar").click(function(){
-        MODIFICADO = true;
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
         $("#contenedor_central").load("html/datos_movil.html", function( response, status, xhr ) {
@@ -26,8 +26,7 @@ $(document).ready(function(){
         cambiarPropiedad($("#cancelar"),"visibility","visible");
     });
     $("#cancelar").click(function(){
-        resetFormularioEliminar(PAGINA);
-        resetBotones();
+        validarCancelar(PAGINA);
     });
     $("#guardar").click(function(){
         if(AGREGAR)
@@ -81,7 +80,8 @@ function agregarMovil()
         {
             cerrarSession(response);
             alertify.success("Veh&iacute;culo Agregado");
-            vaciarFormulario($("#agregar input"));
+            cambiarPestaniaGeneral();
+            vaciarFormulario();
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
             resetFormulario();
             buscarMovil();
@@ -111,16 +111,14 @@ function modificarMovil()
     }
     if(validarTipoDato())
     {
-        var data = "patente="+patente+"&marca="+marca+"&nombre="+nombre+"&modelo="+modelo+"&anio="+anio+
+        var data = "id="+ID_MOVIL+"&patente="+patente+"&marca="+marca+"&nombre="+nombre+"&modelo="+modelo+"&anio="+anio+
         "&venrevtec="+venRevTec+"&segob="+segOb+"&vensegob="+venSegOb+"&segad="+SegAd+"&kilo="+kilo; 
         var url = urlBase + "/movil/ModMovil.php?"+data;
         var success = function(response)
         {
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
-            resetBotones();
             cerrarSession(response);
             alertify.success("Veh&iacute;culo Modificado");
-            vaciarFormulario($("#agregar input"));
             resetFormulario();
             buscarMovil();
         };
@@ -147,16 +145,47 @@ function buscarMovil()
         {
             var id = response[i].movil_id;
             var patente = response[i].movil_patente;
-            moviles.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"abrirModificar('"+id+"')\">"+patente+"</div>");
+            var nombre = response[i].movil_nombre;
+            var titulo = recortar(nombre+" / "+patente);
+            if (typeof ID_MOVIL !== "undefined" && ID_MOVIL === id)
+            {
+                moviles.append("<div class=\"fila_contenedor fila_contenedor_activa\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+titulo+"</div>");
+            }
+            else
+            {
+                moviles.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+titulo+"</div>");
+            }
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
     getRequest(url,success);
 }
 
+function cambiarFila(id)
+{
+    if(MODIFICADO)
+    {
+        confirmar("Cambio de veh&iacute;culo",
+        "¿Desea cambiar de veh&iacute;culo sin guardar los cambios?",
+        function()
+        {
+            MODIFICADO = false;
+            abrirModificar(id);
+        },
+        function()
+        {
+            MODIFICADO = true;
+        });
+    }
+    else
+    {
+        abrirModificar(id);
+    }
+}
+
 function abrirModificar(id)
 {
-    MODIFICADO = true;
+    ID_MOVIL = id;
     AGREGAR = false;
     quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
     agregarclase($("#"+id),"fila_contenedor_activa");

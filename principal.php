@@ -11,7 +11,7 @@ if(!isset($_SESSION['agente']))
         <title>
             Panel principal
         </title>
-        <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <meta name="viewport" content="width=device-width, user-scalable=no, 
               initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
         <link rel="stylesheet" href="css/estilo.css">
@@ -37,9 +37,7 @@ if(!isset($_SESSION['agente']))
                 GoTransfer - Admin    
             </div>
             <div class="logOut" id="logOut">
-                <a class="enlace-salir">
-                    <?php echo $_SESSION['nick']?>
-                </a>
+                <a class="enlace-salir" id="enlace_usuario"></a>
                  - <a href="javascript:void(0)" class="enlace-salir" id="enlace-salir">Salir</a>
             </div>
             <div class="fecha" id="fecha">

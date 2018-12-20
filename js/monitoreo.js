@@ -1,4 +1,4 @@
-/* global urlBase, google, alertify */
+/* global urlBase, google, alertify, flightPath, markers, map */
 var servicios_diarios = [];
 var moviles_diarios = [];
 var pasajeros_diarios = [];
@@ -188,6 +188,7 @@ function dibujarServicio(id,movil)
         flightPath.setMap(map);
         var latLng = new google.maps.LatLng(response[0].lat, response[0].lng);
         map.panTo(latLng); 
+        map.setZoom(14);
     };
     getRequest(url,success);
 

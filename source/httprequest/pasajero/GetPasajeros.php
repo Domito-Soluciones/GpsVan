@@ -22,6 +22,7 @@ for ($i = 0 ; $i < count($pasajeros); $i++)
     $mail = $pasajeros[$i]->getMail();
     $cargo = $pasajeros[$i]->getCargo();
     $nivel = $pasajeros[$i]->getNivel();
+    $cliente = $pasajeros[$i]->getCliente();
     echo "{\"pasajero_id\":\"".$cId."\","
         . "\"pasajero_nombre\":\"".$nombre."\","
         . "\"pasajero_papellido\":\"".$papellido."\","
@@ -33,7 +34,8 @@ for ($i = 0 ; $i < count($pasajeros); $i++)
         . "\"pasajero_direccion\":\"".$direccion."\","
         . "\"pasajero_mail\":\"".$mail."\","
         . "\"pasajero_cargo\":\"".$cargo."\","
-        . "\"pasajero_nivel\":\"".$nivel."\""
+        . "\"pasajero_nivel\":\"".$nivel."\","
+        . "\"pasajero_cliente\":\"".$cliente."\""
         . "}";
     if (($i+1) != count($pasajeros))
     {

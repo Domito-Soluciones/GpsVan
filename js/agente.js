@@ -1,8 +1,9 @@
-/* global urlBase, alertify */
+/* global urlBase, alertify, NICK_GLOBAL */
+var ID_AGENTE;
 var AGENTES;
 var AGREGAR = true;
 var PAGINA = 'AGENTES';
-var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","mail","cargo","perfil","nick"];
+var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","mail","cargo","perfil","nick","password","password2"];
 $(document).ready(function(){
     buscarAgente();
     $("#agregar").click(function(){
@@ -33,8 +34,7 @@ $(document).ready(function(){
         cambiarPropiedad($("#cancelar"),"visibility","visible");
     });
     $("#cancelar").click(function(){
-        resetFormularioEliminar(PAGINA);
-        resetBotones();
+        validarCancelar(PAGINA);
     });
     $("#guardar").click(function(){
         if(AGREGAR)
@@ -53,8 +53,8 @@ $(document).ready(function(){
     });
     
     $("#eliminar").click(function (){
-            confirmar("Eliminar agente",
-            "Esta seguro que desea eliminar al agente "+$("#rut").val(),
+            confirmar("Eliminar administrador",
+            "Esta seguro que desea eliminar al administrador "+$("#rut").val(),
             function(){
                 eliminarAgente();
             },null);
@@ -76,8 +76,8 @@ function agregarAgente()
     var password = $("#password").val();
     var password2 = $("#password2").val();
     var cargo = $("#cargo").val();
-    var nivel = $("#nivel").val();
-    var array = [nombre,papellido,mapellido,rut,celular,direccion,mail,cargo,nivel,nick,password,password2];
+    var perfil = $("#perfil").val();
+    var array = [nombre,papellido,mapellido,rut,celular,direccion,mail,cargo,perfil,nick,password,password2];
     if(!validarCamposOr(array))
     {
         activarPestania(array);
@@ -95,14 +95,15 @@ function agregarAgente()
     {
         var data = "nombre="+nombre+"&papellido="+papellido+"&mapellido="+mapellido
         +"&rut="+rut+"&nick="+nick+"&password="+password+"&telefono="+telefono+"&celular="+celular+"&direccion="+direccion
-        +"&mail="+mail+"&cargo="+cargo+"&nivel="+nivel;
+        +"&mail="+mail+"&cargo="+cargo+"&perfil="+perfil;
         var url = urlBase + "/agente/AddAgente.php?"+data;
         var success = function(response)
         {
             cerrarSession(response);
-            alertify.success("Agente Agregado");
-            vaciarFormulario($("#agregar input"));
+            alertify.success("Administrador Agregado");
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
+            cambiarPestaniaGeneral();
+            vaciarFormulario();
             resetFormulario();
             buscarAgente();
         };
@@ -124,7 +125,7 @@ function modificarAgente()
     var password = $("#password").val();
     var password2 = $("#password2").val();
     var cargo = $("#cargo").val();
-    var nivel = $("#nivel").val();
+    var perfil = $("#perfil").val();
     var array;
     var claveData = '';
     if(password !== '' || password2 !== '')
@@ -136,12 +137,12 @@ function modificarAgente()
             alertify.error("La password no coincide");
             return;
         }
-        array = [nombre,papellido,mapellido,rut,celular,direccion,mail,cargo,nivel,nick,password,password2];
+        array = [nombre,papellido,mapellido,rut,celular,direccion,mail,cargo,perfil,nick,password,password2];
         claveData = "&password="+password;
     }
     else
     {
-        array = [nombre,papellido,mapellido,rut,celular,direccion,mail,cargo,nivel,nick];   
+        array = [nombre,papellido,mapellido,rut,celular,direccion,mail,cargo,perfil,nick];   
     }
     if(!validarCamposOr(array))
     {
@@ -151,19 +152,19 @@ function modificarAgente()
     }
     if(validarTipoDato())
     {
-        var data = "nombre="+nombre+"&papellido="+papellido+"&mapellido="+mapellido
+        var data = "id="+ID_AGENTE+"&nombre="+nombre+"&papellido="+papellido+"&mapellido="+mapellido
         +"&rut="+rut+"&nick="+nick+claveData+"&telefono="+telefono+"&celular="+celular+"&direccion="+direccion
-        +"&mail="+mail+"&cargo="+cargo+"&nivel="+nivel;
+        +"&mail="+mail+"&cargo="+cargo+"&nivel="+perfil;
         var url = urlBase + "/agente/ModAgente.php?"+data;
         var success = function(response)
         {
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
-            resetBotones();
             cerrarSession(response);
-            alertify.success("Agente Modificado");
-            vaciarFormulario($("#agregar input"));
+            cambiarPestaniaGeneral();
+            alertify.success("Administrador Modificado");
             resetFormulario();
             buscarAgente();
+            marcarFilaActiva(ID_AGENTE);
         };
         postRequest(url,success);
     }
@@ -187,20 +188,52 @@ function buscarAgente()
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].agente_id;
+            var rut = response[i].agente_rut;
             var nombre = response[i].agente_nombre;
             var papellido = response[i].agente_papellido;
-            agentes.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"abrirModificar('"+id+"')\">"+nombre+" "+papellido+"</div>");
+            var mapellido = response[i].agente_mapellido;
+            var titulo = recortar(rut+" / "+ nombre+" "+papellido+" "+mapellido);
+            if (typeof ID_AGENTE !== "undefined" && ID_AGENTE === id)
+            {
+                agentes.append("<div class=\"fila_contenedor fila_contenedor_activa\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+titulo+"</div>");
+            }
+            else
+            {
+                agentes.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+titulo+"</div>");
+            }
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
     getRequest(url,success);
 }
 
+function cambiarFila(id)
+{
+    if(MODIFICADO)
+    {
+        confirmar("Cambio de administrador",
+        "¿Desea cambiar de administrador sin guardar los cambios?",
+        function()
+        {
+            MODIFICADO = false;
+            abrirModificar(id);
+        },
+        function()
+        {
+            MODIFICADO = true;
+        });
+    }
+    else
+    {
+        abrirModificar(id);
+    }
+}
+
 function abrirModificar(id)
 {
     AGREGAR = false;
-    quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
-    agregarclase($("#"+id),"fila_contenedor_activa");
+    ID_AGENTE = id;
+    marcarFilaActiva(id);
     $("#contenedor_central").load("html/datos_agente.html", function( response, status, xhr ) {
         iniciarPestaniasAgente();
         cambioEjecutado();
@@ -218,6 +251,7 @@ function abrirModificar(id)
             if(AGENTES[i].agente_id === id)
             {
                 agente = AGENTES[i];
+                break;
             }
         }
         $("#rut").val(agente.agente_rut);
@@ -231,11 +265,17 @@ function abrirModificar(id)
         $("#direccion").val(agente.agente_direccion);
         $("#mail").val(agente.agente_mail);
         $("#cargo").val(agente.agente_cargo);
-        $("#nivel").val(agente.agente_nivel);
+        $("#perfil").val(agente.agente_perfil);
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
-        cambiarPropiedad($("#eliminar"),"visibility","visible");
-        
+        if(agente.agente_nick !== NICK_GLOBAL)
+        {
+            cambiarPropiedad($("#eliminar"),"visibility","visible");
+        }
+        else
+        {
+            cambiarPropiedad($("#eliminar"),"visibility","hidden");
+        }
     });
 }
 
@@ -245,7 +285,7 @@ function eliminarAgente()
     var url = urlBase + "/agente/DelAgente.php?rut="+rut;
     var success = function(response)
     {
-        alertify.success("Agente eliminado");
+        alertify.success("Administrador eliminado");
         cerrarSession(response);
         resetFormularioEliminar(PAGINA);
         cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
@@ -306,7 +346,7 @@ function validarTipoDato()
     if(!validarNumero(celular.val()))
     {
         cambiarPestaniaGeneral();
-        marcarCampoError(mail);
+        marcarCampoError(celular);
         alertify.error('Celular debe ser numerico');
         return false;
     }

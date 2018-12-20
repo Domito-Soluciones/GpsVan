@@ -3,6 +3,7 @@ include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/AgenteDao.php';
 
+header('Content-Type: application/json');
 $rut = $_REQUEST['rut'];
 $nombre = $_REQUEST['nombre'];
 $papellido = $_REQUEST['papellido'];
@@ -14,7 +15,7 @@ $nick = $_REQUEST['nick'];
 $password = $_REQUEST['password'];
 $mail = $_REQUEST['mail'];
 $cargo = $_REQUEST['cargo'];
-$nivel = $_REQUEST['nivel'];
+$perfil = $_REQUEST['perfil'];
 $agente = new Agente();
 $agente->setRut($rut);
 $agente->setNombre($nombre);
@@ -27,7 +28,8 @@ $agente->setMail($mail);
 $agente->setNick($nick);
 $agente->setClave($password);
 $agente->setCargo($cargo);
-$agente->setPerfil($nivel);
+$agente->setPerfil($perfil);
 $agenteDao = new AgenteDao();
-$agenteDao->agregarAgente($agente);
+$agenteId = $agenteDao->agregarAgente($agente);
+echo "{\"cliente_id\":\"".$agenteId."\"}";
 

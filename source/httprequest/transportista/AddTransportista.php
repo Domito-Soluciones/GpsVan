@@ -3,6 +3,7 @@ include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/TransportistaDao.php';
 
+header('Content-Type: application/json');
 $razon = $_REQUEST['razon'];
 $rut = $_REQUEST['rut'];
 $nombre = $_REQUEST['nombre'];
@@ -23,17 +24,16 @@ $transportista->setFonoContacto($telefono);
 $transportista->setMailContacto($mail);
 $transportista->setMailFacturacion($mail2);
 $transportistaDao = new TransportistaDao();
-$id = $transportistaDao->agregarTransportista($transportista);
-echo 'estos son los conductores: '.$conductores;
-echo 'estos son los moviles: '.$moviles;
-if($id > 0)
+$transportistaId = $transportistaDao->agregarTransportista($transportista);
+if($transportistaId > 0)
 {
     if($conductores !== '')
     {
-        $transportistaDao->asociarConductores($id,$conductores);
+        $transportistaDao->asociarConductores($transportistaId,$conductores);
     }
     if($moviles !== '')
     {
-        $transportistaDao->asociarMoviles($id,$moviles);
+        $transportistaDao->asociarMoviles($transportistaId,$moviles);
     }
 }
+echo "{\"transportista_id\":\"".$transportistaId."\"}";

@@ -1,4 +1,5 @@
 /* global google */
+var NICK_GLOBAL;
 var map;
 var markers = [];
 var flightPath;
@@ -8,6 +9,7 @@ $(document).ready(function(){
         agregarclase($("#principal"),"menu-activo");
     });    
     $("#contenido-central").load("home.html");
+    getUsuario();
     getfecha();
     setInterval(function(){getfecha();},5000);
     $.getScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyDcQylEsZAzuEw3EHBdWbsDAynXvU2Ljzs&libraries=places&callback=initMap",null);

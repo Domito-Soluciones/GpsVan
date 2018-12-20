@@ -1,6 +1,5 @@
 /* global urlBase, alertify, google */
 
-var map;
 var directionsService;
 var directionsDisplay;
 var markers = [];

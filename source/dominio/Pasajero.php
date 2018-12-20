@@ -16,6 +16,7 @@ class Pasajero {
     private $cargo;
     private $nivel;
     private $estado;
+    private $cliente;
     
     function getId() {
         return $this->id;
@@ -73,6 +74,10 @@ class Pasajero {
         return $this->estado;
     }
 
+    function getCliente() {
+        return $this->cliente;
+    }
+
     function setId($id) {
         $this->id = $id;
     }
@@ -127,6 +132,10 @@ class Pasajero {
 
     function setEstado($estado) {
         $this->estado = $estado;
+    }
+
+    function setCliente($cliente) {
+        $this->cliente = $cliente;
     }
 
 

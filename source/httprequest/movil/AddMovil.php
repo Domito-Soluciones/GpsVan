@@ -3,6 +3,7 @@ include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/MovilDao.php';
 
+header('Content-Type: application/json');
 $patente = $_REQUEST['patente'];
 $marca = $_REQUEST['marca'];
 $nombre = $_REQUEST['nombre'];
@@ -25,5 +26,5 @@ $movil->setVenSegOb($venSegOb);
 $movil->setSegAd($segAd);
 $movil->setKilometraje($kilo);
 $movilDao = new MovilDao();
-$movilDao->agregarMovil($movil);
-
+$movilId = $movilDao->agregarMovil($movil);
+echo "{\"movil_id\":\"".$movilId."\"}";

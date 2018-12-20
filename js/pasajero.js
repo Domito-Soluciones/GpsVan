@@ -1,4 +1,5 @@
 /* global urlBase, alertify */
+var ID_PASAJERO;
 var PASAJEROS;
 var AGREGAR = true;
 var PAGINA = 'PASAJEROS';
@@ -7,7 +8,6 @@ $(document).ready(function(){
     
     buscarPasajero();
     $("#agregar").click(function(){
-        MODIFICADO = true;
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
         $("#contenedor_central").load("html/datos_pasajero.html", function( response, status, xhr ) {
@@ -35,8 +35,7 @@ $(document).ready(function(){
         cambiarPropiedad($("#cancelar"),"visibility","visible");
     });
     $("#cancelar").click(function(){
-        resetFormularioEliminar(PAGINA);
-        resetBotones();
+        validarCancelar(PAGINA);
     });
     $("#guardar").click(function(){
         if(AGREGAR)
@@ -100,7 +99,8 @@ function agregarPasajero()
         {
             cerrarSession(response);
             alertify.success("Pasajero Agregado");
-            vaciarFormulario($("#agregar input"));
+            cambiarPestaniaGeneral();
+            vaciarFormulario();
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
             resetFormulario();
             buscarPasajero();
@@ -123,7 +123,7 @@ function modificarPasajero()
     var password = $("#password").val();
     var password2 = $("#password2").val();
     var cargo = $("#cargo").val();
-//    var nivel = $("#nivel").val();
+    //var nivel = $("#perfil").val();
     var array;
     var claveData = '';
     if(password !== '' || password2 !== '')
@@ -135,13 +135,13 @@ function modificarPasajero()
             alertify.error("La password no coincide");
             return;
         }
-        array = [nombre,papellido,mapellido,rut,celular,direccion,mail,
+        array = [rut,nombre,papellido,mapellido,celular,direccion,mail,
         cargo,nick,password,password2];
         claveData = "&password="+password;
     }
     else
     {
-        array = [nombre,papellido,mapellido,rut,celular,direccion,mail,nick,cargo];   
+        array = [rut,nombre,papellido,mapellido,celular,direccion,mail,cargo,nick];   
     }
     if(!validarCamposOr(array))
     {
@@ -151,17 +151,16 @@ function modificarPasajero()
     }
     if(validarTipoDato())
     {
-        var data = "nombre="+nombre+"&papellido="+papellido+"&mapellido="+mapellido
+        var data = "id="+ID_PASAJERO+"&nombre="+nombre+"&papellido="+papellido+"&mapellido="+mapellido
         +"&rut="+rut+"&nick="+nick+claveData+"&telefono="+telefono+"&celular="+celular+"&direccion="+direccion
         +"&mail="+mail+"&cargo="+cargo;
         var url = urlBase + "/pasajero/ModPasajero.php?"+data;
         var success = function(response)
         {
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
-            resetBotones();
             cerrarSession(response);
+            cambiarPestaniaGeneral();
             alertify.success("Pasajero Modificado");
-            vaciarFormulario($("#agregar input"));
             resetFormulario();
             buscarPasajero();
         };
@@ -187,19 +186,51 @@ function buscarPasajero()
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].pasajero_id;
+            var rut = response[i].pasajero_rut;
             var nombre = response[i].pasajero_nombre;
             var papellido = response[i].pasajero_papellido;
-            pasajeros.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"abrirModificar('"+id+"')\">"+nombre+" "+papellido+"</div>");
+            var mapellido = response[i].pasajero_mapellido;
+            var titulo = recortar(rut+" / "+nombre+" "+papellido+" "+mapellido);
+            if (typeof ID_PASAJERO !== "undefined" && ID_PASAJERO === id)
+            {
+                pasajeros.append("<div class=\"fila_contenedor fila_contenedor_activa\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+titulo+"</div>");
+            }
+            else
+            {
+                pasajeros.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+titulo+"</div>");
+            }
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
     getRequest(url,success);
 }
 
+function cambiarFila(id)
+{
+    if(MODIFICADO)
+    {
+        confirmar("Cambio de pasajero",
+        "¿Desea cambiar de pasajero sin guardar los cambios?",
+        function()
+        {
+            MODIFICADO = false;
+            abrirModificar(id);
+        },
+        function()
+        {
+            MODIFICADO = true;
+        });
+    }
+    else
+    {
+        abrirModificar(id);
+    }
+}
+
 function abrirModificar(id)
 {
-    MODIFICADO = true;
     AGREGAR = false;
+    ID_PASAJERO = id;
     quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
     agregarclase($("#"+id),"fila_contenedor_activa");
     $("#contenedor_central").load("html/datos_pasajero.html", function( response, status, xhr ) {
@@ -208,7 +239,6 @@ function abrirModificar(id)
         $("#nick").blur(function (){
             if(validarExistencia('nick',$(this).val()))
             {
-                alertify.error("El nick "+$(this).val()+" no se encuentra disponible");
                 $("#nick").val("");
                 return;
             }
@@ -231,7 +261,7 @@ function abrirModificar(id)
         $("#celular").val(pasajero.pasajero_celular);
         $("#direccion").val(pasajero.pasajero_direccion);
         $("#mail").val(pasajero.pasajero_mail);
-        $("#cargo").val(pasajero.pasajero_tipoLicencia);
+        $("#cargo").val(pasajero.pasajero_cargo);
 //        $("#nivel").val(pasajero.pasajero_nacimiento);
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
@@ -347,7 +377,6 @@ function activarPestania(array)
     {
         if(array[i] === '')
         {
-            alert(CAMPOS[i] + " " + i)
             if(i < 8)
             {
                 general = true;
@@ -380,9 +409,9 @@ function activarPestania(array)
 function cambiarPestaniaGeneral()
 {
     cambiarPropiedad($("#cont_general"),"display","block");
-    cambiarPropiedad($("#cont_seguro"),"display","none");
+    cambiarPropiedad($("#cont_app"),"display","none");
     quitarclase($("#p_general"),"dispose");
-    agregarclase($("#p_seguro"),"dispose");
+    agregarclase($("#p_app"),"dispose");
 }
 
 function cambiarPestaniaAplicacion()

@@ -40,6 +40,7 @@ class ClienteDao {
     
     public function agregarCliente($cliente)
     {
+        $id = 0;
         $razon = $cliente->getRazon();
         $tipo = $cliente->getTipo();
         $rut = $cliente->getRut();
@@ -64,6 +65,7 @@ class ClienteDao {
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
+        return $id;
     }
     
     public function modificarCliente($cliente)
@@ -116,5 +118,28 @@ class ClienteDao {
         return $id;
     }
     
+    public function asociarPasajeros($cliente,$pasajeros)
+    {
+        $conn = new Conexion();
+        try {
+            $array = explode(",", $pasajeros);
+            for($i = 0 ; $i < count($array) ; $i++)
+            {
+                $pasajero = $array[$i];
+                if($pasajero !== '')
+                {
+                    $query = "UPDATE tbl_pasajero SET pasajero_cliente = '$cliente' WHERE pasajero_rut = '$pasajero'";
+                    $conn->conectar();
+                    if (mysqli_query($conn->conn,$query)) {
+                        $id = mysqli_insert_id($conn->conn);
+                    } else {
+                        echo mysqli_error($conn->conn);
+                    }
+                }
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
    
 }

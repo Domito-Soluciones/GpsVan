@@ -3,6 +3,7 @@ include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/TransportistaDao.php';
 
+header('Content-Type: application/json');
 $id = $_REQUEST['id'];
 $razon = $_REQUEST['razon'];
 $rut = $_REQUEST['rut'];
@@ -47,3 +48,4 @@ if($id > 0)
         $transportistaDao->asociarMoviles(0,$delMovil);
     }
 }
+echo "{\"transportista_id\":\"".$transportista->getId()."\"}";

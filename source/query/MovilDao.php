@@ -37,7 +37,6 @@ class MovilDao {
                     . " VALUES ('$patente','$nombre','$marca','$modelo',"
                     . "$anio,'$venRevTec','$segOb','$venSegOb','$segAd',$kilo,"
                     . "0,0,'','','','',0,CURRENT_TIMESTAMP)"; 
-            echo $query;
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);

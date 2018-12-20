@@ -13,7 +13,6 @@ $(document).ready(function(){
     buscarConductores();
     buscarMoviles();
     $("#agregar").click(function(){
-        MODIFICADO = true;
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
         $("#contenedor_central").load("html/datos_transportista.html", function( response, status, xhr ) {
@@ -33,8 +32,7 @@ $(document).ready(function(){
         cambiarPropiedad($("#cancelar"),"visibility","visible");
     });
     $("#cancelar").click(function(){
-        resetFormularioEliminar(PAGINA);
-        resetBotones();
+        validarCancelar(PAGINA);
     });
     $("#guardar").click(function(){
         if(AGREGAR)
@@ -69,7 +67,7 @@ function agregarTransportista()
     var telefono = $("#telefono").val();
     var mail = $("#mail").val();
     var mail2 = $("#mail2").val();
-    var array = [razon,rut,nombre,direccion,nombreContacto,telefono,mail,mail2];
+    var array = [rut,razon,nombre,direccion,nombreContacto,telefono,mail,mail2];
     if(!validarCamposOr(array))
     {
         activarPestania(array);
@@ -94,7 +92,8 @@ function agregarTransportista()
         {
             cerrarSession(response);
             alertify.success("Transportista Agregado");
-            vaciarFormulario($("#agregar input"));
+            cambiarPestaniaGeneral();
+            vaciarFormulario();
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
             resetFormulario();
             buscarTransportista();
@@ -120,7 +119,7 @@ function modificarTransportista()
        conductores += $(this).attr("id") + ",";
     });
 
-    var array = [razon,rut,direccion,nombre,telefono,mail,mail2];
+    var array = [rut,razon,nombre,direccion,nombreContacto,telefono,mail,mail2];
     if(!validarCamposOr(array))
     {
         activarPestania(array);
@@ -152,10 +151,9 @@ function modificarTransportista()
         var success = function(response)
         {
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
-            resetBotones();
             cerrarSession(response);
             alertify.success("Transportista Modificado");
-            vaciarFormulario($("#agregar input"));
+            cambiarPestaniaGeneral();
             resetFormulario();
             buscarTransportista();
 
@@ -182,18 +180,46 @@ function buscarTransportista()
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].transportista_id;
-            var rut = response[i].transportista_rut;
+            var razon = response[i].transportista_razon;
             var nombre = response[i].transportista_nombre;
-            transportistas.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"abrirModificar('"+id+"')\">"+rut+" "+nombre+"</div>");
+            var titulo = recortar(nombre+" / "+razon);
+            if (typeof ID_TRANSPORTISTA !== "undefined" && ID_TRANSPORTISTA === id)
+            {
+                transportistas.append("<div class=\"fila_contenedor fila_contenedor_activa\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+titulo+"</div>");
+            }
+            else
+            {
+                transportistas.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+titulo+"</div>");
+            }
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
     getRequest(url,success);
 }
+function cambiarFila(id)
+{
+    if(MODIFICADO)
+    {
+        confirmar("Cambio de transportista",
+        "¿Desea cambiar de transportista sin guardar los cambios?",
+        function()
+        {
+            MODIFICADO = false;
+            abrirModificar(id);
+        },
+        function()
+        {
+            MODIFICADO = true;
+        });
+    }
+    else
+    {
+        abrirModificar(id);
+    }
+}
 
 function abrirModificar(id)
 {
-    MODIFICADO = true;
     AGREGAR = false;
     ID_TRANSPORTISTA = id;
     quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
@@ -419,7 +445,7 @@ function cargarConductores()
                 }
                 else if(movil !== '')
                 {
-                    datalistConductor.append("<option value=\""+rut+"\">"+rut+"</option>");
+                    datalistConductor.append("<option id=\"data-"+rut+"\" value=\""+rut+"\">"+rut+"</option>");
                 }
                 else
                 {
@@ -458,7 +484,7 @@ function cargarMoviles()
                 }
                 else
                 {
-                    datalistMovil.append("<option value=\""+patente+"\">"+patente+"</option>");
+                    datalistMovil.append("<option id=\"data-"+patente+"\" value=\""+patente+"\">"+patente+"</option>");
                 }
             }
         }
@@ -559,14 +585,16 @@ function eliminarFilaConductor(obj)
 {
     ARRAY_ELIMINAR_CONDUCTORES.push(obj);
     $("#"+obj).remove();
-    $("#rutConductorL").append("<option value=\""+obj+"\">"+obj+"</option>");
+    $("#data-"+obj).remove();
+    $("#rutConductorL").append("<option id=\"data-"+obj+"\" value=\""+obj+"\">"+obj+"</option>");
 }
 
 function eliminarFilaMovil(obj)
 {
     ARRAY_ELIMINAR_MOVILES.push(obj);
     $("#"+obj).remove();
-    $("#patenteMovilL").append("<option value=\""+obj+"\">"+obj+"</option>");
+    $("#data-"+obj).remove();
+    $("#patenteMovilL").append("<option id=\"data-"+obj+"\" value=\""+obj+"\">"+obj+"</option>");
 }
 
 function cambiarPestaniaGeneral()

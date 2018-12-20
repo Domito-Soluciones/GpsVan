@@ -141,7 +141,7 @@ class AgenteDao {
                     . "agente_telefono = '$telefono',agente_celular = '$celular',"
                     . "agente_direccion = '$direccion',agente_mail = '$mail',"
                     . "agente_nick = '$nick',";
-                    if($agente->getPassword() != '')
+                    if($agente->getClave() != '')
                     {
                     $query .= "agente_clave = '$password',";
                     }

@@ -281,7 +281,6 @@ select
     background-color: #4e4e4e;
     color: white;
     text-align: center;
-
 }
 .tr_titulo th
 {
@@ -516,6 +515,7 @@ select
 .tablaCabecera,.tablaFila
 {
     width: 100%;
+    border-bottom: solid 1px #cccccc;
 }
 .tablaCabecera div
 {
@@ -525,6 +525,8 @@ select
     text-align: center;
     height: 20px;
     display: inline-block;
+    border-left: solid 1px #cccccc;
+
 }
 .tablaFila div
 {
@@ -535,6 +537,8 @@ select
     height: 20px;
     display: inline-block;
     cursor: pointer;
+    border-left: solid 1px #cccccc;
+
 }
 .seleccionado
 {

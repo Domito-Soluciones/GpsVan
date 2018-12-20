@@ -182,9 +182,12 @@ function cerrarSession(response)
     }
 }
 
-function vaciarFormulario(div)
+function vaciarFormulario()
 {
-    div.each(function() {
+    $("input").each(function() {
+        $(this).val("");
+    });
+    $("select").each(function() {
         $(this).val("");
     });
 }
@@ -207,6 +210,17 @@ function getfecha()
     getRequest(url,success,false);
 }
 
+function getUsuario()
+{
+    var url = urlUtil + "/obtenerUsuario.php";
+    var success = function(response)
+    {
+        NICK_GLOBAL = response;
+        $("#enlace_usuario").append(response);
+    }
+    getRequest(url,success,false);
+}
+
 function mensajeBienvenida(mensaje)
 {
     $("#contenedor_central").html("<div class=\"contenedor-loaderCentral\">\n\
@@ -219,6 +233,7 @@ function mensajeBienvenida(mensaje)
 function resetFormulario() 
 {
     MODIFICADO = false;
+    
 }
 
 function resetFormularioEliminar(pagina) 
@@ -412,4 +427,38 @@ function cambioEjecutado()
     {
         MODIFICADO = true;
     });
+}
+
+function marcarFilaActiva(id)
+{
+    quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
+    agregarclase($("#"+id),"fila_contenedor_activa");
+}
+
+function recortar(titulo,index = 34)
+{
+    if(titulo.length > index )
+    {
+        titulo = titulo.substr(0,index) + "...";
+    }
+    return titulo;
+}
+
+function validarCancelar(pagina)
+{
+    if(MODIFICADO)
+    {
+        confirmar("Reinicio formulario",
+        "¿Desea cancelar sin guardar los cambios?",
+        function()
+        {
+            resetFormularioEliminar(pagina);
+            resetBotones();
+        },null);
+    }
+    else
+    {
+        resetFormularioEliminar(pagina);
+        resetBotones();
+    }
 }

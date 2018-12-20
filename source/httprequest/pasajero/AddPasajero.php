@@ -3,6 +3,7 @@ include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/PasajeroDao.php';
 
+header('Content-Type: application/json');
 $rut = $_REQUEST['rut'];
 $nombre = $_REQUEST['nombre'];
 $papellido = $_REQUEST['papellido'];
@@ -14,7 +15,7 @@ $nick = $_REQUEST['nick'];
 $password = $_REQUEST['password'];
 $mail = $_REQUEST['mail'];
 $cargo = $_REQUEST['cargo'];
-$nivel = $_REQUEST['nivel'];
+//$nivel = $_REQUEST['nivel'];
 $pasajero = new Pasajero();
 $pasajero->setRut($rut);
 $pasajero->setNombre($nombre);
@@ -27,7 +28,8 @@ $pasajero->setMail($mail);
 $pasajero->setNick($nick);
 $pasajero->setPassword($password);
 $pasajero->setCargo($cargo);
-$pasajero->setNivel($nivel);
+//$pasajero->setNivel($nivel);
 $pasajeroDao = new PasajeroDao();
-$pasajeroDao->agregarPasajero($pasajero);
+$pasajeroId = $pasajeroDao->agregarPasajero($pasajero);
+echo "{\"pasajero_id\":\"".$pasajeroId."\"}";
 

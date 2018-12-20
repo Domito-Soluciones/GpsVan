@@ -3,6 +3,7 @@ include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/TarifaDao.php';
 
+header('Content-Type: application/json');
 $nombre = $_REQUEST['nombre'];
 $origen = $_REQUEST['origen'];
 $destino = $_REQUEST['destino'];
@@ -15,5 +16,6 @@ $tarifa->setDestino($destino);
 $tarifa->setValor1($valor1);
 $tarifa->setValor2($valor2);
 $tarifaDao = new TarifaDao();
-$tarifaDao->agregarTarifa($tarifa);
+$tarifaId = $tarifaDao->agregarTarifa($tarifa);
+echo "{\"tarifa_id\":\"".$tarifaId."\"}";
 
