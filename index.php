@@ -47,7 +47,7 @@
                 </div>
             </div>
             <div class="contenedor-loader">
-                <div class="loader" id="loader">Loading...</div>
+                <div class="loader" id="loaderCentral">Loading...</div>
             </div>
         </div>
 
