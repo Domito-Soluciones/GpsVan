@@ -8,6 +8,13 @@ html,body
     background-color: whitesmoke;
     font-family: Arial, Helvetica, sans-serif;
 }
+.map 
+{
+    height: 100%;
+    width: 100%;
+    display: none;
+}
+
 /* formularios */
 .mensaje-input
 {
@@ -204,6 +211,7 @@ select
     margin-top: 5px;
     color: red;
     font-size: 12px;
+    text-align: center;
 }
 
 .img-van

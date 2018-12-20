@@ -1,4 +1,4 @@
-/* global bordeAzul, bordeBlanco, bordeRojo, urlBase */
+/* global bordeAzul, bordeBlanco, bordeRojo, urlBase, alertify */
 
 $(document).ready(function(){
     darFoco($("#usuario"));
@@ -42,7 +42,7 @@ function login(){
     var password = $("#password").val();
     if(usuario === '' || password === '')
     {
-        addTexto($("#mensaje-error"),"Ingrese usuario y contraseña");
+        alertify.error("Ingrese usuario y contraseña");
         if(usuario === '')
         {
             cambiarPropiedad($("#usuario"),"border-bottom",bordeRojo); 
@@ -53,13 +53,12 @@ function login(){
         }   
         return;
     }
-    addTexto($("#mensaje-error"),"");
     var url = urlBase + "/agente/Login.php?usuario="+usuario+"&password="+password;
     var success = function(response){
         if(response === '0')
         {
             cambiarPropiedad($("#loader"),"visibility","hidden");
-            addTexto($("#mensaje-error"),"Usuario y/o contraseña no coinciden");
+            alertify.error("Usuario y/o contraseña no coinciden");
         }
         else if(parseInt(response) > 0)
         {
@@ -67,7 +66,7 @@ function login(){
         }
     };
     var error = function(){
-        alert("error");
+        alertify.error("error");
     };
     postRequest(url,success,error);
 }

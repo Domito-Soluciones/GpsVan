@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 07-12-2018 a las 01:17:03
+-- Tiempo de generación: 20-12-2018 a las 02:19:36
 -- Versión del servidor: 5.5.24-log
 -- Versión de PHP: 5.4.3
 
@@ -32,24 +32,24 @@ CREATE TABLE IF NOT EXISTS `tbl_agente` (
   `agente_papellido` varchar(20) NOT NULL,
   `agente_mapellido` varchar(20) NOT NULL,
   `agente_rut` varchar(10) NOT NULL,
+  `agente_nick` varchar(20) NOT NULL,
   `agente_clave` varchar(20) NOT NULL,
   `agente_telefono` varchar(15) NOT NULL,
   `agente_celular` varchar(15) NOT NULL,
   `agente_direccion` varchar(60) NOT NULL,
-  `agente_email` varchar(50) NOT NULL,
+  `agente_mail` varchar(50) NOT NULL,
   `agente_cargo` varchar(20) NOT NULL,
-  `agente_perfil` int(11) NOT NULL,
+  `agente_perfil` varchar(20) NOT NULL,
   PRIMARY KEY (`agente_id`),
   UNIQUE KEY `agente_rut` (`agente_rut`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=36 ;
 
 --
 -- Volcado de datos para la tabla `tbl_agente`
 --
 
-INSERT INTO `tbl_agente` (`agente_id`, `agente_nombre`, `agente_papellido`, `agente_mapellido`, `agente_rut`, `agente_clave`, `agente_telefono`, `agente_celular`, `agente_direccion`, `agente_email`, `agente_cargo`, `agente_perfil`) VALUES
-(1, 'Jose', 'Sanchez', 'Sandoval', '18079717-3', '123456', '', '981755792', 'Nueva san martin 1490', 'jose.sanchez.6397@gmail.com', 'Agente', 0),
-(2, 'Giovanni', 'Fuentes', '', 'gfuentes', '1234', '', '', '', '', 'Agente', 0);
+INSERT INTO `tbl_agente` (`agente_id`, `agente_nombre`, `agente_papellido`, `agente_mapellido`, `agente_rut`, `agente_nick`, `agente_clave`, `agente_telefono`, `agente_celular`, `agente_direccion`, `agente_mail`, `agente_cargo`, `agente_perfil`) VALUES
+(1, 'Usuario', 'Prueba', 'Prueba', '12911893-8', 'admin', 'admin', '1111111', '11111111', 'av las torres 123', 'prueba@prueba.cl', 'administrador', 'Administrador');
 
 -- --------------------------------------------------------
 
@@ -69,23 +69,7 @@ CREATE TABLE IF NOT EXISTS `tbl_cliente` (
   `cliente_mail_facturacion` varchar(30) NOT NULL,
   `cliente_centro_costo` varchar(20) NOT NULL,
   PRIMARY KEY (`cliente_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
-
---
--- Volcado de datos para la tabla `tbl_cliente`
---
-
-INSERT INTO `tbl_cliente` (`cliente_id`, `cliente_razon_social`, `cliente_tipo`, `cliente_rut`, `cliente_direccion`, `cliente_nombre_contacto`, `cliente_fono_contacto`, `cliente_mail_contacto`, `cliente_mail_facturacion`, `cliente_centro_costo`) VALUES
-(1, 'Falabella', '', '', '', '', '', '', '', ''),
-(2, 'Easy', '', '', '', '', '', '', '', ''),
-(3, 'Ripley', '', '', '', '', '', '', '', ''),
-(4, 'Entel', '', '', '', '', '', '', '', ''),
-(5, '1', '1', '11', '1', '1', '1', '1', '1', '1'),
-(6, '1', '1', '1', '1', '1', '1', '1', '1', '1'),
-(7, '1', 'Convenio', '1', '1', '1', '1', '1', '1', '1'),
-(8, '2', '2', '2', '2', '2', '2', '2', '2', '2'),
-(9, '1', '1', '1', '1', '1', '1', '1', '11', '1'),
-(10, '1', '1', '18079717-3', '1', '1', '1', '1@1.cl', '1@1.cl', '1');
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
 
 -- --------------------------------------------------------
 
@@ -120,17 +104,10 @@ CREATE TABLE IF NOT EXISTS `tbl_conductor` (
   `conductor_imagen` varchar(50) NOT NULL,
   `conductor_contrato` varchar(50) NOT NULL,
   `conductor_movil` varchar(11) NOT NULL,
+  `conductor_transportista` int(11) NOT NULL,
   PRIMARY KEY (`conductor_id`),
   UNIQUE KEY `conductor_rut` (`conductor_rut`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
-
---
--- Volcado de datos para la tabla `tbl_conductor`
---
-
-INSERT INTO `tbl_conductor` (`conductor_id`, `conductor_nombre`, `conductor_papellido`, `conductor_mapellido`, `conductor_rut`, `conductor_nick`, `conductor_clave`, `conductor_estado`, `conductor_telefono`, `conductor_celular`, `conductor_direccion`, `conductor_mail`, `conductor_tipo_licencia`, `conductor_nacimiento`, `conductor_renta`, `conductor_tipo_contrato`, `conductor_prevision`, `conductor_isapre`, `conductor_mutual`, `conductor_seguro_inicio`, `conductor_seguro_renovacion`, `conductor_descuento`, `conductor_anticipo`, `conductor_imagen`, `conductor_contrato`, `conductor_movil`) VALUES
-(26, '1', '1', '1', '18079717-3', '1', '1', 0, '1', '1', '1', '1@1.cl', '1', '2018-12-06', 1, '1', '1', '1', '1', '2018-12-06', '2018-12-06', 1, 0, '', '', 'QWER-44'),
-(27, '2', '2', '2', '19060607-4', '2', '2', 0, '2', '2', '2', '2@2.cl', '2', '2018-06-12', 2, '2', '2', '2', '2', '2018-06-12', '2018-06-12', 2, 0, '', '', '0');
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=29 ;
 
 -- --------------------------------------------------------
 
@@ -144,6 +121,12 @@ CREATE TABLE IF NOT EXISTS `tbl_movil` (
   `movil_patente` varchar(10) NOT NULL,
   `movil_marca` varchar(20) NOT NULL,
   `movil_modelo` varchar(20) NOT NULL,
+  `movil_anio` int(11) NOT NULL,
+  `movil_venc_rev_tecnica` date NOT NULL,
+  `movil_seguro_obligatorio` varchar(20) NOT NULL,
+  `movil_venc_seguro_obligatorio` date NOT NULL,
+  `movil_seguro_adicional` varchar(20) NOT NULL,
+  `movil_kilometraje` int(7) NOT NULL,
   `movil_transportista` varchar(20) NOT NULL,
   `movil_estado` int(11) NOT NULL,
   `movil_lat` float NOT NULL,
@@ -152,17 +135,9 @@ CREATE TABLE IF NOT EXISTS `tbl_movil` (
   `movil_last_lon` float NOT NULL,
   `movil_conductor` varchar(20) NOT NULL,
   `movil_ultima_asignacion` datetime NOT NULL,
-  `movil_servicio` int(11) NOT NULL,
+  `movil_servicio` varchar(10) NOT NULL,
   PRIMARY KEY (`movil_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
-
---
--- Volcado de datos para la tabla `tbl_movil`
---
-
-INSERT INTO `tbl_movil` (`movil_id`, `movil_nombre`, `movil_patente`, `movil_marca`, `movil_modelo`, `movil_transportista`, `movil_estado`, `movil_lat`, `movil_last_lat`, `movil_lon`, `movil_last_lon`, `movil_conductor`, `movil_ultima_asignacion`, `movil_servicio`) VALUES
-(9, 'M101', 'QWER-44', 'Kia', 'Cerato', '0', 1, -33.4429, 0, -70.66, 0, '0', '2018-12-06 17:25:02', 0),
-(10, 'M201', 'XXXX-44', 'qqq', 'qq', '0', 0, 0, 0, 0, 0, '0', '2018-12-06 17:25:21', 0);
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
 
 -- --------------------------------------------------------
 
@@ -171,7 +146,7 @@ INSERT INTO `tbl_movil` (`movil_id`, `movil_nombre`, `movil_patente`, `movil_mar
 --
 
 CREATE TABLE IF NOT EXISTS `tbl_pasajero` (
-  `pasajero_id` int(11) NOT NULL,
+  `pasajero_id` int(11) NOT NULL AUTO_INCREMENT,
   `pasajero_rut` varchar(10) NOT NULL,
   `pasajero_nombre` varchar(20) NOT NULL,
   `pasajero_papellido` varchar(20) NOT NULL,
@@ -186,15 +161,16 @@ CREATE TABLE IF NOT EXISTS `tbl_pasajero` (
   `pasajero_estado` int(11) NOT NULL,
   `pasajero_cargo` varchar(20) NOT NULL,
   `pasajero_nivel` varchar(20) NOT NULL,
+  PRIMARY KEY (`pasajero_id`),
   UNIQUE KEY `USUARIO_INDEX` (`pasajero_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
 -- Volcado de datos para la tabla `tbl_pasajero`
 --
 
 INSERT INTO `tbl_pasajero` (`pasajero_id`, `pasajero_rut`, `pasajero_nombre`, `pasajero_papellido`, `pasajero_mapellido`, `pasajero_cliente`, `pasajero_direccion`, `pasajero_telefono`, `pasajero_celular`, `pasajero_mail`, `pasajero_nick`, `pasajero_password`, `pasajero_estado`, `pasajero_cargo`, `pasajero_nivel`) VALUES
-(0, '18079717-3', '1', '1', '1', 0, '1', '', '1', '1@1.cl', 'jsanchez', '1', 0, '1', '1');
+(1, '18079717-3', '1', '1', '1', 0, '1', '1', '1', '1@1.cl', '1', '1', 0, '1', '0');
 
 -- --------------------------------------------------------
 
@@ -218,26 +194,37 @@ CREATE TABLE IF NOT EXISTS `tbl_servicio` (
   `servicio_fecha` datetime NOT NULL,
   `servicio_estado` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`servicio_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10082 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10086 ;
+
+-- --------------------------------------------------------
 
 --
--- Volcado de datos para la tabla `tbl_servicio`
+-- Estructura de tabla para la tabla `tbl_servicio_detalle`
 --
 
-INSERT INTO `tbl_servicio` (`servicio_id`, `servicio_partida`, `servicio_partida_id`, `servicio_destino`, `servicio_destino_id`, `servicio_cliente`, `servicio_usuario`, `servicio_transportista`, `servicio_movil`, `servicio_tipo`, `servicio_tarifa`, `servicio_agente`, `servicio_fecha`, `servicio_estado`) VALUES
-(10060, 'Apurimac+6397%2C+Lo+Prado%2C+Chile', 'Eh5BcHVyaW1hYyA2Mzk3LCBMbyBQcmFkbywgQ2hpbGUiMRIvChQKEgkP-boihcNilhFDu3nf45pXERD9MSoUChIJ21QDMIXDYpYRfpsKvcrvhUc', 'Nueva San MartÃ­n 1490, Santiago, Chile', 'ChIJ5bT_J6bFYpYRHiRy2vysiyU', 'Falabella', 'usuario1', 'T100', 'M102', 'Recogida', 1000, 1, '2018-11-03 00:06:39', 2),
-(10061, 'Diagonal+Las+Torres%2C+Penalolen%2C+Pe%C3%B1alol%C3%A9n%2C+Chile', 'EjJEaWFnb25hbCBMYXMgVG9ycmVzLCBQZW5hbG9sZW4sIFBlw7FhbG9sw6luLCBDaGlsZSIuKiwKFAoSCYuJ5cgC0mKWEWovun_yNVvCEhQKEgmTlVHY8NFilhGDD477-oIO3w', 'Santiago, Chile', 'ChIJuzrymgbQYpYRl0jtCfRZnYc', 'Falabella', 'usuario1', 'T100', 'M101', 'Recogida', 1000, 1, '2018-11-03 01:11:23', 1),
-(10063, 'Dubl%C3%A9+Almeyda%2C+%C3%91u%C3%B1oa%2C+Chile', 'Eh5EdWJsw6kgQWxtZXlkYSwgw5F1w7FvYSwgQ2hpbGUiLiosChQKEgmn1OLcv89ilhHSStUJPjT3DhIUChIJ6TZN_JTPYpYRRVH-3xZvjZU', 'Providencia%2C+Chile', 'ChIJ92aDbnzPYpYRfI1HCsD874c', 'Falabella', 'usuario1', 'T100', 'M101', 'Recogida', 1000, 1, '2018-11-04 13:15:30', 1),
-(10064, 'Providencia%2C+Chile', 'ChIJ92aDbnzPYpYRfI1HCsD874c', 'Santiago+1130%2C+Santiago%2C+Chile', 'ChIJp07fcRTFYpYRnirMRh2R_os', 'Falabella', 'usuario1', 'T100', 'M102', 'Recogida', 1000, 1, '2018-11-04 23:02:12', 0),
-(10065, 'Providencia%2C+Chile', 'ChIJ92aDbnzPYpYRfI1HCsD874c', 'Serrano%2C+Santiago%2C+Chile', 'EhhTZXJyYW5vLCBTYW50aWFnbywgQ2hpbGUiLiosChQKEglxygmFDMVilhGJHKMguRQJ9RIUChIJuzrymgbQYpYRl0jtCfRZnYc', 'Falabella', 'usuario1', 'T100', 'M101', 'Recogida', 5000, 1, '2018-11-04 23:13:26', 1),
-(10066, 'Agustinas%2C+Santiago%2C+Chile', 'EhpBZ3VzdGluYXMsIFNhbnRpYWdvLCBDaGlsZSIuKiwKFAoSCW8JQrSuxWKWER88UVlbH3foEhQKEgm7OvKaBtBilhGXSO0J9Fmdhw', 'La+Florida%2C+Chile', 'ChIJlZDV7CXRYpYRrPO-VsvmdQM', 'Falabella', 'usuario1', 'T100', 'M101', 'Recogida', 3000, 1, '2018-11-04 23:16:43', 1),
-(10067, 'Santiago%2C+Chile', 'ChIJuzrymgbQYpYRl0jtCfRZnYc', 'Recoleta%2C+Chile', 'ChIJk_SSOOTFYpYRJfFRx4V2o_c', 'Falabella', 'usuario1', 'T100', 'M101', 'Recogida', 1000, 1, '2018-11-04 23:28:32', 1),
-(10068, 'Apurimac+6397%2C+Lo+Prado%2C+Chile', 'Eh5BcHVyaW1hYyA2Mzk3LCBMbyBQcmFkbywgQ2hpbGUiMRIvChQKEgkP-boihcNilhFDu3nf45pXERD9MSoUChIJ21QDMIXDYpYRfpsKvcrvhUc', 'Nueva+San+Mart%C3%ADn+1490%2C+Santiago%2C+Chile', 'ChIJ5bT_J6bFYpYRHiRy2vysiyU', 'Falabella', 'usuario1', 'T100', 'M101', 'Recogida', 1000, 1, '2018-11-04 23:30:47', 1),
-(10076, 'Nueva+San+Mart%EDn%2C+Maip%FA%2C+Regi%F3n+Metropolitana%2C+Chile', 'EiBOdWV2YSBTYW4gTWFydMOtbiwgTWFpcMO6LCBDaGlsZSIuKiwKFAoSCZkhGGg73WKWEXyM_mi-YXLNEhQKEgk_ZyxbKN1ilhFthmyTpZzR_A', 'del+Parque%2C+Huechuraba%2C+Regi%F3n+Metropolitana%2C+Chile', 'Eh1kZWwgUGFycXVlLCBIdWVjaHVyYWJhLCBDaGlsZSIuKiwKFAoSCUcqwaipyGKWESOBTSEzZUUCEhQKEgmnFfI6PcZilhFu3deD0shvnw', 'Falabella', 'usuario1', 'T100', 'M101', 'Servicio Especial', 15000, 0, '2018-11-13 00:40:53', 1),
-(10078, 'Trinidad%2C+La+Granja%2C+Chile', 'EhpUcmluaWRhZCwgTGEgR3JhbmphLCBDaGlsZSIuKiwKFAoSCc2cH5S_0GKWEVeHMO1v_GCkEhQKEgnfLSzkfdBilhFjc8E4BPqiXg', 'Yungay%2C+Santiago%2C+Chile', 'EhdZdW5nYXksIFNhbnRpYWdvLCBDaGlsZSIuKiwKFAoSCVWhJxZKxGKWEdIkAMQTeuYtEhQKEgm7OvKaBtBilhGXSO0J9Fmdhw', 'Falabella', 'usuario1', 'T100', 'M101', 'Recogida', 5000, 0, '2018-11-17 13:19:09', 0),
-(10079, 'Estaci%C3%B3n+Central%2C+Santiago%2C+Estaci%C3%B3n+Central%2C+Chile', 'ChIJBYDLpPfEYpYR906xHC-Kpd4', 'Quilicura%2C+Chile', 'ChIJ_9A-D-XAYpYR0Ovj-IzhwXg', 'Falabella', 'usuario1', 'T100', 'M101', 'Recogida', 1000, 0, '2018-11-17 13:23:43', 0),
-(10080, 'Golf+Lomas+de+La+Dehesa+DEHESA%2C+Lo+Barnechea%2C+Chile', 'ChIJ0cEmU4LJYpYRxBcrO2k6U2I', 'Zenteno%2C+Santiago%2C+Chile', 'EhhaZW50ZW5vLCBTYW50aWFnbywgQ2hpbGUiLiosChQKEgmNcfMAEsVilhEbf5cbecO2zBIUChIJuzrymgbQYpYRl0jtCfRZnYc', 'Falabella', 'usuario1', 'T100', 'M101', 'Recogida', 3000, 0, '2018-11-17 13:26:11', 0),
-(10081, 'Ccu+Renca+-+Alberto+Pepper%2C+Renca%2C+Chile', 'ChIJg-Zqvp3GYpYRJIEU_BDKsdE', 'Agustinas%2C+Santiago%2C+Chile', 'EhpBZ3VzdGluYXMsIFNhbnRpYWdvLCBDaGlsZSIuKiwKFAoSCW8JQrSuxWKWER88UVlbH3foEhQKEgm7OvKaBtBilhGXSO0J9Fmdhw', 'Falabella', 'usuario1', 'T100', 'M101', 'Recogida', 1000, 0, '2018-11-28 22:23:29', 0);
+CREATE TABLE IF NOT EXISTS `tbl_servicio_detalle` (
+  `servicio_detalle_id` int(11) NOT NULL AUTO_INCREMENT,
+  `servicio_detalle_servicio` int(11) NOT NULL,
+  `servicio_detalle_lat` text NOT NULL,
+  `servicio_detalle_lon` text NOT NULL,
+  PRIMARY KEY (`servicio_detalle_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=63 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tbl_tarifa`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_tarifa` (
+  `tarifa_id` int(11) NOT NULL AUTO_INCREMENT,
+  `tarifa_nombre` varchar(20) NOT NULL,
+  `tarifa_origen` varchar(100) NOT NULL,
+  `tarifa_destino` varchar(100) NOT NULL,
+  `tarifa_valor1` int(11) NOT NULL,
+  `tarifa_valor2` int(11) NOT NULL,
+  PRIMARY KEY (`tarifa_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 -- --------------------------------------------------------
 
@@ -256,34 +243,7 @@ CREATE TABLE IF NOT EXISTS `tbl_transportista` (
   `transportista_mail_contacto` varchar(50) NOT NULL,
   `transportista_mail_facturacion` varchar(50) NOT NULL,
   PRIMARY KEY (`transportista_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
-
---
--- Volcado de datos para la tabla `tbl_transportista`
---
-
-INSERT INTO `tbl_transportista` (`transportista_id`, `transportista_nombre`, `transportista_razon_social`, `transportista_rut`, `transportista_direccion`, `transportista_nombre_contacto`, `transportista_fono_contacto`, `transportista_mail_contacto`, `transportista_mail_facturacion`) VALUES
-(6, '1', 'razon', '18079717-3', '1', '1', '1', '1@1.cl', '1@1.cl');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `tbl_transportista_conductor`
---
-
-CREATE TABLE IF NOT EXISTS `tbl_transportista_conductor` (
-  `transportista_conductor_id` int(11) NOT NULL AUTO_INCREMENT,
-  `transportista_conductor_id_transportista` varchar(11) NOT NULL,
-  `transportista_conductor_id_conductor` varchar(11) NOT NULL,
-  PRIMARY KEY (`transportista_conductor_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
-
---
--- Volcado de datos para la tabla `tbl_transportista_conductor`
---
-
-INSERT INTO `tbl_transportista_conductor` (`transportista_conductor_id`, `transportista_conductor_id_transportista`, `transportista_conductor_id_conductor`) VALUES
-(8, '18079717-3', '18079717-3');
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
