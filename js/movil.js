@@ -37,7 +37,6 @@ $(document).ready(function(){
         {
             modificarMovil();
         }
-        MODIFICADO = false;
     });
     $("#busqueda").keyup(function(){
         buscarMovil($(this).val());

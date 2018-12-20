@@ -45,7 +45,6 @@ $(document).ready(function(){
         {
             modificarAgente();
         }
-        MODIFICADO = false;
     });
     
     $("#busqueda").keyup(function(){

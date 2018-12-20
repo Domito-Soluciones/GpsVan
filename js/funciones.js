@@ -360,7 +360,7 @@ function validarPatente(patente)
 function resetBotones()
 {
     cambiarPropiedad($("#agregar"),"visibility","visible");
-    cambiarPropiedad($("#guardar"),"visibility","hidden");
+    cambiarPropiedad($(),"visibility","hidden");
     cambiarPropiedad($("#cancelar"),"visibility","hidden");
     cambiarPropiedad($("#eliminar"),"visibility","hidden");
 }

@@ -40,7 +40,6 @@ $(document).ready(function(){
         {
             modificarCliente();
         }
-        MODIFICADO = false;
     });
     $("#busqueda").keyup(function(){
         buscarCliente($(this).val());

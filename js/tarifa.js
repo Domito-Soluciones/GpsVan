@@ -34,7 +34,6 @@ $(document).ready(function(){
         {
             modificarTarifa();
         }
-        MODIFICADO = false;
     });
     $("#busqueda").keyup(function(){
         buscarTarifa($(this).val());

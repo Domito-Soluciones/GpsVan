@@ -46,7 +46,6 @@ $(document).ready(function(){
         {
             modificarPasajero();
         }
-        MODIFICADO = false;
     });
     $("#busqueda").keyup(function(){
         buscarPasajero($(this).val());

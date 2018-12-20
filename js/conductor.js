@@ -52,7 +52,6 @@ $(document).ready(function(){
         {
             modificarConductor();
         }
-        MODIFICADO = false;
     });
     $("#busqueda").keyup(function(){
         buscarConductor($(this).val());

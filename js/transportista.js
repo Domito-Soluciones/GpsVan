@@ -43,7 +43,6 @@ $(document).ready(function(){
         {
             modificarTransportista();
         }
-        MODIFICADO = false;
     });
     $("#busqueda").keyup(function(){
         buscarTransportista($(this).val());
