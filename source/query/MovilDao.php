@@ -33,10 +33,10 @@ class MovilDao {
         try {
             $query = "INSERT INTO tbl_movil (movil_patente,movil_nombre,movil_marca,movil_modelo,"
                     . "movil_anio,movil_venc_rev_tecnica,movil_seguro_obligatorio,movil_venc_seguro_obligatorio,movil_seguro_adicional,movil_kilometraje,"
-                    . "movil_transportista,movil_estado,movil_lat,movil_lon,movil_last_lat,movil_last_lon,movil_conductor,movil_ultima_asignacion)"
+                    . "movil_transportista,movil_estado,movil_lat,movil_lon,movil_last_lat,movil_last_lon,movil_conductor,movil_ultima_asignacion,movil_servicio)"
                     . " VALUES ('$patente','$nombre','$marca','$modelo',"
                     . "$anio,'$venRevTec','$segOb','$venSegOb','$segAd',$kilo,"
-                    . "0,0,'','','','',0,CURRENT_TIMESTAMP)"; 
+                    . "0,0,'','','','',0,CURRENT_TIMESTAMP,0)"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);

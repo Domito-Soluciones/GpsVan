@@ -373,17 +373,24 @@ select
     width: calc(100% - 20px);
     height: 30px;
     line-height: 30px;
-    background-color: #f0f2f2;
     border-bottom: solid 1px white;
+}
+.fila_contenedor:nth-child(even)
+{
+    background-color: #ffff99;    
+}
+.fila_contenedor:nth-child(odd)
+{
+    background-color: #dfe8e8;
 }
 .fila_contenedor:hover
 {
     cursor: pointer;
-    background-color: #dfe8e8;
 }
 .fila_contenedor_activa
 {
     background-color: #cccccc;
+    font-weight: bold;
 }
 .contenedor-info
 {
