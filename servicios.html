@@ -5,18 +5,41 @@
         <script src="js/servicio.js" type="text/javascript"></script>
     </head>
     <body>
-        <div class="contenedor-lateral">
-            <div class="buscador">
-                Buscar: <input type="text" id="busqueda">   
-            </div>
-            <div class="buscador">
-                Desde:  <input type="text" id="desde">   
-            </div>
-            <div class="buscador">
-                Hasta:  <input type="text" id="hasta">   
+        <div class="contenedor-lateral buscador-monitoreo" id="buscador">
+            <div class="buscador barra_monitoreo">
+                <div>
+                    <div class="cont-pre-monitor">
+                        Busqueda
+                    </div>
+                    <div class="input-monitoreo">
+                        <input type="text" id="servicio" >
+                    </div>
+                </div>
+                <div>
+                    <div class="cont-pre-monitor">
+                        Desde:
+                    </div>
+                    <div class="input-monitoreo">
+                        <input type="text" id="desde" >
+                    </div>
+                </div>
+                <div>
+                    <div class="cont-pre-monitor">
+                        Hasta:
+                    </div>
+                    <div class="input-monitoreo">
+                        <input type="text" id="hasta" >
+                    </div>
+                </div>
+                <div>
+                    <div class="boton boton-monitoreo" id="buscar">
+                        <img src="img/buscar.svg" width="12" height="12">
+                        Buscar
+                    </div>
+                </div>
             </div>
             <div class="buscador_titulo">
-                Servicios
+                Servicios / Veh&iacute;culos
             </div>
             <div id="lista_busqueda" class="lista_busqueda">
                 <div class="contenedor-loader">

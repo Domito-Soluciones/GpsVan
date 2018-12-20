@@ -7,13 +7,45 @@ $(document).ready(function(){
     buscarServicio();
     cargarMovilesMapa();
     setInterval('moverMovilesMapa()',5000);
+    
+    $("#servicio").on('keydown',function(e){
+        if(isTeclaEnter(e))
+        {
+            buscarServicio();
+        }
+    });
+    
+    $("#vehiculo").on('keydown',function(e){
+        if(isTeclaEnter(e))
+        {
+            buscarServicio();
+        }
+    });
+    
+    $("#pasajero").on('keydown',function(e){
+        if(isTeclaEnter(e))
+        {
+            buscarServicio();
+        }
+    });
+   
+    
+    $("#buscar").click(function(){
+        buscarServicio();
+    });
 });
 
 
 
 function buscarServicio()
 {
-    var busqueda = $("#busqueda").val();
+    servicios_diarios.length = 0;
+    moviles_diarios.length = 0;
+    pasajeros_diarios.length = 0;
+    var servicio = $("#servicio").val();
+    var movil = $("#movil").val();
+    var pasajero = $("#pasajero").val();
+    var busqueda = servicio + movil + pasajero;
     var url = urlBase + "/servicio/GetServicios.php?busqueda="+busqueda;
     var success = function(response)
     {
@@ -33,23 +65,38 @@ function buscarServicio()
         {
             var id = response[i].servicio_id;
             var movil = response[i].servicio_movil;
-            var cliente = response[i].servicio_usuario;
+            var cliente = response[i].servicio_pasajero;
             servicios.append(" <div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"dibujarServicio('"+id+"','"+movil+"')\">"+id+" "+movil+"</div>");
             servicios_diarios.push(id);
             moviles_diarios.push(movil);
             pasajeros_diarios.push(cliente);
         }
+        lista_servicio.html("");
+        lista_movil.html("");
+        lista_pasajero.html("");
         for(var j = 0 ; j < servicios_diarios.length; j++)
         {
-            lista_servicio.append("<option value=\""+servicios_diarios[j]+"\">"+servicios_diarios[j]+"</option>");
+            var servicio = servicios_diarios[j];
+            if(servicio !== '')
+            {
+                lista_servicio.append("<option value=\""+servicio+"\">"+servicio+"</option>");
+            }
         }
         for(var k = 0 ; k < moviles_diarios.length; k++)
         {
-            lista_movil.append("<option value=\""+moviles_diarios[k]+"\">"+moviles_diarios[k]+"</option>");
+            var movil = moviles_diarios[k];
+            if(movil !== '')
+            {
+                lista_movil.append("<option value=\""+movil+"\">"+movil+"</option>");
+            }
         }
         for(var l = 0 ; l < pasajeros_diarios.length; l++)
         {
-            lista_pasajero.append("<option value=\""+pasajeros_diarios[l]+"\">"+pasajeros_diarios[l]+"</option>");
+            var pasajero = pasajeros_diarios[l];
+            if(pasajero !== '')
+            {
+                lista_pasajero.append("<option value=\""+pasajero+"\">"+pasajero+"</option>");
+            }
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
@@ -189,6 +236,7 @@ function dibujarServicio(id,movil)
         var latLng = new google.maps.LatLng(response[0].lat, response[0].lng);
         map.panTo(latLng); 
         map.setZoom(14);
+        dibujarMarcador()
     };
     getRequest(url,success);
 

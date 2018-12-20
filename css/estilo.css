@@ -377,11 +377,11 @@ select
 }
 .fila_contenedor:nth-child(even)
 {
-    background-color: #ffff99;    
+    background-color: #dfe8e8;    
 }
 .fila_contenedor:nth-child(odd)
 {
-    background-color: #dfe8e8;
+    background-color: #ffffff;
 }
 .fila_contenedor:hover
 {
@@ -685,6 +685,10 @@ select
 .cont-pre-monitor
 {
     width: 100px !important;
+}
+.boton-monitoreo
+{
+    float: none;
 }
 
 .enlace-salir

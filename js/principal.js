@@ -12,7 +12,7 @@ $(document).ready(function(){
     getUsuario();
     getfecha();
     setInterval(function(){getfecha();},5000);
-    $.getScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyDcQylEsZAzuEw3EHBdWbsDAynXvU2Ljzs&libraries=places&callback=initMap",null);
+//    $.getScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyDcQylEsZAzuEw3EHBdWbsDAynXvU2Ljzs&libraries=places&callback=initMap",null);
     
     $("#menu-telefono").click(function(){
         if($("#menu-telefono").attr('src') === 'img/menu.svg')

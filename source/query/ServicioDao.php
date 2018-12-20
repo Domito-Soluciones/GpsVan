@@ -295,6 +295,25 @@ class ServicioDao {
         }
         return $movil;
     }
+    
+    public function obtenerMovilServicio($nombre)
+    {
+               $movil = new Movil();
+        $conn = new Conexion();
+        try {           
+            $query = "SELECT movil_nombre, movil_lat, movil_lon FROM tbl_movil WHERE movil_nombre = '$nombre'"; 
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            while($row = mysqli_fetch_array($result)) {
+                $movil->setNombre($row["movil_nombre"]);
+                $movil->setLat($row["movil_lat"]);
+                $movil->setLon($row["movil_lon"]);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $movil;
+    }
         
     public function actualizarMovil($idMovil)
     {

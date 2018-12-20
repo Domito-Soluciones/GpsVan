@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../query/ServicioDao.php';
 include '../../dominio/Servicio.php';
+include '../../dominio/Movil.php';
 
 header('Content-Type: application/json; charset=utf-8');
 $busqueda = $_REQUEST['busqueda'];
@@ -26,7 +27,7 @@ for ($i = 0 ; $i < count($servicios); $i++)
     $servicioCliente = $servicios[$i]->getCliente();
     $servicioUsuario = $servicios[$i]->getUsuario_nombre();
     $servicioTransportista = $servicios[$i]->getTransportista();
-    $servicioMovil = $servicios[$i]->getMovil();
+    $servicioMovil = $servicioDao->obtenerMovilServicio($servicios[$i]->getMovil());
     $servicioTipo = $servicios[$i]->getTipo();
     $servicioTarifa = $servicios[$i]->getTarifa();
     $servicioAgente = $servicios[$i]->getAgente();
@@ -39,7 +40,9 @@ for ($i = 0 ; $i < count($servicios); $i++)
         . "\"servicio_cliente\":\"".$servicioCliente."\","
         . "\"servicio_pasajero\":\"".$servicioUsuario."\","
         . "\"servicio_transportista\":\"".$servicioTransportista."\","
-        . "\"servicio_movil\":\"".$servicioMovil."\","
+        . "\"servicio_movil\":\"".$servicioMovil->getNombre()."\","
+        . "\"servicio_movil_lat\":\"".$servicioMovil->getLat()."\","
+        . "\"servicio_movil_lon\":\"".$servicioMovil->getLon()."\","
         . "\"servicio_tipo\":\"".$servicioTipo."\","
         . "\"servicio_tarifa\":\"".$servicioTarifa."\","
         . "\"servicio_agente\":\"".$servicioAgente."\","
