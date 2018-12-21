@@ -1,106 +1,137 @@
 <!DOCTYPE html>
 <html>
     <head>
-
+        <script src="js/panel.js" type="text/javascript"></script>
     </head>
     <body>
-        <div class="contenedor-lateral buscador-monitoreo">
-            <div class="buscador barra_monitoreo">
-                <div>
-                    <div class="cont-pre-monitor">
-                        Partida
+        <div class="contenedor-lateral buscador-asignacion">
+            <div class="buscador_titulo">
+                    Nuevo Servicio
+            </div>
+            <div class="buscador barra_asignacion">
+                <div class="contenedor-ubicacion">
+                    <div class="buscador-subtitulo">
+                        Ubicaci&oacute;n
                     </div>
-                    <div class="input-monitoreo">
-                        <input type="text" id="partida" placeholder="Ej: Av los pinos 123">
-                        <input type="hidden" id="partida_hidden">
+                    <div>
+                        <div class="cont-pre-monitor">
+                            Partida
+                        </div>
+                        <div class="input-monitoreo">
+                            <input type="text" class="input_asignar" id="partida" list="partidal" placeholder="Ej: Av los pinos 123">
+                            <datalist id="partidal"></datalist>
+                            <input type="hidden" id="partida_hidden">
+                        </div>
                     </div>
-                </div>
-                <div>
-                    <div class="cont-pre-monitor">
-                        Destino
+                    <div>
+                        <div class="cont-pre-monitor">
+                            Destino
+                        </div>
+                        <div class="input-monitoreo">
+                            <input type="text" class="input_asignar" id="destino" list="destinol" placeholder="Ej: Av los pinos 723">
+                            <datalist id="destinol"></datalist>
+                            <input type="hidden" id="destino_hidden">
+                        </div>
                     </div>
-                    <div class="input-monitoreo">
-                        <input type="text" id="destino" placeholder="Ej: Av los pinos 723">
-                        <input type="hidden" id="destino_hidden">
-                    </div>
-                </div>
-                 <div>
-                    <div class="cont-pre-monitor">
-                        Cliente
-                    </div>
-                     <div class="input-monitoreo">
-                        <input type="text" list="lcliente" id="cliente" placeholder="Ej: Falabella" onkeyup="cargarClientes()">
-                        <datalist id="lcliente" ></datalist>
-                    </div>
-                </div>
-                <div>
-                    <div class="cont-pre-monitor">
-                        Pasajero
-                    </div>
-                     <div class="input-monitoreo">
-                        <input type="text" list="lusuario" id="usuario" placeholder="Ej: Juan Perez"  autocomplete="off">
-                        <datalist id="lusuario" ></datalist>
-                    </div>
-                </div>
-                <div>
-                    <div class="cont-pre-monitor">
-                        Transportista
-                    </div>
-                     <div class="input-monitoreo">
-                        <input type="text" list="ltransportista" id="transportista" placeholder="Ej: T100" onkeyup="cargarTransportistas()">
-                        <datalist id="ltransportista"></datalist>
+                    <div>
+                        <div class="cont-pre-monitor">
+                            Agregar Destino
+                        </div>
+                        <div class="boton-chico" id="agregar_destino">
+                            <img src="img/anadir.svg" width="12" height="12">
+                        </div>
                     </div>
                 </div>
-                <div>
-                    <div class="cont-pre-monitor">
-                        Veh&iacute;culo
+                <div class="contenedor-ubicacion">
+                    <div class="buscador-subtitulo">
+                        Pasajeros
                     </div>
-                    <div class="input-monitoreo">
-                        <input type="text" list="lmovil" id="movil" placeholder="Ej: M100">
-                        <datalist id="lmovil"></datalist>
+                    <div>
+                        <div class="cont-pre-monitor">
+                            Cliente
+                        </div>
+                         <div class="input-monitoreo">
+                            <input type="text" class="input_asignar" list="lcliente" id="cliente" placeholder="Ej: Falabella" onkeyup="cargarClientes()">
+                            <datalist id="lcliente" ></datalist>
+                        </div>
                     </div>
-                </div>
-                <div>
-                    <div class="cont-pre-monitor">
-                        Tipo
-                    </div>
-                    <div class="input-monitoreo">
-                        <input type="text" list="ltipo" id="tipo" placeholder="Ej: Recogida">
-                        <datalist id="ltipo">
-                            <option value="Recogida">Recogida</option>
-                            <option value="Reparto">Reparto</option>
-                            <option value="Servicio Especial">Servicio especial</option>
-                        </datalist>
-                    </div>
-                </div>
-                <div>
-                    <div class="cont-pre-monitor">
-                        Tarifa
-                    </div>
-                    <div class="input-monitoreo">
-                        <input type="text" list="ltarifa" id="tarifa" placeholder="Ej: 2000">
-                        <datalist id="ltarifa">
-                            <option value="1000">1000</option>
-                            <option value="3000">3000</option>
-                            <option value="5000">5000</option>
-                            <option value="7000">7000</option>
-                            <option value="10000">10000</option>
-                            <option value="15000">15000</option>
-                            <option value="20000">20000</option>
-                            <option value="30000">30000</option>
-                        </datalist>
+                    <div>
+                        <div class="cont-pre-monitor">
+                            Pasajero
+                        </div>
+                         <div class="input-monitoreo">
+                            <input type="text" class="input_asignar" list="lusuario" id="usuario" placeholder="Ej: Juan Perez"  autocomplete="off">
+                            <datalist id="lusuario" ></datalist>
+                        </div>
                     </div>
                 </div>
-                <div class="contenedor-boton">
-                    <div class="button-succes" id="entrar">
-                        <a class="enlace-succes">
-                            ASIGNAR
-                        </a>
+                <div class="contenedor-ubicacion">
+                    <div class="buscador-subtitulo">
+                        Conductor
+                    </div>
+                    <div>
+                        <div class="cont-pre-monitor">
+                            Transportista
+                        </div>
+                         <div class="input-monitoreo">
+                            <input type="text" class="input_asignar" list="ltransportista" id="transportista" placeholder="Ej: T100" onkeyup="cargarTransportistas()">
+                            <datalist id="ltransportista"></datalist>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="cont-pre-monitor">
+                            Veh&iacute;culo
+                        </div>
+                        <div class="input-monitoreo">
+                            <input type="text" class="input_asignar" list="lmovil" id="vehiculo" placeholder="Ej: M100">
+                            <datalist id="lmovil"></datalist>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="cont-pre-monitor">
+                            Tipo
+                        </div>
+                        <div class="input-monitoreo">
+                            <input type="text" class="input_asignar" list="ltipo" id="tipo" placeholder="Ej: Recogida">
+                            <datalist id="ltipo">
+                                <option value="Recogida">Recogida</option>
+                                <option value="Reparto">Reparto</option>
+                                <option value="Servicio Especial">Servicio especial</option>
+                            </datalist>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="cont-pre-monitor">
+                            Tarifa
+                        </div>
+                        <div class="input-monitoreo">
+                            <input type="text" class="input_asignar" list="ltarifa" id="tarifas" placeholder="Ej: 2000">
+                            <datalist id="ltarifa">
+                                <option value="1000">1000</option>
+                                <option value="3000">3000</option>
+                                <option value="5000">5000</option>
+                                <option value="7000">7000</option>
+                                <option value="10000">10000</option>
+                                <option value="15000">15000</option>
+                                <option value="20000">20000</option>
+                                <option value="30000">30000</option>
+                            </datalist>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="contenedor_central monitoreo_buscador" id="contenedor_mapa">
+        <div class="buscador-asignacion-boton">
+            <div class="boton" id="entrar">
+                <img src="img/guardar.svg" width="12" height="12">
+                Solicitar
+            </div>
+            <div class="boton" id="borrar">
+                <img src="img/cancelar.svg" width="12" height="12">
+                Borrar
+            </div>
+        </div>
+        <div class="contenedor_central asignacion_buscador" id="contenedor_mapa">
             
         </div>
     </body>

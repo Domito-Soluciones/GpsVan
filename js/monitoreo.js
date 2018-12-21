@@ -1,8 +1,11 @@
-/* global urlBase, google, alertify, flightPath, markers, map */
+/* global urlBase, google, alertify, flightPath, markers, map, directionsDisplay */
 var servicios_diarios = [];
 var moviles_diarios = [];
 var pasajeros_diarios = [];
 $(document).ready(function(){
+    directionsDisplay = new google.maps.DirectionsRenderer;
+    directionsDisplay.setMap(null);
+    directionsDisplay = null;
     iniciarPestaniasMonitoreo();
     buscarServicio();
     cargarMovilesMapa();

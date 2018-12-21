@@ -204,6 +204,20 @@ select
     text-align: center;
     line-height: 35px;
 }
+.buscador-subtitulo
+{
+    font-size: 15px;
+    color: #0b41d3;
+    font-weight: 600;
+    padding-bottom: 5px;
+}
+.contenedor-ubicacion
+{
+    padding-left: 20px;
+    padding-bottom: 20px;
+    border-bottom: solid 1px #8a9cb2;
+    height: auto;
+}
 .mensaje-error
 {
     width: 100%;
@@ -264,11 +278,33 @@ select
     height: calc(100% - 32px);
 }
 
+.asignacion_buscador
+{
+    margin-left: 30% !important;
+    width: 69% !important;
+    height: calc(100% - 0px);
+}
+
 .buscador-monitoreo
 {
     height: calc(100% - 10px);
 }
 
+.buscador-asignacion
+{
+    width: 30%;
+    height: calc(100% - 47px);
+}
+.buscador-asignacion-boton
+{
+    border-top: solid 1px #8a9cb2;
+    margin-left: 4%;
+    width: 26%;
+}
+.buscador-asignacion-boton .boton
+{
+    width: 100px !important;
+}
 
 .tabla-central
 {
@@ -330,6 +366,22 @@ select
     margin-top: 10px;
     margin-right: 20px;
     width: 130px;
+    height: 30px;
+    vertical-align: middle;
+    border: solid 1px #0099ff;
+    cursor:pointer;
+    line-height: 30px;
+}
+.boton-chico
+{
+    color: white;
+    background-color: #a7b9bd;
+    text-align: center;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-top: 10px;
+    margin-right: 20px;
+    width: 30px;
     height: 30px;
     vertical-align: middle;
     border: solid 1px #0099ff;
@@ -676,6 +728,10 @@ select
 {
     margin-left: 10% !important;
 }
+.barra_asignacion
+{
+    margin-left: 0% !important;
+}
 
 .input-monitoreo
 {
@@ -684,7 +740,7 @@ select
 
 .cont-pre-monitor
 {
-    width: 100px !important;
+    width: 200px !important;
 }
 .boton-monitoreo
 {
@@ -806,4 +862,29 @@ select
         display: none;
     }
     
+}
+
+.pac-container
+{
+    width: 400px !important;
+}
+.input_asignar
+{
+    width: 250px !important;
+    height: 25px !important;   
+}
+
+.data-option
+{
+    background-color: white;
+    position: relative;
+    top:0;
+    left:0;
+    width: 400px;
+    height: 30px;
+    z-index: 2;
+}
+.contenedorPartida
+{
+    height: auto;
 }

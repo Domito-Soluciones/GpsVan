@@ -24,7 +24,7 @@ $(document).ready(function(){
                     GESTIONANDO_TICKET = response.servicio_id;
                     var isOpen = alertify.alert().isOpen(); 
                     if(!isOpen)
-                    {    
+                    {     
                         alertify.alert('Nuevo servicio', 'Nuevo servicio para asignar: '+
                                 response.servicio_id, function(){
                                     $("#partida").val(response.servicio_partida);
@@ -50,8 +50,6 @@ $(document).ready(function(){
             center: {lat: -33.440616, lng: -70.6514212},
                 zoom: 11
             });
-        new AutocompleteDirectionsHandler(map);
-        directionsDisplay.setMap(map);
     }
 
     function AutocompleteDirectionsHandler(map) {

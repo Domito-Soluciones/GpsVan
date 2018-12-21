@@ -1,10 +1,5 @@
 /* global urlBase */
 
-var clientes = new Array();
-var usuarios = new Array();
-var transportistas = new Array();
-var moviles = new Array();
-
 $(document).ready(function(){
     iniciarFecha();
     $("#boton-buscar").click(function () {

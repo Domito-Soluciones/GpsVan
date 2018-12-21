@@ -1,50 +1,68 @@
-/* global alertify, directionsDisplay, urlBase, ORIGEN, GESTIONANDO_TICKET */
+/* global PLACES_API, CORS_PROXY, POSITION, API_KEY */
+
+var clientes = new Array();
+var usuarios = new Array();
+var transportistas = new Array();
+var moviles = new Array();
 
 $(document).ready(function(){
 
+//    new AutocompleteDirectionsHandler(map);
+//    directionsDisplay = new google.maps.DirectionsRenderer;
+//    directionsDisplay.setMap(map);
+    
+    $("#partida").keyup(function(){
+        var datalistPartida = $("#partidal");
+        var url = CORS_PROXY + PLACES_API + "input="+$(this).val()+
+                "&location="+POSITION[0]+","+POSITION[1]+"&sensor=true&radius=1000&key="+API_KEY;
+        var success = function(response)
+        {
+            datalistPartida.html("");
+            var places =  response.predictions;
+            for(var i = 0 ; i < places.length;i++)
+            {
+                datalistPartida.append("<option value="+places[i].description+">"+places[i].description+"</option>");
+            }
+        };
+        getRequest(url,success);
+    });
+        
+    $("#destino").keyup(function(){
+        var datalistDestino = $("#destinol");
+        var url = CORS_PROXY + PLACES_API + "input="+$(this).val()+
+                "&location="+POSITION[0]+","+POSITION[1]+"&sensor=true&radius=1000&key="+API_KEY;
+        var success = function(response)
+        {
+            datalistDestino.html("");
+            var places =  response.predictions;
+            for(var i = 0 ; i < places.length;i++)
+            {
+                datalistDestino.append("<option value="+places[i].description+">"+places[i].description+"</option>");
+            }
+        };
+        getRequest(url,success);
+    });
+    
     $("#entrar").click(function () {
         agregarServicio();
     });
-    $("#boton-buscar").click(function () {
-        buscarServicio();
-    });
+    
     $("#cliente").on('input',function () {
         preCargarUsuarios(); 
     });
+    
     $("#transportista").on('input',function () {
         preCargarMoviles(); 
     });
+    
     $("#cliente").on('input',function () {
         preCargarUsuarios(); 
     });
+    
     $("#transportista").on('input',function () {
         preCargarMoviles(); 
     });
-    $("#pestanaBuscar").click(function () {
-        cambiarPropiedad($("#asignar"),"display","none");
-        cambiarPropiedad($("#buscar"),"display","initial");
-        agregarclase($("#pestanaBuscar"),"pestana-activa");
-        quitarclase($("#pestanaAsignar"),"pestana-activa");
-        $("#cliente").on('input',function () {
-            preCargarUsuarios(); 
-        });
-        $("#transportista").on('input',function () {
-            preCargarMoviles(); 
-        });
-        init();
-    });
-    $("#pestanaAsignar").click(function () {
-        cambiarPropiedad($("#buscar"),"display","none");
-        cambiarPropiedad($("#asignar"),"display","initial");
-        agregarclase($("#pestanaAsignar"),"pestana-activa");
-        quitarclase($("#pestanaBuscar"),"pestana-activa");
-        $("#cliente").on('input',function () {
-            preCargarUsuarios(); 
-        });
-        $("#transportista").on('input',function () {
-            preCargarMoviles(); 
-        });
-    });
+    
     init();
 });
 
@@ -76,8 +94,8 @@ function cargarIds()
 
 function cargarClientes()
 {
-    var cliente = $("#cliente").val();
-    var url = urlBase + "/cliente/Clientes.php?cliente"+cliente;
+    var busqueda = $("#cliente").val();
+    var url = urlBase + "/cliente/GetClientes.php?busqueda"+busqueda;
     var success = function(response)
     {
         $("#lcliente").html("");
@@ -104,17 +122,16 @@ function preCargarUsuarios()
         cargarUsuarios(cliente);
     }
 }
-function cargarUsuarios(idCliente)
+function cargarUsuarios(busqueda)
 {
-    var url = urlBase + "/usuario/Usuarios.php?id="+idCliente;
+    var url = urlBase + "/pasajero/GetPasajeros.php?busqueda="+busqueda;
     var success = function(response)
     {
         $("#usuario").val("");
         $("#lusuario").html("");
         for(var i = 0 ; i < response.length ; i++)
         {
-            var id = response[i].usuario_id;
-            var nombre = response[i].usuario_nombre;
+            var nombre = response[i].pasajero_nombre;
             $("#lusuario").append("<option value='"+nombre+"'>"+nombre+"</option>");
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
@@ -126,8 +143,8 @@ function cargarUsuarios(idCliente)
 
 function cargarTransportistas()
 {
-    var transportista = $("#transportista").val();
-    var url = urlBase + "/transportista/Transportistas.php?transportista="+transportista;
+    var busqueda = $("#transportista").val();
+    var url = urlBase + "/transportista/GetTransportistas.php?busqueda="+busqueda;
     var success = function(response)
     {
         $("#ltransportista").html("");
@@ -145,9 +162,9 @@ function preCargarMoviles()
     var transportista = $('#transportista').val();
     cargarMoviles(transportista);
 }
-function cargarMoviles(idTransportista)
+function cargarMoviles(busqueda)
 {
-    var url = urlBase + "/movil/Moviles.php?id="+idTransportista;
+    var url = urlBase + "/movil/GetMoviles.php?busqueda="+busqueda;
     var success = function(response)
     {
         $("#movil").val("");
@@ -180,9 +197,9 @@ function agregarServicio()
     var cliente = $("#cliente").val();
     var usuario = $("#usuario").val();
     var transportista = $("#transportista").val();
-    var movil = $("#movil").val();
+    var movil = $("#vehiculo").val();
     var tipo = $("#tipo").val();
-    var tarifa = $("#tarifa").val();
+    var tarifa = $("#tarifas").val();
     var array = [partida,partida_id,destino,destino_id,cliente,usuario,transportista,movil,tipo,tarifa];
     if(!validarCamposOr(array))
     {
@@ -239,3 +256,78 @@ function buscarServicio()
     };
     getRequest(url,success);
 }
+
+function AutocompleteDirectionsHandler(map) {
+        this.map = map;
+        this.originPlaceId = null;
+        this.destinationPlaceId = null;
+        var originInput = document.getElementById('partida');
+        var destinationInput = document.getElementById('destino');
+        this.directionsService = new google.maps.DirectionsService;
+        this.directionsDisplay = new google.maps.DirectionsRenderer;
+        this.directionsDisplay.setMap(map);
+
+        var originAutocomplete = new google.maps.places.Autocomplete(
+            originInput, {placeIdOnly: true});
+        var destinationAutocomplete = new google.maps.places.Autocomplete(
+            destinationInput, {placeIdOnly: true});
+        this.travelMode = 'DRIVING';
+        this.route();
+        this.setupPlaceChangedListener(originAutocomplete, 'ORIG');
+        this.setupPlaceChangedListener(destinationAutocomplete, 'DEST');
+    }       
+
+    AutocompleteDirectionsHandler.prototype.setupPlaceChangedListener = function(autocomplete, mode) {
+        var me = this;
+        autocomplete.bindTo('bounds', this.map);
+        autocomplete.addListener('place_changed', function() {
+            var place = autocomplete.getPlace();
+            if (!place.place_id) {
+                window.alert("Please select an option from the dropdown list.");
+                return;
+            }
+            if (mode === 'ORIG') {
+                me.originPlaceId = place.place_id;
+                document.getElementById("partida_hidden").value = place.place_id;
+            }
+            else {
+                me.destinationPlaceId = place.place_id;
+                document.getElementById("destino_hidden").value = place.place_id;
+                //deleteMarkers();
+            }
+        me.route();
+        });
+    };
+
+    AutocompleteDirectionsHandler.prototype.route = function() {
+        if (!this.originPlaceId || !this.destinationPlaceId) {
+          return;
+        }
+        var me = this;
+
+        this.directionsService.route({
+          origin: {'placeId': this.originPlaceId},
+          destination: {'placeId': this.destinationPlaceId},
+          travelMode: this.travelMode
+        }, function(response, status) {
+          if (status === 'OK') {
+            me.directionsDisplay.setDirections(response);
+          } else {
+            window.alert('Directions request failed due to ' + status);
+          }
+        });
+    };
+    
+    function calculateAndDisplayRoute(partida,destino) {
+        directionsService.route({
+          origin: partida,
+          destination: destino,
+          travelMode: 'DRIVING'
+        }, function(response, status) {
+          if (status === 'OK') {
+            directionsDisplay.setDirections(response);
+          } else {
+            window.alert('Directions request failed due to ' + status);
+          }
+        });
+      }

@@ -71,6 +71,7 @@ function getRequest(url,success,cargar = true)
         }
     });
 }
+
 function redireccionar(url)
 {
     window.location.href = url;
@@ -85,6 +86,7 @@ function validarCamposOr(array)
 {
     for (var i = 0 ; i < array.length; i++)
     {
+        alert(array[i]);
         if(array[i] === undefined || array[i] === '')
         {
             return false;
