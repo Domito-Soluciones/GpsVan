@@ -11,6 +11,7 @@ var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","mail
 $(document).ready(function(){
     buscarConductor();
     $("#agregar").click(function(){
+        quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
         buscarMovil('');
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;

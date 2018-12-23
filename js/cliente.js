@@ -10,6 +10,7 @@ $(document).ready(function(){
     buscarCliente();
     buscarPasajeros();
     $("#agregar").click(function(){
+        quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
         $("#contenedor_central").load("html/datos_cliente.html", function( response, status, xhr ) {

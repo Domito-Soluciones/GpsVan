@@ -13,6 +13,8 @@ $(document).ready(function(){
     buscarConductores();
     buscarMoviles();
     $("#agregar").click(function(){
+        ID_TRANSPORTISTA = undefined;
+        quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
         $("#contenedor_central").load("html/datos_transportista.html", function( response, status, xhr ) {

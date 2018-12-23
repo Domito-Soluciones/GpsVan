@@ -6,6 +6,7 @@ var CAMPOS = ["nombre","origen","destino","valor1","valor2"];
 $(document).ready(function(){
     buscarTarifa();
     $("#agregar").click(function(){
+        quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
         $("#contenedor_central").load("html/datos_tarifa.html", function( response, status, xhr ) {

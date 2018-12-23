@@ -361,7 +361,7 @@ function validarPatente(patente)
 function resetBotones()
 {
     cambiarPropiedad($("#agregar"),"visibility","visible");
-    cambiarPropiedad($(),"visibility","hidden");
+    cambiarPropiedad($("#guardar"),"visibility","hidden");
     cambiarPropiedad($("#cancelar"),"visibility","hidden");
     cambiarPropiedad($("#eliminar"),"visibility","hidden");
 }
@@ -462,4 +462,5 @@ function validarCancelar(pagina)
         resetFormularioEliminar(pagina);
         resetBotones();
     }
+    quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
 }

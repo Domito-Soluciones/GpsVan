@@ -23,7 +23,6 @@ if(!isset($_SESSION['agente']))
         <script src="js/lib/jquery.js" type="text/javascript"></script>
         <script src="js/lib/alertify.js" type="text/javascript"></script>
         <script src="js/lib/jquery.datetimepicker.js" type="text/javascript"></script>
-        <script src="js/lib/polyline.js" type="text/javascript"></script>
         <script src="js/funciones.js" type="text/javascript"></script>
         <script src="js/principal.js" type="text/javascript"></script>
     </head>

@@ -282,7 +282,7 @@ select
 {
     margin-left: 30% !important;
     width: calc(70% - 1px) !important;
-    height: calc(100% - 1px);
+    height: calc(100% - 126px);
 }
 
 .buscador-monitoreo
@@ -899,4 +899,9 @@ select
 .option-datalist img
 {
     margin: 1px;
+}
+
+.servicios_pendientes
+{
+    height: 125px;
 }
