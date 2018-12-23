@@ -2,9 +2,10 @@
 var NICK_GLOBAL;
 var map;
 var markers = [];
-var flightPath;
+var POLYLINE;
+var POLYLINE_LAT = '';
+var POLYLINE_LNG = '';
 var POSITION = [-33.440616, -70.6514212];
-var directionsService;
 var API_KEY = "AIzaSyDcQylEsZAzuEw3EHBdWbsDAynXvU2Ljzs";
 var GOOGLE_MAPS_API = "https://maps.googleapis.com/maps/api/js?";
 var CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
@@ -41,7 +42,6 @@ $(document).ready(function(){
 });
 
 function initMap() {
-    directionsService = new google.maps.DirectionsService;
     var latlng = new google.maps.LatLng(POSITION[0], POSITION[1]);
     var myOptions = {
         zoom: 11,
@@ -52,52 +52,45 @@ function initMap() {
         } 
     };
     map = new google.maps.Map(document.getElementById("map"), myOptions);
-    
-  // var url = CORS_PROXY + "https://maps.googleapis.com/maps/api/directions/json?origin=Metro+San+Pablo&destination=Vitacura&waypoints=Nueva+San+Martin|Metro+Rondizonni&key=AIzaSyDcQylEsZAzuEw3EHBdWbsDAynXvU2Ljzs";
-  //  var success = function(response){
-  //      alert(JSON.stringify(response));
-  //      decodePolyline(response.overview_polyline.points);
-  //  };
-   // getRequest(url,success);
 }
 
-    function decodePolyline(encoded) {
-        if (!encoded) {
-            return [];
-        }
-        var poly = [];
-        var index = 0, len = encoded.length;
-        var lat = 0, lng = 0;
-
-        while (index < len) {
-            var b, shift = 0, result = 0;
-
-            do {
-                b = encoded.charCodeAt(index++) - 63;
-                result = result | ((b & 0x1f) << shift);
-                shift += 5;
-            } while (b >= 0x20);
-
-            var dlat = (result & 1) != 0 ? ~(result >> 1) : (result >> 1);
-            lat += dlat;
-
-            shift = 0;
-            result = 0;
-
-            do {
-                b = encoded.charCodeAt(index++) - 63;
-                result = result | ((b & 0x1f) << shift);
-                shift += 5;
-            } while (b >= 0x20);
-
-            var dlng = (result & 1) != 0 ? ~(result >> 1) : (result >> 1);
-            lng += dlng;
-
-            var p = {
-                latitude: lat / 1e5,
-                longitude: lng / 1e5,
-            };
-            poly.push(p);
-        }
-        return poly;
+function decodePolyline(encoded) {
+    if (!encoded) {
+        return [];
     }
+    var poly = [];
+    var index = 0, len = encoded.length;
+    var lat = 0, lng = 0;
+
+    while (index < len) {
+        var b, shift = 0, result = 0;
+
+        do {
+            b = encoded.charCodeAt(index++) - 63;
+            result = result | ((b & 0x1f) << shift);
+            shift += 5;
+        } while (b >= 0x20);
+
+        var dlat = (result & 1) !== 0 ? ~(result >> 1) : (result >> 1);
+        lat += dlat;
+
+        shift = 0;
+        result = 0;
+
+        do {
+            b = encoded.charCodeAt(index++) - 63;
+            result = result | ((b & 0x1f) << shift);
+            shift += 5;
+        } while (b >= 0x20);
+
+        var dlng = (result & 1) !== 0 ? ~(result >> 1) : (result >> 1);
+        lng += dlng;
+
+        var p = {
+            lat: lat / 1e5,
+            lng: lng / 1e5
+        };
+        poly.push(p);
+    }
+    return poly;
+}

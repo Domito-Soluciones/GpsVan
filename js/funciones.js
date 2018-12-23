@@ -86,7 +86,6 @@ function validarCamposOr(array)
 {
     for (var i = 0 ; i < array.length; i++)
     {
-        alert(array[i]);
         if(array[i] === undefined || array[i] === '')
         {
             return false;

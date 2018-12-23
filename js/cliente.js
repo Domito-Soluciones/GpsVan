@@ -74,8 +74,16 @@ function agregarCliente()
     }
     if(validarTipoDato())
     {
+        var pasajeros = "&pasajeros=";
+        $("#tablaContenidoPasajero .tablaFila").each(function(index) {
+            pasajeros +=$(this).attr("id")+",";
+        });
+        var deletePasajero = "&delPasajero=";
+        for(var i = 0; i < ARRAY_ELIMINAR_PASAJEROS.length;i++) {
+            deletePasajero += ARRAY_ELIMINAR_PASAJEROS[i]+",";
+        };
         var data = "razon="+razon+"&tipo="+tipo+"&rut="+rut+"&direccion="+direccion+"&nombre="+nombre+
-                "&telefono="+telefono+"&mail="+mail+"&mail2="+mail2+"&centros="+cc;
+                "&telefono="+telefono+"&mail="+mail+"&mail2="+mail2+"&centros="+cc+pasajeros+deletePasajero;
         var url = urlBase+"/cliente/AddCliente.php?"+data;
         var success = function(response)
         {

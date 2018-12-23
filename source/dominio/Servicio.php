@@ -4,9 +4,7 @@ include '../../util/validarPeticion.php';
 class Servicio {
     private $id;
     private $partida;
-    private $partidaId;
     private $destino;
-    private $destinoId;
     private $cliente;
     private $usuario_id;
     private $usuario_nombre;

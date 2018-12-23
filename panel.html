@@ -18,9 +18,8 @@
                             Partida
                         </div>
                         <div class="input-monitoreo">
-                            <input type="text" class="input_asignar" id="partida" list="partidal" placeholder="Ej: Av los pinos 123">
-                            <datalist id="partidal"></datalist>
-                            <input type="hidden" id="partida_hidden">
+                            <input type="text" class="input_asignar" id="partida" placeholder="Ej: Av los pinos 123">
+                            <div class="datalist-visible" id="partidal"></div>
                         </div>
                     </div>
                     <div>
@@ -28,9 +27,8 @@
                             Destino
                         </div>
                         <div class="input-monitoreo">
-                            <input type="text" class="input_asignar" id="destino" list="destinol" placeholder="Ej: Av los pinos 723">
-                            <datalist id="destinol"></datalist>
-                            <input type="hidden" id="destino_hidden">
+                            <input type="text" class="input_asignar" id="destino" placeholder="Ej: Av los pinos 723">
+                            <div class="datalist-visible" id="destinol"></div>
                         </div>
                     </div>
                     <div>
@@ -52,7 +50,7 @@
                         </div>
                          <div class="input-monitoreo">
                             <input type="text" class="input_asignar" list="lcliente" id="cliente" placeholder="Ej: Falabella" onkeyup="cargarClientes()">
-                            <datalist id="lcliente" ></datalist>
+                            <div class="datalist-visible" id="lcliente"></div>
                         </div>
                     </div>
                     <div>
@@ -122,7 +120,7 @@
             </div>
         </div>
         <div class="buscador-asignacion-boton">
-            <div class="boton" id="entrar">
+            <div class="boton" id="solicitar">
                 <img src="img/guardar.svg" width="12" height="12">
                 Solicitar
             </div>

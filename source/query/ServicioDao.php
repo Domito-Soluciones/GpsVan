@@ -8,9 +8,7 @@ class ServicioDao {
     {
         $id = 0;
         $partida = $servicio->getPartida();
-        $partidaId = $servicio->getPartidaId();
         $destino = $servicio->getDestino();
-        $destinoId = $servicio->getDestinoId();
         $cliente = $servicio->getCliente();
         $usuario = $servicio->getUsuario_nombre();
         $transportista = $servicio->getTransportista();
@@ -22,7 +20,7 @@ class ServicioDao {
         try {
             $query = "INSERT INTO tbl_servicio (servicio_partida,servicio_partida_id,servicio_destino,servicio_destino_id,"
                     . "servicio_cliente,servicio_usuario,servicio_transportista,"
-                    . "servicio_movil,servicio_tipo,servicio_tarifa,servicio_agente,servicio_fecha) VALUES ('$partida','$partidaId','$destino','$destinoId','$cliente','$usuario','$transportista','$movil','$tipo',$tarifa,$agente,NOW())"; 
+                    . "servicio_movil,servicio_tipo,servicio_tarifa,servicio_agente,servicio_fecha) VALUES ('$partida','','$destino','','$cliente','$usuario','$transportista','$movil','$tipo',$tarifa,$agente,NOW())"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -35,13 +33,14 @@ class ServicioDao {
         return $id;
     }
     
-    public function addServicioDetalle($lat,$lon,$id)
+    public function addServicioDetalle($lat,$lon,$idServicio)
     {
+        $id = 0;
         $conn = new Conexion();
         try {
             $query = "INSERT INTO tbl_servicio_detalle "
                     . "(servicio_detalle_servicio,servicio_detalle_lat,servicio_detalle_lon)"
-                    . " VALUES ($id,'$lat','$lon')"; 
+                    . " VALUES ($idServicio,'$lat','$lon')"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);

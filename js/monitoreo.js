@@ -3,9 +3,10 @@ var servicios_diarios = [];
 var moviles_diarios = [];
 var pasajeros_diarios = [];
 $(document).ready(function(){
-    directionsDisplay = new google.maps.DirectionsRenderer;
-    directionsDisplay.setMap(null);
-    directionsDisplay = null;
+    if(typeof POLYLINE !== "undefined")
+    {
+        POLYLINE.setMap(null);
+    }
     iniciarPestaniasMonitoreo();
     buscarServicio();
     cargarMovilesMapa();
@@ -229,17 +230,19 @@ function dibujarServicio(id,movil)
     var url = urlBase + "/servicio/GetDetalleServicio.php?id="+id;
     var success = function(response){
         flightPath = new google.maps.Polyline({
-          path: response,
-          geodesic: true,
-          strokeColor: '#000000',
-          strokeOpacity: 1.0,
-          strokeWeight: 5
+            path: response,
+            geodesic: true,
+            strokeColor: '#FFFFF',
+            strokeOpacity: 1.0,
+            strokeWeight: 6
         });
         flightPath.setMap(map);
-        var latLng = new google.maps.LatLng(response[0].lat, response[0].lng);
-        map.panTo(latLng); 
-        map.setZoom(14);
-        dibujarMarcador()
+        POLYLINE = flightPath;
+        var bounds = new google.maps.LatLngBounds();
+        response.forEach(function(LatLng) {
+                bounds.extend(LatLng);
+        });
+        map.fitBounds(bounds);
     };
     getRequest(url,success);
 

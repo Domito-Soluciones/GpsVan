@@ -164,12 +164,7 @@ function dibujarMarcador(lat,lon,nombre,servicio)
 
 }
 
-function removeMap()
-{
-    initMap();
-    preCargarMoviles();
-}
-            
+  
 
 function deleteMarkers() {
     for (var i = 0; i < markers.length; i++) {
