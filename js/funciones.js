@@ -1,5 +1,5 @@
 
-/* global MODIFICADO, alertify */
+/* global MODIFICADO, alertify, PAGINA_ANTERIOR */
 var MODIFICADO = false;
 
 var bordeAzul = "solid 1px #0b41d3";
@@ -136,6 +136,7 @@ function cambiarModulo(pagina,cambiar){
                 }
                 $("#contenido-central").html("");
                 $("#contenido-central").load(pagina+".html",function( response, status, xhr ) {
+                    variable = undefined;
                     if(pagina === 'panel' || pagina === 'monitoreo')
                     {
                         mostrarMapa();
@@ -159,6 +160,7 @@ function cambiarModulo(pagina,cambiar){
         }
         $("#contenido-central").html("");
         $("#contenido-central").load(pagina+".html",function( response, status, xhr ) {
+            variable = undefined;
             if(pagina === 'panel' || pagina === 'monitoreo')
             {
                 mostrarMapa();
@@ -171,7 +173,37 @@ function cambiarModulo(pagina,cambiar){
         cambiarPropiedad($("#menu"),"display","none");
         $("#menu-telefono").attr("src","img/menu.svg");
     }
+    resetPagina();
 }
+
+function resetPagina()
+{
+    if(PAGINA_ANTERIOR === "AGENTES")
+    {
+        ID_AGENTE = undefined;
+    }
+    if(PAGINA_ANTERIOR === "CLIENTES")
+    {
+        ID_CLIENTE = undefined;
+    }
+    if(PAGINA_ANTERIOR === "CONDUCTORES")
+    {
+        ID_CONDUCTOR = undefined;
+    }
+    if(PAGINA_ANTERIOR === "MOVILES")
+    {
+        ID_MOVIL = undefined;
+    }
+    if(PAGINA_ANTERIOR === "PASAJEROS")
+    {
+        ID_PASAJERO = undefined;
+    }
+    if(PAGINA_ANTERIOR === "TRANSPORTISTAS")
+    {
+        ID_TRANSPORTISTA = undefined;
+    }
+}
+
 
 function cerrarSession(response)
 {
@@ -436,7 +468,7 @@ function marcarFilaActiva(id)
     agregarclase($("#"+id),"fila_contenedor_activa");
 }
 
-function recortar(titulo,index = 34)
+function recortar(titulo,index = 32)
 {
     if(titulo.length > index )
     {

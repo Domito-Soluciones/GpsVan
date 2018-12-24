@@ -1,9 +1,11 @@
 /* global urlBase, alertify */
+var ID_TARIFA;
 var TARIFAS;
 var AGREGAR = true;
 var PAGINA = 'TARIFAS';
 var CAMPOS = ["nombre","origen","destino","valor1","valor2"];
 $(document).ready(function(){
+    PAGINA_ANTERIOR = PAGINA;
     buscarTarifa();
     $("#agregar").click(function(){
         quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
@@ -69,6 +71,7 @@ function agregarTarifa()
         var url = urlBase + "/tarifa/AddTarifa.php?"+data;
         var success = function(response)
         {
+            ID_TARIFA = undefined;
             cerrarSession(response);
             alertify.success("Tarifa Agregada");
             vaciarFormulario();
@@ -96,7 +99,7 @@ function modificarTarifa()
     }
     if(validarTipoDato())
     {
-        var data = "nombre="+nombre+"&origen="+origen+"&destino="+destino
+        var data = "id="+ID_TARIFA+"&nombre="+nombre+"&origen="+origen+"&destino="+destino
         +"&valor1="+valor1+"&valor2="+valor2;
         var url = urlBase + "/tarifa/ModTarifa.php?"+data;
         var success = function(response)
@@ -131,7 +134,14 @@ function buscarTarifa()
             var id = response[i].tarifa_id;
             var nombre = response[i].tarifa_nombre;
             var titulo = recortar(nombre);
-            tarifas.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+titulo+"</div>");
+            if (typeof ID_TARIFA !== "undefined" && ID_TARIFA === id)
+            {
+                tarifas.append("<div class=\"fila_contenedor fila_contenedor_activa\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+titulo+"</div>");
+            }
+            else
+            {
+                tarifas.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+titulo+"</div>");
+            }
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
@@ -161,6 +171,7 @@ function cambiarFila(id)
 function abrirModificar(id)
 {
     AGREGAR = false;
+    ID_TARIFA = id;
     quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
     agregarclase($("#"+id),"fila_contenedor_activa");
     $("#contenedor_central").load("html/datos_tarifa.html", function( response, status, xhr ) {

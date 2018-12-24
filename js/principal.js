@@ -11,6 +11,7 @@ var GOOGLE_MAPS_API = "https://maps.googleapis.com/maps/api/js?";
 var CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
 var DIRECTIONS_API = "https://maps.googleapis.com/maps/api/directions/json?";
 var PLACES_API = "https://maps.googleapis.com/maps/api/place/autocomplete/json?";
+var PAGINA_ANTERIOR;
 
 $(document).ready(function(){
     $("#menu").load("menu.html", function( response, status, xhr ) {

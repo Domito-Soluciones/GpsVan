@@ -69,7 +69,6 @@ class MovilDao {
                     . "movil_anio = $anio,movil_venc_rev_tecnica = '$venRevTec',"
                     . "movil_seguro_obligatorio = '$segOb',movil_venc_seguro_obligatorio = '$venSegOb',movil_seguro_adicional = '$segAd'"
                     . ",movil_kilometraje = $kilo WHERE movil_patente = '$patente'";           
-            echo $query;
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);

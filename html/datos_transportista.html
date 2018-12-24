@@ -53,7 +53,7 @@
                 Nombre Contacto (*)
             </div>
             <div class="contenedor-input">
-                <input type="text" id="nombreContacto" placeholder="Ej: Juan perez" maxlength="10">                    
+                <input type="text" id="nombreContacto" placeholder="Ej: Juan perez" maxlength="40">                    
             </div>
         </div>
         <div class="contenedor-fila">
@@ -83,21 +83,8 @@
     </div>
 </div>
 <div class="contenedor-info contenedor_oculto" id="cont_conductor">
-    <div class="contenedor-asignar">        
-        <div class="titulo-asignar">
-            Ingrese conductor 
-            <input type="text" id="rutConductor" list="rutConductorL" placeholder="Ej: 11111111-1" maxlength="11">
-            <datalist id="rutConductorL"></datalist>
-        </div>
-        <div class="resultado-asignar" id="resultadoConductor">
-            
-        </div>
-    </div>
     <div id="tablaConductores" class="tabla-general">
         <div class="tablaCabecera">
-            <div class="cabecera_fila">
-                
-            </div>
             <div>
                 Rut
             </div>
@@ -110,6 +97,9 @@
             <div>
                 Veh&iacute;culo
             </div>
+            <div>
+                Asignar
+            </div>
         </div>
         <div class="tablaContenido" id="tablaContenidoConductor"></div>
     </div>
@@ -118,21 +108,8 @@
     </div>
 </div>
 <div class="contenedor-info contenedor_oculto" id="cont_movil">
-    <div class="contenedor-asignar">        
-        <div class="titulo-asignar">
-            Ingrese veh&iacute;culo 
-            <input type="text" id="patenteMovil" list="patenteMovilL" placeholder="Ej: QWER-55" maxlength="7">
-            <datalist id="patenteMovilL"></datalist>
-        </div>
-        <div class="resultado-asignar" id="resultadoMovil">
-
-        </div>
-    </div>
     <div id="tablaConductores" class="tabla-general">
         <div class="tablaCabecera">
-            <div class="cabecera_fila">
-                
-            </div>
             <div>
                 N&deg; Veh&iacute;culo
             </div>
@@ -144,6 +121,9 @@
             </div>
             <div>
                 Modelo
+            </div>
+            <div>
+                Asignar
             </div>
         </div>
         <div class="tablaContenido" id="tablaContenidoMovil"></div>

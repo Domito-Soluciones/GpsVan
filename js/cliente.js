@@ -4,9 +4,11 @@ var PASAJEROS;
 var AGREGAR = true;
 var PAGINA = 'CLIENTES';
 var ID_CLIENTE;
-var ARRAY_ELIMINAR_PASAJEROS = [];
+var AGREGAR_CLIENTES = [];
+var ELIMINAR_CLIENTES = [];
 var CAMPOS = ["rut","razon","tipo","direccion","nombre","telefono","mail","mail2","centros"];
 $(document).ready(function(){
+    PAGINA_ANTERIOR = PAGINA;
     buscarCliente();
     buscarPasajeros();
     $("#agregar").click(function(){
@@ -75,19 +77,13 @@ function agregarCliente()
     }
     if(validarTipoDato())
     {
-        var pasajeros = "&pasajeros=";
-        $("#tablaContenidoPasajero .tablaFila").each(function(index) {
-            pasajeros +=$(this).attr("id")+",";
-        });
-        var deletePasajero = "&delPasajero=";
-        for(var i = 0; i < ARRAY_ELIMINAR_PASAJEROS.length;i++) {
-            deletePasajero += ARRAY_ELIMINAR_PASAJEROS[i]+",";
-        };
         var data = "razon="+razon+"&tipo="+tipo+"&rut="+rut+"&direccion="+direccion+"&nombre="+nombre+
-                "&telefono="+telefono+"&mail="+mail+"&mail2="+mail2+"&centros="+cc+pasajeros+deletePasajero;
+                "&telefono="+telefono+"&mail="+mail+"&mail2="+mail2+"&centros="+cc+"&clientes="+AGREGAR_CLIENTES+
+                "&delCliente="+ELIMINAR_CLIENTES
         var url = urlBase+"/cliente/AddCliente.php?"+data;
         var success = function(response)
         {
+            ID_CLIENTE = undefined;
             cerrarSession(response);
             alertify.success("Cliente Agregado");
             cambiarPestaniaGeneral();
@@ -111,10 +107,6 @@ function modificarCliente()
     var mail = $("#mail").val();
     var mail2 = $("#mail2").val();
     var cc = $("#centros").val();
-    var pasajeros = "";
-    $(".seleccionado").each(function(i){
-       pasajeros += $(this).attr("id") + ",";
-    });
     var array = [rut,razon,tipo,direccion,nombre,telefono,mail,mail2,cc];
     if(!validarCamposOr(array))
     {
@@ -124,16 +116,9 @@ function modificarCliente()
     }
     if(validarTipoDato())
     {
-        var pasajeros = "&pasajeros=";
-        $("#tablaContenidoPasajero .tablaFila").each(function(index) {
-            pasajeros +=$(this).attr("id")+",";
-        });
-        var deletePasajero = "&delPasajero=";
-        for(var i = 0; i < ARRAY_ELIMINAR_PASAJEROS.length;i++) {
-            deletePasajero += ARRAY_ELIMINAR_PASAJEROS[i]+",";
-        };
         var data = "id="+ID_CLIENTE+"&razon="+razon+"&tipo="+tipo+"&rut="+rut+"&direccion="+direccion+"&nombre="+nombre
-                +"&telefono="+telefono+"&mail="+mail+"&mail2="+mail2+"&centros="+cc+pasajeros+deletePasajero;
+                +"&telefono="+telefono+"&mail="+mail+"&mail2="+mail2+"&centros="+cc+"&clientes="+AGREGAR_CLIENTES+
+                "&delCliente="+ELIMINAR_CLIENTES;
         var url = urlBase + "/cliente/ModCliente.php?"+data;
         var success = function(response)
         {
@@ -439,37 +424,51 @@ function buscarPasajeros()
 function cargarPasajeros()
 {
     var tablaPasajero = $("#tablaContenidoPasajero");
-    var datalistPasajero = $("#rutPasajeroL");
-    datalistPasajero.html("");
-    if(tablaPasajero.html() === '')
+    tablaPasajero.html("");
+    cambiarPropiedad($("#loaderV"),"visibility","hidden");
+    if (typeof PASAJEROS !== "undefined")
     {
-        cambiarPropiedad($("#loaderV"),"visibility","hidden");
-        if (typeof PASAJEROS !== "undefined")
+        if(PASAJEROS.length === 0)
         {
-            if(PASAJEROS.length === 0)
-            {
-                alertify.error("No hay pasajeros asociados");    
-            }
-            for(var i = 0 ; i < PASAJEROS.length; i++)
-            {
-                var rut = PASAJEROS[i].pasajero_rut;
-                var nombre = PASAJEROS[i].pasajero_nombre;
-                var papellido = PASAJEROS[i].pasajero_papellido;
-                var mapellido = PASAJEROS[i].pasajero_mapellido;
-                var cliente = PASAJEROS[i].pasajero_cliente;
-                if(ID_CLIENTE === cliente)
-                {
-                    tablaPasajero.append("<div id=\""+rut+"\" class=\"tablaFila\"><div class=\"cabecera_fila\"><img onclick=\"eliminarFilaPasajero('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"20\" height=\"20\"></div><div>"
-                        +rut+"</div><div>"+nombre+"</div><div>"+papellido+"</div><div>"+mapellido+"</div></div>");
-                }
-                else
-                {
-                    datalistPasajero.append("<option id=\"data-"+rut+"\" value=\""+rut+"\">"+rut+"</option>");
-                }
-            }
+            alertify.error("No hay pasajeros asociados");    
         }
-        cambiarPropiedad($("#loader"),"visibility","hidden");
+        for(var i = 0 ; i < PASAJEROS.length; i++)
+        {
+            var id = PASAJEROS[i].pasajero_id;
+            var rut = PASAJEROS[i].pasajero_rut;
+            var nombre = PASAJEROS[i].pasajero_nombre;
+            var papellido = PASAJEROS[i].pasajero_papellido;
+            var mapellido = PASAJEROS[i].pasajero_mapellido;
+            var cliente = PASAJEROS[i].pasajero_cliente;
+            var asignacion = "";
+            var claseAsignacion = "tablaFila";
+            if(ID_CLIENTE === cliente)
+            {
+                asignacion = "<input type=\"radio\" onchange=\"agregarMoviles($(this))\" name=\""+rut+"\" value=\""+id+"\" checked>SI\n\
+                              <input type=\"radio\" onchange=\"eliminarMoviles($(this))\" name=\""+rut+"\" value=\""+id+"\">NO";
+            }
+            else if(cliente === '0')
+            {
+                asignacion = "<input type=\"radio\" onchange=\"agregarMoviles($(this))\" name=\""+rut+"\" value=\""+id+"\">SI\n\
+                              <input type=\"radio\" onchange=\"eliminarMoviles($(this))\" name=\""+rut+"\" value=\""+id+"\" checked>NO";
+            }
+            else if (ID_CLIENTE !== cliente)
+            {
+                for(var j = 0; j < CLIENTES.length ; j++)
+                {
+                    var c = CLIENTES[j];
+                    if(c.cliente_id === cliente)
+                    {
+                        asignacion = "Asignado a "+c.cliente_nombre;
+                        break;
+                    }
+                }
+            }
+            tablaPasajero.append("<div id=\""+rut+"\" class=\""+claseAsignacion+"\"><div>"
+                    +rut+"</div><div>"+nombre+"</div><div>"+papellido+"</div><div>"+mapellido+"</div><div>"+asignacion+"</div></div>");
+        }
     }
+    cambiarPropiedad($("#loader"),"visibility","hidden");
 }
 
 function eliminarFilaPasajero(obj)
@@ -494,4 +493,34 @@ function cambiarPestaniaPasajero()
     cambiarPropiedad($("#cont_pasajero"),"display","block");
     quitarclase($("#p_pasajero"),"dispose");
     agregarclase($("#p_general"), "dispose");
+}
+function agregarMoviles(obj)
+{
+    if(obj.prop("checked"))
+    {
+        AGREGAR_CLIENTES.push(obj.val());
+        for(var i = 0; i < ELIMINAR_CLIENTES.length; i++)
+        {
+            if(ELIMINAR_CLIENTES[i] === obj.val())
+            {
+                ELIMINAR_CLIENTES.splice(i, 1);
+                break;
+            }
+        }
+    }
+}
+function eliminarClientes(obj)
+{
+    if(obj.prop("checked"))
+    {
+        ELIMINAR_CLIENTES.push(obj.val());
+        for(var i = 0; i < AGREGAR_CLIENTES.length; i++)
+        {
+            if(AGREGAR_CLIENTES[i] === obj.val())
+            {
+                AGREGAR_CLIENTES.splice(i, 1);
+                break;
+            }
+        }
+    }
 }

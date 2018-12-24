@@ -5,6 +5,7 @@ var AGREGAR = true;
 var PAGINA = 'MOVILES';
 var CAMPOS = ["patente","marca","nombre","modelo","anio","venRevTec","SegOb","venSegOb"];
 $(document).ready(function(){
+    PAGINA_ANTERIOR = PAGINA;
     buscarMovil();
     $("#agregar").click(function(){
         ID_MOVIL = undefined;
@@ -79,6 +80,7 @@ function agregarMovil()
         var url = urlBase + "/movil/AddMovil.php?"+data;
         var success = function(response)
         {
+            ID_MOVIL = undefined;
             cerrarSession(response);
             alertify.success("Veh&iacute;culo Agregado");
             cambiarPestaniaGeneral();

@@ -2,6 +2,7 @@
 var SERVICIOS;
 var PAGINA = 'SERVICIOS';
 $(document).ready(function(){
+    PAGINA_ANTERIOR = PAGINA;
     iniciarFecha([$("#desde"),$("#hasta")]);
     buscarServicio();
     $("#exportar").click(function(){

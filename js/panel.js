@@ -4,8 +4,9 @@ var transportistas = [];
 var clientes = [];
 var usuarios = [];
 var moviles = [];
-
+var PAGINA = "PANEL";
 $(document).ready(function(){
+    PAGINA_ANTERIOR = PAGINA;
     init();
     if(typeof POLYLINE !== "undefined")
     {

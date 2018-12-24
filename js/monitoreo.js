@@ -2,7 +2,9 @@
 var servicios_diarios = [];
 var moviles_diarios = [];
 var pasajeros_diarios = [];
+var PAGINA = "MONITOREO";
 $(document).ready(function(){
+    PAGINA_ANTERIOR = PAGINA;
     if(typeof POLYLINE !== "undefined")
     {
         POLYLINE.setMap(null);

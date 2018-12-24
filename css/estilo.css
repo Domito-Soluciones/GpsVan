@@ -395,7 +395,6 @@ select
 .boton img
 {
     position: relative;
-    /*top: 5px;*/
 }
 .pie-left
 {
@@ -579,33 +578,41 @@ select
     overflow-y: auto;
     padding-top: 10px;
 }
-.tablaCabecera,.tablaFila
+.tablaCabecera,.tablaFila,.tablaFilaInactiva
 {
     width: 100%;
     border-bottom: solid 1px #cccccc;
 }
 .tablaCabecera div
 {
-    width: 22%;
+    width: 19%;
     font-size: 15px;
     color: #0099ff;
+    text-align: center;
+    height: 20px;
+    display: inline-block;
+
+}
+.tablaFila div
+{
+    width: calc(20% - 4px);
+    font-size: 15px;
+    color: black;
     text-align: center;
     height: 20px;
     display: inline-block;
     border-left: solid 1px #cccccc;
 
 }
-.tablaFila div
+.tablaFilaInactiva div
 {
-    width: 22%;
+    width: calc(20% - 4px);
     font-size: 15px;
     color: #a7b9bd;
     text-align: center;
     height: 20px;
     display: inline-block;
-    cursor: pointer;
-    border-left: solid 1px #cccccc;
-
+    border-left: solid 1px #cccccc;   
 }
 .seleccionado
 {
@@ -710,7 +717,7 @@ select
 .cuadro_asignar
 {
     padding: 10px;
-    width: 200px;
+    width: 260px;
     height: 50px;
     border: solid 1px #0099ff;
     background-color: #999999;

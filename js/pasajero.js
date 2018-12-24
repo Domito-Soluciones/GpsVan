@@ -5,7 +5,7 @@ var AGREGAR = true;
 var PAGINA = 'PASAJEROS';
 var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","mail","cargo","nick"];
 $(document).ready(function(){
-    
+    PAGINA_ANTERIOR = PAGINA;
     buscarPasajero();
     $("#agregar").click(function(){
         quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
@@ -97,6 +97,7 @@ function agregarPasajero()
         var url = urlBase + "/pasajero/AddPasajero.php?"+data;
         var success = function(response)
         {
+            ID_PASAJERO = undefined;
             cerrarSession(response);
             alertify.success("Pasajero Agregado");
             cambiarPestaniaGeneral();

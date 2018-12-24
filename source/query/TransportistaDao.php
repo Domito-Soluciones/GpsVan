@@ -182,20 +182,12 @@ class TransportistaDao {
     {
         $conn = new Conexion();
         try {
-            $array = explode(",", $conductores);
-            for($i = 0 ; $i < count($array) ; $i++)
-            {
-                $conductor = $array[$i];
-                if($conductor !== '')
-                {
-                    $query = "UPDATE tbl_conductor SET conductor_transportista = '$transportista' WHERE conductor_rut = '$conductor'";
-                    $conn->conectar();
-                    if (mysqli_query($conn->conn,$query)) {
-                        $id = mysqli_insert_id($conn->conn);
-                    } else {
-                        echo mysqli_error($conn->conn);
-                    }
-                }
+            $query = "UPDATE tbl_conductor SET conductor_transportista = '$transportista' WHERE conductor_id IN ($conductores)";
+            $conn->conectar();
+            if (mysqli_query($conn->conn,$query)) {
+                $id = mysqli_insert_id($conn->conn);
+            } else {
+                echo mysqli_error($conn->conn);
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -205,20 +197,12 @@ class TransportistaDao {
     {
         $conn = new Conexion();
         try {
-            $array = explode(",", $moviles);
-            for($i = 0 ; $i < count($array) ; $i++)
-            {
-                $movil = $array[$i];
-                if($movil !== '')
-                {
-                    $query = "UPDATE tbl_movil SET movil_transportista = '$transportista' WHERE movil_patente = '$movil'";
-                    $conn->conectar();
-                    if (mysqli_query($conn->conn,$query)) {
-                        $id = mysqli_insert_id($conn->conn);
-                    } else {
-                        echo mysqli_error($conn->conn);
-                    }
-                }
+            $query = "UPDATE tbl_movil SET movil_transportista = '$transportista' WHERE movil_id IN ($moviles)";
+            $conn->conectar();
+            if (mysqli_query($conn->conn,$query)) {
+                $id = mysqli_insert_id($conn->conn);
+            } else {
+                echo mysqli_error($conn->conn);
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

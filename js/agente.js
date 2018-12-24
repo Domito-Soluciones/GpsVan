@@ -5,6 +5,7 @@ var AGREGAR = true;
 var PAGINA = 'AGENTES';
 var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","mail","cargo","perfil","nick","password","password2"];
 $(document).ready(function(){
+   PAGINA_ANTERIOR = PAGINA;
     buscarAgente();
     $("#agregar").click(function(){
         quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
@@ -99,6 +100,7 @@ function agregarAgente()
         var url = urlBase + "/agente/AddAgente.php?"+data;
         var success = function(response)
         {
+            ID_AGENTE = undefined;
             cerrarSession(response);
             alertify.success("Administrador Agregado");
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
@@ -164,7 +166,6 @@ function modificarAgente()
             alertify.success("Administrador Modificado");
             resetFormulario();
             buscarAgente();
-            marcarFilaActiva(ID_AGENTE);
         };
         postRequest(url,success);
     }

@@ -224,9 +224,9 @@
                 <div id="contenedor_contrato">
 
                 </div>
-                    <form id="formContrato" enctype="multipart/form-data" method="POST" 
-                          onsubmit="subirFichero(event,$('#formContrato'),'source/util/subirFichero.php?tipo=pdf&archivo='+$('#contratoOculta').val(),succesSubirContrato())">
-                        <input name="contrato" type="file" class="file" id="contratoConductor" accept="application/pdf" onchange="enviarFormFile($('#contratoConductor').val(),$('#contratoOculta'),$('#formContrato'))">         
+                <form id="formContrato" enctype="multipart/form-data" method="POST" 
+                      onsubmit="subirFichero(event,$('#formContrato'),'source/util/subirFichero.php?tipo=pdf&archivo='+$('#contratoOculta').val(),succesSubirContrato())">
+                    <input name="contrato" type="file" class="file" id="contratoConductor" accept="application/pdf" onchange="enviarFormFile($('#contratoConductor').val(),$('#contratoOculta'),$('#formContrato'))">         
                 </form>
                 <div class="boton" id="adjuntarContrato" onclick="abrirFile(event,$('#contratoConductor:hidden'))">
                     <img src="img/adjuntar.svg" width="12" height="12">
