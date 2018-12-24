@@ -79,7 +79,7 @@ function agregarCliente()
     {
         var data = "razon="+razon+"&tipo="+tipo+"&rut="+rut+"&direccion="+direccion+"&nombre="+nombre+
                 "&telefono="+telefono+"&mail="+mail+"&mail2="+mail2+"&centros="+cc+"&clientes="+AGREGAR_CLIENTES+
-                "&delCliente="+ELIMINAR_CLIENTES
+                "&delCliente="+ELIMINAR_CLIENTES;
         var url = urlBase+"/cliente/AddCliente.php?"+data;
         var success = function(response)
         {
