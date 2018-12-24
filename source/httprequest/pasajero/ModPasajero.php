@@ -12,8 +12,7 @@ $rut = $_REQUEST['rut'];
 $nick = $_REQUEST['nick'];
 $password = '';
 if(isset($_REQUEST['password']))
-{;
-$pasajero->setId($id);
+{
     $password = $_REQUEST['password'];
 }
 $telefono = $_REQUEST['telefono'];

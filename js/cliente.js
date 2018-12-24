@@ -4,8 +4,8 @@ var PASAJEROS;
 var AGREGAR = true;
 var PAGINA = 'CLIENTES';
 var ID_CLIENTE;
-var AGREGAR_CLIENTES = [];
-var ELIMINAR_CLIENTES = [];
+var AGREGAR_PASAJEROS = [];
+var ELIMINAR_PASAJEROS = [];
 var CAMPOS = ["rut","razon","tipo","direccion","nombre","telefono","mail","mail2","centros"];
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
@@ -78,8 +78,8 @@ function agregarCliente()
     if(validarTipoDato())
     {
         var data = "razon="+razon+"&tipo="+tipo+"&rut="+rut+"&direccion="+direccion+"&nombre="+nombre+
-                "&telefono="+telefono+"&mail="+mail+"&mail2="+mail2+"&centros="+cc+"&clientes="+AGREGAR_CLIENTES+
-                "&delCliente="+ELIMINAR_CLIENTES
+                "&telefono="+telefono+"&mail="+mail+"&mail2="+mail2+"&centros="+cc+"&pasajeros="+AGREGAR_PASAJEROS+
+                "&delpasajero="+ELIMINAR_PASAJEROS
         var url = urlBase+"/cliente/AddCliente.php?"+data;
         var success = function(response)
         {
@@ -91,6 +91,7 @@ function agregarCliente()
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
             resetFormulario();
             buscarCliente();
+            buscarPasajeros();
         };
         postRequest(url,success);
     }
@@ -117,8 +118,8 @@ function modificarCliente()
     if(validarTipoDato())
     {
         var data = "id="+ID_CLIENTE+"&razon="+razon+"&tipo="+tipo+"&rut="+rut+"&direccion="+direccion+"&nombre="+nombre
-                +"&telefono="+telefono+"&mail="+mail+"&mail2="+mail2+"&centros="+cc+"&clientes="+AGREGAR_CLIENTES+
-                "&delCliente="+ELIMINAR_CLIENTES;
+                +"&telefono="+telefono+"&mail="+mail+"&mail2="+mail2+"&centros="+cc+"&pasajeros="+AGREGAR_PASAJEROS+
+                "&delPasajero="+ELIMINAR_PASAJEROS;
         var url = urlBase + "/cliente/ModCliente.php?"+data;
         var success = function(response)
         {
@@ -128,6 +129,7 @@ function modificarCliente()
             alertify.success("Cliente Modificado");
             resetFormulario();
             buscarCliente();
+            buscarPasajeros();
         };
         postRequest(url,success);
     }
@@ -362,52 +364,6 @@ function iniciarPestaniasCliente()
         });
     });
 }
-function encontrarPasajero(){
-    $("#resultadoPasajero").html("");
-    var rutPasajero = $("#rutPasajero").val();
-    if(validarRut(rutPasajero))
-    {
-        for(var i = 0 ; i < PASAJEROS.length; i++)
-        {
-            var rut = PASAJEROS[i].pasajero_rut;
-            if(rutPasajero === rut)
-            {
-                var nombre = PASAJEROS[i].pasajero_nombre;
-                var papellido = PASAJEROS[i].pasajero_papellido;
-                var mapellido = PASAJEROS[i].pasajero_mapellido;
-                $("#resultadoPasajero").append(
-                    "<div class=\"cuadro_asignar\" onclick=\"agregarPasajero('"+
-                    rut+"','"+nombre+"','"+papellido+"','"+mapellido+"')\">\n\
-                        <div>Rut: "+rut+"</div><div>\n\
-                             Nombre: "+nombre+"</div><div>\n\
-                        </div>");
-            }
-            
-        }
-    }
-    else
-    {
-        $("#rutPasajero").val("");
-        $("#rutPasajero").focus();
-        $("#resultadoPasajero").append("No hay resultados para su busqueda");
-        alertify.error('Rut invalido');
-    }
-}
-
-function agregarPasajero(rut,nombre,papellido,mapellido)
-{
-    for(var i = 0; i < ARRAY_ELIMINAR_PASAJEROS.length;i++) {
-        if(rut === ARRAY_ELIMINAR_PASAJEROS[i])
-        {
-            delete ARRAY_ELIMINAR_PASAJEROS[i];
-        }
-    };
-    $("#rutPasajero").val("");
-    $("#data-"+rut).remove();
-    $("#tablaContenidoPasajero").append("<div id=\""+rut+"\" class=\"tablaFila\"><div class=\"cabecera_fila\"><img onclick=\"eliminarFilaPasajero('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"20\" height=\"20\"></div><div>"
-            +rut+"</div><div>"+nombre+"</div><div>"+papellido+"</div><div>"+mapellido+"</div></div>");
-    $(".cuadro_asignar").remove();
-}
 
 function buscarPasajeros()
 {
@@ -459,7 +415,7 @@ function cargarPasajeros()
                     var c = CLIENTES[j];
                     if(c.cliente_id === cliente)
                     {
-                        asignacion = "Asignado a "+c.cliente_nombre;
+                        asignacion = "Asignado a "+c.cliente_razon;
                         break;
                     }
                 }
@@ -498,12 +454,12 @@ function agregarMoviles(obj)
 {
     if(obj.prop("checked"))
     {
-        AGREGAR_CLIENTES.push(obj.val());
-        for(var i = 0; i < ELIMINAR_CLIENTES.length; i++)
+        AGREGAR_PASAJEROS.push(obj.val());
+        for(var i = 0; i < ELIMINAR_PASAJEROS.length; i++)
         {
-            if(ELIMINAR_CLIENTES[i] === obj.val())
+            if(ELIMINAR_PASAJEROS[i] === obj.val())
             {
-                ELIMINAR_CLIENTES.splice(i, 1);
+                ELIMINAR_PASAJEROS.splice(i, 1);
                 break;
             }
         }
@@ -513,12 +469,12 @@ function eliminarClientes(obj)
 {
     if(obj.prop("checked"))
     {
-        ELIMINAR_CLIENTES.push(obj.val());
-        for(var i = 0; i < AGREGAR_CLIENTES.length; i++)
+        ELIMINAR_PASAJEROS.push(obj.val());
+        for(var i = 0; i < AGREGAR_PASAJEROS.length; i++)
         {
-            if(AGREGAR_CLIENTES[i] === obj.val())
+            if(AGREGAR_PASAJEROS[i] === obj.val())
             {
-                AGREGAR_CLIENTES.splice(i, 1);
+                AGREGAR_PASAJEROS.splice(i, 1);
                 break;
             }
         }

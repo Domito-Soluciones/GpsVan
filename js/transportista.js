@@ -135,7 +135,8 @@ function modificarTransportista()
             cambiarPestaniaGeneral();
             resetFormulario();
             buscarTransportista();
-
+            buscarConductores();
+            buscarMoviles();
         };
         postRequest(url,success);
     }

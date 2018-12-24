@@ -330,12 +330,12 @@ function abrirModificar(id)
         if(imagen !== '')
         {
             $("#imagenOculta").val(imagen);
-            cambiarPropiedad($(".imagen"),"background-image","url('source/util/img/"+imagen+"')");
+            cambiarPropiedad($(".imagen"),"background-image","url('source/util/img/"+$("#rut").val()+"_"+imagen+"')");
         }
         if(contrato !== '')
         {
             $("#contratoOculta").val(contrato);
-            var enlace = "<a href=\"source/util/pdf/"+contrato+"\" target=\"_blanck\">Ver</a>";
+            var enlace = "<a href=\"source/util/pdf/"+$("#rut").val()+"_"+contrato+"\" target=\"_blanck\">Ver</a>";
             $("#contenedor_contrato").html(enlace);
         }
         buscarMovil(conductor.conductor_movil);
@@ -375,7 +375,7 @@ function succesSubirImagen()
             return;
         }
     }
-    cambiarPropiedad($(".imagen"),"background-image","url('source/util/img/"+archivo+"')");
+    cambiarPropiedad($(".imagen"),"background-image","url('source/util/img/"+$("#rut").val()+"_"+archivo+"')");
 }
 function succesSubirContrato()
 {
@@ -387,7 +387,7 @@ function succesSubirContrato()
     }
     else
     {
-        var enlace = "<a href=\"source/util/pdf/"+archivo+"\" target=\"_blanck\">Ver</a>";
+        var enlace = "<a href=\"source/util/pdf/"+$("#rut").val()+"_"+archivo+"\" target=\"_blanck\">Ver</a>";
         $("#contenedor_contrato").html(enlace);
     }
 }

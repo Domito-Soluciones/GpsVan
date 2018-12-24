@@ -112,7 +112,7 @@
         <div class="info">(recomendado 150x150)</div>
         <input type="hidden" id="imagenOculta">
         <form id="formImagen" enctype="multipart/form-data" method="POST" 
-              onsubmit="subirFichero(event,$('#formImagen'),'source/util/subirFichero.php?tipo=img&archivo='+$('#imagenOculta').val(),succesSubirImagen())">
+              onsubmit="subirFichero(event,$('#formImagen'),'source/util/subirFichero.php?nombre='+$('#rut').val()+'&tipo=img&archivo='+$('#imagenOculta').val(),succesSubirImagen())">
             <input name="foto" type="file" class="file" id="fotoConductor" accept="image/x-png,image/jpeg" onchange="enviarFormFile($('#fotoConductor').val(),$('#imagenOculta'),$('#formImagen'))">
         </form>
         <div class="boton" id="adjuntarImagen" onclick="abrirFile(event,$('#fotoConductor:hidden'))">
@@ -225,7 +225,7 @@
 
                 </div>
                 <form id="formContrato" enctype="multipart/form-data" method="POST" 
-                      onsubmit="subirFichero(event,$('#formContrato'),'source/util/subirFichero.php?tipo=pdf&archivo='+$('#contratoOculta').val(),succesSubirContrato())">
+                      onsubmit="subirFichero(event,$('#formContrato'),'source/util/subirFichero.php?nombre='+$('#rut').val()+'&tipo=pdf&archivo='+$('#contratoOculta').val(),succesSubirContrato())">
                     <input name="contrato" type="file" class="file" id="contratoConductor" accept="application/pdf" onchange="enviarFormFile($('#contratoConductor').val(),$('#contratoOculta'),$('#formContrato'))">         
                 </form>
                 <div class="boton" id="adjuntarContrato" onclick="abrirFile(event,$('#contratoConductor:hidden'))">

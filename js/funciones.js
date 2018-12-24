@@ -269,6 +269,8 @@ function resetFormulario()
     
 }
 
+
+
 function resetFormularioEliminar(pagina) 
 {
     MODIFICADO = false;

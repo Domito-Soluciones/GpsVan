@@ -4,6 +4,7 @@ var transportistas = [];
 var clientes = [];
 var usuarios = [];
 var moviles = [];
+var SERVICIOS_PENDIENTES = [];
 var PAGINA = "PANEL";
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
@@ -75,6 +76,7 @@ $(document).ready(function(){
 
 function init()
 {
+    C
     cargarClientes(false);
     cargarTransportistas(false);
     cargarUsuarios(false);
@@ -428,4 +430,27 @@ function validarInexistencia(val,array)
         }
     }
     return true;
+}
+
+function cargarServiciosPendientes()
+{
+    var url = urlBase + "/servicio/GetServiciosPendientes";
+    var success = function(response)
+    {
+        $("#lmovil").html("");
+        for(var i = 0 ; i < response.length ; i++)
+        {
+            var nombre = response[i].movil_nombre;
+            if(html)
+            {
+                $("#lmovil").append("<div class=\"option-datalist\" onclick=\"selecionar('"+nombre+"','movil')\>"+nombre+"</div>");
+            }
+            else
+            {
+                moviles.push(nombre);
+            }
+
+        }
+    };
+    getRequest(url,success,false);
 }
