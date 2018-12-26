@@ -17,6 +17,7 @@ class Servicio {
     private $agente;
     private $fecha;
     private $estado;
+    
     function getId() {
         return $this->id;
     }

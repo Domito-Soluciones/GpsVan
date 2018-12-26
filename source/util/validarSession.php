@@ -1,7 +1,10 @@
 <?php
 session_start();
-if(!isset($_SESSION['agente']))
+if(!isset($_REQUEST['app']))
 {
-    print('return');
-    exit();
+    if(!isset($_SESSION['agente']))
+    {
+        print('return');
+        exit();
+    }
 }

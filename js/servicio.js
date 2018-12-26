@@ -1,4 +1,4 @@
-/* global urlBase, alertify */
+/* global urlBase, alertify, CREADO, EN_PROCCESO_DE_ASIGNACION, ASIGNADO, ACEPTADO, EN_PROGRESO, FINALIZADO */
 var SERVICIOS;
 var PAGINA = 'SERVICIOS';
 $(document).ready(function(){
@@ -6,10 +6,14 @@ $(document).ready(function(){
     iniciarFecha([$("#desde"),$("#hasta")]);
     buscarServicio();
     $("#exportar").click(function(){
-
+        exportarServicio(); 
     });
     
-    $("#busqueda").keyup(function(){
+    $("#buscar").click(function(){
+        buscarServicio(); 
+    });
+    
+    $("#servicio").keyup(function(){
         buscarServicio(); 
     });
 });
@@ -42,6 +46,11 @@ function buscarServicio()
     getRequest(url,success);
 }
 
+function exportarServicio()
+{
+    
+}
+
 function abrirBuscador(id)
 {
     AGREGAR = false;
@@ -60,7 +69,7 @@ function abrirBuscador(id)
         $("#idServicio").html(servicio.servicio_id);
         $("#clienteServicio").html(servicio.servicio_cliente);
         $("#pasajeroServicio").html(servicio.servicio_pasajero);
-        $("#estadoServicio").html(servicio.servicio_estado);
+        $("#estadoServicio").html(obtenerEstadoServicio(servicio.servicio_estado));
         $("#tipoServicio").html(servicio.servicio_tipo);
         $("#transportistaServicio").html(servicio.servicio_transportista);
         $("#conductorServicio").html(servicio.servicio_conductor);
@@ -118,4 +127,32 @@ function iniciarPestanias()
         agregarclase($("#p_transportista"),"dispose");
         agregarclase($("#p_viaje"),"dispose");
     });
+}
+
+function obtenerEstadoServicio(servicio)
+{
+    if(servicio === CREADO)
+    {
+        return "Creado"; 
+    }
+    else if(servicio === EN_PROCCESO_DE_ASIGNACION)
+    {
+        return "En proceso de asignaci&oacute;n";            
+    }
+    else if(servicio === ASIGNADO)
+    {
+        return "Asignado";     
+    }
+    else if(servicio === ACEPTADO)
+    {
+        return "Confirmado";            
+    }
+    else if(servicio === EN_PROGRESO)
+    {
+        return "En proceso";
+    }
+    else if(servicio === FINALIZADO)
+    {
+        return "Finalizado"; 
+    }
 }

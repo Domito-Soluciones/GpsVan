@@ -9,11 +9,31 @@ $partida = urlencode($_REQUEST['partida']);
 $destino = urlencode($_REQUEST['destino']);
 $cliente = $_REQUEST['cliente'];
 $usuario = $_REQUEST['usuario'];
-$transportista = $_REQUEST['transportista'];
-$movil = $_REQUEST['movil'];
-$tipo = $_REQUEST['tipo'];
-$tarifa = $_REQUEST['tarifa'];
-$agente = $_SESSION['agente'];
+$transportista = '';
+if(isset($_REQUEST['transportista']))
+{
+    $transportista = $_REQUEST['transportista'];    
+}
+$movil = '';
+if(isset($_REQUEST['movil']))
+{
+    $movil = $_REQUEST['movil'];    
+}
+$tipo = '';
+if(isset($_REQUEST['tipo']))
+{
+    $tipo = $_REQUEST['tipo'];    
+}
+$tarifa = 0;
+if(isset($_REQUEST['tarifa']))
+{
+    $tarifa = $_REQUEST['tarifa'];    
+}
+$agente = 0;
+if(isset($_SESSION['agente']))
+{
+    $agente = $_SESSION['agente'];
+}
 $servicio = new Servicio();
 $servicio->setPartida($partida);
 $servicio->setDestino($destino);

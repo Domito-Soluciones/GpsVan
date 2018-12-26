@@ -280,7 +280,7 @@ select
 
 .asignacion_buscador
 {
-    margin-left: 30% !important;
+    /*margin-left: 30% !important;*/
     width: calc(70% - 1px) !important;
     height: calc(100% - 1px);
 }
@@ -890,6 +890,12 @@ select
     background-color: white;
     width: 300px;
 }
+.datalist-invisible {
+    position:absolute;
+    display: none;
+    background-color: white;
+    width: 300px;
+}
 .option-datalist
 {
     padding-top: 10px;
@@ -908,15 +914,43 @@ select
     margin: 1px;
 }
 
+.titulo_servicios_pendientes
+{
+    width: 30px;
+    height: 200px;
+    line-height: 30px;
+    text-align: center;
+    background-color: #8a9cb2;
+    color: white;
+    writing-mode: vertical-lr;
+    position: absolute;
+    float: right;
+    cursor: pointer;
+    top:130px;
+    left: calc(100% - 30px)
+}
+
 .servicios_pendientes
 {
+    display: none;
+    width: 300px;
+    height: calc(100% - 60px);
+    text-align: center;
+    background-color: #FFFFFF;
+    position: absolute;
+    top:60px;
+    left:calc(100% - 300px);
+    float: right;
+    z-index: 2;
+}
+.contenedor_servicios
+{
+    width: 100%;
     height: auto;
 }
-.servicios_pendientes_contenido
+.opcion_servicios
 {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    text-align: center;
-    height: auto;
-    color:#0099ff;
+    width: 150px;
+    height: 30px;
+    cursor: pointer;
 }

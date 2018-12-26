@@ -7,6 +7,7 @@
         <div class="contenedor-lateral buscador-asignacion">
             <div class="buscador_titulo">
                     Nuevo Servicio
+                    <input type="hidden" id="idServicio" value="">
             </div>
             <div class="buscador barra_asignacion">
                 <div class="contenedor-ubicacion">
@@ -15,7 +16,7 @@
                     </div>
                     <div>
                         <div class="cont-pre-monitor">
-                            Partida
+                            Partida<div id="test" style="width: 100px;height: 100px"></div>
                         </div>
                         <div class="input-monitoreo">
                             <input type="text" class="input_asignar" id="partida" placeholder="Ej: Av los pinos 123">
@@ -50,7 +51,7 @@
                         </div>
                          <div class="input-monitoreo">
                             <input type="text" class="input_asignar" id="cliente" placeholder="Ej: Falabella" onkeyup="cargarClientes()">
-                            <div class="datalist-visible" id="lcliente"></div>
+                            <div class="datalist-invisible" id="lcliente"></div>
                         </div>
                     </div>
                     <div>
@@ -59,7 +60,7 @@
                         </div>
                          <div class="input-monitoreo">
                             <input type="text" class="input_asignar" id="usuario" placeholder="Ej: Juan Perez"  autocomplete="off">
-                            <div class="datalist-visible" id="lusuario"></div>
+                            <div class="datalist-invisible" id="lusuario"></div>
                         </div>
                     </div>
                 </div>
@@ -73,7 +74,7 @@
                         </div>
                          <div class="input-monitoreo">
                             <input type="text" class="input_asignar" id="transportista" placeholder="Ej: T100" onkeyup="cargarTransportistas()">
-                            <div class="datalist-visible" id="ltransportista"></div>
+                            <div class="datalist-invisible" id="ltransportista"></div>
                         </div>
                     </div>
                     <div>
@@ -82,7 +83,7 @@
                         </div>
                         <div class="input-monitoreo">
                             <input type="text" class="input_asignar" id="vehiculo" placeholder="Ej: M100">
-                            <div class="datalist-visible"  id="lmovil"></div>
+                            <div class="datalist-invisible"  id="lvehiculo"></div>
                         </div>
                     </div>
                     <div>
@@ -91,10 +92,10 @@
                         </div>
                         <div class="input-monitoreo">
                             <input type="text" class="input_asignar" list="ltipo" id="tipo" placeholder="Ej: Recogida">
-                            <div class="datalist-visible" id="ltipo">
-                                <option value="Recogida">Recogida</option>
-                                <option value="Reparto">Reparto</option>
-                                <option value="Servicio Especial">Servicio especial</option>
+                            <div class="datalist-invisible" id="ltipo">
+                                <div class="option-datalist" onclick="selecionar('Recogida','tipo')">Recogida</div>
+                                <div class="option-datalist" onclick="selecionar('Reparto','tipo')">Reparto</div>
+                                <div class="option-datalist" onclick="selecionar('Servicio Especial','tipo')">Servicio Especial</div>
                             </div>
                         </div>
                     </div>
@@ -103,17 +104,10 @@
                             Tarifa
                         </div>
                         <div class="input-monitoreo">
-                            <input type="text" class="input_asignar" list="ltarifa" id="tarifas" placeholder="Ej: 2000">
-                            <datalist id="ltarifa">
-                                <option value="1000">1000</option>
-                                <option value="3000">3000</option>
-                                <option value="5000">5000</option>
-                                <option value="7000">7000</option>
-                                <option value="10000">10000</option>
-                                <option value="15000">15000</option>
-                                <option value="20000">20000</option>
-                                <option value="30000">30000</option>
-                            </datalist>
+                            <input type="text" class="input_asignar" list="ltarifa" id="tarifas" placeholder="Ej: Tarifa 1">
+                            <div class="datalist-invisible" id="ltarifa">
+                                
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -129,16 +123,19 @@
                 Borrar
             </div>
         </div>
-        <div class="servicios_pendientes">
-            <div class="buscador_titulo">
-                    Servicios Pendientes
-            </div>
-            <div class="servicios_pendientes_contenido">
-                No hay servicios pendientes por asignar
-            </div>
-        </div>
         <div class="contenedor_central asignacion_buscador" id="contenedor_mapa">
             
+        </div>
+        <div class="titulo_servicios_pendientes" id="titulo_servicios_pendientes">
+            Servicios Pendientes
+        </div>
+        <div class="servicios_pendientes" id="servicios_pendientes">
+            <div class="buscador_titulo">
+                Servicios Pendientes
+            </div>
+            <div class="contenedor_servicios" id="contenedor_servicios">
+                No hay servicios pendientes
+            </div>
         </div>
     </body>
 </html>

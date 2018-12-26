@@ -3,7 +3,9 @@ include '../../util/validarPeticion.php';
 
 include '../../conexion/Conexion.php';
 include '../../dominio/ServicioDetalle.php';
+
 class ServicioDao {
+    
     public function addServicio($servicio)
     {
         $id = 0;
@@ -81,25 +83,6 @@ class ServicioDao {
         return $id;
     }
     
-    public function getIdServicios($id)
-    {
-        $array = array();
-        $conn = new Conexion();
-        try {
-            $query = "SELECT servicio_id FROM tbl_servicio WHERE servicio_id like '".$id."%'"; 
-            $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
-            while($row = mysqli_fetch_array($result)) {
-                $servicio = new Servicio();
-                $servicio->setId($row["servicio_id"]);          
-                array_push($array, $servicio);
-            }
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-        return $array;
-    }
-    
     public function getServicios($busqueda,$desde,$hasta)
     {
         $array = array();
@@ -130,6 +113,7 @@ class ServicioDao {
                 $servicio->setAgente($row["servicio_agente"]);
                 $date = new DateTime($row["servicio_fecha"]);
                 $servicio->setFecha(date_format($date, 'd-m-Y H:i:s'));
+                $servicio->setEstado($row["servicio_estado"]);
                 array_push($array, $servicio);
             }
         } catch (Exception $exc) {
@@ -225,25 +209,25 @@ class ServicioDao {
     }
     public function getServicioPorAsignar()
     {
+        $array = array();
         $conn = new Conexion();
         try {
-            $servicio = new Servicio();            
-            $query = "SELECT * FROM tbl_servicio WHERE servicio_movil = '' AND servicio_estado NOT IN (2,3) ORDER BY servicio_fecha LIMIT 1";
+            $query = "SELECT * FROM tbl_servicio WHERE servicio_movil = '' AND servicio_estado = 0 ORDER BY servicio_fecha";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query); 
             while($row = mysqli_fetch_array($result)) {
+                $servicio = new Servicio();            
                 $servicio->setId($row["servicio_id"]);
                 $servicio->setPartida($row["servicio_partida"]);
-                $servicio->setPartidaId($row["servicio_partida_id"]);
                 $servicio->setDestino($row["servicio_destino"]);
-                $servicio->setDestinoId($row["servicio_destino_id"]);
                 $servicio->setCliente($row["servicio_cliente"]);
                 $servicio->setUsuario_nombre($row["servicio_usuario"]);
+                array_push($array, $servicio);
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
-        return $servicio;
+        return $array;
     }
     
     public function desAsignarServicio($id)
@@ -332,12 +316,12 @@ class ServicioDao {
         return $id;
     }
     
-    public function realizarServicio($idServicio)
+    public function cambiarEstadoServicio($idServicio,$estado)
     {
-         $id = 0;
+        $id = 0;
         $conn = new Conexion();
         try {
-            $query = "UPDATE tbl_servicio SET servicio_estado = 1 WHERE servicio_id = $idServicio"; 
+            $query = "UPDATE tbl_servicio SET servicio_estado = $estado WHERE servicio_id = $idServicio"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -347,23 +331,6 @@ class ServicioDao {
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
-        return $id;
-    }
-    public function cancelarServicio($idServicio)
-    {
-         $id = 0;
-        $conn = new Conexion();
-        try {
-            $query = "UPDATE tbl_servicio SET servicio_estado = 3 WHERE servicio_id = $idServicio"; 
-            $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
-                $id = mysqli_insert_id($conn->conn);
-            } else {
-                echo mysqli_error($conn->conn);
-            }           
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-        return $id;
+        return $idServicio;
     }
 }

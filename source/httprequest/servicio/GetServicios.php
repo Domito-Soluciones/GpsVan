@@ -32,7 +32,6 @@ for ($i = 0 ; $i < count($servicios); $i++)
     $servicioTarifa = $servicios[$i]->getTarifa();
     $servicioAgente = $servicios[$i]->getAgente();
     $servicioFecha = $servicios[$i]->getFecha();
-    //if($servicio->getEstado() == 0)
     $servicioEstado = $servicios[$i]->getEstado();
     echo "{\"servicio_id\":\"".$servicioId."\","
         . "\"servicio_partida\":\"".$servicioPartida."\","

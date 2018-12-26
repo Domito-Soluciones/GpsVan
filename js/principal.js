@@ -13,6 +13,13 @@ var DIRECTIONS_API = "https://maps.googleapis.com/maps/api/directions/json?";
 var PLACES_API = "https://maps.googleapis.com/maps/api/place/autocomplete/json?";
 var PAGINA_ANTERIOR;
 
+var CREADO = "0";
+var EN_PROCCESO_DE_ASIGNACION = "1";
+var ASIGNADO = "2";
+var ACEPTADO = "3";
+var EN_PROGRESO = "4";
+var FINALIZADO = "5";
+
 $(document).ready(function(){
     $("#menu").load("menu.html", function( response, status, xhr ) {
         agregarclase($("#principal"),"menu-activo");

@@ -37,7 +37,7 @@ if($cliente->getId() > 0)
     }
     if($delPasajero != '')
     {
-        $clienteDao->asociarConductores(0,$delConductor);
+        $clienteDao->asociarPasajeros(0,$delPasajero);
     }
 }
 echo "{\"cliente_id\":\"".$cliente->getId()."\"}";

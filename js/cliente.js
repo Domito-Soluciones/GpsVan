@@ -1,4 +1,4 @@
-/* global urlBase, alertify */
+/* global urlBase, alertify, ARRAY_ELIMINAR_PASAJEROS */
 var CLIENTES;
 var PASAJEROS;
 var AGREGAR = true;
@@ -350,18 +350,6 @@ function iniciarPestaniasCliente()
         quitarclase($(this),"dispose");
         agregarclase($("#p_general"),"dispose");
         cargarPasajeros();
-        $("#rutPasajero").on('keydown',function(e){
-            if(isTeclaEnter(e))
-            {
-                encontrarPasajero();
-            }
-        });
-        $("#rutPasajero").on('blur',function(){
-            if($(this).val() !== '')
-            {
-                encontrarPasajero();
-            }
-        });
     });
 }
 
@@ -400,13 +388,13 @@ function cargarPasajeros()
             var claseAsignacion = "tablaFila";
             if(ID_CLIENTE === cliente)
             {
-                asignacion = "<input type=\"radio\" onchange=\"agregarMoviles($(this))\" name=\""+rut+"\" value=\""+id+"\" checked>SI\n\
-                              <input type=\"radio\" onchange=\"eliminarMoviles($(this))\" name=\""+rut+"\" value=\""+id+"\">NO";
+                asignacion = "<input type=\"radio\" onchange=\"agregarPasajeros($(this))\" name=\""+rut+"\" value=\""+id+"\" checked>SI\n\
+                              <input type=\"radio\" onchange=\"eliminarPasajeros($(this))\" name=\""+rut+"\" value=\""+id+"\">NO";
             }
             else if(cliente === '0')
             {
-                asignacion = "<input type=\"radio\" onchange=\"agregarMoviles($(this))\" name=\""+rut+"\" value=\""+id+"\">SI\n\
-                              <input type=\"radio\" onchange=\"eliminarMoviles($(this))\" name=\""+rut+"\" value=\""+id+"\" checked>NO";
+                asignacion = "<input type=\"radio\" onchange=\"agregarPasajeros($(this))\" name=\""+rut+"\" value=\""+id+"\">SI\n\
+                              <input type=\"radio\" onchange=\"eliminarPasajeros($(this))\" name=\""+rut+"\" value=\""+id+"\" checked>NO";
             }
             else if (ID_CLIENTE !== cliente)
             {
@@ -450,7 +438,7 @@ function cambiarPestaniaPasajero()
     quitarclase($("#p_pasajero"),"dispose");
     agregarclase($("#p_general"), "dispose");
 }
-function agregarMoviles(obj)
+function agregarPasajeros(obj)
 {
     if(obj.prop("checked"))
     {
@@ -465,7 +453,7 @@ function agregarMoviles(obj)
         }
     }
 }
-function eliminarClientes(obj)
+function eliminarPasajeros(obj)
 {
     if(obj.prop("checked"))
     {
