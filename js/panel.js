@@ -26,6 +26,10 @@ $(document).ready(function(){
         ocultarDatalistNormal($("#ltipo"));
         ocultarDatalistNormal($("#ltarifa"));
     });
+    $(".buscador").click(function(){
+        $("#partidal").html("");
+        $("#destinol").html("");
+    });
     $("#contenedor_mapa").click(function(){
         cambiarPropiedad($("#servicios_pendientes"),"display","none");        
     });
@@ -39,15 +43,23 @@ $(document).ready(function(){
     $("#cliente").keyup(function () {
         cargarClientes();
     });
+    $("#cliente").on('input',function () {
+        cargarClientes();
+    });
     $("#cliente").click(function (e) {
         e.stopPropagation();
         mostrarDatalistNormal($("#lcliente"));
     });
     $("#cliente").on('blur',function () {
+        if($("#cliente").val() === "")
+        {
+            cargarPasajeros();
+        }
         var noExiste = validarInexistencia($("#cliente").val(),clientes);
         if(noExiste)
         {
             alertify.error("Cliente inexistente");
+            mostrarDatalistNormal($("#lcliente"));
             $("#cliente").val("");
             
         }
@@ -70,7 +82,7 @@ $(document).ready(function(){
         }
     });
     $("#usuario").on('input',function () {
-        cargarUsuarios();
+        cargarPasajeros();
     });
     
     $("#usuario").click(function (e) {
@@ -123,7 +135,7 @@ function init()
 {
     cargarClientes();
     cargarTransportistas();
-    cargarUsuarios();
+    cargarPasajeros();
     cargarMoviles();
     cargarTarifas();
 }
@@ -141,23 +153,29 @@ function cargarClientes()
             $("#lcliente").append("<div class=\"option-datalist\" onclick=\"selecionar('"+nombre+"','cliente')\">"+nombre+"</div>");
             clientes.push(nombre);
         }
+        if(response.length > 0 && $("#cliente").val() !== "")
+        {
+            mostrarDatalistNormal($("#lcliente"));
+        }
     };
     getRequest(url,success,false);
 }
 
-function cargarUsuarios(html = true)
+function cargarPasajeros()
 {
     var busqueda = $('#cliente').val();
+    cargandoInput($("#usuario"),"pasajeros");
     var url = urlBase + "/pasajero/GetPasajeros.php?busqueda="+busqueda;
     var success = function(response)
     {
         $("#lusuario").html("");
         for(var i = 0 ; i < response.length ; i++)
         {
-            var nombre = response[i].pasajero_nombre;
+            var nombre = response[i].pasajero_nombre + " " + response[i].pasajero_papellido;
             $("#lusuario").append("<div class=\"option-datalist\" onclick=\"selecionar('"+nombre+"','usuario')\">"+nombre+"</div>");
             usuarios.push(nombre);
         }
+        respuestaCargandoInput($("#usuario"));
     };
     getRequest(url,success,false);
 }
@@ -191,7 +209,7 @@ function cargarMoviles()
         for(var i = 0 ; i < response.length ; i++)
         {
             var nombre = response[i].movil_nombre;
-            $("#lvehiculo").append("<div class=\"option-datalist\" onclick=\"selecionar('"+nombre+"','movil')\">"+nombre+"</div>");
+            $("#lvehiculo").append("<div class=\"option-datalist\" onclick=\"selecionar('"+nombre+"','vehiculo')\">"+nombre+"</div>");
             moviles.push(nombre);
         }
     };
@@ -208,7 +226,7 @@ function cargarTarifas()
         for(var i = 0 ; i < response.length ; i++)
         {
             var nombre = response[i].tarifa_nombre;
-            $("#ltarifa").append("<div class=\"option-datalist\" onclick=\"selecionar('"+nombre+"','tarifa')\">"+nombre+"</div>");
+            $("#ltarifa").append("<div class=\"option-datalist\" onclick=\"selecionar('"+nombre+"','tarifas')\">"+nombre+"</div>");
             tarifas.push(nombre);
         }
     };
@@ -245,40 +263,6 @@ function agregarServicio()
     };
     postRequest(url,success);
 }
-
-function buscarServicio()
-{
-    var id = $("#ids").val();
-    var cliente = $("#cliente").val();
-    var usuario = $("#usuario").val();
-    var transportista = $("#transportista").val();
-    var movil = $("#movil").val();
-    var desde = $("#tipo").val();
-    var hasta = $("#tarifa").val();
-    var limit = 1;
-    var array = [id,cliente,usuario,transportista,movil,desde,hasta];
-    if(!validarCamposAnd(array))
-    {
-        alertify.error("Ingrese algun criterio de busqueda");
-        return;
-    }
-    var data = "id="+id+"&cliente="+cliente+"&usuario="
-            +usuario+"&transportista="+transportista+"&movil="+movil+"&desde="+desde+"&hasta="+hasta+"&limit="+limit;
-    var url = urlBase + "/servicio/Servicios.php?"+data;
-    var success = function(response)
-    {
-        cerrarSession(response);
-        for(var i = 0 ; i < response.length; i++)
-        {
-            alertify.success("servicio encontrado con id "+response[i].servicio_id);
-            calculateAndDisplayRoute(response[i].servicio_partida, response[i].servicio_destino);
-
-        }
-        cambiarPropiedad($("#loader"),"visibility","hidden");
-        addTexto($("#mensaje-error"),"");
-    };
-    getRequest(url,success);
-}
       
 function mostrarDatalist(val,datalist,campo)
 {
@@ -292,8 +276,9 @@ function mostrarDatalist(val,datalist,campo)
         for(var i = 0 ; i < places.length;i++)
         {
             var descripcion = places[i].description;
+            var encodeDescripcion = descripcion.replace(/'/g,'');
             datalist.append(
-                    "<div class=\"option-datalist\" onclick=\"selecionarPlace('"+descripcion+"','"+campo+"')\"><img src=\"img/ubicacion.svg\" width=\"12\" heifgt=\"12\">"+descripcion+"</div>");
+                    "<div class=\"option-datalist\" onclick=\"selecionarPlace('"+encodeDescripcion+"','"+campo+"')\"><img src=\"img/ubicacion.svg\" width=\"12\" heifgt=\"12\">"+descripcion+"</div>");
         }
     };
     getRequest(url,success);
@@ -301,7 +286,7 @@ function mostrarDatalist(val,datalist,campo)
 
 function selecionarPlace(val,obj)
 {
-    $("#"+obj).val(val);
+    $("#"+obj).val(decodeURI(val));
     var partida = $("#partida").val();
     var destino = $("#destino").val();
     if(partida !== '' && destino !== '')
@@ -313,6 +298,14 @@ function selecionar(val,obj)
 {
     $("#"+obj).val(val);
     $("#l"+obj).html("");
+    if(obj === "cliente")
+    {
+        cargarPasajeros();
+    }
+    if(obj === "transportista")
+    {
+        cargarMoviles();
+    }
 }
 function dibujarRuta(origen,destino)
 {

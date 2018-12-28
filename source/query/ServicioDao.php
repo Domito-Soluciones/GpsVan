@@ -20,9 +20,9 @@ class ServicioDao {
         $agente = $servicio->getAgente();
         $conn = new Conexion();
         try {
-            $query = "INSERT INTO tbl_servicio (servicio_partida,servicio_partida_id,servicio_destino,servicio_destino_id,"
+            $query = "INSERT INTO tbl_servicio (servicio_partida,servicio_destino,"
                     . "servicio_cliente,servicio_usuario,servicio_transportista,"
-                    . "servicio_movil,servicio_tipo,servicio_tarifa,servicio_agente,servicio_fecha) VALUES ('$partida','','$destino','','$cliente','$usuario','$transportista','$movil','$tipo',$tarifa,$agente,NOW())"; 
+                    . "servicio_movil,servicio_tipo,servicio_tarifa,servicio_agente,servicio_fecha,servicio_estado) VALUES ('$partida','$destino','$cliente','$usuario','$transportista','$movil','$tipo','$tarifa',$agente,NOW(),1)"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);

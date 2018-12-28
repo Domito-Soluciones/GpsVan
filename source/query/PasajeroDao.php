@@ -170,7 +170,9 @@ class PasajeroDao {
                     . "pasajero_nombre LIKE '%".$busqueda."%' OR "
                     . "pasajero_papellido LIKE '%".$busqueda."%' OR "
                     . "pasajero_mapellido LIKE '%".$busqueda."%' OR "
-                    . "pasajero_mail LIKE '%".$busqueda."%' LIMIT 20";
+                    . "pasajero_mail LIKE '%".$busqueda."%' OR "
+                    . "pasajero_cliente = (SELECT cliente_id FROM tbl_cliente WHERE cliente_razon_social = '".$busqueda."') "
+                    . " LIMIT 20";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
             while($row = mysqli_fetch_array($result)) {

@@ -1,6 +1,6 @@
 <?php
 
-//include '../../util/validarPeticion.php';
+include '../../util/validarPeticion.php';
 include '../../query/ServicioDao.php';
 include '../../dominio/Servicio.php';
 $lat = $_REQUEST['lat'];
