@@ -31,6 +31,15 @@ $(document).ready(function(){
     $("#destino").on("input",function(){
          mostrarDatalist($(this).val(),$("#destinol"),'destino');
     });
+    
+    $("#agregar_destino").click(function(){
+        agregarDestino();
+    });
+    
+    $("#quitar_destino").click(function(){
+        quitarDestino();
+    });
+    
     /** CLIENTE **/
     $("#cliente").keyup(function () {
         cargarClientes();
@@ -257,15 +266,43 @@ function selecionarPlace(val,obj)
 {
     $("#"+obj).val(decodeURI(val));
     var partida = $("#partida").val();
-    var destino = $("#destino").val();
-    if(partida !== '' && destino !== '')
+    var destinos = $(".destino");
+    var completado = false;
+    destinos.each(function (index){
+        if($(this).val() !== '')
+        {
+            completado = true;
+        }
+    });
+    if(partida !== '' && completado)
     {
-        dibujarRuta(partida,destino);
+        dibujarRuta(partida,destinos);
     }
 }
-function dibujarRuta(origen,destino)
+function dibujarRuta(origen,destinos)
 {
-    var url = CORS_PROXY + DIRECTIONS_API + "origin="+origen+"&destination="+destino+"&key="+API_KEY;
+    var largo = destinos.length;
+    var destinoFinal = destinos[largo-1].value;
+    var waypoints = "";
+    if(largo > 2)
+    {
+        waypoints = "&waypoints=";
+        for(var i = 0 ; i < largo ; i++)
+        {
+            if(i === 0)
+            {
+                continue;
+            }
+            if(i === largo)
+            {
+                continue;
+            }
+            waypoints += destinos[i].value + "|";
+        }
+        waypoints = waypoints.substring(0,waypoints.length-1);
+    }
+    var url = CORS_PROXY + DIRECTIONS_API + "origin="+origen+"&destination="+destinoFinal+waypoints+"&key="+API_KEY;
+    alert(url);
     var success = function(response)
     {
         if(typeof POLYLINE !== "undefined")
@@ -390,3 +427,31 @@ function marcarServicioEnProceso(idServicio)
     postRequest(url,success,false);
 }
 
+function agregarDestino()
+{
+    var i = 1;
+    $(".destino").each(function(index){
+        i++;
+    });
+    $("#destinos").append("<div class=\"cont-pre-monitor\" id=\"cont-destino"+i+"\">Destino "+i+"</div><input type=\"text\" class=\"input_asignar destino\" id=\"destino"+i+"\" placeholder=\"Ej: Av los pinos 723\">");
+    $("#destino"+i).on('input',function(){
+        mostrarDatalist($(this).val(),$("#destinol"),'destino'+i);
+    });
+}
+
+function quitarDestino()
+{
+    var i = 1;
+    var largo = $(".destino").length;
+    if(largo > 1 )
+    {
+        $(".destino").each(function(index){
+            if(i === largo)
+            {
+                $(this).remove();
+                $("#cont-destino"+i).remove();
+            }
+            i++;
+        });
+    }
+}
