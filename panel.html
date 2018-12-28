@@ -50,8 +50,8 @@
                             Cliente
                         </div>
                          <div class="input-monitoreo">
-                            <input type="text" class="input_asignar" id="cliente" placeholder="Ej: Falabella" onkeyup="cargarClientes()">
-                            <div class="datalist-invisible" id="lcliente"></div>
+                             <input type="text" class="input_asignar" list="lcliente" id="cliente" placeholder="Ej: Falabella" onkeyup="cargarClientes()">
+                             <datalist id="lcliente"></datalist>
                         </div>
                     </div>
                     <div>
@@ -59,8 +59,8 @@
                             Pasajero
                         </div>
                          <div class="input-monitoreo">
-                            <input type="text" class="input_asignar" id="usuario" placeholder="Ej: Juan Perez"  autocomplete="off">
-                            <div class="datalist-invisible" id="lusuario"></div>
+                            <input type="text" class="input_asignar" list="lusuario" id="usuario" placeholder="Ej: Juan Perez"  autocomplete="off">
+                            <datalist id="lusuario"></datalist>
                         </div>
                     </div>
                 </div>
@@ -73,8 +73,8 @@
                             Transportista
                         </div>
                          <div class="input-monitoreo">
-                            <input type="text" class="input_asignar" id="transportista" placeholder="Ej: T100" onkeyup="cargarTransportistas()">
-                            <div class="datalist-invisible" id="ltransportista"></div>
+                             <input type="text" class="input_asignar" list="ltransportista" id="transportista" placeholder="Ej: T100" onkeyup="cargarTransportistas()">
+                            <datalist id="ltransportista"></datalist>
                         </div>
                     </div>
                     <div>
@@ -82,8 +82,8 @@
                             Veh&iacute;culo
                         </div>
                         <div class="input-monitoreo">
-                            <input type="text" class="input_asignar" id="vehiculo" placeholder="Ej: M100">
-                            <div class="datalist-invisible"  id="lvehiculo"></div>
+                            <input type="text" class="input_asignar" list="lvehiculo" id="vehiculo" placeholder="Ej: M100">
+                            <datalist id="lvehiculo"></datalist>
                         </div>
                     </div>
                     <div>
@@ -92,11 +92,11 @@
                         </div>
                         <div class="input-monitoreo">
                             <input type="text" class="input_asignar" list="ltipo" id="tipo" placeholder="Ej: Recogida">
-                            <div class="datalist-invisible" id="ltipo">
-                                <div class="option-datalist" onclick="selecionar('Recogida','tipo')">Recogida</div>
-                                <div class="option-datalist" onclick="selecionar('Reparto','tipo')">Reparto</div>
-                                <div class="option-datalist" onclick="selecionar('Servicio Especial','tipo')">Servicio Especial</div>
-                            </div>
+                            <datalist id="ltipo">
+                                <option>Recogida</option>
+                                <option>Reparto</option>
+                                <option>Servicio Especial</option>
+                            </datalist>
                         </div>
                     </div>
                     <div>
@@ -105,9 +105,7 @@
                         </div>
                         <div class="input-monitoreo">
                             <input type="text" class="input_asignar" list="ltarifa" id="tarifas" placeholder="Ej: Tarifa 1">
-                            <div class="datalist-invisible" id="ltarifa">
-                                
-                            </div>
+                            <datalist id="ltarifa"></datalist>
                         </div>
                     </div>
                 </div>
