@@ -126,6 +126,39 @@ class MovilDao {
         }
         return $array;
     }
+    
+    public function getMovil($busqueda)
+    {
+        $conn = new Conexion();
+        try {
+            $query = "SELECT * FROM tbl_movil WHERE movil_patente = '".$busqueda."' OR movil_servicio = ".$busqueda;
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            while($row = mysqli_fetch_array($result)) {
+                $movil = new Movil();
+                $movil->setId($row["movil_id"]);
+                $movil->setNombre($row["movil_nombre"]);
+                $movil->setPatente($row["movil_patente"]);
+                $movil->setMarca($row["movil_marca"]);
+                $movil->setModelo($row["movil_modelo"]);
+                $movil->setNombre($row["movil_nombre"]);
+                $movil->setAnio($row["movil_anio"]);
+                $movil->setVenRevTec($row["movil_venc_rev_tecnica"]);
+                $movil->setSegOb($row["movil_seguro_obligatorio"]);
+                $movil->setVenSegOb($row["movil_venc_seguro_obligatorio"]);                
+                $movil->setSegAd($row["movil_seguro_adicional"]);
+                $movil->setKilometraje($row["movil_kilometraje"]);
+                $movil->setTransportista($row["movil_transportista"]);
+                $movil->setEstado($row['movil_estado']);
+                $movil->setLat($row['movil_lat']);
+                $movil->setLon($row['movil_lon']);
+                $movil->setServicio($row['movil_servicio']);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $movil;
+    }
         
     public function cambiarEstadoConductor($estado,$conductor)
     {

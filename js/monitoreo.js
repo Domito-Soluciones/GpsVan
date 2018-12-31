@@ -1,4 +1,4 @@
-/* global urlBase, google, alertify, flightPath, markers, map, directionsDisplay */
+/* global urlBase, google, alertify, flightPath, markers, map, directionsDisplay, POLYLINE */
 var servicios_diarios = [];
 var moviles_diarios = [];
 var pasajeros_diarios = [];
@@ -185,7 +185,6 @@ function dibujarMarcador(id,lat,lon,nombre,servicio)
     });
     var divServicio = "";
     var estiloMovil = " style='font-size:14px;font-weight:bold;' ";
-    alert(servicio);
     if(servicio !== '0')
     {
         divServicio = "<div style='font-size:10px;font-weight:bold;'>N: "+servicio+"</div>";
@@ -230,6 +229,10 @@ function iniciarPestaniasMonitoreo()
 
 function dibujarServicio(id,movil)
 {
+    if(typeof POLYLINE !== "undefined")
+    {
+        POLYLINE.setMap(null);
+    }
     var url = urlBase + "/servicio/GetDetalleServicio.php?id="+id;
     var success = function(response){
         flightPath = new google.maps.Polyline({
@@ -246,6 +249,15 @@ function dibujarServicio(id,movil)
                 bounds.extend(LatLng);
         });
         map.fitBounds(bounds);
+        var url = urlBase + "/movil/GetMovil.php?busqueda="+id;
+        var success = function(response)
+        {
+            var patente = response.movil_patente;
+            var lat = response.movil_lat;
+            var lng = response.movil_lon;
+            dibujarMarcador(patente,parseFloat(lat),parseFloat(lng),patente,id);
+        }
+        getRequest(url,success);
     };
     getRequest(url,success);
 

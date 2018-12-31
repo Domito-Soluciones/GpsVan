@@ -1,6 +1,6 @@
 <?php
 include '../../util/validarPeticion.php';
-
+include '../../util/validarSession.php';
 include '../../query/MovilDao.php';
 
 header('Content-Type: application/json');
