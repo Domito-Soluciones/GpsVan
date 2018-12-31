@@ -1,5 +1,5 @@
 
-/* global MODIFICADO, alertify, PAGINA_ANTERIOR */
+/* global MODIFICADO, alertify, PAGINA_ANTERIOR, INTERVAL_SERVICIOS */
 var MODIFICADO = false;
 
 var bordeAzul = "solid 1px #0b41d3";
@@ -132,6 +132,10 @@ function cambiarModulo(pagina,cambiar){
                 }
                 if(pagina !== 'panel' || pagina !== 'monitoreo')
                 {
+                    if(pagina !== 'panel')
+                    {
+                        clearInterval(INTERVAL_SERVICIOS);
+                    }
                     ocultarMapa();
                 }
                 $("#contenido-central").html("");
@@ -156,6 +160,10 @@ function cambiarModulo(pagina,cambiar){
         }
         if(pagina !== 'panel' || pagina !== 'monitoreo')
         {
+            if(pagina !== 'panel')
+            {
+                clearInterval(INTERVAL_SERVICIOS);
+            }
             ocultarMapa();
         }
         $("#contenido-central").html("");

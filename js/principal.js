@@ -12,6 +12,7 @@ var CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
 var DIRECTIONS_API = "https://maps.googleapis.com/maps/api/directions/json?";
 var PLACES_API = "https://maps.googleapis.com/maps/api/place/autocomplete/json?";
 var PAGINA_ANTERIOR;
+var INTERVAL_SERVICIOS;
 
 var CREADO = "0";
 var EN_PROCCESO_DE_ASIGNACION = "1";

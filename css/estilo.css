@@ -744,6 +744,15 @@ select
 {
     display: inline-block;
 }
+.input-monitoreo .boton
+{
+    width: 100px !important;
+}
+.input-monitoreo #dibujar
+{
+    margin-left: 50px;
+    width: 150px !important;
+}
 
 .cont-pre-monitor
 {

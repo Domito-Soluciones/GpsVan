@@ -239,7 +239,30 @@ class ConductorDao {
         return $id;
     }
     
-    public function getMoviles()
+    public function getMovilesConductor()
+    {
+        $array = array();
+        $conn = new Conexion();
+        try {
+            $query = "SELECT * FROM tbl_movil WHERE movil_transportista = 0";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            while($row = mysqli_fetch_array($result)) {
+                $moviles = new Movil();
+                $moviles->setId($row["movil_id"]);
+                $moviles->setNombre($row["movil_nombre"]);
+                $moviles->setPatente($row["movil_patente"]);
+                $moviles->setMarca($row["movil_marca"]);
+                $moviles->setModelo($row["movil_modelo"]);
+                array_push($array, $moviles);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $array;
+    }
+    
+        public function getMoviles()
     {
         $array = array();
         $conn = new Conexion();

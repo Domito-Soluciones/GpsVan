@@ -11,7 +11,7 @@ var PAGINA = "PANEL";
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
     init();
-    setInterval(function(){
+    INTERVAL_SERVICIOS = setInterval(function(){
         cargarServiciosPendientes();        
     },5000);
     if(typeof POLYLINE !== "undefined")
@@ -38,6 +38,10 @@ $(document).ready(function(){
     
     $("#quitar_destino").click(function(){
         quitarDestino();
+    });
+    
+    $("#dibujar").click(function(){
+        preDibujarRuta();
     });
     
     /** CLIENTE **/
@@ -158,8 +162,6 @@ function cargarPasajeros()
     getRequest(url,success,false);
 }
 
-
-
 function cargarTransportistas()
 {
     var busqueda = $("#transportista").val();
@@ -265,34 +267,35 @@ function mostrarDatalist(val,datalist,campo)
 function selecionarPlace(val,obj)
 {
     $("#"+obj).val(decodeURI(val));
+}
+function preDibujarRuta()
+{
     var partida = $("#partida").val();
     var destinos = $(".destino");
     var completado = false;
     destinos.each(function (index){
         if($(this).val() !== '')
-        {
+        {   
             completado = true;
         }
     });
     if(partida !== '' && completado)
     {
         dibujarRuta(partida,destinos);
-    }
+    }    
 }
+
 function dibujarRuta(origen,destinos)
 {
     var largo = destinos.length;
     var destinoFinal = destinos[largo-1].value;
     var waypoints = "";
-    if(largo > 2)
+    if(largo > 1)
     {
+        console.log(largo);
         waypoints = "&waypoints=";
         for(var i = 0 ; i < largo ; i++)
         {
-            if(i === 0)
-            {
-                continue;
-            }
             if(i === largo)
             {
                 continue;
@@ -300,9 +303,13 @@ function dibujarRuta(origen,destinos)
             waypoints += destinos[i].value + "|";
         }
         waypoints = waypoints.substring(0,waypoints.length-1);
+        console.log(waypoints);
+    }
+    else
+    {
+        console.log("el largo no es sufuciente");
     }
     var url = CORS_PROXY + DIRECTIONS_API + "origin="+origen+"&destination="+destinoFinal+waypoints+"&key="+API_KEY;
-    alert(url);
     var success = function(response)
     {
         if(typeof POLYLINE !== "undefined")
@@ -332,6 +339,10 @@ function dibujarRuta(origen,destinos)
                 POLYLINE_LNG += LatLng.lng + ",";
             });
             map.fitBounds(bounds);
+        }
+        else if(status === 'NOT_FOUND')
+        {
+            alertify.error("Ruta no encontrada");
         }
     };
     getRequest(url,success);

@@ -86,12 +86,17 @@ class MovilDao {
         $array = array();
         $conn = new Conexion();
         try {
-            $query = "SELECT * FROM tbl_movil WHERE "
+            $query = "SELECT * FROM tbl_movil LEFT JOIN tbl_conductor ON "
+                    . "movil_patente = conductor_movil WHERE "
                     . "movil_patente LIKE '%".$busqueda."%' OR "
                     . "movil_marca LIKE '%".$busqueda."%' OR "
                     . "movil_modelo LIKE '%".$busqueda."%' OR "
                     . "movil_nombre LIKE '%$busqueda%' OR "
-                    . "movil_anio LIKE '%$busqueda%' LIMIT 20";
+                    . "movil_anio LIKE '%$busqueda%' OR "
+                    . "movil_transportista = "
+                    . "(SELECT transportista_id FROM tbl_transportista WHERE transportista_nombre = '$busqueda') OR "
+                    . "conductor_transportista = "
+                    . "(SELECT transportista_id FROM tbl_transportista WHERE transportista_nombre = '$busqueda') LIMIT 20";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
             while($row = mysqli_fetch_array($result)) {

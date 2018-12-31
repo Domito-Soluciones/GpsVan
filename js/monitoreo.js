@@ -185,7 +185,8 @@ function dibujarMarcador(id,lat,lon,nombre,servicio)
     });
     var divServicio = "";
     var estiloMovil = " style='font-size:14px;font-weight:bold;' ";
-    if(servicio !== '')
+    alert(servicio);
+    if(servicio !== '0')
     {
         divServicio = "<div style='font-size:10px;font-weight:bold;'>N: "+servicio+"</div>";
         estiloMovil = " style='font-size:8px;font-weight:bold;' ";

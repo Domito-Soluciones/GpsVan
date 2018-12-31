@@ -4,7 +4,7 @@ include '../../query/ConductorDao.php';
 
 header('Content-Type: application/json');
 $conductorDao = new ConductorDao();
-$moviles = $conductorDao->getMoviles();
+$moviles = $conductorDao->getMovilesConductor();
 echo "[";
 for ($i = 0 ; $i < count($moviles); $i++)
 {
