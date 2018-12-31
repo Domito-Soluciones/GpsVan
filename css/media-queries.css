@@ -1,0 +1,113 @@
+@media screen and (max-width:1260px ) {
+    .buscador
+    {
+        margin-left: 10px;
+    }
+}
+
+@media screen and (max-width:1210px ) {
+    .contenido-central
+    {
+        width: 84%;
+    }
+    .contenedor_central
+    {
+        width: 100%;
+        margin-left: 0;
+    }
+    .contenedor-lateral
+    {
+        width: 100%;
+        height: 200px;
+    }
+    .buscador-asignacion-boton
+    {
+        width: 100%;
+    }
+    #contenedor_mapa
+    {
+        width: 100% !important;
+    }
+    .monitoreo_buscador
+    {
+        margin-left: 0 !important;
+    }
+}
+
+@media screen and (max-width:1132px ) {
+    .contenido-central
+    {
+        width: 84%;
+    }
+    .pie-center
+    {
+        width: 45%;
+    }
+}
+
+@media screen and (max-width:1164px ) {
+    .contenido-central
+    {
+        width: 82%;
+    }
+}
+
+@media screen and (max-width:1006px ) {
+    .contenido-central
+    {
+        width: 80%;
+    }
+}
+
+@media screen and (max-width:905px ) {
+    .contenido-central
+    {
+        width: 79%;
+    }
+}
+@media screen and (max-width:862px ) {
+    .contenido-central
+    {
+        width: 78%;
+    }
+}
+@media screen and (max-width:823px ) {
+    .contenido-central
+    {
+        width: 75%;
+    }
+}
+
+@media screen and (max-width:800px ) {
+    .contenido-central
+    {
+        width: 100%;
+    }
+    .fecha
+    {
+        display: none;
+    }
+    .logOut
+    {
+        display: none;
+    }
+    #salir
+    {
+        display: block;
+    }
+    .menu-telefono
+    {
+        display: inline;
+    }
+    #menu
+    {
+        position: absolute;
+        z-index: 2;
+        display: none;
+    }
+    .contenedor-info
+    {
+        width: 400px;
+    }
+    
+}
