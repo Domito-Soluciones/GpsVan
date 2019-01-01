@@ -19,6 +19,7 @@ if(!isset($_SESSION['agente']))
         <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
         <link rel="stylesheet" href="css/estilo.css">
         <link rel="stylesheet" href="css/loader.css">
+        <link rel="stylesheet" href="css/media-queries.css">
         <link rel="icon" type="image/png" href="img/ico.png" />
         <script src="js/lib/jquery.js" type="text/javascript"></script>
         <script src="js/lib/alertify.js" type="text/javascript"></script>
