@@ -292,7 +292,6 @@ function dibujarRuta(origen,destinos)
     var waypoints = "";
     if(largo > 1)
     {
-        console.log(largo);
         waypoints = "&waypoints=";
         for(var i = 0 ; i < largo ; i++)
         {
@@ -303,11 +302,6 @@ function dibujarRuta(origen,destinos)
             waypoints += destinos[i].value + "|";
         }
         waypoints = waypoints.substring(0,waypoints.length-1);
-        console.log(waypoints);
-    }
-    else
-    {
-        console.log("el largo no es sufuciente");
     }
     var url = CORS_PROXY + DIRECTIONS_API + "origin="+origen+"&destination="+destinoFinal+waypoints+"&key="+API_KEY;
     var success = function(response)
