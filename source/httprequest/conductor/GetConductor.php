@@ -9,6 +9,6 @@ $respuesta = 0;
 $rut = $_REQUEST['rut'];
 $conductorDao = new ConductorDao();
 $datos = $conductorDao->getDatosConductor($rut);
-echo "{\"nombre\":\"".$datos[0]."\","
-        ."\"viajes\":\"".$datos[1]."\""
+echo "{\"conductor_nombre\":\"".$datos[0]."\","
+        ."\"conductor_viajes\":\"".$datos[1]."\""
         . "}";
