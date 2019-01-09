@@ -16,7 +16,7 @@ $(document).ready(function(){
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
         $("#contenedor_central").load("html/datos_cliente.html", function( response, status, xhr ) {
-            iniciarPestaniasCliente();
+            iniciarPestanias();
             cambioEjecutado();
             $("#rut").blur(function (){
                 if(validarExistencia('rut',$(this).val()))
@@ -197,7 +197,7 @@ function abrirModificar(id)
     quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
     agregarclase($("#"+id),"fila_contenedor_activa");
     $("#contenedor_central").load("html/datos_cliente.html", function( response, status, xhr ) {
-        iniciarPestaniasCliente();
+        iniciarPestanias();
         cambioEjecutado();
         $("#nick").blur(function (){
             if(validarExistencia('rut',$(this).val()))
@@ -305,21 +305,6 @@ function validarTipoDato()
     
     return true;
 }
-function iniciarPestaniasCliente()
-{
-    $("#p_general").click(function(){
-        cambiarPropiedad($("#cont_general"),"display","block");
-        cambiarPropiedad($("#cont_pasajero"),"display","none");
-        quitarclase($(this),"dispose");
-        agregarclase($("#p_pasajero"),"dispose");
-    });
-    $("#p_pasajero").click(function(){
-        cambiarPropiedad($("#cont_general"),"display","none");
-        cambiarPropiedad($("#cont_pasajero"),"display","block");
-        quitarclase($(this),"dispose");
-        agregarclase($("#p_general"),"dispose");
-    });
-}
 
 function activarPestania(array)
 {
@@ -336,19 +321,13 @@ function activarPestania(array)
     }
 }
 
-function iniciarPestaniasCliente()
+function iniciarPestanias()
 {
     $("#p_general").click(function(){
-        cambiarPropiedad($("#cont_general"),"display","block");
-        cambiarPropiedad($("#cont_movil"),"display","none");
-        quitarclase($(this),"dispose");
-        agregarclase($("#p_pasajero"),"dispose");
+        cambiarPestaniaGeneral();
     });
     $("#p_pasajero").click(function(){
-        cambiarPropiedad($("#cont_general"),"display","none");
-        cambiarPropiedad($("#cont_pasajero"),"display","block");
-        quitarclase($(this),"dispose");
-        agregarclase($("#p_general"),"dispose");
+        cambiarPestaniaPasajero();
         cargarPasajeros();
     });
 }

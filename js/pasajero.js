@@ -12,7 +12,7 @@ $(document).ready(function(){
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
         $("#contenedor_central").load("html/datos_pasajero.html", function( response, status, xhr ) {
-            iniciarPestaniasPasajero();
+            iniciarPestanias();
             cambioEjecutado();
             $("#rut").blur(function (){
                 if(validarExistencia('rut',$(this).val()))
@@ -239,7 +239,7 @@ function abrirModificar(id)
     quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
     agregarclase($("#"+id),"fila_contenedor_activa");
     $("#contenedor_central").load("html/datos_pasajero.html", function( response, status, xhr ) {
-        iniciarPestaniasPasajero();
+        iniciarPestanias();
         cambioEjecutado();
         $("#nick").blur(function (){
             if(validarExistencia('nick',$(this).val()))
@@ -363,19 +363,13 @@ function validarTipoDato()
     return true;
 }
 
-function iniciarPestaniasPasajero()
+function iniciarPestanias()
 {
     $("#p_general").click(function(){
-        cambiarPropiedad($("#cont_general"),"display","block");
-        cambiarPropiedad($("#cont_app"),"display","none");
-        quitarclase($(this),"dispose");
-        agregarclase($("#p_app"),"dispose");
+        cambiarPestaniaGeneral();
     });
     $("#p_app").click(function(){
-        cambiarPropiedad($("#cont_general"),"display","none");
-        cambiarPropiedad($("#cont_app"),"display","block");
-        quitarclase($(this),"dispose");
-        agregarclase($("#p_general"),"dispose");
+        cambiarPestaniaAplicacion();
     });
 }
 

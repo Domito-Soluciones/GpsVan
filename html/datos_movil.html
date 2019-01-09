@@ -5,8 +5,14 @@
     <div class="titulo_pagina_general" id="p_general">
         1. General
     </div>
+    <div class="titulo_pagina_general dispose" id="p_ficha">
+        2. Ficha tecnica
+    </div>
     <div class="titulo_pagina_general dispose" id="p_seguro">
-        2. Seguro
+        3. Seguro
+    </div>
+    <div class="titulo_pagina_general dispose" id="p_conductor">
+        4. Asignar Conductores
     </div>
 </div>
 <div class="contenedor-info general" id="cont_general">
@@ -51,10 +57,34 @@
                 <input type="text" id="anio" placeholder="Ej: 2018" maxlength="4">
             </div>
         </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                Cantidad pasajeros (*)
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="cantidad" placeholder="Ej: 4" maxlength="2">
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                Clase (*)
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="clase" placeholder="Ej: Clase 1" maxlength="40">
+            </div>
+        </div>
     </div>
 </div>
-<div class="contenedor-info contenedor_oculto" id="cont_seguro">
+<div class="contenedor-info ficha" id="cont_ficha">
     <div class="contenedor-formulario">
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                V. Permiso Circulaci&oacute;n (*)
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="venPerCir" placeholder="Ej: 01/01/2018">
+            </div>
+        </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
                 V. Revisi&oacute;n Tecnica (*)
@@ -65,10 +95,47 @@
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
+                V. Extintor (*)
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="venExt" placeholder="Ej: 01/01/2018">
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                Kilometraje
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="kilo" placeholder="Ej: 100" maxlength="10">
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                N° Motor (*)
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="motor" placeholder="Ej: 100" maxlength="10">
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                N° Chasis (*)
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="chasis" placeholder="Ej: 100" maxlength="10">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="contenedor-info contenedor_oculto" id="cont_seguro">
+    <div class="contenedor-formulario">
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
                 Seguro Obligatorio (*)
             </div>
             <div class="contenedor-input">
-                <input type="text" id="SegOb" placeholder="Ej: Municipal" maxlength="20">
+                <input type="radio" id="SegObSi" name="SegOb"> SI
+                <input type="radio" id="SegObNo" name="SegOb" checked> NO
             </div>
         </div>
         <div class="contenedor-fila">
@@ -81,19 +148,49 @@
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
+                N° de Poliza (*)
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="polizaSegOb" placeholder="Ej: 111234">
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                Seguro de RC+DM (*)
+            </div>
+            <div class="contenedor-input">
+                <input type="radio" id="SegRcDmSi" name="SegRcDm"> SI
+                <input type="radio" id="SegRcDmNo" name="SegRcDm" checked> NO
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                 V. Seg. de RC+DM (*)
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="venSegRcDm" placeholder="Ej: 01/01/2018">
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                N° de Poliza (*)
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="polizaSegRcDm" placeholder="Ej: 111234">
+            </div>
+        </div>
+<!--        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
                 Seguro Adicional
             </div>
             <div class="contenedor-input">
                 <input type="text" id="SegAd" placeholder="Ej: Privado" maxlength="20">
             </div>
-        </div>
-        <div class="contenedor-fila">
-            <div class="contenedor-pre-input">
-                Kilometraje
-            </div>
-            <div class="contenedor-input">
-                <input type="text" id="kilo" placeholder="Ej: 100" maxlength="10">
-            </div>
-        </div>
+        </div>-->
+    </div>
+</div>
+<div class="contenedor-info contenedor_oculto" id="cont_conductor">
+    <div class="contenedor-formulario">
+        
     </div>
 </div>

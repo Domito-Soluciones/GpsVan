@@ -16,6 +16,8 @@ for ($i = 0 ; $i < count($moviles); $i++)
     $movilMarca = $moviles[$i]->getMarca();
     $movilModelo = $moviles[$i]->getModelo();
     $movilAnio = $moviles[$i]->getAnio();
+    $movilCantidad = $moviles[$i]->getCantidad();
+    $movilClase = $moviles[$i]->getClase();
     $movilVenRevTec = date("d/m/Y", strtotime($moviles[$i]->getVenRevTec()));
     $movilSegOb = $moviles[$i]->getSegOb();
     $movilVenSegOb = date("d/m/Y", strtotime($moviles[$i]->getVenSegOb()));
@@ -32,6 +34,8 @@ for ($i = 0 ; $i < count($moviles); $i++)
         . "\"movil_marca\":\"".$movilMarca."\","
         . "\"movil_modelo\":\"".$movilModelo."\","
         . "\"movil_anio\":\"".$movilAnio."\","
+        . "\"movil_cantidad\":\"".$movilCantidad."\","
+        . "\"movil_clase\":\"".$movilClase."\","
         . "\"movil_ven_rev_tec\":\"".$movilVenRevTec."\","
         . "\"movil_seg_ob\":\"".$movilSegOb."\","
         . "\"movil_ven_seg_ob\":\"".$movilVenSegOb."\","

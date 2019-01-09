@@ -119,17 +119,14 @@ function quitarclase(div,clase)
     div.removeClass(clase);
 }
 
-function cambiarModulo(pagina,cambiar){
+function cambiarModulo(pagina){
     if(MODIFICADO)
     {
         confirmar("Cambiar de modulo","¿Desea cambiar de modulo sin guardar los cambios?",
             function(){
                 MODIFICADO = false;
-                if(cambiar)
-                {
-                    quitarclase($(".opcion-menu"),"menu-activo");
-                    agregarclase($("#"+pagina),"menu-activo");
-                }
+                quitarclase($(".opcion-menu"),"menu-activo");
+                agregarclase($("#"+pagina),"menu-activo");
                 if(pagina !== 'panel' || pagina !== 'monitoreo')
                 {
                     if(pagina !== 'panel')
@@ -153,11 +150,8 @@ function cambiarModulo(pagina,cambiar){
     }
     else
     {
-        if(cambiar)
-        {
-            quitarclase($(".opcion-menu"),"menu-activo");
-            agregarclase($("#"+pagina),"menu-activo");
-        }
+        quitarclase($(".opcion-menu"),"menu-activo");
+        agregarclase($("#"+pagina),"menu-activo");
         if(pagina !== 'panel' || pagina !== 'monitoreo')
         {
             if(pagina !== 'panel')

@@ -22,7 +22,7 @@ $(document).ready(function(){
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
         $("#contenedor_central").load("html/datos_transportista.html", function( response, status, xhr ) {
-            iniciarPestaniasTransportista();
+            iniciarPestanias();
             cambioEjecutado();
             $("#rut").blur(function (){
                 if(validarExistencia('rut',$(this).val()))
@@ -205,7 +205,7 @@ function abrirModificar(id)
     quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
     agregarclase($("#"+id),"fila_contenedor_activa");
     $("#contenedor_central").load("html/datos_transportista.html", function( response, status, xhr ) {
-        iniciarPestaniasTransportista();
+        iniciarPestanias();
         cambioEjecutado();
         $("#nick").blur(function (){
             if(validarExistencia('rut',$(this).val()))
@@ -319,44 +319,17 @@ function validarTipoDato()
     return true;
 }
 
-function iniciarPestaniasTransportista()
+function iniciarPestanias()
 {
     $("#p_general").click(function(){
-        cambiarPropiedad($("#cont_general"),"display","block");
-        cambiarPropiedad($("#cont_conductor"),"display","none");
-        cambiarPropiedad($("#cont_movil"),"display","none");
-        quitarclase($(this),"dispose");
-        agregarclase($("#p_conductor"),"dispose");
-        agregarclase($("#p_movil"),"dispose");
+        cambiarPestaniaGeneral();
     });
     $("#p_conductor").click(function(){
-        cambiarPropiedad($("#cont_general"),"display","none");
-        cambiarPropiedad($("#cont_conductor"),"display","block");
-        cambiarPropiedad($("#cont_movil"),"display","none");
-        quitarclase($(this),"dispose");
-        agregarclase($("#p_general"),"dispose");
-        agregarclase($("#p_movil"),"dispose");
+        cambiarPestaniaConductor();
         cargarConductores();
-        $("#rutConductor").on('keydown',function(e){
-            if(isTeclaEnter(e))
-            {
-                encontrarConductor();
-            }
-        });
-        $("#rutConductor").on('blur',function(){
-            if($(this).val() !== '')
-            {
-                encontrarConductor();
-            }
-        });
     });
     $("#p_movil").click(function(){
-        cambiarPropiedad($("#cont_general"),"display","none");
-        cambiarPropiedad($("#cont_conductor"),"display","none");
-        cambiarPropiedad($("#cont_movil"),"display","block");
-        quitarclase($(this),"dispose");
-        agregarclase($("#p_general"),"dispose");
-        agregarclase($("#p_conductor"),"dispose");
+        cambiarPestaniaMovil();
         cargarMoviles();
     });
 }
@@ -502,6 +475,26 @@ function cambiarPestaniaGeneral()
     quitarclase($("#p_general"),"dispose");
     agregarclase($("#p_conductor"),"dispose");
     agregarclase($("#p_movil"),"dispose");
+}
+
+function cambiarPestaniaConductor()
+{
+    cambiarPropiedad($("#cont_general"),"display","none");
+    cambiarPropiedad($("#cont_conductor"),"display","block");
+    cambiarPropiedad($("#cont_movil"),"display","none");
+    quitarclase($("#p_conductor"),"dispose");
+    agregarclase($("#p_general"),"dispose");
+    agregarclase($("#p_movil"),"dispose");
+}
+
+function cambiarPestaniaMovil()
+{
+    cambiarPropiedad($("#cont_general"),"display","none");
+    cambiarPropiedad($("#cont_conductor"),"display","none");
+    cambiarPropiedad($("#cont_movil"),"display","block");
+    quitarclase($("#p_movil"),"dispose");
+    agregarclase($("#p_general"),"dispose");
+    agregarclase($("#p_conductor"),"dispose");
 }
 
 
