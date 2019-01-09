@@ -227,9 +227,11 @@ function vaciarFormulario()
 {
     $("input").each(function() {
         $(this).val("");
+        marcarCampoOk($(this));
     });
     $("select").each(function() {
         $(this).val("");
+        marcarCampoOk($(this));
     });
 }
 

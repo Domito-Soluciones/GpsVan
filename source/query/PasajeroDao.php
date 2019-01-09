@@ -60,13 +60,15 @@ class PasajeroDao {
         $nick = $pasajero->getNick();
         $password = $pasajero->getPassword();
         $cargo = $pasajero->getCargo();
-        //$nivel = $pasajero->getNivel();
+        $centro = $pasajero->getCentroCosto();
+        $empresa = $pasajero->getEmpresa();
+        $ruta = $pasajero->getRuta();
         $conn = new Conexion();
         try {
             $query = "INSERT INTO tbl_pasajero (pasajero_nombre,pasajero_papellido,"
                     . "pasajero_mapellido,pasajero_rut,pasajero_nick,pasajero_password,pasajero_telefono,"
-                    . "pasajero_celular,pasajero_direccion,pasajero_mail,pasajero_cargo,pasajero_nivel) VALUES "
-                    . "('$nombre','$papellido','$mapellido','$rut','$nick','$password','$telefono','$celular','$direccion','$mail','$cargo','0')"; 
+                    . "pasajero_celular,pasajero_direccion,pasajero_mail,pasajero_cargo,pasajero_nivel,pasajero_centro_costo,pasajero_empresa,pasajero_ruta) VALUES "
+                    . "('$nombre','$papellido','$mapellido','$rut','$nick','$password','$telefono','$celular','$direccion','$mail','$cargo','0','$centro','$empresa','$ruta')"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -93,7 +95,9 @@ class PasajeroDao {
         $direccion = $pasajero->getDireccion();
         $mail = $pasajero->getMail();
         $cargo = $pasajero->getCargo();
-//        $nivel = $pasajero->getNivel();
+        $centro = $pasajero->getCentroCosto();
+        $empresa = $pasajero->getEmpresa();
+        $ruta = $pasajero->getRuta();
         $conn = new Conexion();
         try {
             $query = "UPDATE tbl_pasajero SET pasajero_nombre = '$nombre',"
@@ -105,7 +109,8 @@ class PasajeroDao {
                     {
                     $query .= "pasajero_password = '$password',";
                     }
-                    $query .= "pasajero_cargo = '$cargo',pasajero_nivel = '0' WHERE pasajero_rut = '$rut'";           
+                    $query .= "pasajero_cargo = '$cargo',pasajero_nivel = '0',pasajero_centro_costo = '$centro',"
+                            . "pasajero_empresa = '$empresa', pasajero_ruta = '$ruta' WHERE pasajero_rut = '$rut'";           
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -148,6 +153,9 @@ class PasajeroDao {
                 $pasajero->setCargo($row["pasajero_cargo"]);
                 $pasajero->setNivel($row["pasajero_nivel"]);
                 $pasajero->setCliente($row["pasajero_cliente"]);
+                $pasajero->setCentroCosto($row["pasajero_centro_costo"]);
+                $pasajero->setEmpresa($row["pasajero_empresa"]);
+                $pasajero->setRuta($row["pasajero_ruta"]);
                 array_push($array, $pasajero);
             }
         } catch (Exception $exc) {

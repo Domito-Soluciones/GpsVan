@@ -3,7 +3,7 @@ var ID_PASAJERO;
 var PASAJEROS;
 var AGREGAR = true;
 var PAGINA = 'PASAJEROS';
-var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","mail","cargo","nick"];
+var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","centro","empresa","nick"];
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
     buscarPasajero();
@@ -74,8 +74,10 @@ function agregarPasajero()
     var password = $("#password").val();
     var password2 = $("#password2").val();
     var cargo = $("#cargo").val();
-//    var nivel = $("#nivel").val();
-    var array = [nombre,papellido,mapellido,rut,celular,direccion,mail,cargo,nick,password,password2];
+    var centro = $("#centro").val();
+    var empresa = $("#empresa").val();
+    var ruta = $("#ruta").val();
+    var array = [nombre,papellido,mapellido,rut,celular,direccion,centro,empresa,nick,password,password2];
     if(!validarCamposOr(array))
     {
         activarPestania(array);
@@ -93,7 +95,7 @@ function agregarPasajero()
     {
         var data = "nombre="+nombre+"&papellido="+papellido+"&mapellido="+mapellido
         +"&rut="+rut+"&nick="+nick+"&password="+password+"&telefono="+telefono+"&celular="+celular+"&direccion="+direccion
-        +"&mail="+mail+"&cargo="+cargo;
+        +"&mail="+mail+"&cargo="+cargo+"&centro="+centro+"&empresa="+empresa+"&ruta="+ruta;
         var url = urlBase + "/pasajero/AddPasajero.php?"+data;
         var success = function(response)
         {
@@ -124,7 +126,9 @@ function modificarPasajero()
     var password = $("#password").val();
     var password2 = $("#password2").val();
     var cargo = $("#cargo").val();
-    //var nivel = $("#perfil").val();
+    var centro = $("#centro").val();
+    var empresa = $("#empresa").val();
+    var ruta = $("#ruta").val();
     var array;
     var claveData = '';
     if(password !== '' || password2 !== '')
@@ -136,13 +140,13 @@ function modificarPasajero()
             alertify.error("La password no coincide");
             return;
         }
-        array = [rut,nombre,papellido,mapellido,celular,direccion,mail,
-        cargo,nick,password,password2];
+        array = [rut,nombre,papellido,mapellido,celular,direccion,centro,empresa,
+        nick,password,password2];
         claveData = "&password="+password;
     }
     else
     {
-        array = [rut,nombre,papellido,mapellido,celular,direccion,mail,cargo,nick];   
+        array = [rut,nombre,papellido,mapellido,celular,direccion,centro,empresa,nick];   
     }
     if(!validarCamposOr(array))
     {
@@ -154,7 +158,7 @@ function modificarPasajero()
     {
         var data = "id="+ID_PASAJERO+"&nombre="+nombre+"&papellido="+papellido+"&mapellido="+mapellido
         +"&rut="+rut+"&nick="+nick+claveData+"&telefono="+telefono+"&celular="+celular+"&direccion="+direccion
-        +"&mail="+mail+"&cargo="+cargo;
+        +"&mail="+mail+"&cargo="+cargo+"&centro="+centro+"&empresa="+empresa+"&ruta="+ruta;
         var url = urlBase + "/pasajero/ModPasajero.php?"+data;
         var success = function(response)
         {
@@ -211,7 +215,7 @@ function cambiarFila(id)
     if(MODIFICADO)
     {
         confirmar("Cambio de pasajero",
-        "¿Desea cambiar de pasajero sin guardar los cambios?",
+        "?Desea cambiar de pasajero sin guardar los cambios?",
         function()
         {
             MODIFICADO = false;
@@ -263,7 +267,9 @@ function abrirModificar(id)
         $("#direccion").val(pasajero.pasajero_direccion);
         $("#mail").val(pasajero.pasajero_mail);
         $("#cargo").val(pasajero.pasajero_cargo);
-//        $("#nivel").val(pasajero.pasajero_nacimiento);
+        $("#centro").val(pasajero.pasajero_centro_costo);
+        $("#empresa").val(pasajero.pasajero_empresa);
+        $("#ruta").val(pasajero.pasajero_ruta);
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
         cambiarPropiedad($("#eliminar"),"visibility","visible");
@@ -345,10 +351,13 @@ function validarTipoDato()
     }
     if(!validarEmail(mail.val()))
     {
-        cambiarPestaniaGeneral();
-        marcarCampoError(mail);
-        alertify.error('E-mail invalido');
-        return false;
+        if(mail.val() !== '')
+        {
+            cambiarPestaniaGeneral();
+            marcarCampoError(mail);
+            alertify.error('E-mail invalido');
+            return false;
+        }
     }
     
     return true;
@@ -376,6 +385,7 @@ function activarPestania(array)
     var app = false;
     for(var i = 0 ; i < CAMPOS.length ; i++)
     {
+        console.log(CAMPOS[i] + " " + i);
         if(array[i] === '')
         {
             if(i < 8)

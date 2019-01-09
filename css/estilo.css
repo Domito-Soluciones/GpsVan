@@ -449,7 +449,7 @@ select
     background-color: white;
     height: calc(100% - 82px);
     padding-top: 20px;
-    min-height: 460px;
+    min-height: 516px;
 }
 .dispose
 {
@@ -495,7 +495,7 @@ select
 {
     font-size: 13px;
     margin-top: 7px;
-    width: 135px;
+    width: 185px;
     height: 30px;
     display: inline-block;
 }

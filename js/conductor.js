@@ -240,7 +240,7 @@ function buscarConductor()
             var nombre = response[i].conductor_nombre;
             var papellido = response[i].conductor_papellido;
             var mapellido = response[i].conductor_mapellido;
-            var titulo = recortar(rut+" / "+nombre+" "+papellido+" "+ mapellido);
+            var titulo = recortar(id+" / "+nombre+" "+papellido+" "+ mapellido);
             MOVILES_OCUPADOS.push(response[i].conductor_movil);
             
             if (typeof ID_CONDUCTOR !== "undefined" && ID_CONDUCTOR === id)
