@@ -7,6 +7,8 @@ class Tarifa {
     private $destino;
     private $valor1;
     private $valor2;
+    private $cliente;
+    private $ruta;
     
     function getId() {
         return $this->id;
@@ -32,6 +34,14 @@ class Tarifa {
         return $this->valor2;
     }
 
+    function getCliente() {
+        return $this->cliente;
+    }
+
+    function getRuta() {
+        return $this->ruta;
+    }
+
     function setId($id) {
         $this->id = $id;
     }
@@ -55,6 +65,15 @@ class Tarifa {
     function setValor2($valor2) {
         $this->valor2 = $valor2;
     }
+
+    function setCliente($cliente) {
+        $this->cliente = $cliente;
+    }
+
+    function setRuta($ruta) {
+        $this->ruta = $ruta;
+    }
+
 
 
 }

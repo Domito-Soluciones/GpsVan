@@ -3,7 +3,9 @@ var ID_TARIFA;
 var TARIFAS;
 var AGREGAR = true;
 var PAGINA = 'TARIFAS';
-var CAMPOS = ["nombre","origen","destino","valor1","valor2"];
+var CAMPOS = ["nombre","origen","destino","valor1","valor2","cliente","ruta"];
+var clientes = [];
+
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
     buscarTarifa();
@@ -13,12 +15,26 @@ $(document).ready(function(){
         AGREGAR = true;
         $("#contenedor_central").load("html/datos_tarifa.html", function( response, status, xhr ) {
             cambioEjecutado();
+            cargarClientes();
             $("#nombre").blur(function (){
                 if(validarExistencia('nombre',$(this).val()))
                 {
                     alertify.error("El nombre "+$(this).val()+" ya existe");
                     $("#nombre").val("");
                     return;
+                }
+            });
+            $("#cliente").on('blur',function () {
+                if($("#cliente").val() === "")
+                {
+                    cargarPasajeros();
+                }
+                var noExiste = validarInexistencia($("#cliente").val(),clientes);
+                if(noExiste)
+                {
+                    alertify.error("Cliente inexistente");
+                    $("#cliente").val("");
+
                 }
             });
         });
@@ -57,7 +73,9 @@ function agregarTarifa()
     var destino = $("#destino").val();
     var valor1 = $("#valor1").val();
     var valor2 = $("#valor2").val();
-    var array = [nombre,origen,destino,valor1,valor2];
+    var cliente = $("#cliente").val();
+    var ruta = $("#ruta").val();
+    var array = [nombre,origen,destino,valor1,valor2,cliente,ruta];
     if(!validarCamposOr(array))
     {
         activarPestania(array);
@@ -67,7 +85,7 @@ function agregarTarifa()
     if(validarTipoDato())
     {
         var data = "nombre="+nombre+"&origen="+origen+"&destino="+destino
-        +"&valor1="+valor1+"&valor2="+valor2;
+        +"&valor1="+valor1+"&valor2="+valor2+"&cliente="+cliente+"&ruta="+ruta;
         var url = urlBase + "/tarifa/AddTarifa.php?"+data;
         var success = function(response)
         {
@@ -90,7 +108,9 @@ function modificarTarifa()
     var destino = $("#destino").val();
     var valor1 = $("#valor1").val();
     var valor2 = $("#valor2").val();
-    var array = [nombre,origen,destino,valor1,valor2];
+    var cliente = $("#cliente").val();
+    var ruta = $("#ruta").val();
+    var array = [nombre,origen,destino,valor1,valor2,cliente,ruta];
     if(!validarCamposOr(array))
     {
         activarPestania(array);
@@ -100,7 +120,7 @@ function modificarTarifa()
     if(validarTipoDato())
     {
         var data = "id="+ID_TARIFA+"&nombre="+nombre+"&origen="+origen+"&destino="+destino
-        +"&valor1="+valor1+"&valor2="+valor2;
+        +"&valor1="+valor1+"&valor2="+valor2+"&cliente="+cliente+"&ruta="+ruta;
         var url = urlBase + "/tarifa/ModTarifa.php?"+data;
         var success = function(response)
         {
@@ -190,6 +210,9 @@ function abrirModificar(id)
         $("#destino").val(tarifa.tarifa_destino);
         $("#valor1").val(tarifa.tarifa_valor1);
         $("#valor2").val(tarifa.tarifa_valor2);
+        $("#cliente").val(tarifa.tarifa_cliente);
+        cargarClientes();
+        $("#ruta").val(tarifa.tarifa_ruta);
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
         cambiarPropiedad($("#eliminar"),"visibility","visible");
@@ -263,6 +286,23 @@ function activarPestania(array)
             marcarCampoOk($("#"+CAMPOS[i]));
         }
     }
+}
+
+function cargarClientes()
+{
+    var busqueda = $("#cliente").val();
+    var url = urlBase + "/cliente/GetClientes.php?busqueda="+busqueda;
+    var success = function(response)
+    {
+        $("#lcliente").html("");
+        for(var i = 0 ; i < response.length ; i++)
+        {
+            var nombre = response[i].cliente_razon;
+            $("#lcliente").append("<option value=\""+nombre+"\">"+nombre+"</option>");
+            clientes.push(nombre);
+        }
+    };
+    getRequest(url,success,false);
 }
 
 

@@ -103,7 +103,7 @@ function validarCamposAnd(array)
             cont++;
         }
     }
-    if(cont == array.length)
+    if(cont === array.length)
     {
         return false;
     }
@@ -505,4 +505,23 @@ function validarCancelar(pagina)
         resetBotones();
     }
     quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
+}
+
+function validarInexistencia(val,array)
+{
+    if(val === '')
+    {
+        return false;
+    }
+    else
+    {
+        for(var i = 0 ; i < array.length ; i++)
+        {
+            if(array[i] === val)
+            {
+                return false;
+            }
+        }
+    }
+    return true;
 }
