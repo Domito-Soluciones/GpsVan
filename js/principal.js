@@ -10,7 +10,9 @@ var API_KEY = "AIzaSyDcQylEsZAzuEw3EHBdWbsDAynXvU2Ljzs";
 var GOOGLE_MAPS_API = "https://maps.googleapis.com/maps/api/js?";
 var CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
 var DIRECTIONS_API = "https://maps.googleapis.com/maps/api/directions/json?";
-var PLACES_API = "https://maps.googleapis.com/maps/api/place/autocomplete/json?";
+var PLACES_AUTOCOMPLETE_API = "https://maps.googleapis.com/maps/api/place/autocomplete/json?";
+var PLACES_DETAILS_API = "https://maps.googleapis.com/maps/api/place/details/json?";
+//placeid=EhhWZXJnYXJhLCBTYW50aWFnbywgQ2hpbGUiLiosChQKEglVkKOVBsVilhE0-ByEvT0DnRIUChIJuzrymgbQYpYRl0jtCfRZnYc&key=AIzaSyDcQylEsZAzuEw3EHBdWbsDAynXvU2Ljzs
 var PAGINA_ANTERIOR;
 var INTERVAL_SERVICIOS;
 

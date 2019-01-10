@@ -1,4 +1,6 @@
-/* global PLACES_API, CORS_PROXY, POSITION, API_KEY, DIRECTIONS_API, map, google, urlBase, alertify, flightPath, POLYLINE, EN_PROCCESO_DE_ASIGNACION */
+/* global, CORS_PROXY, POSITION, API_KEY, DIRECTIONS_API, map, google, urlBase, alertify, flightPath, POLYLINE, EN_PROCCESO_DE_ASIGNACION, PLACES_AUTOCOMPLETE_API */
+
+/* global PLACES_DETAILS_API, API_KEY, CORS_PROXY */
 
 var transportistas = [];
 var clientes = [];
@@ -247,7 +249,7 @@ function agregarServicio()
 function mostrarDatalist(val,datalist,campo)
 {
     if(val === "") return;
-    var url = CORS_PROXY + PLACES_API + "input="+val+
+    var url = CORS_PROXY + PLACES_AUTOCOMPLETE_API + "input="+val+
             "&location="+POSITION[0]+","+POSITION[1]+"&sensor=true&radius=500&key="+API_KEY;
     var success = function(response)
     {
@@ -256,17 +258,36 @@ function mostrarDatalist(val,datalist,campo)
         for(var i = 0 ; i < places.length;i++)
         {
             var descripcion = places[i].description;
+            var placeId = places[i].place_id;
             var encodeDescripcion = descripcion.replace(/'/g,'');
             datalist.append(
-                    "<div class=\"option-datalist\" onclick=\"selecionarPlace('"+encodeDescripcion+"','"+campo+"')\"><img src=\"img/ubicacion.svg\" width=\"12\" heifgt=\"12\">"+descripcion+"</div>");
+                    "<div class=\"option-datalist\" onclick=\"selecionarPlace('"+encodeDescripcion+"','"+placeId+"','"+campo+"')\"><img src=\"img/ubicacion.svg\" width=\"12\" heifgt=\"12\">"+descripcion+"</div>");
         }
     };
     getRequest(url,success);
 }
 
-function selecionarPlace(val,obj)
+function selecionarPlace(val,placeId,obj)
 {
     $("#"+obj).val(decodeURI(val));
+    var url = CORS_PROXY + PLACES_DETAILS_API + "placeid="+placeId+"&key="+API_KEY;
+    var success = function(response)
+    {
+        var status = response.status;
+        if(status === 'OK')
+        {
+            var marker = new google.maps.Marker({
+                map: map,
+                place: {
+                    placeId: placeId,
+                    location: response.result.geometry.location
+                }
+            });
+            map.setZoom(15);
+            map.panTo(marker.getPosition());
+        }
+    }
+    getRequest(url,success);
 }
 function preDibujarRuta()
 {
