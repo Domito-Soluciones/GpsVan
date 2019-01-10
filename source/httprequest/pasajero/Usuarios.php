@@ -1,10 +1,10 @@
 <?php
 include '../../util/validarPeticion.php';
-
+include '../../util/validarSession.php';
 include '../../query/UsuarioDao.php';
 
 header('Content-Type: application/json');
-$id = $_REQUEST['id'];
+$id = filter_input(INPUT_POST, 'id');
 $usuarioDao = new UsuarioDao();
 $usuarios = $usuarioDao->getUsuarios($id);
 echo "[";

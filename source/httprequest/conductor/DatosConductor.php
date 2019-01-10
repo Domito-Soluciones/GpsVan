@@ -4,7 +4,7 @@ include '../../util/validarPeticion.php';
 include '../../query/UsuarioDao.php';
 header('Content-Type: application/json');
 $respuesta = 0;
-$nick = $_REQUEST['id'];
+$nick = filter_input(INPUT_POST, 'id');
 $usuarioDao = new UsuarioDao();
 $usuario = $usuarioDao->getUsuarioDatos($nick);
 echo "{\"usuario_nombre\":\"".$usuario->getNombre()."\","

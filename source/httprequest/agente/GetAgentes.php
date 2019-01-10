@@ -4,7 +4,7 @@ include '../../util/validarSession.php';
 include '../../query/AgenteDao.php';
 
 header('Content-Type: application/json');
-$busqueda = $_REQUEST['busqueda'];
+$busqueda = filter_input(INPUT_POST, 'busqueda');
 $agenteDao = new AgenteDao();
 $agentes = $agenteDao->getAgentes($busqueda);
 echo "[";

@@ -1,12 +1,10 @@
 <?php
 include '../../util/validarPeticion.php';
-
+include '../../util/validarSession.php';
 include '../../query/ServicioDao.php';
-include '../../dominio/Servicio.php';
-
 
 header('Content-Type: application/json; charset=utf-8');
-$usuario = $_REQUEST['user'];
+$usuario = filter_input(INPUT_POST, 'user');
 $servicioDao = new ServicioDao();
 $servicio = $servicioDao->getServicioAsignado($usuario);
     $servicioId = $servicio->getId();

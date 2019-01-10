@@ -4,15 +4,19 @@ include '../../util/validarSession.php';
 include '../../query/TransportistaDao.php';
 
 header('Content-Type: application/json');
-$id = $_REQUEST['id'];
-$razon = $_REQUEST['razon'];
-$rut = $_REQUEST['rut'];
-$nombre = $_REQUEST['nombre'];
-$direccion = $_REQUEST['direccion'];
-$nombreContacto = $_REQUEST['nombre_contacto'];
-$telefono = $_REQUEST['telefono'];
-$mail = $_REQUEST['mail'];
-$mail2 = $_REQUEST['mail2'];
+$id = filter_input(INPUT_POST, 'id');
+$razon = filter_input(INPUT_POST, 'razon');
+$rut = filter_input(INPUT_POST, 'rut');
+$nombre = filter_input(INPUT_POST, 'nombre');
+$direccion = filter_input(INPUT_POST, 'direccion');
+$nombreContacto = filter_input(INPUT_POST, 'nombre_contacto');
+$telefono = filter_input(INPUT_POST, 'telefono');
+$mail = filter_input(INPUT_POST, 'mail');
+$mail2 = filter_input(INPUT_POST, 'mail2');
+$conductores = filter_input(INPUT_POST, 'conductores');
+$moviles = filter_input(INPUT_POST, 'moviles');
+$delConductor = filter_input(INPUT_POST, 'delConductor');
+$delMovil = filter_input(INPUT_POST, 'delMovil');
 $transportista = new Transportista();
 $transportista->setId($id);
 $transportista->setRazon($razon);
@@ -25,10 +29,6 @@ $transportista->setMailContacto($mail);
 $transportista->setMailFacturacion($mail2);
 $transportistaDao = new TransportistaDao();
 $transportistaDao->modificarTransportista($transportista);
-$conductores = $_REQUEST['conductores'];
-$moviles = $_REQUEST['moviles'];
-$delConductor = $_REQUEST['delConductor'];
-$delMovil = $_REQUEST['delMovil'];
 if($id > 0)
 {
     if($conductores != '')

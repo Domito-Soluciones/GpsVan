@@ -81,11 +81,11 @@ function agregarTransportista()
     }
     if(validarTipoDato())
     {
-        var data = "razon="+razon+"&rut="+rut+"&nombre="+nombre+"&direccion="+
-                direccion+"&nombre_contacto="+nombreContacto+
-                "&telefono="+telefono+"&mail="+mail+"&mail2="+mail2;
-        var url = urlBase+"/transportista/AddTransportista.php?"+data+"&conductores="+AGREGAR_CONDUCTORES+
-                "&moviles="+AGREGAR_MOVILES+"&delConductor="+ELIMINAR_CONDUCTORES+"&delMovil="+ELIMINAR_MOVILES;
+        var params = {razon : razon, rut : rut, nombre : nombre, direccion: direccion,
+                    nombre_contacto : nombreContacto, telefono : telefono, mail : mail, mail2 : mail2,
+                    conductores : AGREGAR_CONDUCTORES+"",moviles : AGREGAR_MOVILES+"",
+                    delConductor : ELIMINAR_CONDUCTORES+"", delMovil : ELIMINAR_MOVILES+""};
+        var url = urlBase+"/transportista/AddTransportista.php";
         var success = function(response)
         {
             ID_TRANSPORTISTA = undefined;
@@ -99,7 +99,7 @@ function agregarTransportista()
             buscarConductores();
             buscarMoviles();
         };
-        postRequest(url,success);
+        postRequest(url,params,success);
     }
 }
 
@@ -122,11 +122,11 @@ function modificarTransportista()
     }
     if(validarTipoDato())
     {
-        var data = "id="+ID_TRANSPORTISTA+"&razon="+razon+"&rut="+rut+"&nombre="+nombre+"&direccion="+
-                direccion+"&nombre_contacto="+nombreContacto+
-                "&telefono="+telefono+"&mail="+mail+"&mail2="+mail2;
-        var url = urlBase + "/transportista/ModTransportista.php?"+data+"&conductores="+AGREGAR_CONDUCTORES+
-                "&moviles="+AGREGAR_MOVILES+"&delConductor="+ELIMINAR_CONDUCTORES+"&delMovil="+ELIMINAR_MOVILES;
+        var params = {razon : razon, rut : rut, nombre : nombre, direccion: direccion,
+                    nombre_contacto : nombreContacto, telefono : telefono, mail : mail, mail2 : mail2,
+                    conductores : AGREGAR_CONDUCTORES+"",moviles : AGREGAR_MOVILES+"",
+                    delConductor : ELIMINAR_CONDUCTORES+"", delMovil : ELIMINAR_MOVILES+""};
+        var url = urlBase + "/transportista/ModTransportista.php";
         var success = function(response)
         {
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
@@ -138,14 +138,15 @@ function modificarTransportista()
             buscarConductores();
             buscarMoviles();
         };
-        postRequest(url,success);
+        postRequest(url,params,success);
     }
 }
 
 function buscarTransportista()
 {
     var busqueda = $("#busqueda").val();
-    var url = urlBase + "/transportista/GetTransportistas.php?busqueda="+busqueda;
+    var params = {busqueda : busqueda};
+    var url = urlBase + "/transportista/GetTransportistas.php";
     var success = function(response)
     {
         cerrarSession(response);
@@ -174,7 +175,7 @@ function buscarTransportista()
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
-    getRequest(url,success);
+    postRequest(url,params,success);
 }
 function cambiarFila(id)
 {
@@ -250,7 +251,8 @@ function abrirModificar(id)
 function eliminarTransportista()
 {
     var rut = $("#rut").val();
-    var url = urlBase + "/transportista/DelTransportista.php?rut="+rut;
+    var params = {rut : rut};
+    var url = urlBase + "/transportista/DelTransportista.php";
     var success = function(response)
     {
         alertify.success("Transportista eliminado");
@@ -260,7 +262,7 @@ function eliminarTransportista()
         resetBotones();
         buscarTransportista();
     };
-    getRequest(url,success);
+    postRequest(url,params,success);
 }
 
 function validarExistencia(tipo,valor)
@@ -336,7 +338,8 @@ function iniciarPestanias()
 
 function buscarConductores()
 {
-    var url = urlBase + "/conductor/GetConductores.php?busqueda=";
+    var params = {busqueda : ""};
+    var url = urlBase + "/conductor/GetConductores.php";
     var success = function(response)
     {
         cambiarPropiedad($("#loader"),"visibility","hidden");
@@ -344,19 +347,20 @@ function buscarConductores()
         CONDUCTORES = response;
         obtenerMovilesConductores();
     };
-    getRequest(url,success);
+    postRequest(url,params,success);
 }
 
 function buscarMoviles()
 {
-    var url = urlBase + "/movil/GetMoviles.php?busqueda=";
+    var params = {busqueda : ""};
+    var url = urlBase + "/movil/GetMoviles.php";
     var success = function(response)
     {
         cambiarPropiedad($("#loader"),"visibility","hidden");
         cerrarSession(response);
         MOVILES = response;
     };
-    getRequest(url,success);
+    postRequest(url,params,success);
 }
 
 function cargarConductores()

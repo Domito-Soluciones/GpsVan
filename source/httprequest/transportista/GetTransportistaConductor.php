@@ -4,7 +4,7 @@ include '../../util/validarSession.php';
 include '../../query/TransportistaDao.php';
 
 header('Content-Type: application/json');
-$transportista = $_REQUEST['id'];
+$transportista = filter_input(INPUT_POST, 'id');
 $transportistaDao = new TransportistaDao();
 $conductores = $transportistaDao->getTransportistaConductor($transportista);
 echo "[";

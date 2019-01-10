@@ -1,12 +1,11 @@
 <?php
 include '../../util/validarPeticion.php';
-
+include '../../util/validarSession.php';
 include '../../query/ServicioDao.php';
 
-
 header('Content-Type: application/json; charset=utf-8');
-$id = $_REQUEST['id'];
-$conductor = $_REQUEST['conductor'];
+$id = filter_input(INPUT_POST, 'id');
+$conductor = filter_input(INPUT_POST, 'conductor');
 $servicioDao = new ServicioDao();
 $servicio = $servicioDao->desAsignarServicio($id);
 $servicioDao->actualizarMovil($conductor);
