@@ -83,7 +83,6 @@ function agregarMovil()
     var segRcDm = $("#SegRcDmSi").is(':checked') ? 'SI' : 'NO';
     var venSegRcDm = $("#venSegRcDm").val();
     var polizaSegRcDm = $("#polizaSegRcDm").val();
-//    var SegAd = $("#SegAd").val();
     var array = [patente,marca,nombre,modelo,anio,color,cantidad,clase,
         venPerCir,venRevTec,venExt,motor,chasis,
         segOb,venSegOb,polizaSegOb,segRcDm,venSegRcDm,polizaSegRcDm];
@@ -95,30 +94,34 @@ function agregarMovil()
     }
     if(validarTipoDato())
     {
-        var data = "patente="+patente+"&marca="+marca+"&nombre="+nombre+"&modelo="+modelo+"&anio="+anio+"&color="+color+"&cantidad="+cantidad+"&clase="+clase
-                +"&venpercir="+venPerCir+"&venrevtec="+venRevTec+"&venext="+venExt+"&kilo="+kilo+"&motor="+motor+"&chasis="+chasis+
-                "&segob="+segOb+"&vensegob="+venSegOb+"&polizasegob="+polizaSegOb+"&segrcdm="+segRcDm+"&vensegrcdm="+venSegRcDm+"&polizasegrcdm="+polizaSegRcDm; 
-        var url = urlBase + "/movil/AddMovil.php?"+data+"&conductores="+AGREGAR_CONDUCTORES+"&delConductor="+ELIMINAR_CONDUCTORES;
-        var success = function(response)
-        {
-            ID_MOVIL = undefined;
-            cerrarSession(response);
-            alertify.success("Veh&iacute;culo Agregado");
-            cambiarPestaniaGeneral();
-            vaciarFormulario();
-            cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
-            resetFormulario();
-            buscarMovil();
-            buscarConductores();
-            AGREGAR_CONDUCTORES = [];
-            ELIMINAR_CONDUCTORES = [];
-        };
-        postRequest(url,success);
-    }
+        var params = {patente : patente, marca : marca, nombre : nombre, modelo : modelo, anio : anio,
+                    color : color, cantidad : cantidad , clase : clase, venpercir : venPerCir, 
+                    venrevtec : venRevTec, venext : venExt, kilo : kilo, motor : motor, chasis : chasis,
+                    segob : segOb, vensegob : venSegOb, polizasegob : polizaSegOb, segrcdm : segRcDm,
+                    vensegrcdm : venSegRcDm, polizasegrcdm : polizaSegRcDm, conductores : AGREGAR_CONDUCTORES+"", 
+                    delConductor : ELIMINAR_CONDUCTORES + ""}; 
+        var url = urlBase + "/movil/AddMovil.php"
+    };
+    var success = function(response)
+    {
+        ID_MOVIL = undefined;
+        cerrarSession(response);
+        alertify.success("Veh&iacute;culo Agregado");
+        cambiarPestaniaGeneral();
+        vaciarFormulario();
+        cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
+        resetFormulario();
+        buscarMovil();
+        buscarConductores();
+        AGREGAR_CONDUCTORES = [];
+        ELIMINAR_CONDUCTORES = [];
+    };
+    postRequest(url,params,success);
 }
 
 function modificarMovil()
 {
+    var id = ID_MOVIL;
     var patente = $("#patente").val();
     var marca = $("#marca").val();
     var nombre = $("#nombre").val();
@@ -151,10 +154,13 @@ function modificarMovil()
     }
     if(validarTipoDato())
     {
-        var data = "id="+ID_MOVIL+"&patente="+patente+"&marca="+marca+"&nombre="+nombre+"&modelo="+modelo+"&anio="+anio+"&color="+color+"&cantidad="+cantidad+"&clase="+clase
-        +"&venpercir="+venPerCir+"&venrevtec="+venRevTec+"&venext="+venExt+"&kilo="+kilo+"&motor="+motor+"&chasis="+chasis+
-        "&segob="+segOb+"&vensegob="+venSegOb+"&polizasegob="+polizaSegOb+"&segrcdm="+segRcDm+"&vensegrcdm="+venSegRcDm+"&polizasegrcdm="+polizaSegRcDm; 
-        var url = urlBase + "/movil/ModMovil.php?"+data+"&conductores="+AGREGAR_CONDUCTORES+"&delConductor="+ELIMINAR_CONDUCTORES;;
+                var params = {id : id, patente : patente, marca : marca, nombre : nombre, modelo : modelo, anio : anio,
+                    color : color, cantidad : cantidad , clase : clase, venpercir : venPerCir, 
+                    venrevtec : venRevTec, venext : venExt, kilo : kilo, motor : motor, chasis : chasis,
+                    segob : segOb, vensegob : venSegOb, polizasegob : polizaSegOb, segrcdm : segRcDm,
+                    vensegrcdm : venSegRcDm, polizasegrcdm : polizaSegRcDm, conductores : AGREGAR_CONDUCTORES+"", 
+                    delConductor : ELIMINAR_CONDUCTORES + ""}; 
+        var url = urlBase + "/movil/ModMovil.php";
         var success = function(response)
         {
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
@@ -166,14 +172,15 @@ function modificarMovil()
             AGREGAR_CONDUCTORES = [];
             ELIMINAR_CONDUCTORES = [];
         };
-        postRequest(url,success);
+        postRequest(url,params,success);
     }
 }
 
 function buscarMovil()
 {
     var busqueda = $("#busqueda").val();
-    var url = urlBase + "/movil/GetMoviles.php?busqueda="+busqueda;
+    var params = {busqueda : busqueda};
+    var url = urlBase + "/movil/GetMoviles.php";
     var success = function(response)
     {
         cerrarSession(response);
@@ -202,7 +209,7 @@ function buscarMovil()
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
-    getRequest(url,success);
+    postRequest(url,params,success);
 }
 
 function cambiarFila(id)
@@ -276,7 +283,8 @@ function abrirModificar(id)
 function eliminarMovil()
 {
     var patente = $("#patente").val();
-    var url = urlBase + "/movil/DelMovil.php?patente="+patente+"&id="+ID_MOVIL;
+    var params = {patente : patente, id : ID_MOVIL};
+    var url = urlBase + "/movil/DelMovil.php";
     var success = function(response)
     {
         alertify.success("Veh&iacute;culo eliminado");
@@ -287,7 +295,7 @@ function eliminarMovil()
         buscarMovil();
         buscarConductores();
     };
-    getRequest(url,success);
+    postRequest(url,params,success);
 }
 
 function validarExistencia(tipo,valor)
@@ -578,14 +586,15 @@ function cargarConductores()
 
 function buscarConductores()
 {
-    var url = urlBase + "/conductor/GetConductores.php?busqueda=";
+    var params = {busqueda : ""};
+    var url = urlBase + "/conductor/GetConductores.php";
     var success = function(response)
     {
         cambiarPropiedad($("#loader"),"visibility","hidden");
         cerrarSession(response);
         CONDUCTORES = response;
     };
-    getRequest(url,success);
+    postRequest(url,params,success);
 }
 function obtenerMovilesConductores()
 {

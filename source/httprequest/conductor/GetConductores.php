@@ -34,6 +34,7 @@ for ($i = 0 ; $i < count($conductores); $i++)
     $imagen = $conductores[$i]->getImagenAdjunta();
     $contrato = $conductores[$i]->getContratoAdjunto();
     $transportista = $conductores[$i]->getTransportista();
+    $movil = $conductores[$i]->getMovil();
     echo "{\"conductor_id\":\"".$cId."\","
         . "\"conductor_nombre\":\"".$nombre."\","
         . "\"conductor_papellido\":\"".$papellido."\","
@@ -57,7 +58,8 @@ for ($i = 0 ; $i < count($conductores); $i++)
         . "\"conductor_anticipo\":\"".$anticipo."\","
         . "\"conductor_imagen\":\"".$imagen."\","
         . "\"conductor_contrato\":\"".$contrato."\","
-        . "\"conductor_transportista\":\"".$transportista."\""
+        . "\"conductor_transportista\":\"".$transportista."\","
+        . "\"conductor_movil\":\"".$movil."\""
         . "}";
     if (($i+1) != count($conductores))
     {

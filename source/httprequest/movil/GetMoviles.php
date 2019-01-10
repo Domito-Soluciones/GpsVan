@@ -4,7 +4,7 @@ include '../../util/validarSession.php';
 include '../../query/MovilDao.php';
 
 header('Content-Type: application/json');
-$busqueda = $_REQUEST['busqueda'];
+$busqueda = filter_input(INPUT_POST, 'busqueda');
 $movilDao = new MovilDao();
 $moviles = $movilDao->getMoviles($busqueda);
 echo "[";
