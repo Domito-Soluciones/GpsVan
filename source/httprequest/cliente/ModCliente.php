@@ -4,16 +4,18 @@ include '../../util/validarSession.php';
 include '../../query/ClienteDao.php';
 
 header('Content-Type: application/json');
-$id = $_REQUEST['id'];
-$razon = $_REQUEST['razon'];
-$tipo = $_REQUEST['tipo'];
-$rut = $_REQUEST['rut'];
-$direccion = $_REQUEST['direccion'];
-$nombre = $_REQUEST['nombre'];
-$telefono = $_REQUEST['telefono'];
-$mail = $_REQUEST['mail'];
-$mail2 = $_REQUEST['mail2'];
-$centro = $_REQUEST['centros'];
+$id = filter_input(INPUT_POST, 'id');
+$razon = filter_input(INPUT_POST, 'razon');
+$tipo = filter_input(INPUT_POST, 'tipo');
+$rut = filter_input(INPUT_POST, 'rut');
+$direccion = filter_input(INPUT_POST, 'direccion');
+$nombre = filter_input(INPUT_POST, 'nombre');
+$telefono = filter_input(INPUT_POST, 'telefono');
+$mail = filter_input(INPUT_POST, 'mail');
+$mail2 = filter_input(INPUT_POST, 'mail2');
+$centro = filter_input(INPUT_POST, 'centros');
+$pasajeros = filter_input(INPUT_POST, 'pasajeros');
+$delPasajero = filter_input(INPUT_POST, 'delPasajero');
 $cliente = new Cliente();
 $cliente->setId($id);
 $cliente->setRazon($razon);
@@ -27,8 +29,6 @@ $cliente->setMailFacturacion($mail2);
 $cliente->setCentroCosto($centro);
 $clienteDao = new ClienteDao();
 $clienteDao->modificarCliente($cliente);
-$pasajeros = $_REQUEST['pasajeros'];
-$delPasajero = $_REQUEST['delPasajero'];
 if($cliente->getId() > 0)
 {
     if($pasajeros !== '')

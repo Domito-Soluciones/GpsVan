@@ -600,7 +600,6 @@ function agregarConductores(obj)
     if(obj.prop("checked"))
     {
         AGREGAR_CONDUCTORES.push(obj.val());
-        console.log("ADD "+AGREGAR_CONDUCTORES.length);
         for(var i = 0; i < ELIMINAR_CONDUCTORES.length; i++)
         {
             if(ELIMINAR_CONDUCTORES[i] === obj.val())
@@ -616,7 +615,6 @@ function eliminarConductores(obj)
     if(obj.prop("checked"))
     {
         ELIMINAR_CONDUCTORES.push(obj.val());
-        console.log("DEL "+ELIMINAR_CONDUCTORES.length);
         for(var i = 0; i < AGREGAR_CONDUCTORES.length; i++)
         {
             if(AGREGAR_CONDUCTORES[i] === obj.val())

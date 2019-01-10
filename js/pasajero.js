@@ -379,7 +379,6 @@ function activarPestania(array)
     var app = false;
     for(var i = 0 ; i < CAMPOS.length ; i++)
     {
-        console.log(CAMPOS[i] + " " + i);
         if(array[i] === '')
         {
             if(i < 8)
