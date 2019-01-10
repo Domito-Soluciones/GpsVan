@@ -573,6 +573,7 @@ function agregarMoviles(obj)
         }
     }
 }
+
 function eliminarMoviles(obj)
 {
     if(obj.prop("checked"))
