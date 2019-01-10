@@ -1,19 +1,8 @@
 <?php
 include '../../util/validarPeticion.php';
-
 include '../../conexion/Conexion.php';
 include '../../dominio/Movil.php';
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
-/**
- * Description of MovilDao
- *
- * @author Jose
- */
 class MovilDao {
     
     public function agregarMovil($movil)
@@ -24,6 +13,8 @@ class MovilDao {
         $marca = $movil->getMarca();
         $modelo = $movil->getModelo();
         $anio = $movil->getAnio();
+        $cantidad = $movil->getCantidad();
+        $clase = $movil->getClase();
         $venRevTec = $movil->getVenRevTec();
         $segOb = $movil->getSegOb();
         $venSegOb = $movil->getVenSegOb();
@@ -32,11 +23,11 @@ class MovilDao {
         $conn = new Conexion();
         try {
             $query = "INSERT INTO tbl_movil (movil_patente,movil_nombre,movil_marca,movil_modelo,"
-                    . "movil_anio,movil_venc_rev_tecnica,movil_seguro_obligatorio,movil_venc_seguro_obligatorio,movil_seguro_adicional,movil_kilometraje,"
+                    . "movil_anio,movil_cantidad,movil_clase,movil_venc_rev_tecnica,movil_seguro_obligatorio,movil_venc_seguro_obligatorio,movil_seguro_adicional,movil_kilometraje,"
                     . "movil_transportista,movil_estado,movil_lat,movil_lon,movil_last_lat,movil_last_lon,movil_conductor,movil_ultima_asignacion,movil_servicio)"
                     . " VALUES ('$patente','$nombre','$marca','$modelo',"
-                    . "$anio,'$venRevTec','$segOb','$venSegOb','$segAd',$kilo,"
-                    . "0,0,'','','','',0,CURRENT_TIMESTAMP,0)"; 
+                    . "$anio,$cantidad,'$clase','$venRevTec','$segOb','$venSegOb','$segAd',$kilo,"
+                    . "0,0,0,0,0,0,0,CURRENT_TIMESTAMP,0)";
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -57,6 +48,8 @@ class MovilDao {
         $nombre = $movil->getNombre();
         $modelo = $movil->getModelo();
         $anio = $movil->getAnio();
+        $cantidad = $movil->getCantidad();
+        $clase = $movil->getClase();
         $venRevTec = $movil->getVenRevTec();
         $segOb = $movil->getSegOb();
         $venSegOb = $movil->getVenSegOb();
@@ -66,7 +59,7 @@ class MovilDao {
         try {
             $query = "UPDATE tbl_movil SET movil_marca = '$marca',"
                     . "movil_nombre = '$nombre',movil_modelo = '$modelo',"
-                    . "movil_anio = $anio,movil_venc_rev_tecnica = '$venRevTec',"
+                    . "movil_anio = $anio,movil_cantidad = $cantidad,movil_clase = '$clase',movil_venc_rev_tecnica = '$venRevTec',"
                     . "movil_seguro_obligatorio = '$segOb',movil_venc_seguro_obligatorio = '$venSegOb',movil_seguro_adicional = '$segAd'"
                     . ",movil_kilometraje = $kilo WHERE movil_patente = '$patente'";           
             $conn->conectar();
@@ -108,6 +101,8 @@ class MovilDao {
                 $moviles->setModelo($row["movil_modelo"]);
                 $moviles->setNombre($row["movil_nombre"]);
                 $moviles->setAnio($row["movil_anio"]);
+                $moviles->setCantidad($row["movil_cantidad"]);
+                $moviles->setClase($row["movil_clase"]);
                 $moviles->setVenRevTec($row["movil_venc_rev_tecnica"]);
                 $moviles->setSegOb($row["movil_seguro_obligatorio"]);
                 $moviles->setVenSegOb($row["movil_venc_seguro_obligatorio"]);                
@@ -143,6 +138,8 @@ class MovilDao {
                 $movil->setModelo($row["movil_modelo"]);
                 $movil->setNombre($row["movil_nombre"]);
                 $movil->setAnio($row["movil_anio"]);
+                $movil->setCantidad($row["movil_cantidad"]);
+                $movil->setClase($row["movil_clase"]);
                 $movil->setVenRevTec($row["movil_venc_rev_tecnica"]);
                 $movil->setSegOb($row["movil_seguro_obligatorio"]);
                 $movil->setVenSegOb($row["movil_venc_seguro_obligatorio"]);                

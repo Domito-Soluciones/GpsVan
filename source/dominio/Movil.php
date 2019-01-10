@@ -19,6 +19,8 @@ class Movil {
     private $venSegOb;
     private $segAd;
     private $kilometraje;
+    private $cantidad;
+    private $clase;
    
     function getId() {
         return $this->id;
@@ -88,6 +90,14 @@ class Movil {
         return $this->kilometraje;
     }
 
+    function getCantidad() {
+        return $this->cantidad;
+    }
+
+    function getClase() {
+        return $this->clase;
+    }
+
     function setId($id) {
         $this->id = $id;
     }
@@ -155,5 +165,14 @@ class Movil {
     function setKilometraje($kilometraje) {
         $this->kilometraje = $kilometraje;
     }
+
+    function setCantidad($cantidad) {
+        $this->cantidad = $cantidad;
+    }
+
+    function setClase($clase) {
+        $this->clase = $clase;
+    }
+
 
 }

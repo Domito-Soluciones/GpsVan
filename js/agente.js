@@ -12,7 +12,7 @@ $(document).ready(function(){
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
         $("#contenedor_central").load("html/datos_agente.html", function( response, status, xhr ) {
-            iniciarPestaniasAgente();
+            iniciarPestanias();
             cambioEjecutado();
             $("#rut").blur(function (){
                 if(validarExistencia('rut',$(this).val()))
@@ -236,7 +236,7 @@ function abrirModificar(id)
     ID_AGENTE = id;
     marcarFilaActiva(id);
     $("#contenedor_central").load("html/datos_agente.html", function( response, status, xhr ) {
-        iniciarPestaniasAgente();
+        iniciarPestanias();
         cambioEjecutado();
         $("#nick").blur(function (){
             if(validarExistencia('nick',$(this).val()))
@@ -362,19 +362,13 @@ function validarTipoDato()
     return true;
 }
 
-function iniciarPestaniasAgente()
+function iniciarPestanias()
 {
     $("#p_general").click(function(){
-        cambiarPropiedad($("#cont_general"),"display","block");
-        cambiarPropiedad($("#cont_app"),"display","none");
-        quitarclase($(this),"dispose");
-        agregarclase($("#p_app"),"dispose");
+        cambiarPestaniaGeneral();
     });
     $("#p_app").click(function(){
-        cambiarPropiedad($("#cont_general"),"display","none");
-        cambiarPropiedad($("#cont_app"),"display","block");
-        quitarclase($(this),"dispose");
-        agregarclase($("#p_general"),"dispose");
+        cambiarPestaniaAplicacion();
     });
 }
 

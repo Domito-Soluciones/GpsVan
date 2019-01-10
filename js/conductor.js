@@ -240,7 +240,7 @@ function buscarConductor()
             var nombre = response[i].conductor_nombre;
             var papellido = response[i].conductor_papellido;
             var mapellido = response[i].conductor_mapellido;
-            var titulo = recortar(rut+" / "+nombre+" "+papellido+" "+ mapellido);
+            var titulo = recortar(id+" / "+nombre+" "+papellido+" "+ mapellido);
             MOVILES_OCUPADOS.push(response[i].conductor_movil);
             
             if (typeof ID_CONDUCTOR !== "undefined" && ID_CONDUCTOR === id)
@@ -496,44 +496,13 @@ function validarTipoDato()
 function iniciarPestanias()
 {
     $("#p_general").click(function(){
-        cambiarPropiedad($("#cont_general"),"display","block");
-        cambiarPropiedad($("#cont_contrato"),"display","none");
-        cambiarPropiedad($("#cont_app"),"display","none");
-        cambiarPropiedad($("#cont_movil"),"display","none");
-        quitarclase($(this),"dispose");
-        agregarclase($("#p_contrato"),"dispose");
-        agregarclase($("#p_app"),"dispose");
-        agregarclase($("#p_movil"),"dispose");
+        cambiarPestaniaGeneral();
     });
     $("#p_contrato").click(function(){
-        cambiarPropiedad($("#cont_general"),"display","none");
-        cambiarPropiedad($("#cont_contrato"),"display","block");
-        cambiarPropiedad($("#cont_app"),"display","none");
-        cambiarPropiedad($("#cont_movil"),"display","none");
-        quitarclase($(this),"dispose");
-        agregarclase($("#p_general"),"dispose");
-        agregarclase($("#p_app"),"dispose");
-        agregarclase($("#p_movil"),"dispose");
+        cambiarPestaniaContrato();
     });
     $("#p_app").click(function(){
-        cambiarPropiedad($("#cont_general"),"display","none");
-        cambiarPropiedad($("#cont_contrato"),"display","none");
-        cambiarPropiedad($("#cont_app"),"display","block");
-        cambiarPropiedad($("#cont_movil"),"display","none");
-        quitarclase($(this),"dispose");
-        agregarclase($("#p_contrato"),"dispose");
-        agregarclase($("#p_general"),"dispose");
-        agregarclase($("#p_movil"),"dispose");
-    });
-    $("#p_movil").click(function(){
-        cambiarPropiedad($("#cont_general"),"display","none");
-        cambiarPropiedad($("#cont_contrato"),"display","none");
-        cambiarPropiedad($("#cont_app"),"display","none");
-        cambiarPropiedad($("#cont_movil"),"display","block");
-        quitarclase($(this),"dispose");
-        agregarclase($("#p_contrato"),"dispose");
-        agregarclase($("#p_general"),"dispose");
-        agregarclase($("#p_app"), "dispose");
+        cambiarPestaniaAplicacion();
     });
 }
 

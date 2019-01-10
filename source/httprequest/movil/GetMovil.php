@@ -13,6 +13,8 @@ $movilPatente = $movil->getPatente();
 $movilMarca = $movil->getMarca();
 $movilModelo = $movil->getModelo();
 $movilAnio = $movil->getAnio();
+$movilCantidad = $movil->getCantidad();
+$movilClase = $movil->getClase();
 $movilVenRevTec = date("d/m/Y", strtotime($movil->getVenRevTec()));
 $movilSegOb = $movil->getSegOb();
 $movilVenSegOb = date("d/m/Y", strtotime($movil->getVenSegOb()));
@@ -29,6 +31,8 @@ echo "{\"movil_id\":\"".$movilId."\","
     . "\"movil_marca\":\"".$movilMarca."\","
     . "\"movil_modelo\":\"".$movilModelo."\","
     . "\"movil_anio\":\"".$movilAnio."\","
+    . "\"movil_cantidad\":\"".$movilCantidad."\","
+    . "\"movil_clase\":\"".$movilClase."\","
     . "\"movil_ven_rev_tec\":\"".$movilVenRevTec."\","
     . "\"movil_seg_ob\":\"".$movilSegOb."\","
     . "\"movil_ven_seg_ob\":\"".$movilVenSegOb."\","

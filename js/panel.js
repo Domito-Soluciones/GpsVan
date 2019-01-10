@@ -348,24 +348,6 @@ function agregarDetalleServicio(idServicio)
     postRequest(url,null);
 }
 
-function validarInexistencia(val,array)
-{
-    if(val === '')
-    {
-        return false;
-    }
-    else
-    {
-        for(var i = 0 ; i < array.length ; i++)
-        {
-            if(array[i] === val)
-            {
-                return false;
-            }
-        }
-    }
-    return true;
-}
 
 function cargarServiciosPendientes()
 {

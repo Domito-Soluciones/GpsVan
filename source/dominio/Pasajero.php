@@ -17,6 +17,9 @@ class Pasajero {
     private $nivel;
     private $estado;
     private $cliente;
+    private $centroCosto;
+    private $empresa;
+    private $ruta;
     
     function getId() {
         return $this->id;
@@ -78,6 +81,18 @@ class Pasajero {
         return $this->cliente;
     }
 
+    function getCentroCosto() {
+        return $this->centroCosto;
+    }
+
+    function getEmpresa() {
+        return $this->empresa;
+    }
+
+    function getRuta() {
+        return $this->ruta;
+    }
+
     function setId($id) {
         $this->id = $id;
     }
@@ -137,6 +152,19 @@ class Pasajero {
     function setCliente($cliente) {
         $this->cliente = $cliente;
     }
+
+    function setCentroCosto($centroCosto) {
+        $this->centroCosto = $centroCosto;
+    }
+
+    function setEmpresa($empresa) {
+        $this->empresa = $empresa;
+    }
+
+    function setRuta($ruta) {
+        $this->ruta = $ruta;
+    }
+
 
 
 }

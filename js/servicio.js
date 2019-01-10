@@ -88,45 +88,65 @@ function abrirBuscador(id)
 function iniciarPestanias()
 {
     $("#p_general").click(function(){
-        cambiarPropiedad($("#cont_general"),"display","block");
-        cambiarPropiedad($("#cont_transportista"),"display","none");
-        cambiarPropiedad($("#cont_viaje"),"display","none");
-        cambiarPropiedad($("#cont_tarifa"),"display","none");
-        quitarclase($(this),"dispose");
-        agregarclase($("#p_transportista"),"dispose");
-        agregarclase($("#p_viaje"),"dispose");
-        agregarclase($("#p_tarifa"),"dispose");
+        cambiarPestaniaGeneral();
     });
     $("#p_transportista").click(function(){
-        cambiarPropiedad($("#cont_general"),"display","none");
-        cambiarPropiedad($("#cont_transportista"),"display","block");
-        cambiarPropiedad($("#cont_viaje"),"display","none");
-        cambiarPropiedad($("#cont_tarifa"),"display","none");
-        quitarclase($(this),"dispose");
-        agregarclase($("#p_general"),"dispose");
-        agregarclase($("#p_viaje"),"dispose");
-        agregarclase($("#p_tarifa"),"dispose");
+        cambiarPestaniaTransportista();
     });
     $("#p_viaje").click(function(){
-        cambiarPropiedad($("#cont_general"),"display","none");
-        cambiarPropiedad($("#cont_transportista"),"display","none");
-        cambiarPropiedad($("#cont_viaje"),"display","block");
-        cambiarPropiedad($("#cont_tarifa"),"display","none");
-        quitarclase($(this),"dispose");
-        agregarclase($("#p_general"),"dispose");
-        agregarclase($("#p_transportista"),"dispose");
-        agregarclase($("#p_tarifa"),"dispose");
+        cambiarPestaniaViaje();
     });
     $("#p_tarifa").click(function(){
-        cambiarPropiedad($("#cont_general"),"display","none");
-        cambiarPropiedad($("#cont_transportista"),"display","none");
-        cambiarPropiedad($("#cont_viaje"),"display","none");
-        cambiarPropiedad($("#cont_tarifa"),"display","block");
-        quitarclase($(this),"dispose");
-        agregarclase($("#p_general"),"dispose");
-        agregarclase($("#p_transportista"),"dispose");
-        agregarclase($("#p_viaje"),"dispose");
+        cambiarPestaniaTarifa();
     });
+}
+
+function cambiarPestaniaGeneral()
+{
+    cambiarPropiedad($("#cont_general"),"display","block");
+    cambiarPropiedad($("#cont_transportista"),"display","none");
+    cambiarPropiedad($("#cont_viaje"),"display","none");
+    cambiarPropiedad($("#cont_tarifa"),"display","none");
+    quitarclase($("#p_general"),"dispose");
+    agregarclase($("#p_transportista"),"dispose");
+    agregarclase($("#p_viaje"),"dispose");
+    agregarclase($("#p_tarifa"),"dispose");
+}
+
+function cambiarPestaniaTransportista()
+{
+    cambiarPropiedad($("#cont_general"),"display","none");
+    cambiarPropiedad($("#cont_transportista"),"display","block");
+    cambiarPropiedad($("#cont_viaje"),"display","none");
+    cambiarPropiedad($("#cont_tarifa"),"display","none");
+    quitarclase($("#p_transportista"),"dispose");
+    agregarclase($("#p_general"),"dispose");
+    agregarclase($("#p_viaje"),"dispose");
+    agregarclase($("#p_tarifa"),"dispose");
+}
+
+function cambiarPestaniaViaje()
+{
+    cambiarPropiedad($("#cont_general"),"display","none");
+    cambiarPropiedad($("#cont_transportista"),"display","none");
+    cambiarPropiedad($("#cont_viaje"),"display","block");
+    cambiarPropiedad($("#cont_tarifa"),"display","none");
+    quitarclase($(this),"dispose");
+    agregarclase($("#p_general"),"dispose");
+    agregarclase($("#p_transportista"),"dispose");
+    agregarclase($("#p_tarifa"),"dispose");
+}
+
+function cambiarPestaniaTarifa()
+{
+    cambiarPropiedad($("#cont_general"),"display","none");
+    cambiarPropiedad($("#cont_transportista"),"display","none");
+    cambiarPropiedad($("#cont_viaje"),"display","none");
+    cambiarPropiedad($("#cont_tarifa"),"display","block");
+    quitarclase($(this),"dispose");
+    agregarclase($("#p_general"),"dispose");
+    agregarclase($("#p_transportista"),"dispose");
+    agregarclase($("#p_viaje"),"dispose");
 }
 
 function obtenerEstadoServicio(servicio)

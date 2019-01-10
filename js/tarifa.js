@@ -3,7 +3,9 @@ var ID_TARIFA;
 var TARIFAS;
 var AGREGAR = true;
 var PAGINA = 'TARIFAS';
-var CAMPOS = ["nombre","origen","destino","valor1","valor2"];
+var CAMPOS = ["cliente","ruta","nombre","origen","destino","valor1","valor2"];
+var clientes = [];
+
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
     buscarTarifa();
@@ -13,12 +15,26 @@ $(document).ready(function(){
         AGREGAR = true;
         $("#contenedor_central").load("html/datos_tarifa.html", function( response, status, xhr ) {
             cambioEjecutado();
+            cargarClientes();
             $("#nombre").blur(function (){
                 if(validarExistencia('nombre',$(this).val()))
                 {
                     alertify.error("El nombre "+$(this).val()+" ya existe");
                     $("#nombre").val("");
                     return;
+                }
+            });
+            $("#cliente").on('blur',function () {
+                if($("#cliente").val() === "")
+                {
+                    cargarPasajeros();
+                }
+                var noExiste = validarInexistencia($("#cliente").val(),clientes);
+                if(noExiste)
+                {
+                    alertify.error("Cliente inexistente");
+                    $("#cliente").val("");
+
                 }
             });
         });
@@ -52,12 +68,14 @@ $(document).ready(function(){
 
 function agregarTarifa()
 {
+    var cliente = $("#cliente").val();
+    var ruta = $("#ruta").val();
     var nombre = $("#nombre").val();
     var origen = $("#origen").val();
     var destino = $("#destino").val();
     var valor1 = $("#valor1").val();
     var valor2 = $("#valor2").val();
-    var array = [nombre,origen,destino,valor1,valor2];
+    var array = [cliente,ruta,nombre,origen,destino,valor1,valor2];
     if(!validarCamposOr(array))
     {
         activarPestania(array);
@@ -66,7 +84,7 @@ function agregarTarifa()
     }
     if(validarTipoDato())
     {
-        var data = "nombre="+nombre+"&origen="+origen+"&destino="+destino
+        var data = "cliente="+cliente+"&ruta="+ruta+"&nombre="+nombre+"&origen="+origen+"&destino="+destino
         +"&valor1="+valor1+"&valor2="+valor2;
         var url = urlBase + "/tarifa/AddTarifa.php?"+data;
         var success = function(response)
@@ -85,12 +103,14 @@ function agregarTarifa()
 
 function modificarTarifa()
 {
+    var cliente = $("#cliente").val();
+    var ruta = $("#ruta").val();
     var nombre = $("#nombre").val();
     var origen = $("#origen").val();
     var destino = $("#destino").val();
     var valor1 = $("#valor1").val();
     var valor2 = $("#valor2").val();
-    var array = [nombre,origen,destino,valor1,valor2];
+    var array = [cliente,ruta,nombre,origen,destino,valor1,valor2];
     if(!validarCamposOr(array))
     {
         activarPestania(array);
@@ -99,7 +119,7 @@ function modificarTarifa()
     }
     if(validarTipoDato())
     {
-        var data = "id="+ID_TARIFA+"&nombre="+nombre+"&origen="+origen+"&destino="+destino
+        var data = "id="+ID_TARIFA+"&cliente="+cliente+"&ruta="+ruta+"&nombre="+nombre+"&origen="+origen+"&destino="+destino
         +"&valor1="+valor1+"&valor2="+valor2;
         var url = urlBase + "/tarifa/ModTarifa.php?"+data;
         var success = function(response)
@@ -132,8 +152,9 @@ function buscarTarifa()
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].tarifa_id;
-            var nombre = response[i].tarifa_nombre;
-            var titulo = recortar(nombre);
+            var cliente = response[i].tarifa_cliente;
+            var ruta = response[i].tarifa_ruta;
+            var titulo = recortar(cliente + " / "  + ruta);
             if (typeof ID_TARIFA !== "undefined" && ID_TARIFA === id)
             {
                 tarifas.append("<div class=\"fila_contenedor fila_contenedor_activa\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+titulo+"</div>");
@@ -184,6 +205,9 @@ function abrirModificar(id)
                 tarifa = TARIFAS[i];
             }
         }
+        $("#cliente").val(tarifa.tarifa_cliente);
+        cargarClientes();
+        $("#ruta").val(tarifa.tarifa_ruta);
         $("#nombre").prop("readonly",true);
         $("#nombre").val(tarifa.tarifa_nombre);
         $("#origen").val(tarifa.tarifa_origen);
@@ -263,6 +287,23 @@ function activarPestania(array)
             marcarCampoOk($("#"+CAMPOS[i]));
         }
     }
+}
+
+function cargarClientes()
+{
+    var busqueda = $("#cliente").val();
+    var url = urlBase + "/cliente/GetClientes.php?busqueda="+busqueda;
+    var success = function(response)
+    {
+        $("#lcliente").html("");
+        for(var i = 0 ; i < response.length ; i++)
+        {
+            var nombre = response[i].cliente_razon;
+            $("#lcliente").append("<option value=\""+nombre+"\">"+nombre+"</option>");
+            clientes.push(nombre);
+        }
+    };
+    getRequest(url,success,false);
 }
 
 

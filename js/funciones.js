@@ -103,7 +103,7 @@ function validarCamposAnd(array)
             cont++;
         }
     }
-    if(cont == array.length)
+    if(cont === array.length)
     {
         return false;
     }
@@ -119,17 +119,14 @@ function quitarclase(div,clase)
     div.removeClass(clase);
 }
 
-function cambiarModulo(pagina,cambiar){
+function cambiarModulo(pagina){
     if(MODIFICADO)
     {
         confirmar("Cambiar de modulo","¿Desea cambiar de modulo sin guardar los cambios?",
             function(){
                 MODIFICADO = false;
-                if(cambiar)
-                {
-                    quitarclase($(".opcion-menu"),"menu-activo");
-                    agregarclase($("#"+pagina),"menu-activo");
-                }
+                quitarclase($(".opcion-menu"),"menu-activo");
+                agregarclase($("#"+pagina),"menu-activo");
                 if(pagina !== 'panel' || pagina !== 'monitoreo')
                 {
                     if(pagina !== 'panel')
@@ -153,11 +150,8 @@ function cambiarModulo(pagina,cambiar){
     }
     else
     {
-        if(cambiar)
-        {
-            quitarclase($(".opcion-menu"),"menu-activo");
-            agregarclase($("#"+pagina),"menu-activo");
-        }
+        quitarclase($(".opcion-menu"),"menu-activo");
+        agregarclase($("#"+pagina),"menu-activo");
         if(pagina !== 'panel' || pagina !== 'monitoreo')
         {
             if(pagina !== 'panel')
@@ -227,9 +221,11 @@ function vaciarFormulario()
 {
     $("input").each(function() {
         $(this).val("");
+        marcarCampoOk($(this));
     });
     $("select").each(function() {
         $(this).val("");
+        marcarCampoOk($(this));
     });
 }
 
@@ -505,4 +501,23 @@ function validarCancelar(pagina)
         resetBotones();
     }
     quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
+}
+
+function validarInexistencia(val,array)
+{
+    if(val === '')
+    {
+        return false;
+    }
+    else
+    {
+        for(var i = 0 ; i < array.length ; i++)
+        {
+            if(array[i] === val)
+            {
+                return false;
+            }
+        }
+    }
+    return true;
 }
