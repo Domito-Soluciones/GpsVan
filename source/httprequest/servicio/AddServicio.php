@@ -35,8 +35,8 @@ if(isset($_SESSION['agente']))
     $agente = $_SESSION['agente'];
 }
 $servicio = new Servicio();
-$servicio->setPartida($partida);
-$servicio->setDestino($destino);
+$servicio->setPartida(urldecode($partida));
+$servicio->setDestino(urldecode($destino));
 $servicio->setCliente($cliente);
 $servicio->setUsuario_nombre($usuario);
 $servicio->setTransportista($transportista);

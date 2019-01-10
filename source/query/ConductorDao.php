@@ -168,7 +168,7 @@ class ConductorDao {
         $conn = new Conexion();
         $id = 0;
         try {
-            $query = "SELECT * FROM tbl_conductor WHERE conductor_rut = '$nombre' and conductor_clave = '$clave'"; 
+            $query = "SELECT * FROM tbl_conductor WHERE conductor_nick = '$nombre' and conductor_clave = '$clave'"; 
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query); 
             while($row = mysqli_fetch_array($result)) {

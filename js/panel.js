@@ -288,7 +288,7 @@ function preDibujarRuta()
 function dibujarRuta(origen,destinos)
 {
     var largo = destinos.length;
-    var destinoFinal = destinos[largo-1].value;
+    var destinoFinal = encodeURI(destinos[largo-1].value);
     var waypoints = "";
     if(largo > 1)
     {
@@ -299,11 +299,11 @@ function dibujarRuta(origen,destinos)
             {
                 continue;
             }
-            waypoints += destinos[i].value + "|";
+            waypoints += encodeURI(destinos[i].value) + "|";
         }
         waypoints = waypoints.substring(0,waypoints.length-1);
     }
-    var url = CORS_PROXY + DIRECTIONS_API + "origin="+origen+"&destination="+destinoFinal+waypoints+"&key="+API_KEY;
+    var url = CORS_PROXY + DIRECTIONS_API + "origin="+encodeURI(origen)+"&destination="+destinoFinal+waypoints+"&key="+API_KEY;
     var success = function(response)
     {
         if(typeof POLYLINE !== "undefined")

@@ -22,8 +22,8 @@ echo "[";
 for ($i = 0 ; $i < count($servicios); $i++)
 {
     $servicioId = $servicios[$i]->getId();
-    $servicioPartida = urldecode($servicios[$i]->getPartida());
-    $servicioDestino = urldecode($servicios[$i]->getDestino());
+    $servicioPartida = $servicios[$i]->getPartida();
+    $servicioDestino = $servicios[$i]->getDestino();
     $servicioCliente = $servicios[$i]->getCliente();
     $servicioUsuario = $servicios[$i]->getUsuario_nombre();
     $servicioTransportista = $servicios[$i]->getTransportista();

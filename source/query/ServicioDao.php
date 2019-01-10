@@ -183,7 +183,9 @@ class ServicioDao {
         $conn = new Conexion();
         try {
             $servicio = new Servicio();            
-            $query = "SELECT * FROM tbl_servicio JOIN tbl_usuario ON servicio_usuario = usuario_nombre WHERE servicio_estado = 0 AND servicio_movil = (select movil_nombre from tbl_movil where movil_conductor = '".$usuario."')";
+            $query = "SELECT * FROM tbl_servicio JOIN tbl_pasajero ON servicio_usuario = CONCAT(pasajero_nombre,' ',pasajero_papellido) "
+                    . "WHERE servicio_estado = 1 AND servicio_movil = (select movil_nombre from tbl_movil JOIN tbl_conductor ON"
+                    . " movil_patente = conductor_movil WHERE conductor_nick = '".$usuario."')";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
             while($row = mysqli_fetch_array($result)) {
@@ -191,10 +193,10 @@ class ServicioDao {
                 $servicio->setPartida($row["servicio_partida"]);
                 $servicio->setDestino($row["servicio_destino"]);
                 $servicio->setCliente($row["servicio_cliente"]);
-                $servicio->setUsuario_id($row["usuario_id"]);
-                $servicio->setUsuario_nombre($row["usuario_nombre"]);
-                $servicio->setUsuario_direccion($row["usuario_direccion"]);
-                $servicio->setUsuario_celular($row["usuario_celular"]);
+                $servicio->setUsuario_id($row["pasajero_id"]);
+                $servicio->setUsuario_nombre($row["pasajero_nombre"]);
+                $servicio->setUsuario_direccion($row["pasajero_direccion"]);
+                $servicio->setUsuario_celular($row["pasajero_celular"]);
                 $servicio->setTransportista($row["servicio_transportista"]);
                 $servicio->setMovil($row["servicio_movil"]);
                 $servicio->setTipo($row["servicio_tipo"]);
