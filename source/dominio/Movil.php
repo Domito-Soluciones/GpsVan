@@ -7,21 +7,29 @@ class Movil {
     private $marca;
     private $modelo;
     private $nombre;
+    private $anio;
+    private $color;
+    private $cantidad;
+    private $clase;
+    private $venPerCir;
+    private $venRevTec;
+    private $venExt;
+    private $kilometraje;
+    private $motor;
+    private $chasis;
+    private $segOb;
+    private $venSegOb;
     private $transportista;
     private $estado;
     private $lat;
     private $lon;
     private $ultimaAsignacion;
     private $servicio;
-    private $anio;
-    private $venRevTec;
-    private $segOb;
-    private $venSegOb;
-    private $segAd;
-    private $kilometraje;
-    private $cantidad;
-    private $clase;
-   
+    private $polizaSegOb;
+    private $segRcDm;
+    private $venSegRcDm;
+    private $polizaSegRcDm;
+    
     function getId() {
         return $this->id;
     }
@@ -40,6 +48,54 @@ class Movil {
 
     function getNombre() {
         return $this->nombre;
+    }
+
+    function getAnio() {
+        return $this->anio;
+    }
+
+    function getColor() {
+        return $this->color;
+    }
+
+    function getCantidad() {
+        return $this->cantidad;
+    }
+
+    function getClase() {
+        return $this->clase;
+    }
+
+    function getVenPerCir() {
+        return $this->venPerCir;
+    }
+
+    function getVenRevTec() {
+        return $this->venRevTec;
+    }
+
+    function getVenExt() {
+        return $this->venExt;
+    }
+
+    function getKilometraje() {
+        return $this->kilometraje;
+    }
+
+    function getMotor() {
+        return $this->motor;
+    }
+
+    function getChasis() {
+        return $this->chasis;
+    }
+
+    function getSegOb() {
+        return $this->segOb;
+    }
+
+    function getVenSegOb() {
+        return $this->venSegOb;
     }
 
     function getTransportista() {
@@ -66,36 +122,20 @@ class Movil {
         return $this->servicio;
     }
 
-    function getAnio() {
-        return $this->anio;
+    function getPolizaSegOb() {
+        return $this->polizaSegOb;
     }
 
-    function getVenRevTec() {
-        return $this->venRevTec;
+    function getSegRcDm() {
+        return $this->segRcDm;
     }
 
-    function getSegOb() {
-        return $this->segOb;
+    function getVenSegRcDm() {
+        return $this->venSegRcDm;
     }
 
-    function getVenSegOb() {
-        return $this->venSegOb;
-    }
-
-    function getSegAd() {
-        return $this->segAd;
-    }
-
-    function getKilometraje() {
-        return $this->kilometraje;
-    }
-
-    function getCantidad() {
-        return $this->cantidad;
-    }
-
-    function getClase() {
-        return $this->clase;
+    function getPolizaSegRcDm() {
+        return $this->polizaSegRcDm;
     }
 
     function setId($id) {
@@ -116,6 +156,54 @@ class Movil {
 
     function setNombre($nombre) {
         $this->nombre = $nombre;
+    }
+
+    function setAnio($anio) {
+        $this->anio = $anio;
+    }
+
+    function setColor($color) {
+        $this->color = $color;
+    }
+
+    function setCantidad($cantidad) {
+        $this->cantidad = $cantidad;
+    }
+
+    function setClase($clase) {
+        $this->clase = $clase;
+    }
+
+    function setVenPerCir($venPerCir) {
+        $this->venPerCir = $venPerCir;
+    }
+
+    function setVenRevTec($venRevTec) {
+        $this->venRevTec = $venRevTec;
+    }
+
+    function setVenExt($venExt) {
+        $this->venExt = $venExt;
+    }
+
+    function setKilometraje($kilometraje) {
+        $this->kilometraje = $kilometraje;
+    }
+
+    function setMotor($motor) {
+        $this->motor = $motor;
+    }
+
+    function setChasis($chasis) {
+        $this->chasis = $chasis;
+    }
+
+    function setSegOb($segOb) {
+        $this->segOb = $segOb;
+    }
+
+    function setVenSegOb($venSegOb) {
+        $this->venSegOb = $venSegOb;
     }
 
     function setTransportista($transportista) {
@@ -142,37 +230,22 @@ class Movil {
         $this->servicio = $servicio;
     }
 
-    function setAnio($anio) {
-        $this->anio = $anio;
+    function setPolizaSegOb($polizaSegOb) {
+        $this->polizaSegOb = $polizaSegOb;
     }
 
-    function setVenRevTec($venRevTec) {
-        $this->venRevTec = $venRevTec;
+    function setSegRcDm($segRcDm) {
+        $this->segRcDm = $segRcDm;
     }
 
-    function setSegOb($segOb) {
-        $this->segOb = $segOb;
+    function setVenSegRcDm($venSegRcDm) {
+        $this->venSegRcDm = $venSegRcDm;
     }
 
-    function setVenSegOb($venSegOb) {
-        $this->venSegOb = $venSegOb;
-    }
-
-    function setSegAd($segAd) {
-        $this->segAd = $segAd;
-    }
-
-    function setKilometraje($kilometraje) {
-        $this->kilometraje = $kilometraje;
-    }
-
-    function setCantidad($cantidad) {
-        $this->cantidad = $cantidad;
-    }
-
-    function setClase($clase) {
-        $this->clase = $clase;
+    function setPolizaSegRcDm($polizaSegRcDm) {
+        $this->polizaSegRcDm = $polizaSegRcDm;
     }
 
 
+    
 }

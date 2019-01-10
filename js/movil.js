@@ -1,14 +1,19 @@
 /* global urlBase, alertify, ID_AGENTE */
 var ID_MOVIL;
 var MOVILES;
+var CONDUCTORES;
+var MOVILES_CONDUCTORES = [];
+var AGREGAR_CONDUCTORES = [];
+var ELIMINAR_CONDUCTORES = [];
 var AGREGAR = true;
-var PAGINA = 'MOVILES';
-var CAMPOS = ["patente","marca","nombre","modelo","anio","cantidad","clase",
+var PAGINA = 'VEHÍCULOS';
+var CAMPOS = ["patente","marca","nombre","modelo","anio","color","cantidad","clase",
     "venPerCir","venRevTec","venExt","motor","chasis",
     "segOb","venSegOb","polizaSegOb","segRcDm","venSegRcDm","polizaSegRcDm"];
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
     buscarMovil();
+    buscarConductores();
     $("#agregar").click(function(){
         ID_MOVIL = undefined;
         quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
@@ -63,6 +68,7 @@ function agregarMovil()
     var nombre = $("#nombre").val();
     var modelo = $("#modelo").val();
     var anio = $("#anio").val();
+    var color = $("#color").val();
     var cantidad = $("#cantidad").val();
     var clase = $("#clase").val();
     var venPerCir = $("#venPerCir").val();
@@ -71,14 +77,14 @@ function agregarMovil()
     var kilo = $("#kilo").val() === '' ? '0' : $("#kilo").val();
     var motor = $("#motor").val();
     var chasis = $("#chasis").val();
-    var segOb = $("#SegObSi").val() === 'on' ? 'SI' : 'NO';
+    var segOb = $("#SegObSi").is(':checked') ? 'SI' : 'NO';
     var venSegOb = $("#venSegOb").val();
     var polizaSegOb = $("#polizaSegOb").val();
-    var segRcDm = $("#SegRcDmSi").val() === 'on' ? 'SI' : 'NO';
+    var segRcDm = $("#SegRcDmSi").is(':checked') ? 'SI' : 'NO';
     var venSegRcDm = $("#venSegRcDm").val();
     var polizaSegRcDm = $("#polizaSegRcDm").val();
 //    var SegAd = $("#SegAd").val();
-    var array = [patente,marca,nombre,modelo,anio,cantidad,clase,
+    var array = [patente,marca,nombre,modelo,anio,color,cantidad,clase,
         venPerCir,venRevTec,venExt,motor,chasis,
         segOb,venSegOb,polizaSegOb,segRcDm,venSegRcDm,polizaSegRcDm];
     if(!validarCamposOr(array))
@@ -89,10 +95,10 @@ function agregarMovil()
     }
     if(validarTipoDato())
     {
-        var data = "patente="+patente+"&marca="+marca+"&nombre="+nombre+"&modelo="+modelo+"&anio="+anio+"&cantidad="+cantidad+"&clase="+clase
-                +"&venpercic="+venPerCir+"&venrevtec="+venRevTec+"&venext="+venExt+"&kilo="+kilo+"&motor="+motor+"&chasis="+chasis+
-                "&segob="+segOb+"&vensegob="+venSegOb+"&polizasegob="+polizaSegOb+"&segrcdm="+segRcDm+"&vensegrcdm="+venSegRcDm+"&polizasercdm="+polizaSegRcDm; 
-        var url = urlBase + "/movil/AddMovil.php?"+data;
+        var data = "patente="+patente+"&marca="+marca+"&nombre="+nombre+"&modelo="+modelo+"&anio="+anio+"&color="+color+"&cantidad="+cantidad+"&clase="+clase
+                +"&venpercir="+venPerCir+"&venrevtec="+venRevTec+"&venext="+venExt+"&kilo="+kilo+"&motor="+motor+"&chasis="+chasis+
+                "&segob="+segOb+"&vensegob="+venSegOb+"&polizasegob="+polizaSegOb+"&segrcdm="+segRcDm+"&vensegrcdm="+venSegRcDm+"&polizasegrcdm="+polizaSegRcDm; 
+        var url = urlBase + "/movil/AddMovil.php?"+data+"&conductores="+AGREGAR_CONDUCTORES+"&delConductor="+ELIMINAR_CONDUCTORES;
         var success = function(response)
         {
             ID_MOVIL = undefined;
@@ -103,6 +109,9 @@ function agregarMovil()
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
             resetFormulario();
             buscarMovil();
+            buscarConductores();
+            AGREGAR_CONDUCTORES = [];
+            ELIMINAR_CONDUCTORES = [];
         };
         postRequest(url,success);
     }
@@ -115,6 +124,7 @@ function modificarMovil()
     var nombre = $("#nombre").val();
     var modelo = $("#modelo").val();
     var anio = $("#anio").val();
+    var color = $("#color").val();
     var cantidad = $("#cantidad").val();
     var clase = $("#clase").val();
     var venPerCir = $("#venPerCir").val();
@@ -123,15 +133,14 @@ function modificarMovil()
     var kilo = $("#kilo").val() === '' ? '0' : $("#kilo").val();
     var motor = $("#motor").val();
     var chasis = $("#chasis").val();
-    var segOb = $("#SegObSi").val() === 'on' ? 'SI' : 'NO';
+    var segOb = $("#SegObSi").is(':checked') ? 'SI' : 'NO';
     var venSegOb = $("#venSegOb").val();
     var polizaSegOb = $("#polizaSegOb").val();
-    var segRcDm = $("#SegRcDmSi").val() === 'on' ? 'SI' : 'NO';
+    var segRcDm = $("#SegRcDmSi").is(':checked') ? 'SI' : 'NO';
     var venSegRcDm = $("#venSegRcDm").val();
     var polizaSegRcDm = $("#polizaSegRcDm").val();
-//    var SegAd = $("#SegAd").val();
     
-    var array = [patente,marca,nombre,modelo,anio,cantidad,clase,
+    var array = [patente,marca,nombre,modelo,anio,color,cantidad,clase,
         venPerCir,venRevTec,venExt,motor,chasis,
         segOb,venSegOb,polizaSegOb,segRcDm,venSegRcDm,polizaSegRcDm];
     if(!validarCamposOr(array))
@@ -142,10 +151,10 @@ function modificarMovil()
     }
     if(validarTipoDato())
     {
-        var data = "id="+ID_MOVIL+"&patente="+patente+"&marca="+marca+"&nombre="+nombre+"&modelo="+modelo+
-        "&anio="+anio+"&cantidad="+cantidad+"&clase="+clase+"&venrevtec="+venRevTec+"&segob="+segOb+"&vensegob="
-        +venSegOb+"&segad="+SegAd+"&kilo="+kilo; 
-        var url = urlBase + "/movil/ModMovil.php?"+data;
+        var data = "id="+ID_MOVIL+"&patente="+patente+"&marca="+marca+"&nombre="+nombre+"&modelo="+modelo+"&anio="+anio+"&color="+color+"&cantidad="+cantidad+"&clase="+clase
+        +"&venpercir="+venPerCir+"&venrevtec="+venRevTec+"&venext="+venExt+"&kilo="+kilo+"&motor="+motor+"&chasis="+chasis+
+        "&segob="+segOb+"&vensegob="+venSegOb+"&polizasegob="+polizaSegOb+"&segrcdm="+segRcDm+"&vensegrcdm="+venSegRcDm+"&polizasegrcdm="+polizaSegRcDm; 
+        var url = urlBase + "/movil/ModMovil.php?"+data+"&conductores="+AGREGAR_CONDUCTORES+"&delConductor="+ELIMINAR_CONDUCTORES;;
         var success = function(response)
         {
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
@@ -153,6 +162,9 @@ function modificarMovil()
             alertify.success("Veh&iacute;culo Modificado");
             resetFormulario();
             buscarMovil();
+            buscarConductores();
+            AGREGAR_CONDUCTORES = [];
+            ELIMINAR_CONDUCTORES = [];
         };
         postRequest(url,success);
     }
@@ -239,13 +251,21 @@ function abrirModificar(id)
         $("#marca").val(movil.movil_marca);
         $("#modelo").val(movil.movil_modelo);
         $("#anio").val(movil.movil_anio);
-        $("#venRevTec").val(movil.movil_ven_rev_tec);
-        $("#SegOb").val(movil.movil_seg_ob);
-        $("#venSegOb").val(movil.movil_ven_seg_ob);
-        $("#SegAd").val(movil.movil_seg_ad);
-        $("#kilo").val(movil.movil_kilo);
+        $("#color").val(movil.movil_color);
         $("#cantidad").val(movil.movil_cantidad);
         $("#clase").val(movil.movil_clase);
+        $("#venPerCir").val(movil.movil_ven_per_cir);
+        $("#venRevTec").val(movil.movil_ven_rev_tec);
+        $("#venExt").val(movil.movil_ven_ext);
+        $("#kilo").val(movil.movil_kilo);
+        $("#motor").val(movil.movil_motor);
+        $("#chasis").val(movil.movil_chasis);
+        $("#SegOb").val(movil.movil_seg_ob);
+        $("#venSegOb").val(movil.movil_ven_seg_ob);
+        $("#polizaSegOb").val(movil.movil_pol_seg_ob); 
+        $("#SegRcDm").val(movil.movil_seg_rcdm);
+        $("#venSegRcDm").val(movil.movil_ven_seg_rcdm);
+        $("#polizaSegRcDm").val(movil.movil_pol_seg_rcdm); 
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
         cambiarPropiedad($("#eliminar"),"visibility","visible");
@@ -256,7 +276,7 @@ function abrirModificar(id)
 function eliminarMovil()
 {
     var patente = $("#patente").val();
-    var url = urlBase + "/movil/DelMovil.php?patente="+patente;
+    var url = urlBase + "/movil/DelMovil.php?patente="+patente+"&id="+ID_MOVIL;
     var success = function(response)
     {
         alertify.success("Veh&iacute;culo eliminado");
@@ -265,6 +285,7 @@ function eliminarMovil()
         cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
         resetBotones();
         buscarMovil();
+        buscarConductores();
     };
     getRequest(url,success);
 }
@@ -318,17 +339,6 @@ function validarTipoDato()
     {
         marcarCampoOk(anio);
     }
-    if(!validarNumero(kilo.val()))
-    {
-        cambiarPestaniaSeguro();
-        marcarCampoError(kilo);
-        alertify.error('Kilometraje debe ser numerico');
-        return false;
-    }
-    else
-    {
-        marcarCampoOk(kilo);
-    }
     if(!validarNumero(cantidad.val()))
     {
         cambiarPestaniaGeneral();
@@ -340,9 +350,20 @@ function validarTipoDato()
     {
         marcarCampoOk(anio);
     }
+    if(!validarNumero(kilo.val()))
+    {
+        cambiarPestaniaFicha();
+        marcarCampoError(kilo);
+        alertify.error('Kilometraje debe ser numerico');
+        return false;
+    }
+    else
+    {
+        marcarCampoOk(kilo);
+    }
     if(!validarNumero(motor.val()))
     {
-        cambiarPestaniaGeneral();
+        cambiarPestaniaFicha();
         marcarCampoError(motor);
         alertify.error('N° Motor debe ser numerico');
         return false;
@@ -353,7 +374,7 @@ function validarTipoDato()
     }
     if(!validarNumero(chasis.val()))
     {
-        cambiarPestaniaGeneral();
+        cambiarPestaniaFicha();
         marcarCampoError(chasis);
         alertify.error('N° Chasis debe ser numerico');
         return false;
@@ -364,7 +385,7 @@ function validarTipoDato()
     }
     if(!validarNumero(polizaSegOb.val()))
     {
-        cambiarPestaniaGeneral();
+        cambiarPestaniaSeguro();
         marcarCampoError(polizaSegOb);
         alertify.error('N° Poliza Seguro Obligatorio debe ser numerico');
         return false;
@@ -375,9 +396,9 @@ function validarTipoDato()
     }
     if(!validarNumero(polizaSegRcDm.val()))
     {
-        cambiarPestaniaGeneral();
+        cambiarPestaniaSeguro();
         marcarCampoError(polizaSegRcDm);
-        alertify.error('N° Poliza Seguro RC-DM debe ser numerico');
+        alertify.error('N° Poliza Seguro RC+DM debe ser numerico');
         return false;
     }
     else
@@ -400,6 +421,7 @@ function iniciarPestanias()
     });
     $("#p_conductor").click(function(){
         cambiarPestaniaConductor();
+        cargarConductores();
     });
 }
 
@@ -412,18 +434,18 @@ function activarPestania(array)
     {
         if(array[i] === '')
         {
-            if(i < 7)
+            if(i < 8)
             {
                 general = true;
             }
-            if(i > 6 && i < 12)
+            if(i > 7 && i < 13)
             {
                 if(!general)
                 {
                     ficha = true;
                 }
             }
-            if(i > 11)
+            if(i > 12)
             {
                 if(!ficha)
                 {
@@ -495,4 +517,113 @@ function cambiarPestaniaConductor()
     agregarclase($("#p_general"),"dispose");
     agregarclase($("#p_ficha"),"dispose");
     agregarclase($("#p_seguro"),"dispose");
+}
+
+function cargarConductores()
+{
+    var tablaMovil = $("#tablaContenidoConductor");
+    tablaMovil.html("");
+    cambiarPropiedad($("#loaderV"),"visibility","hidden");
+    if (typeof CONDUCTORES !== "undefined")
+    {
+        if(CONDUCTORES.length === 0)
+        {
+            alertify.error("No hay conductores disponibles");    
+        }
+        for(var i = 0 ; i < CONDUCTORES.length; i++)
+        {
+            var id = CONDUCTORES[i].conductor_id;
+            var rut = CONDUCTORES[i].conductor_rut;
+            var nombre = CONDUCTORES[i].conductor_nombre;
+            var papellido = CONDUCTORES[i].conductor_papellido;
+            var movil = CONDUCTORES[i].conductor_movil;
+            var asignacion = "";
+            var claseAsignacion = "tablaFila";
+            if(ID_MOVIL === movil)
+            {
+                asignacion = "<input type=\"radio\" onchange=\"agregarConductores($(this))\" name=\""+id+"\" value=\""+id+"\" checked>SI\n\
+                              <input type=\"radio\" onchange=\"eliminarConductores($(this))\" name=\""+id+"\" value=\""+id+"\">NO";
+            }
+            else if(movil === '0')
+            {
+
+                asignacion = "<input type=\"radio\" onchange=\"agregarConductores($(this))\" name=\""+id+"\" value=\""+id+"\">SI\n\
+                              <input type=\"radio\" onchange=\"eliminarConductores($(this))\" name=\""+id+"\" value=\""+id+"\" checked>NO";
+            }
+            else if (ID_MOVIL !== movil)
+            {
+                for(var j = 0; j < MOVILES.length ; j++)
+                {
+                    var c = MOVILES[j];
+                    if(c.movil_id === movil)
+                    {
+                        asignacion = "Asignado a "+c.movil_nombre;
+                        break;
+                    }
+                }
+            }
+            if(MOVILES_CONDUCTORES.indexOf(id) === -1)
+            {
+                tablaMovil.append("<div id=\""+id+"\" class=\""+claseAsignacion+"\"><div>"
+                    +id+"</div><div>"+rut+"</div><div>"+nombre+"</div><div>"+papellido+"</div><div>"+asignacion+"</div></div>");
+            }
+        }
+        if(tablaMovil.html() === "")
+        {
+            alertify.success("No hay conductores disponibles para asociar");
+        }
+    }
+    cambiarPropiedad($("#loader"),"visibility","hidden");
+}
+
+function buscarConductores()
+{
+    var url = urlBase + "/conductor/GetConductores.php?busqueda=";
+    var success = function(response)
+    {
+        cambiarPropiedad($("#loader"),"visibility","hidden");
+        cerrarSession(response);
+        CONDUCTORES = response;
+    };
+    getRequest(url,success);
+}
+function obtenerMovilesConductores()
+{
+    for (var i = 0; i < CONDUCTORES.length ; i++)
+    {
+        var movil = CONDUCTORES[i].conductor_movil;
+        MOVILES_CONDUCTORES.push(movil);
+    }
+}
+function agregarConductores(obj)
+{
+    if(obj.prop("checked"))
+    {
+        AGREGAR_CONDUCTORES.push(obj.val());
+        console.log("ADD "+AGREGAR_CONDUCTORES.length);
+        for(var i = 0; i < ELIMINAR_CONDUCTORES.length; i++)
+        {
+            if(ELIMINAR_CONDUCTORES[i] === obj.val())
+            {
+                ELIMINAR_CONDUCTORES.splice(i, 1);
+                break;
+            }
+        }
+    }
+}
+function eliminarConductores(obj)
+{
+    if(obj.prop("checked"))
+    {
+        ELIMINAR_CONDUCTORES.push(obj.val());
+        console.log("DEL "+ELIMINAR_CONDUCTORES.length);
+        for(var i = 0; i < AGREGAR_CONDUCTORES.length; i++)
+        {
+            if(AGREGAR_CONDUCTORES[i] === obj.val())
+            {
+                AGREGAR_CONDUCTORES.splice(i, 1);
+                break;
+            }
+        }
+    }
 }

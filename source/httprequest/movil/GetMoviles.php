@@ -16,13 +16,21 @@ for ($i = 0 ; $i < count($moviles); $i++)
     $movilMarca = $moviles[$i]->getMarca();
     $movilModelo = $moviles[$i]->getModelo();
     $movilAnio = $moviles[$i]->getAnio();
+    $movilColor = $moviles[$i]->getColor();
     $movilCantidad = $moviles[$i]->getCantidad();
     $movilClase = $moviles[$i]->getClase();
+    $movilVenPerCir = date("d/m/Y", strtotime($moviles[$i]->getVenPerCir()));
     $movilVenRevTec = date("d/m/Y", strtotime($moviles[$i]->getVenRevTec()));
+    $movilVenExt = date("d/m/Y", strtotime($moviles[$i]->getVenExt()));
+    $movilKilo = $moviles[$i]->getKilometraje();
+    $movilMotor = $moviles[$i]->getMotor();
+    $movilChasis = $moviles[$i]->getChasis();    
     $movilSegOb = $moviles[$i]->getSegOb();
     $movilVenSegOb = date("d/m/Y", strtotime($moviles[$i]->getVenSegOb()));
-    $movilSegAd = $moviles[$i]->getSegAd();
-    $movilKilo = $moviles[$i]->getKilometraje();
+    $movilPolizaSegOb = $moviles[$i]->getPolizaSegOb();
+    $movilSegRcDm = $moviles[$i]->getSegRcDm();
+    $movilVenSegRcDm = date("d/m/Y", strtotime($moviles[$i]->getVenSegRcDm()));
+    $movilPolizaSegRcDm = $moviles[$i]->getPolizaSegRcDm();
     $movilTransportista = $moviles[$i]->getTransportista();
     $movilEstado = $moviles[$i]->getEstado();
     $movilLat = $moviles[$i]->getLat();
@@ -34,13 +42,21 @@ for ($i = 0 ; $i < count($moviles); $i++)
         . "\"movil_marca\":\"".$movilMarca."\","
         . "\"movil_modelo\":\"".$movilModelo."\","
         . "\"movil_anio\":\"".$movilAnio."\","
+        . "\"movil_color\":\"".$movilColor."\","
         . "\"movil_cantidad\":\"".$movilCantidad."\","
         . "\"movil_clase\":\"".$movilClase."\","
+        . "\"movil_ven_per_cir\":\"".$movilVenPerCir."\","
         . "\"movil_ven_rev_tec\":\"".$movilVenRevTec."\","
+        . "\"movil_ven_ext\":\"".$movilVenExt."\","
+        . "\"movil_kilo\":\"".$movilKilo."\","
+        . "\"movil_motor\":\"".$movilMotor."\","
+        . "\"movil_chasis\":\"".$movilChasis."\","
         . "\"movil_seg_ob\":\"".$movilSegOb."\","
         . "\"movil_ven_seg_ob\":\"".$movilVenSegOb."\","
-        . "\"movil_seg_ad\":\"".$movilSegAd."\","
-        . "\"movil_kilo\":\"".$movilKilo."\","
+        . "\"movil_pol_seg_ob\":\"".$movilPolizaSegOb."\","
+        . "\"movil_seg_rcdm\":\"".$movilSegRcDm."\","
+        . "\"movil_ven_seg_rcdm\":\"".$movilVenSegRcDm."\","
+        . "\"movil_pol_seg_rcdm\":\"".$movilPolizaSegRcDm."\","            
         . "\"movil_transportista\":\"".$movilTransportista."\","
         . "\"movil_estado\":\"".$movilEstado."\","
         . "\"movil_lat\":\"".$movilLat."\","

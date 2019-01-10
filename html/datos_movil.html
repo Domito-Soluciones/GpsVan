@@ -59,6 +59,29 @@
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
+                Color (*)
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="color" list="lcolor" placeholder="Ej: Blanco" maxlength="20">
+                <datalist id="lcolor">
+                    <option value="Azul">Azul</option>
+                    <option value="Rojo">Rojo</option>
+                    <option value="Morado">Morado</option>
+                    <option value="Verde">Verde</option>
+                    <option value="Negro">Negro</option>
+                    <option value="Blanco">Blanco</option>
+                    <option value="Rosado">Rosado</option>
+                    <option value="Naranjo">Naranjo</option>
+                    <option value="Amarillo">Amarillo</option>
+                    <option value="Gris">Gris</option>
+                    <option value="Dorado">Dorado</option>
+                    <option value="Plateado">Plateado</option>
+                    <option value="Cafe">Cafe</option>
+                </datalist>
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
                 Cantidad pasajeros (*)
             </div>
             <div class="contenedor-input">
@@ -190,7 +213,27 @@
     </div>
 </div>
 <div class="contenedor-info contenedor_oculto" id="cont_conductor">
-    <div class="contenedor-formulario">
-        
+<div id="tablaConductores" class="tabla-general">
+        <div class="tablaCabecera">
+            <div>
+                ID Conductor
+            </div>
+            <div>
+                Rut
+            </div>
+            <div>
+                Nombre
+            </div>
+            <div>
+                Apellido
+            </div>
+            <div>
+                Asignar
+            </div>
+        </div>
+        <div class="tablaContenido" id="tablaContenidoConductor"></div>
+    </div>
+    <div class="contenedor-loader-intro">
+        <div class="loader" id="loaderV">Loading...</div>
     </div>
 </div>
