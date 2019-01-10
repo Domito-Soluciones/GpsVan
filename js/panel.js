@@ -1,6 +1,6 @@
 /* global, CORS_PROXY, POSITION, API_KEY, DIRECTIONS_API, map, google, urlBase, alertify, flightPath, POLYLINE, EN_PROCCESO_DE_ASIGNACION, PLACES_AUTOCOMPLETE_API */
 
-/* global PLACES_DETAILS_API, API_KEY, CORS_PROXY */
+/* global PLACES_DETAILS_API, API_KEY, CORS_PROXY, google, map */
 
 var transportistas = [];
 var clientes = [];
@@ -274,6 +274,7 @@ function selecionarPlace(val,placeId,obj)
     var success = function(response)
     {
         var status = response.status;
+        
         if(status === 'OK')
         {
             var marker = new google.maps.Marker({
@@ -286,7 +287,7 @@ function selecionarPlace(val,placeId,obj)
             map.setZoom(15);
             map.panTo(marker.getPosition());
         }
-    }
+    };
     getRequest(url,success);
 }
 function preDibujarRuta()

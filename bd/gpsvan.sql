@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 10-01-2019 a las 05:24:49
+-- Tiempo de generación: 10-01-2019 a las 05:38:50
 -- Versión del servidor: 5.5.24-log
 -- Versión de PHP: 5.4.3
 
@@ -42,7 +42,14 @@ CREATE TABLE IF NOT EXISTS `tbl_agente` (
   `agente_perfil` varchar(20) NOT NULL,
   `agente_fecha_creacion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`agente_id`),
-  UNIQUE KEY `agente_rut` (`agente_rut`)
+  UNIQUE KEY `agente_rut` (`agente_rut`),
+  KEY `agente_nick` (`agente_nick`),
+  KEY `agente_clave` (`agente_clave`),
+  KEY `agente_rut_2` (`agente_rut`),
+  KEY `agente_nombre` (`agente_nombre`),
+  KEY `agente_papellido` (`agente_papellido`),
+  KEY `agente_mapellido` (`agente_mapellido`),
+  KEY `agente_mail` (`agente_mail`),
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
@@ -70,7 +77,12 @@ CREATE TABLE IF NOT EXISTS `tbl_cliente` (
   `cliente_mail_facturacion` varchar(30) NOT NULL,
   `cliente_centro_costo` varchar(20) NOT NULL,
   `cliente_fecha_creacion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`cliente_id`)
+  PRIMARY KEY (`cliente_id`),
+  KEY `cliente_rut` (`cliente_rut`),
+  KEY `cliente_razon_social` (`cliente_razon_social`),
+  KEY `cliente_tipo` (`cliente_tipo`),
+  KEY `cliente_nombre_contacto` (`cliente_nombre_contacto`),
+  KEY `cliente_mail_contacto` (`cliente_mail_contacto`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=26 ;
 
 --
@@ -117,7 +129,13 @@ CREATE TABLE IF NOT EXISTS `tbl_conductor` (
   `conductor_transportista` int(11) NOT NULL DEFAULT '0',
   `conductor_fecha_creacion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`conductor_id`),
-  UNIQUE KEY `conductor_rut` (`conductor_rut`)
+  UNIQUE KEY `conductor_rut` (`conductor_rut`),
+  KEY `conductor_nombre` (`conductor_nombre`),
+  KEY `conductor_papellido` (`conductor_papellido`),
+  KEY `conductor_mapellido` (`conductor_mapellido`),
+  KEY `conductor_mail` (`conductor_mail`),
+  KEY `conductor_nick` (`conductor_nick`),
+  KEY `conductor_clave` (`conductor_clave`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=38 ;
 
 --
@@ -171,7 +189,12 @@ CREATE TABLE IF NOT EXISTS `tbl_movil` (
   `movil_ultima_asignacion` datetime NOT NULL,
   `movil_servicio` varchar(10) NOT NULL,
   `movil_fecha_creacion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`movil_id`)
+  PRIMARY KEY (`movil_id`),
+  KEY `movil_patente` (`movil_patente`),
+  KEY `movil_nombre` (`movil_nombre`),
+  KEY `movil_marca` (`movil_marca`),
+  KEY `movil_modelo` (`movil_modelo`),
+  KEY `movil_anio` (`movil_anio`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=33 ;
 
 --
@@ -214,7 +237,15 @@ CREATE TABLE IF NOT EXISTS `tbl_pasajero` (
   `pasajero_empresa` varchar(40) NOT NULL,
   `pasajero_ruta` varchar(40) NOT NULL,
   PRIMARY KEY (`pasajero_id`),
-  UNIQUE KEY `USUARIO_INDEX` (`pasajero_id`)
+  UNIQUE KEY `USUARIO_INDEX` (`pasajero_id`),
+  KEY `pasajero_nick` (`pasajero_nick`),
+  KEY `pasajero_password` (`pasajero_password`),
+  KEY `pasajero_rut` (`pasajero_rut`),
+  KEY `pasajero_nombre` (`pasajero_nombre`),
+  KEY `pasajero_papellido` (`pasajero_papellido`),
+  KEY `pasajero_mapellido` (`pasajero_mapellido`),
+  KEY `pasajero_mail` (`pasajero_mail`),
+  KEY `pasajero_cliente` (`pasajero_cliente`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
@@ -249,7 +280,16 @@ CREATE TABLE IF NOT EXISTS `tbl_servicio` (
   `servicio_agente` int(11) NOT NULL,
   `servicio_fecha` datetime NOT NULL,
   `servicio_estado` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`servicio_id`)
+  PRIMARY KEY (`servicio_id`),
+  KEY `servicio_id` (`servicio_id`),
+  KEY `servicio_partida` (`servicio_partida`),
+  KEY `servicio_hora_partida` (`servicio_hora_partida`),
+  KEY `servicio_destino` (`servicio_destino`),
+  KEY `servicio_cliente` (`servicio_cliente`),
+  KEY `servicio_usuario` (`servicio_usuario`),
+  KEY `servicio_transportista` (`servicio_transportista`),
+  KEY `servicio_movil` (`servicio_movil`),
+  KEY `servicio_fecha` (`servicio_fecha`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10107 ;
 
 --
@@ -270,7 +310,8 @@ CREATE TABLE IF NOT EXISTS `tbl_servicio_detalle` (
   `servicio_detalle_servicio` int(11) NOT NULL,
   `servicio_detalle_lat` text NOT NULL,
   `servicio_detalle_lon` text NOT NULL,
-  PRIMARY KEY (`servicio_detalle_id`)
+  PRIMARY KEY (`servicio_detalle_id`),
+  KEY `servicio_detalle_servicio` (`servicio_detalle_servicio`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=79 ;
 
 --
@@ -299,7 +340,14 @@ CREATE TABLE IF NOT EXISTS `tbl_tarifa` (
   `tarifa_fecha_creacion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `tarifa_cliente` varchar(40) NOT NULL,
   `tarifa_ruta` varchar(40) NOT NULL,
-  PRIMARY KEY (`tarifa_id`)
+  PRIMARY KEY (`tarifa_id`),
+  KEY `tarifa_nombre` (`tarifa_nombre`),
+  KEY `tarifa_origen` (`tarifa_origen`),
+  KEY `tarifa_destino` (`tarifa_destino`),
+  KEY `tarifa_valor1` (`tarifa_valor1`),
+  KEY `tarifa_valor2` (`tarifa_valor2`),
+  KEY `tarifa_cliente` (`tarifa_cliente`),
+  KEY `tarifa_ruta` (`tarifa_ruta`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
@@ -326,7 +374,12 @@ CREATE TABLE IF NOT EXISTS `tbl_transportista` (
   `transportista_mail_contacto` varchar(50) NOT NULL,
   `transportista_mail_facturacion` varchar(50) NOT NULL,
   `transportista_fecha_creacion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`transportista_id`)
+  PRIMARY KEY (`transportista_id`),
+  KEY `transportista_nombre` (`transportista_nombre`),
+  KEY `transportista_rut` (`transportista_rut`),
+  KEY `transportista_razon_social` (`transportista_razon_social`),
+  KEY `transportista_nombre_contacto` (`transportista_nombre_contacto`),
+  KEY `transportista_mail_contacto` (`transportista_mail_contacto`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
 
 --
