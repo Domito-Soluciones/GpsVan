@@ -53,7 +53,8 @@ function login(){
         }   
         return;
     }
-    var url = urlBase + "/agente/Login.php?usuario="+usuario+"&password="+password;
+    var url = urlBase + "/agente/Login.php";
+    var params = { usuario: usuario, password : password};
     var success = function(response){
         if(response === '0')
         {
@@ -68,7 +69,7 @@ function login(){
     var error = function(){
         alertify.error("error");
     };
-    postRequest(url,success,error);
+    postRequest(url,params,success,error);
 }
 
 

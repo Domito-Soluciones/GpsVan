@@ -33,10 +33,11 @@ function isTeclaTab(e){
     return false;
 }
 
-function postRequest(url,success)
+function postRequest(url,params,success)
 {
     $.ajax({
         url: url,
+        data: jQuery.param(params) ,
         method:'POST',
         cache: false,
         async: true,
