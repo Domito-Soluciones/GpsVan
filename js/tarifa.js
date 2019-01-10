@@ -84,9 +84,9 @@ function agregarTarifa()
     }
     if(validarTipoDato())
     {
-        var data = "cliente="+cliente+"&ruta="+ruta+"&nombre="+nombre+"&origen="+origen+"&destino="+destino
-        +"&valor1="+valor1+"&valor2="+valor2;
-        var url = urlBase + "/tarifa/AddTarifa.php?"+data;
+        var params = {cliente : cliente, ruta : ruta, nombre : nombre, origen : origen,
+            destino : destino, valor1 : valor1, valor2 : valor2};
+        var url = urlBase + "/tarifa/AddTarifa.php";
         var success = function(response)
         {
             ID_TARIFA = undefined;
@@ -97,12 +97,13 @@ function agregarTarifa()
             resetFormulario();
             buscarTarifa();
         };
-        postRequest(url,success);
+        postRequest(url,params,success);
     }
 }
 
 function modificarTarifa()
 {
+    var id = ID_TARIFA;
     var cliente = $("#cliente").val();
     var ruta = $("#ruta").val();
     var nombre = $("#nombre").val();
@@ -119,9 +120,9 @@ function modificarTarifa()
     }
     if(validarTipoDato())
     {
-        var data = "id="+ID_TARIFA+"&cliente="+cliente+"&ruta="+ruta+"&nombre="+nombre+"&origen="+origen+"&destino="+destino
-        +"&valor1="+valor1+"&valor2="+valor2;
-        var url = urlBase + "/tarifa/ModTarifa.php?"+data;
+        var params = {id : id,cliente : cliente, ruta : ruta, nombre : nombre, origen : origen,
+            destino : destino, valor1 : valor1, valor2 : valor2};
+        var url = urlBase + "/tarifa/ModTarifa.php";
         var success = function(response)
         {
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
@@ -130,14 +131,15 @@ function modificarTarifa()
             resetFormulario();
             buscarTarifa();
         };
-        postRequest(url,success);
+        postRequest(url,params,success);
     }
 }
 
 function buscarTarifa()
 {
     var busqueda = $("#busqueda").val();
-    var url = urlBase + "/tarifa/GetTarifas.php?busqueda="+busqueda;
+    var params = {busqueda : busqueda};
+    var url = urlBase + "/tarifa/GetTarifas.php";
     var success = function(response)
     {
         cerrarSession(response);
@@ -166,7 +168,7 @@ function buscarTarifa()
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
-    getRequest(url,success);
+    postRequest(url,params,success);
 }
 function cambiarFila(id)
 {
@@ -224,7 +226,8 @@ function abrirModificar(id)
 function eliminarTarifa()
 {
     var nombre = $("#nombre").val();
-    var url = urlBase + "/tarifa/DelTarifa.php?nombre="+nombre;
+    var params = {nombre : nombre};
+    var url = urlBase + "/tarifa/DelTarifa.php";
     var success = function(response)
     {
         alertify.success("Tarifa eliminada");
@@ -234,7 +237,7 @@ function eliminarTarifa()
         resetBotones();
         buscarTarifa();
     };
-    getRequest(url,success);
+    postRequest(url,params,success);
 }
 
 function validarExistencia(tipo,valor)
@@ -292,7 +295,8 @@ function activarPestania(array)
 function cargarClientes()
 {
     var busqueda = $("#cliente").val();
-    var url = urlBase + "/cliente/GetClientes.php?busqueda="+busqueda;
+    var params = {busqueda : busqueda};
+    var url = urlBase + "/cliente/GetClientes.php";
     var success = function(response)
     {
         $("#lcliente").html("");
@@ -303,7 +307,7 @@ function cargarClientes()
             clientes.push(nombre);
         }
     };
-    getRequest(url,success,false);
+    postRequest(url,params,success);
 }
 
 
