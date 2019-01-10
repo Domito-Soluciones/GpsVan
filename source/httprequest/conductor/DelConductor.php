@@ -3,6 +3,7 @@ include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/ConductorDao.php';
 
-$rut = $_REQUEST['rut'];
+$rut = filter_input(INPUT_POST, 'rut');
 $conductorDao = new ConductorDao();
 $conductorDao->eliminarConductor($rut);
+echo "{\"conductor_eliminado\":\"".$rut."\"}";
