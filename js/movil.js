@@ -22,6 +22,7 @@ $(document).ready(function(){
         $("#contenedor_central").load("html/datos_movil.html", function( response, status, xhr ) {
             iniciarPestanias();
             cambioEjecutado();
+            validarCambioRadio();
             iniciarFecha(['#venPerCir','#venRevTec','#venExt','#venSegOb','#venSegRcDm']);
             $("#patente").blur(function (){
                 if(validarExistencia('patente',$(this).val()))
@@ -243,6 +244,7 @@ function abrirModificar(id)
     $("#contenedor_central").load("html/datos_movil.html", function( response, status, xhr ) {
         iniciarPestanias();
         cambioEjecutado();
+        validarCambioRadio();
         iniciarFecha(['#venPerCir','#venRevTec','#venExt','#venSegOb','#venSegRcDm']);
         var movil;
         for(var i = 0 ; i < MOVILES.length; i++)
@@ -632,5 +634,13 @@ function eliminarConductores(obj)
                 break;
             }
         }
+    }
+}
+
+function validarCambioRadio()
+{
+    if(AGREGAR_CONDUCTORES.length > 0 || ELIMINAR_CONDUCTORES.length > 0)
+    {
+        MODIFICADO = true;
     }
 }

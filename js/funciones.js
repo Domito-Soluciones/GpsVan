@@ -244,7 +244,7 @@ function getfecha()
     {
         $("#fecha").html("");
         $("#fecha").append(response);
-    }
+    };
     getRequest(url,success,false);
 }
 
@@ -255,7 +255,7 @@ function getUsuario()
     {
         NICK_GLOBAL = response;
         $("#enlace_usuario").append(response);
-    }
+    };
     getRequest(url,success,false);
 }
 
@@ -348,18 +348,18 @@ function validarRut(rut){
     for(i=2;continuar;i++){
         suma += (rutSolo%10)*i;
         rutSolo = parseInt((rutSolo /10));
-        i=(i==7)?1:i;
-        continuar = (rutSolo == 0)?false:true;
+        i=(i===7)?1:i;
+        continuar = (rutSolo === 0)?false:true;
     }
     resto = suma%11;
     dv = 11-resto;
-    if(dv==10){
-        if(verif.toUpperCase() == 'K')
+    if(dv===10){
+        if(verif.toUpperCase() === 'K')
         return true;
     }
-    else if (dv == 11 && verif == 0)
+    else if (dv === 11 && verif === 0)
         return true;
-    else if (dv == verif)
+    else if (dv === verif)
         return true;
     else
     return false;
@@ -464,6 +464,10 @@ function cambioEjecutado()
         MODIFICADO = true;
     });
     $("select").change(function()
+    {
+        MODIFICADO = true;
+    });
+    $("radio").change(function()
     {
         MODIFICADO = true;
     });
