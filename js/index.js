@@ -1,5 +1,4 @@
-/* global bordeAzul, bordeBlanco, bordeRojo, urlBase, alertify */
-
+/* global bordeAzul, bordeBlanco, bordeRojo, urlBase, alertify, KEY */
 $(document).ready(function(){
     darFoco($("#usuario"));
     cambiarPropiedad($("#usuario"),"border-bottom",bordeAzul);    
@@ -54,7 +53,7 @@ function login(){
         return;
     }
     var url = urlBase + "/agente/Login.php";
-    var params = { usuario: usuario, password : password};
+    var params = { usuario: usuario, password : encriptar(password)};
     var success = function(response){
         if(response === '0')
         {

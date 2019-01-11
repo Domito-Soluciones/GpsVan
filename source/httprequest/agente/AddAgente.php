@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/AgenteDao.php';
+include '../../cripto/Cripto.php';
 
 header('Content-Type: application/json');
 $rut = filter_input(INPUT_POST, 'rut');

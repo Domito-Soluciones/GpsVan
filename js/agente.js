@@ -1,4 +1,4 @@
-/* global urlBase, alertify, NICK_GLOBAL */
+/* global urlBase, alertify, NICK_GLOBAL, KEY */
 var ID_AGENTE;
 var AGENTES;
 var AGREGAR = true;
@@ -95,7 +95,7 @@ function agregarAgente()
     if(validarTipoDato())
     {
         var params = {nombre: nombre,papellido :papellido, mapellido : mapellido, rut : rut,
-                        nick: nick, password : password, telefono: telefono, celular : celular,
+                        nick: nick, password : encriptar(password), telefono: telefono, celular : celular,
                         direccion : direccion, mail : mail, cargo : cargo, perfil : perfil};
         var url = urlBase + "/agente/AddAgente.php";
         var success = function(response)
@@ -131,7 +131,7 @@ function modificarAgente()
     var perfil = $("#perfil").val();
     var array;
     var params = {id : id,nombre: nombre,papellido :papellido, mapellido : mapellido, rut : rut,
-            nick: nick, password : password, telefono: telefono, celular : celular,
+            nick: nick, telefono: telefono, celular : celular,
             direccion : direccion, mail : mail, cargo : cargo, perfil : perfil};
     if(password !== '' || password2 !== '')
     {
@@ -143,7 +143,7 @@ function modificarAgente()
             return;
         }
         array = [nombre,papellido,mapellido,rut,celular,direccion,mail,cargo,perfil,nick,password,password2];
-        params.password = password;
+        params.password = encriptar(password);
     }
     else
     {

@@ -94,7 +94,7 @@ function agregarPasajero()
     if(validarTipoDato())
     {
         var params = {nombre : nombre, papellido : papellido, mapellido : mapellido,
-            rut : rut, nick : nick, password : password, telefono : telefono, celular : celular,
+            rut : rut, nick : nick, password : encriptar(password), telefono : telefono, celular : celular,
             direccion : direccion, mail : mail, cargo : cargo, centro : centro, empresa : empresa, ruta : ruta};
         var url = urlBase + "/pasajero/AddPasajero.php";
         var success = function(response)
@@ -132,7 +132,7 @@ function modificarPasajero()
     var ruta = $("#ruta").val();
     var array;
     var params = {id : id, nombre : nombre, papellido : papellido, mapellido : mapellido,
-        rut : rut, nick : nick, password : password, telefono : telefono, celular : celular,
+        rut : rut, nick : nick, telefono : telefono, celular : celular,
         direccion : direccion, mail : mail, cargo : cargo, centro : centro, empresa : empresa, ruta : ruta};
     if(password !== '' || password2 !== '')
     {
@@ -145,7 +145,7 @@ function modificarPasajero()
         }
         array = [rut,nombre,papellido,mapellido,celular,direccion,centro,empresa,
         nick,password,password2];
-        params.password = password;
+        params.password = encriptar(password);
     }
     else
     {

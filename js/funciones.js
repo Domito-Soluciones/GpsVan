@@ -1,7 +1,7 @@
 
 /* global MODIFICADO, alertify, PAGINA_ANTERIOR, INTERVAL_SERVICIOS */
 var MODIFICADO = false;
-
+var KEY = "DGFSGHJRTJTHWGWEJNGWI9EFN";
 var bordeAzul = "solid 1px #0b41d3";
 var bordeRojo = "solid 1px red";
 var bordeBlanco = "solid 1px white";
@@ -521,4 +521,11 @@ function validarInexistencia(val,array)
         }
     }
     return true;
+}
+
+function encriptar(password)
+{
+    var blowfishInstance = new Blowfish(KEY);
+    var passwordEncrypted = blowfishInstance.encrypt(password);
+    return passwordEncrypted;
 }

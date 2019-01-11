@@ -1,6 +1,7 @@
 <?php
 include '../../util/validarPeticion.php';
 include '../../query/AgenteDao.php';
+include '../../cripto/Cripto.php';
 
 $respuesta = '0';
 $nombre = filter_input(INPUT_POST, 'usuario');
