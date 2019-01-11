@@ -13,28 +13,37 @@
  */
 class Cripto {
     
-    function encriptar($key,$iv,$data){
-        if (strlen($key)!=24){
-            echo "La longitud de la key ha de ser de 24 dígitos.<br>";
-            return -1;
+    private $key = "sdfjingisdfjnvsdijnsdfrg";
+    private $iv = "56434567";
+
+
+    function encriptar($data)
+    {
+        if($data != '')
+        {
+            if (strlen($this->key)!=24){
+                echo "La longitud de la key ha de ser de 24 dígitos.<br>";
+                return -1;
+            }
+            if ((strlen($this->iv) % 8 )!=0){
+                echo "La longitud del vector iv ha de ser múltiple de 8 dígitos.<br>";
+                return -2;
+            }
+            return @base64_encode(mcrypt_encrypt(MCRYPT_3DES, $this->key, $data, MCRYPT_MODE_CBC, $this->iv));
         }
-        if ((strlen($iv) % 8 )!=0){
-            echo "La longitud del vector iv ha de ser múltiple de 8 dígitos.<br>";
-            return -2;
-        }
-        return @base64_encode(mcrypt_encrypt(MCRYPT_3DES, $key, $data, MCRYPT_MODE_CBC, $iv));
+        return $data;
     }
  
  
-    function desencriptar($key,$iv,$data){
-        if (strlen($key)!=24){
+    function desencriptar($data){
+        if (strlen($this->key)!=24){
             echo "La longitud de la key ha de ser de 24 dígitos.<br>";
             return -1;
         }
-        if ((strlen($iv) % 8 )!=0){
+        if ((strlen($this->iv) % 8 )!=0){
             echo "La longitud del vector iv ha de ser múltiple de 8 dígitos.<br>";
             return -2;
         }
-        return @mcrypt_decrypt(MCRYPT_3DES, $key, base64_decode($data), MCRYPT_MODE_CBC, $iv);
+        return @mcrypt_decrypt(MCRYPT_3DES, $this->key, base64_decode($data), MCRYPT_MODE_CBC, $this->iv);
     }
 }
