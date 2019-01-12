@@ -4,7 +4,7 @@ include '../../util/validarSession.php';
 include '../../query/ConductorDao.php';
 
 header('Content-Type: application/json');
-$busqueda = $_REQUEST['busqueda'];
+$busqueda = filter_input(INPUT_POST, 'busqueda');
 $conductorDao = new ConductorDao();
 $conductores = $conductorDao->getConductores($busqueda);
 echo "[";
@@ -33,8 +33,8 @@ for ($i = 0 ; $i < count($conductores); $i++)
     $anticipo = $conductores[$i]->getAnticipo();
     $imagen = $conductores[$i]->getImagenAdjunta();
     $contrato = $conductores[$i]->getContratoAdjunto();
-    $patente = $conductores[$i]->getMovil();
     $transportista = $conductores[$i]->getTransportista();
+    $movil = $conductores[$i]->getMovil();
     echo "{\"conductor_id\":\"".$cId."\","
         . "\"conductor_nombre\":\"".$nombre."\","
         . "\"conductor_papellido\":\"".$papellido."\","
@@ -58,8 +58,8 @@ for ($i = 0 ; $i < count($conductores); $i++)
         . "\"conductor_anticipo\":\"".$anticipo."\","
         . "\"conductor_imagen\":\"".$imagen."\","
         . "\"conductor_contrato\":\"".$contrato."\","
-        . "\"conductor_movil\":\"".$patente."\","
-        . "\"conductor_transportista\":\"".$transportista."\""
+        . "\"conductor_transportista\":\"".$transportista."\","
+        . "\"conductor_movil\":\"".$movil."\""
         . "}";
     if (($i+1) != count($conductores))
     {

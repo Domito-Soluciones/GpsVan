@@ -77,10 +77,11 @@ function agregarCliente()
     }
     if(validarTipoDato())
     {
-        var data = "razon="+razon+"&tipo="+tipo+"&rut="+rut+"&direccion="+direccion+"&nombre="+nombre+
-                "&telefono="+telefono+"&mail="+mail+"&mail2="+mail2+"&centros="+cc+"&pasajeros="+AGREGAR_PASAJEROS+
-                "&delpasajero="+ELIMINAR_PASAJEROS;
-        var url = urlBase+"/cliente/AddCliente.php?"+data;
+        var params = { razon : razon, tipo : tipo, rut : rut, direccion : direccion, nombre : nombre,
+                telefono : telefono, mail : mail, mail2 : mail2, centros : cc , pasajeros : AGREGAR_PASAJEROS + "",
+                delpasajero : ELIMINAR_PASAJEROS + "" };
+        alert(JSON.stringify(params));
+        var url = urlBase+"/cliente/AddCliente.php";
         var success = function(response)
         {
             ID_CLIENTE = undefined;
@@ -93,12 +94,13 @@ function agregarCliente()
             buscarCliente();
             buscarPasajeros();
         };
-        postRequest(url,success);
+        postRequest(url,params,success);
     }
 }
 
 function modificarCliente()
 {
+    var id = ID_CLIENTE;
     var razon = $("#razon").val();
     var tipo = $("#tipo").val();
     var rut = $("#rut").val();
@@ -117,10 +119,10 @@ function modificarCliente()
     }
     if(validarTipoDato())
     {
-        var data = "id="+ID_CLIENTE+"&razon="+razon+"&tipo="+tipo+"&rut="+rut+"&direccion="+direccion+"&nombre="+nombre
-                +"&telefono="+telefono+"&mail="+mail+"&mail2="+mail2+"&centros="+cc+"&pasajeros="+AGREGAR_PASAJEROS+
-                "&delPasajero="+ELIMINAR_PASAJEROS;
-        var url = urlBase + "/cliente/ModCliente.php?"+data;
+        var params = { id : id, razon : razon, tipo : tipo, rut : rut, direccion : direccion, nombre : nombre,
+            telefono : telefono, mail : mail, mail2 : mail2, centros : cc , pasajeros : AGREGAR_PASAJEROS + "",
+            delpasajero : ELIMINAR_PASAJEROS + "" };
+        var url = urlBase + "/cliente/ModCliente.php";
         var success = function(response)
         {
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
@@ -131,14 +133,15 @@ function modificarCliente()
             buscarCliente();
             buscarPasajeros();
         };
-        postRequest(url,success);
+        postRequest(url,params,success);
     }
 }
 
 function buscarCliente()
 {
     var busqueda = $("#busqueda").val();
-    var url = urlBase + "/cliente/GetClientes.php?busqueda="+busqueda;
+    var params = {busqueda : busqueda};
+    var url = urlBase + "/cliente/GetClientes.php";
     var success = function(response)
     {
         cerrarSession(response);
@@ -167,7 +170,7 @@ function buscarCliente()
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
-    getRequest(url,success);
+    postRequest(url,params,success);
 }
 function cambiarFila(id)
 {
@@ -241,7 +244,8 @@ function abrirModificar(id)
 function eliminarCliente()
 {
     var rut = $("#rut").val();
-    var url = urlBase + "/cliente/DelCliente.php?rut="+rut;
+    var params = {rut : rut,id : ID_CLIENTE};
+    var url = urlBase + "/cliente/DelCliente.php";
     var success = function(response)
     {
         alertify.success("Cliente eliminado");
@@ -251,7 +255,7 @@ function eliminarCliente()
         resetBotones();
         buscarCliente();
     };
-    getRequest(url,success);
+    postRequest(url,params,success);
 }
 
 function validarExistencia(tipo,valor)
@@ -334,14 +338,15 @@ function iniciarPestanias()
 
 function buscarPasajeros()
 {
-    var url = urlBase + "/pasajero/GetPasajeros.php?busqueda=";
+    var url = urlBase + "/pasajero/GetPasajeros.php";
+    var params = {busqueda : ""};
     var success = function(response)
     {
         cambiarPropiedad($("#loader"),"visibility","hidden");
         cerrarSession(response);
         PASAJEROS = response;
     };
-    getRequest(url,success);
+    postRequest(url,params,success);
 }
 
 function cargarPasajeros()
@@ -365,6 +370,7 @@ function cargarPasajeros()
             var cliente = PASAJEROS[i].pasajero_cliente;
             var asignacion = "";
             var claseAsignacion = "tablaFila";
+            console.log(ID_CLIENTE +" "+ cliente);
             if(ID_CLIENTE === cliente)
             {
                 asignacion = "<input type=\"radio\" onchange=\"agregarPasajeros($(this))\" name=\""+rut+"\" value=\""+id+"\" checked>SI\n\

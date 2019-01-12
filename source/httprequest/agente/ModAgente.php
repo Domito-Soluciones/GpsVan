@@ -2,25 +2,23 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/AgenteDao.php';
+include '../../cripto/Cripto.php';
 
 header('Content-Type: application/json');
-$agenteId = $_REQUEST['id'];
-$nombre = $_REQUEST['nombre'];
-$papellido = $_REQUEST['papellido'];
-$mapellido = $_REQUEST['mapellido'];
-$rut = $_REQUEST['rut'];
-$nick = $_REQUEST['nick'];
-$password = '';
-if(isset($_REQUEST['password']))
-{
-    $password = $_REQUEST['password'];
-}
-$telefono = $_REQUEST['telefono'];
-$celular = $_REQUEST['celular'];
-$direccion = $_REQUEST['direccion'];
-$mail = $_REQUEST['mail'];
-$cargo = $_REQUEST['cargo'];
-$nivel = $_REQUEST['nivel'];
+$cripto = new Cripto();
+$agenteId = filter_input(INPUT_POST, 'id');
+$nombre = filter_input(INPUT_POST, 'nombre');
+$papellido = filter_input(INPUT_POST, 'papellido');
+$mapellido = filter_input(INPUT_POST, 'mapellido');
+$rut = filter_input(INPUT_POST, 'rut');
+$nick = filter_input(INPUT_POST, 'nick');
+$password = $cripto->encriptar(filter_input(INPUT_POST, 'password'));
+$telefono = filter_input(INPUT_POST, 'telefono');
+$celular = filter_input(INPUT_POST, 'celular');
+$direccion = filter_input(INPUT_POST, 'direccion');
+$mail = filter_input(INPUT_POST, 'mail');
+$cargo = filter_input(INPUT_POST, 'cargo');
+$nivel = filter_input(INPUT_POST, 'nivel');
 $agente = new Agente();
 $agente->setId($agenteId);
 $agente->setRut($rut);

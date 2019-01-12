@@ -1,4 +1,4 @@
-/* global urlBase, alertify, NICK_GLOBAL */
+/* global urlBase, alertify, NICK_GLOBAL, KEY */
 var ID_AGENTE;
 var AGENTES;
 var AGREGAR = true;
@@ -94,10 +94,10 @@ function agregarAgente()
     }
     if(validarTipoDato())
     {
-        var data = "nombre="+nombre+"&papellido="+papellido+"&mapellido="+mapellido
-        +"&rut="+rut+"&nick="+nick+"&password="+password+"&telefono="+telefono+"&celular="+celular+"&direccion="+direccion
-        +"&mail="+mail+"&cargo="+cargo+"&perfil="+perfil;
-        var url = urlBase + "/agente/AddAgente.php?"+data;
+        var params = {nombre: nombre,papellido :papellido, mapellido : mapellido, rut : rut,
+                        nick: nick, password : encriptar(password), telefono: telefono, celular : celular,
+                        direccion : direccion, mail : mail, cargo : cargo, perfil : perfil};
+        var url = urlBase + "/agente/AddAgente.php";
         var success = function(response)
         {
             ID_AGENTE = undefined;
@@ -109,12 +109,13 @@ function agregarAgente()
             resetFormulario();
             buscarAgente();
         };
-        postRequest(url,success);
+        postRequest(url,params,success);
     }
 }
 
 function modificarAgente()
 {
+    var id = ID_AGENTE;
     var rut = $("#rut").val();
     var nombre = $("#nombre").val();
     var papellido = $("#papellido").val();
@@ -129,7 +130,9 @@ function modificarAgente()
     var cargo = $("#cargo").val();
     var perfil = $("#perfil").val();
     var array;
-    var claveData = '';
+    var params = {id : id,nombre: nombre,papellido :papellido, mapellido : mapellido, rut : rut,
+            nick: nick, telefono: telefono, celular : celular,
+            direccion : direccion, mail : mail, cargo : cargo, perfil : perfil};
     if(password !== '' || password2 !== '')
     {
         if(password !== password2)
@@ -140,7 +143,7 @@ function modificarAgente()
             return;
         }
         array = [nombre,papellido,mapellido,rut,celular,direccion,mail,cargo,perfil,nick,password,password2];
-        claveData = "&password="+password;
+        params.password = encriptar(password);
     }
     else
     {
@@ -154,10 +157,7 @@ function modificarAgente()
     }
     if(validarTipoDato())
     {
-        var data = "id="+ID_AGENTE+"&nombre="+nombre+"&papellido="+papellido+"&mapellido="+mapellido
-        +"&rut="+rut+"&nick="+nick+claveData+"&telefono="+telefono+"&celular="+celular+"&direccion="+direccion
-        +"&mail="+mail+"&cargo="+cargo+"&nivel="+perfil;
-        var url = urlBase + "/agente/ModAgente.php?"+data;
+        var url = urlBase + "/agente/ModAgente.php";
         var success = function(response)
         {
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
@@ -167,14 +167,15 @@ function modificarAgente()
             resetFormulario();
             buscarAgente();
         };
-        postRequest(url,success);
+        postRequest(url,params,success);
     }
 }
 
 function buscarAgente()
 {
     var busqueda = $("#busqueda").val();
-    var url = urlBase + "/agente/GetAgentes.php?busqueda="+busqueda;
+    var params = {busqueda : busqueda};
+    var url = urlBase + "/agente/GetAgentes.php";
     var success = function(response)
     {
         cerrarSession(response);
@@ -205,7 +206,7 @@ function buscarAgente()
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
-    getRequest(url,success);
+    postRequest(url,params,success);
 }
 
 function cambiarFila(id)
@@ -283,7 +284,8 @@ function abrirModificar(id)
 function eliminarAgente()
 {
     var rut = $("#rut").val();
-    var url = urlBase + "/agente/DelAgente.php?rut="+rut;
+    var params = { rut : rut };
+    var url = urlBase + "/agente/DelAgente.php";
     var success = function(response)
     {
         alertify.success("Administrador eliminado");
@@ -293,7 +295,7 @@ function eliminarAgente()
         resetBotones();
         buscarAgente();
     };
-    getRequest(url,success);
+    postRequest(url,params,success);
 }
 
 function validarExistencia(tipo,valor)

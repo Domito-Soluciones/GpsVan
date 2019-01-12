@@ -1,7 +1,5 @@
 /* global, CORS_PROXY, POSITION, API_KEY, DIRECTIONS_API, map, google, urlBase, alertify, flightPath, POLYLINE, EN_PROCCESO_DE_ASIGNACION, PLACES_AUTOCOMPLETE_API */
 
-/* global PLACES_DETAILS_API, API_KEY, CORS_PROXY, google, map */
-
 var transportistas = [];
 var clientes = [];
 var usuarios = [];
@@ -133,7 +131,8 @@ function init()
 function cargarClientes()
 {
     var busqueda = $("#cliente").val();
-    var url = urlBase + "/cliente/GetClientes.php?busqueda="+busqueda;
+    var params = {busqueda : busqueda};
+    var url = urlBase + "/cliente/GetClientes.php";
     var success = function(response)
     {
         $("#lcliente").html("");
@@ -144,13 +143,14 @@ function cargarClientes()
             clientes.push(nombre);
         }
     };
-    getRequest(url,success,false);
+    postRequest(url,params,success,false);
 }
 
 function cargarPasajeros()
 {
     var busqueda = $('#cliente').val();
-    var url = urlBase + "/pasajero/GetPasajeros.php?busqueda="+busqueda;
+    var params = {busqueda : busqueda};
+    var url = urlBase + "/pasajero/GetPasajeros.php";
     var success = function(response)
     {
         $("#lusuario").html("");
@@ -161,13 +161,14 @@ function cargarPasajeros()
             usuarios.push(nombre);
         }
     };
-    getRequest(url,success,false);
+    postRequest(url,params,success,false);
 }
 
 function cargarTransportistas()
 {
     var busqueda = $("#transportista").val();
-    var url = urlBase + "/transportista/GetTransportistas.php?busqueda="+busqueda;
+    var params = {busqueda : busqueda};
+    var url = urlBase + "/transportista/GetTransportistas.php";
     var success = function(response)
     {
         $("#ltransportista").html("");
@@ -178,13 +179,14 @@ function cargarTransportistas()
             transportistas.push(nombre);
         }
     };
-    getRequest(url,success,false);
+    postRequest(url,params,success,false);
 }
 
 function cargarMoviles()
 {
     var busqueda = $('#transportista').val();
-    var url = urlBase + "/movil/GetMoviles.php?busqueda="+busqueda;
+    var params = {busqueda : busqueda};
+    var url = urlBase + "/movil/GetMoviles.php";
     var success = function(response)
     {
         $("#lvehiculo").html("");
@@ -195,13 +197,14 @@ function cargarMoviles()
             moviles.push(nombre);
         }
     };
-    getRequest(url,success,false);
+    postRequest(url,params,success,false);
 }
 
 function cargarTarifas()
 {
     var busqueda = $('#tarifas').val();
-    var url = urlBase + "/tarifa/GetTarifas.php?busqueda="+busqueda;
+    var params = {busqueda : busqueda};
+    var url = urlBase + "/tarifa/GetTarifas.php";
     var success = function(response)
     {
         $("#ltarifa").html("");
@@ -212,7 +215,7 @@ function cargarTarifas()
             tarifas.push(nombre);
         }
     };
-    getRequest(url,success,false);
+    postRequest(url,params,success,false);
 }
 
 function agregarServicio()
@@ -231,9 +234,9 @@ function agregarServicio()
         alertify.error("Ingrese todos los campos necesarios");
         return;
     }
-    var data = "partida="+partida+"&destino="+destino+"&cliente="+cliente+"&usuario="
-            +usuario+"&transportista="+transportista+"&movil="+movil+"&tipo="+tipo+"&tarifa="+tarifa;
-    var url = urlBase + "/servicio/AddServicio.php?"+data;
+    var params = {partida : partida, destino : destino, cliente : cliente, usuario : usuario,
+        transportista : transportista, movil : movil, tipo : tipo, tarifa : tarifa};
+    var url = urlBase + "/servicio/AddServicio.php";
     var success = function(response)
     {
         cerrarSession(response);
@@ -243,7 +246,7 @@ function agregarServicio()
         cambiarPropiedad($("#loader"),"visibility","hidden");
         agregarDetalleServicio(response.servicio_id);
     };
-    postRequest(url,success);
+    postRequest(url,params,success);
 }
       
 function mostrarDatalist(val,datalist,campo)
@@ -365,9 +368,9 @@ function dibujarRuta(origen,destinos)
 }
 function agregarDetalleServicio(idServicio)
 {
-    var data = "lat="+POLYLINE_LAT+"&lon="+POLYLINE_LNG+"&id="+idServicio;
-    var url = urlBase + "/servicio/AddServicioDetalle.php?"+data;
-    postRequest(url,null);
+    var params = { lat : POLYLINE_LAT, lon : POLYLINE_LNG, id : idServicio };
+    var url = urlBase + "/servicio/AddServicioDetalle.php";
+    postRequest(url,params,null);
 }
 
 
@@ -428,12 +431,13 @@ function abrirServicio(idServicio)
 
 function marcarServicioEnProceso(idServicio)
 {
-    var url = urlBase + "/servicio/ModEstadoServicio.php?id="+idServicio+"&estado="+EN_PROCCESO_DE_ASIGNACION;
+    var params = {id : idServicio, estado : EN_PROCCESO_DE_ASIGNACION};
+    var url = urlBase + "/servicio/ModEstadoServicio.php";
     var success = function(response)
     {
         alertify.success("Servicio "+response.servicio_id +" se encuentra en proceso asignaci&oacute;n");
     };
-    postRequest(url,success,false);
+    postRequest(url,params,success,false);
 }
 
 function agregarDestino()

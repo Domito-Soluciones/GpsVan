@@ -26,8 +26,8 @@ class Conductor {
     private $anticipo;
     private $imagenAdjunta;
     private $contratoAdjunto;
-    private $movil;
     private $transportista;
+    private $movil;
     
     function getId() {
         return $this->id;
@@ -125,12 +125,12 @@ class Conductor {
         return $this->contratoAdjunto;
     }
 
-    function getMovil() {
-        return $this->movil;
-    }
-
     function getTransportista() {
         return $this->transportista;
+    }
+
+    function getMovil() {
+        return $this->movil;
     }
 
     function setId($id) {
@@ -229,14 +229,13 @@ class Conductor {
         $this->contratoAdjunto = $contratoAdjunto;
     }
 
-    function setMovil($movil) {
-        $this->movil = $movil;
-    }
-
     function setTransportista($transportista) {
         $this->transportista = $transportista;
     }
 
+    function setMovil($movil) {
+        $this->movil = $movil;
+    }
 
-    
+
 }

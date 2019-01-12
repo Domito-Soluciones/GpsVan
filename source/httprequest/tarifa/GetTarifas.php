@@ -4,7 +4,7 @@ include '../../util/validarSession.php';
 include '../../query/TarifaDao.php';
 
 header('Content-Type: application/json');
-$busqueda = $_REQUEST['busqueda'];
+$busqueda = filter_input(INPUT_POST, 'busqueda');
 $tarifaDao = new TarifaDao();
 $tarifas = $tarifaDao->getTarifas($busqueda);
 echo "[";

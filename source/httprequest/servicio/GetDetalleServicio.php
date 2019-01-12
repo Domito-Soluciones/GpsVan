@@ -3,7 +3,7 @@ include '../../util/validarPeticion.php';
 include '../../query/ServicioDao.php';
 
 header('Content-Type: application/json; charset=utf-8');
-$id = $_REQUEST['id'];
+$id = filter_input(INPUT_POST, 'id');
 $servicioDao = new ServicioDao();
 $coordenadas = $servicioDao->getServiciosDetalle($id);
 $lat = explode(",", $coordenadas->getLat());

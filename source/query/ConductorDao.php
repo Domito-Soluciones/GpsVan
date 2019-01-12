@@ -33,20 +33,15 @@ class ConductorDao {
         $anticipo = $conductor->getAnticipo();
         $imagen = $conductor->getImagenAdjunta();
         $archivoContrato = $conductor->getContratoAdjunto();
-        $patente = '';
-        if($conductor->getMovil() != null)
-        {
-            $patente = $conductor->getMovil()->getPatente();
-        }
         $conn = new Conexion();
         try {
             $query = "INSERT INTO tbl_conductor (conductor_nombre,conductor_papellido,"
                     . "conductor_mapellido,conductor_rut,conductor_nick,conductor_clave,conductor_telefono,"
                     . "conductor_celular,conductor_direccion,conductor_mail,conductor_tipo_licencia,"
                     . "conductor_nacimiento,conductor_renta,conductor_tipo_contrato, conductor_prevision ,conductor_isapre,conductor_mutual,"
-                    . "conductor_seguro_inicio,conductor_seguro_renovacion,conductor_descuento,conductor_anticipo,conductor_imagen,conductor_contrato,conductor_movil,conductor_transportista) VALUES "
+                    . "conductor_seguro_inicio,conductor_seguro_renovacion,conductor_descuento,conductor_anticipo,conductor_imagen,conductor_contrato,conductor_transportista) VALUES "
                     . "('$nombre','$papellido','$mapellido','$rut','$nick','$password','$telefono','$celular','$direccion','$mail','$tipoLicencia',"
-                    . "'$nacimiento',$renta,'$contrato','$afp','$isapre','$mutual','$seguroInicio','$seguroRenovacion','$descuento','$anticipo','$imagen','$archivoContrato','$patente',0)"; 
+                    . "'$nacimiento',$renta,'$contrato','$afp','$isapre','$mutual','$seguroInicio','$seguroRenovacion','$descuento','$anticipo','$imagen','$archivoContrato',0)"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -85,7 +80,6 @@ class ConductorDao {
         $anticipo = $conductor->getAnticipo();
         $imagen = $conductor->getImagenAdjunta();
         $archivoContrato = $conductor->getContratoAdjunto();
-        $patente = $conductor->getMovil()->getPatente();
         $conn = new Conexion();
         try {
             $query = "UPDATE tbl_conductor SET conductor_nombre = '$nombre',"
@@ -102,7 +96,7 @@ class ConductorDao {
                     . "conductor_prevision = '$afp',conductor_isapre = '$isapre',conductor_mutual = '$mutual',"
                     . "conductor_seguro_inicio = '$seguroInicio',conductor_seguro_renovacion = '$seguroRenovacion',"
                     . "conductor_descuento = '$descuento',conductor_anticipo = '$anticipo',conductor_imagen = '$imagen',"
-                    . "conductor_contrato = '$archivoContrato',conductor_movil='$patente' WHERE conductor_rut = '$rut'";           
+                    . "conductor_contrato = '$archivoContrato' WHERE conductor_rut = '$rut'";           
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -153,8 +147,8 @@ class ConductorDao {
                 $conductor->setAnticipo($row["conductor_anticipo"]);
                 $conductor->setImagenAdjunta($row["conductor_imagen"]);
                 $conductor->setContratoAdjunto($row["conductor_contrato"]);
-                $conductor->setMovil($row["conductor_movil"]);
                 $conductor->setTransportista($row["conductor_transportista"]);
+                $conductor->setMovil($row["conductor_movil"]);
                 array_push($array, $conductor);
             }
         } catch (Exception $exc) {

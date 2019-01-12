@@ -23,8 +23,8 @@ function buscarServicio()
     var busqueda = $("#busqueda").val();
     var desde = $("#desde").val();
     var hasta = $("#hasta").val();
-    var url = urlBase + "/servicio/GetServicios.php?busqueda="+busqueda+
-            "&desde="+desde+"&hasta="+hasta;
+    var params = {busqueda : busqueda, desde : desde, hasta : hasta};
+    var url = urlBase + "/servicio/GetServicios.php";
     var success = function(response)
     {
         cerrarSession(response);
@@ -43,7 +43,7 @@ function buscarServicio()
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
-    getRequest(url,success);
+    postRequest(url,params,success);
 }
 
 function exportarServicio()
@@ -131,7 +131,7 @@ function cambiarPestaniaViaje()
     cambiarPropiedad($("#cont_transportista"),"display","none");
     cambiarPropiedad($("#cont_viaje"),"display","block");
     cambiarPropiedad($("#cont_tarifa"),"display","none");
-    quitarclase($(this),"dispose");
+    quitarclase($("#p_viaje"),"dispose");
     agregarclase($("#p_general"),"dispose");
     agregarclase($("#p_transportista"),"dispose");
     agregarclase($("#p_tarifa"),"dispose");
@@ -143,7 +143,7 @@ function cambiarPestaniaTarifa()
     cambiarPropiedad($("#cont_transportista"),"display","none");
     cambiarPropiedad($("#cont_viaje"),"display","none");
     cambiarPropiedad($("#cont_tarifa"),"display","block");
-    quitarclase($(this),"dispose");
+    quitarclase($("#p_tarifa"),"dispose");
     agregarclase($("#p_general"),"dispose");
     agregarclase($("#p_transportista"),"dispose");
     agregarclase($("#p_viaje"),"dispose");

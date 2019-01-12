@@ -1,5 +1,4 @@
-/* global bordeAzul, bordeBlanco, bordeRojo, urlBase, alertify */
-
+/* global bordeAzul, bordeBlanco, bordeRojo, urlBase, alertify, KEY */
 $(document).ready(function(){
     darFoco($("#usuario"));
     cambiarPropiedad($("#usuario"),"border-bottom",bordeAzul);    
@@ -53,7 +52,8 @@ function login(){
         }   
         return;
     }
-    var url = urlBase + "/agente/Login.php?usuario="+usuario+"&password="+password;
+    var url = urlBase + "/agente/Login.php";
+    var params = { usuario: usuario, password : encriptar(password)};
     var success = function(response){
         if(response === '0')
         {
@@ -68,7 +68,7 @@ function login(){
     var error = function(){
         alertify.error("error");
     };
-    postRequest(url,success,error);
+    postRequest(url,params,success,error);
 }
 
 

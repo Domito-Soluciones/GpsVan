@@ -5,17 +5,9 @@ include '../../dominio/Servicio.php';
 include '../../dominio/Movil.php';
 
 header('Content-Type: application/json; charset=utf-8');
-$busqueda = $_REQUEST['busqueda'];
-$desde = '2000/01/01';
-$hasta = '2100/01/01';
-if(isset($_REQUEST['desde']))
-{
-    $desde = $_REQUEST['desde'];
-}
-if(isset($_REQUEST['hasta']))
-{
-    $desde = $_REQUEST['hasta'];
-}
+$busqueda = filter_input(INPUT_POST, 'busqueda');
+$desde = filter_input(INPUT_POST, 'desde');
+$hasta = filter_input(INPUT_POST, 'hasta');
 $servicioDao = new ServicioDao();
 $servicios = $servicioDao->getServicios($busqueda,$desde,$hasta);
 echo "[";

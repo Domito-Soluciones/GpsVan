@@ -233,7 +233,8 @@ function dibujarServicio(id,movil)
     {
         POLYLINE.setMap(null);
     }
-    var url = urlBase + "/servicio/GetDetalleServicio.php?id="+id;
+    var params = {id : id};
+    var url = urlBase + "/servicio/GetDetalleServicio.php";
     var success = function(response){
         flightPath = new google.maps.Polyline({
             path: response,
@@ -259,7 +260,7 @@ function dibujarServicio(id,movil)
         }
         getRequest(url,success);
     };
-    getRequest(url,success);
+    postRequest(url,params,success);
 
 
 }

@@ -133,5 +133,21 @@ class ClienteDao {
             echo $exc->getTraceAsString();
         }
     }
+    
+    public function desAsociarPasajeros($cliente)
+    {
+        $conn = new Conexion();
+        try {
+            $query = "UPDATE tbl_pasajero SET pasajero_cliente = '0' WHERE pasajero_cliente = '$cliente'";
+            $conn->conectar();
+            if (mysqli_query($conn->conn,$query)) {
+                $id = mysqli_insert_id($conn->conn);
+            } else {
+                echo mysqli_error($conn->conn);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
    
 }

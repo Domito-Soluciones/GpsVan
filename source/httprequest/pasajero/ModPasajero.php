@@ -4,25 +4,22 @@ include '../../util/validarSession.php';
 include '../../query/PasajeroDao.php';
 
 header('Content-Type: application/json');
-$id = $_REQUEST['id'];
-$nombre = $_REQUEST['nombre'];
-$papellido = $_REQUEST['papellido'];
-$mapellido = $_REQUEST['mapellido'];
-$rut = $_REQUEST['rut'];
-$nick = $_REQUEST['nick'];
-$password = '';
-if(isset($_REQUEST['password']))
-{
-    $password = $_REQUEST['password'];
-}
-$telefono = $_REQUEST['telefono'];
-$celular = $_REQUEST['celular'];
-$direccion = $_REQUEST['direccion'];
-$mail = $_REQUEST['mail'];
-$cargo = $_REQUEST['cargo'];
-$centro = $_REQUEST['centro'];
-$empresa = $_REQUEST['empresa'];
-$ruta = $_REQUEST['ruta'];
+$cripto = new Cripto();
+$id = filter_input(INPUT_POST, 'id');
+$nombre = filter_input(INPUT_POST, 'nombre');
+$papellido = filter_input(INPUT_POST, 'papellido');
+$mapellido = filter_input(INPUT_POST, 'mapellido');
+$rut = filter_input(INPUT_POST, 'rut');
+$nick = filter_input(INPUT_POST, 'nick');
+$password = $cripto->encriptar(filter_input(INPUT_POST, 'password'));
+$telefono = filter_input(INPUT_POST, 'telefono');
+$celular = filter_input(INPUT_POST, 'celular');
+$direccion = filter_input(INPUT_POST, 'direccion');
+$mail = filter_input(INPUT_POST, 'mail');
+$cargo = filter_input(INPUT_POST, 'cargo');
+$centro = filter_input(INPUT_POST, 'centro');
+$empresa = filter_input(INPUT_POST, 'empresa');
+$ruta = filter_input(INPUT_POST, 'ruta');
 $pasajero = new Pasajero();
 $pasajero->setId($id);
 $pasajero->setRut($rut);

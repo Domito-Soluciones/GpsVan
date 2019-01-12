@@ -3,6 +3,8 @@ include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/TransportistaDao.php';
 
-$rut = $_REQUEST['rut'];
+header('Content-Type: application/json');
+$rut = filter_input(INPUT_POST, 'rut');
 $transportistaDao = new TransportistaDao();
 $transportistaDao->eliminarTransportista($rut);
+echo "{\"transportista_eliminado\":\"".$nombre."\"}";

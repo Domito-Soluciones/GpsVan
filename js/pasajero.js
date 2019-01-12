@@ -93,10 +93,10 @@ function agregarPasajero()
     }
     if(validarTipoDato())
     {
-        var data = "nombre="+nombre+"&papellido="+papellido+"&mapellido="+mapellido
-        +"&rut="+rut+"&nick="+nick+"&password="+password+"&telefono="+telefono+"&celular="+celular+"&direccion="+direccion
-        +"&mail="+mail+"&cargo="+cargo+"&centro="+centro+"&empresa="+empresa+"&ruta="+ruta;
-        var url = urlBase + "/pasajero/AddPasajero.php?"+data;
+        var params = {nombre : nombre, papellido : papellido, mapellido : mapellido,
+            rut : rut, nick : nick, password : encriptar(password), telefono : telefono, celular : celular,
+            direccion : direccion, mail : mail, cargo : cargo, centro : centro, empresa : empresa, ruta : ruta};
+        var url = urlBase + "/pasajero/AddPasajero.php";
         var success = function(response)
         {
             ID_PASAJERO = undefined;
@@ -108,12 +108,13 @@ function agregarPasajero()
             resetFormulario();
             buscarPasajero();
         };
-        postRequest(url,success);
+        postRequest(url,params,success);
     }
 }
 
 function modificarPasajero()
 {
+    var id = ID_PASAJERO;
     var rut = $("#rut").val();
     var nombre = $("#nombre").val();
     var papellido = $("#papellido").val();
@@ -130,7 +131,9 @@ function modificarPasajero()
     var empresa = $("#empresa").val();
     var ruta = $("#ruta").val();
     var array;
-    var claveData = '';
+    var params = {id : id, nombre : nombre, papellido : papellido, mapellido : mapellido,
+        rut : rut, nick : nick, telefono : telefono, celular : celular,
+        direccion : direccion, mail : mail, cargo : cargo, centro : centro, empresa : empresa, ruta : ruta};
     if(password !== '' || password2 !== '')
     {
         if(password !== password2)
@@ -142,7 +145,7 @@ function modificarPasajero()
         }
         array = [rut,nombre,papellido,mapellido,celular,direccion,centro,empresa,
         nick,password,password2];
-        claveData = "&password="+password;
+        params.password = encriptar(password);
     }
     else
     {
@@ -156,10 +159,7 @@ function modificarPasajero()
     }
     if(validarTipoDato())
     {
-        var data = "id="+ID_PASAJERO+"&nombre="+nombre+"&papellido="+papellido+"&mapellido="+mapellido
-        +"&rut="+rut+"&nick="+nick+claveData+"&telefono="+telefono+"&celular="+celular+"&direccion="+direccion
-        +"&mail="+mail+"&cargo="+cargo+"&centro="+centro+"&empresa="+empresa+"&ruta="+ruta;
-        var url = urlBase + "/pasajero/ModPasajero.php?"+data;
+        var url = urlBase + "/pasajero/ModPasajero.php";
         var success = function(response)
         {
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
@@ -169,14 +169,15 @@ function modificarPasajero()
             resetFormulario();
             buscarPasajero();
         };
-        postRequest(url,success);
+        postRequest(url,params,success);
     }
 }
 
 function buscarPasajero()
 {
     var busqueda = $("#busqueda").val();
-    var url = urlBase + "/pasajero/GetPasajeros.php?busqueda="+busqueda;
+    var params = {busqueda : busqueda};
+    var url = urlBase + "/pasajero/GetPasajeros.php";
     var success = function(response)
     {
         cerrarSession(response);
@@ -207,7 +208,7 @@ function buscarPasajero()
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
-    getRequest(url,success);
+    postRequest(url,params,success);
 }
 
 function cambiarFila(id)
@@ -280,7 +281,8 @@ function abrirModificar(id)
 function eliminarPasajero()
 {
     var rut = $("#rut").val();
-    var url = urlBase + "/pasajero/DelPasajero.php?rut="+rut;
+    var params = {rut : rut};
+    var url = urlBase + "/pasajero/DelPasajero.php";
     var success = function(response)
     {
         alertify.success("Pasajero eliminado");
@@ -290,7 +292,7 @@ function eliminarPasajero()
         resetBotones();
         buscarPasajero();
     };
-    getRequest(url,success);
+    postRequest(url,params,success);
 }
 
 function validarExistencia(tipo,valor)
@@ -379,7 +381,6 @@ function activarPestania(array)
     var app = false;
     for(var i = 0 ; i < CAMPOS.length ; i++)
     {
-        console.log(CAMPOS[i] + " " + i);
         if(array[i] === '')
         {
             if(i < 8)

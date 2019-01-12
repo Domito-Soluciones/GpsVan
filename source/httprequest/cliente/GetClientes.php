@@ -4,7 +4,7 @@ include '../../util/validarSession.php';
 include '../../query/ClienteDao.php';
 
 header('Content-Type: application/json');
-$busqueda = $_REQUEST['busqueda'];
+$busqueda = filter_input(INPUT_POST, 'busqueda');
 $clienteDao = new ClienteDao();
 $clientes = $clienteDao->getClientes($busqueda);
 echo "[";
