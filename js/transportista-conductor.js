@@ -1,149 +1,45 @@
 /* global urlBase, alertify */
-var TRANSPORTISTAS;
-var CONDUCTORES;
-var MOVILES;
-var MOVILES_CONDUCTORES = [];
-var AGREGAR = true;
 var PAGINA = 'TRANSPORTISTAS';
+var TRANSPORTISTASCONDUCTOR;
 var ID_TRANSPORTISTA;
-var AGREGAR_CONDUCTORES = [];
-var ELIMINAR_CONDUCTORES = [];
-var AGREGAR_MOVILES = [];
-var ELIMINAR_MOVILES = [];
-var CAMPOS = ["rut","razon","nombre","direccion","nombreContacto","telefono","mail","mail2"];
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
+    buscarTransportistaConductor();
     $("#agregar").click(function(){
-        ID_TRANSPORTISTA = undefined;
-        quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
-        cambiarPropiedad($("#agregar"),"visibility","hidden");
-        AGREGAR = true;
-        $("#contenedor_central").load("html/datos_transportista.html", function( response, status, xhr ) {
-            iniciarPestanias();
-            cambioEjecutado();
-            $("#rut").blur(function (){
-                if(validarExistencia('rut',$(this).val()))
-                {
-                    alertify.error("El rut "+$(this).val()+" ya existe");
-                    $("#rut").val("");
-                    return;
-                }
-            });
-
-        });
-        cambiarPropiedad($("#guardar"),"visibility","visible");
-        cambiarPropiedad($("#cancelar"),"visibility","visible");
+        cambiarPropiedad($("#opcion-agregar"),"display","block");
+        cambiarPropiedad($("#cancelar"),"display","block");
+        cambiarPropiedad($("#contenedor-boton-siguiente"),"display","block");
+        cambiarPropiedad($("#mensaje_bienvenida"),"display","none");
     });
     $("#cancelar").click(function(){
-        validarCancelar(PAGINA);
-    });
-    $("#guardar").click(function(){
-        if(AGREGAR)
-        {
-            agregarTransportista();
-        }
-        else
-        {
-            modificarTransportista();
-        }
+        cambiarPropiedad($("#opcion-agregar"),"display","block");
+        cambiarPropiedad($("#mensaje_bienvenida"),"display","none");
+        cambiarPropiedad($("#contenedor-boton-siguiente"),"display","none");
+        quitarclase($("#cancelar"),"oculto");
     });
     $("#busqueda").keyup(function(){
-        buscarTransportista($(this).val());
+        buscarTransportistaConductor($(this).val());
     });
     
-    $("#eliminar").click(function (){
-            confirmar("Eliminar transportista","Esta seguro que desea eliminar al transportista "+$("#rut").val(),
-            function(){
-                eliminarTransportista();
-            },null);
-    });
-    
-    $("#opcionVolver").click(function(){
-        opcionVolver();
+    $("#siguiente").click(function(){
+        var pagina;
+        if($("#opcionTransportista").is(":checked"))
+        {
+            pagina = "datos_transportista";
+        }
+        else if($("#opcionConductor").is(":checked"))
+        {
+            pagina = "datos_conductor";
+        }
+        else if($("#opcionAmbos").is(":checked"))
+        {
+            pagina = "datos_conductor";
+        }
+        $("#contenedor_central").load("html/"+pagina+".html");
     });
 });
 
-function agregarTransportista()
-{
-    var razon = $("#razon").val();
-    var rut = $("#rut").val();
-    var nombre = $("#nombre").val();
-    var direccion = $("#direccion").val();
-    var nombreContacto = $("#nombreContacto").val();
-    var telefono = $("#telefono").val();
-    var mail = $("#mail").val();
-    var mail2 = $("#mail2").val();
-    var array = [rut,razon,nombre,direccion,nombreContacto,telefono,mail,mail2];
-    if(!validarCamposOr(array))
-    {
-        activarPestania(array);
-        alertify.error("Ingrese todos los campos necesarios");
-        return;
-    }
-    if(validarTipoDato())
-    {
-        var params = {razon : razon, rut : rut, nombre : nombre, direccion: direccion,
-                    nombre_contacto : nombreContacto, telefono : telefono, mail : mail, mail2 : mail2,
-                    conductores : AGREGAR_CONDUCTORES+"",moviles : AGREGAR_MOVILES+"",
-                    delConductor : ELIMINAR_CONDUCTORES+"", delMovil : ELIMINAR_MOVILES+""};
-        var url = urlBase+"/transportista/AddTransportista.php";
-        var success = function(response)
-        {
-            ID_TRANSPORTISTA = undefined;
-            cerrarSession(response);
-            alertify.success("Transportista Agregado");
-            cambiarPestaniaGeneral();
-            vaciarFormulario();
-            cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
-            resetFormulario();
-            buscarTransportista();
-            buscarConductores();
-            buscarMoviles();
-        };
-        postRequest(url,params,success);
-    }
-}
-
-function modificarTransportista()
-{
-    var razon = $("#razon").val();
-    var rut = $("#rut").val();
-    var nombre = $("#nombre").val();
-    var direccion = $("#direccion").val();
-    var nombreContacto = $("#nombreContacto").val();
-    var telefono = $("#telefono").val();
-    var mail = $("#mail").val();
-    var mail2 = $("#mail2").val();
-    var array = [rut,razon,nombre,direccion,nombreContacto,telefono,mail,mail2];
-    if(!validarCamposOr(array))
-    {
-        activarPestania(array);
-        alertify.error("Ingrese todos los campos necesarios");
-        return;
-    }
-    if(validarTipoDato())
-    {
-        var params = {razon : razon, rut : rut, nombre : nombre, direccion: direccion,
-                    nombre_contacto : nombreContacto, telefono : telefono, mail : mail, mail2 : mail2,
-                    conductores : AGREGAR_CONDUCTORES+"",moviles : AGREGAR_MOVILES+"",
-                    delConductor : ELIMINAR_CONDUCTORES+"", delMovil : ELIMINAR_MOVILES+""};
-        var url = urlBase + "/transportista/ModTransportista.php";
-        var success = function(response)
-        {
-            cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
-            cerrarSession(response);
-            alertify.success("Transportista Modificado");
-            cambiarPestaniaGeneral();
-            resetFormulario();
-            buscarTransportista();
-            buscarConductores();
-            buscarMoviles();
-        };
-        postRequest(url,params,success);
-    }
-}
-
-function buscarTransportista()
+function buscarTransportistaConductor()
 {
     var busqueda = $("#busqueda").val();
     var params = {busqueda : busqueda};
@@ -151,9 +47,9 @@ function buscarTransportista()
     var success = function(response)
     {
         cerrarSession(response);
-        var transportistas = $("#lista_busqueda_transportista");
-        transportistas.html("");
-        TRANSPORTISTAS = response;
+        var transportistasConductor = $("#lista_busqueda_transportista_conductor");
+        transportistasConductor.html("");
+        TRANSPORTISTASCONDUCTOR = response;
         if(response.length === 0)
         {
             alertify.error("No hay registros que mostrar");
@@ -167,37 +63,16 @@ function buscarTransportista()
             var titulo = recortar(nombre+" / "+razon);
             if (typeof ID_TRANSPORTISTA !== "undefined" && ID_TRANSPORTISTA === id)
             {
-                transportistas.append("<div class=\"fila_contenedor fila_contenedor_activa\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+titulo+"</div>");
+                transportistasConductor.append("<div class=\"fila_contenedor fila_contenedor_activa\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+titulo+"</div>");
             }
             else
             {
-                transportistas.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+titulo+"</div>");
+                transportistasConductor.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+titulo+"</div>");
             }
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
     postRequest(url,params,success);
-}
-function cambiarFila(id)
-{
-    if(MODIFICADO)
-    {
-        confirmar("Cambio de transportista",
-        "¿Desea cambiar de transportista sin guardar los cambios?",
-        function()
-        {
-            MODIFICADO = false;
-            abrirModificar(id);
-        },
-        function()
-        {
-            MODIFICADO = true;
-        });
-    }
-    else
-    {
-        abrirModificar(id);
-    }
 }
 
 function abrirModificar(id)

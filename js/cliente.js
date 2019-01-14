@@ -145,7 +145,7 @@ function buscarCliente()
     var success = function(response)
     {
         cerrarSession(response);
-        var clientes = $("#lista_busqueda");
+        var clientes = $("#lista_busqueda_cliente");
         clientes.html("");
         CLIENTES = response;
         if(response.length === 0)

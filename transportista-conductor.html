@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script src="js/transportista-conductor.js" type="text/javascript"></script>
         <script src="js/transportista.js" type="text/javascript"></script>
+        <script src="js/conductor.js" type="text/javascript"></script>
     </head>
     <body>
         <div class="contenedor-lateral">
@@ -9,10 +11,10 @@
                 Buscar: <input type="text" id="busqueda">                    
             </div>
             <div class="buscador_titulo">
-                Transportistas
+                Transportistas / Conductores
             </div>
-            <div id="lista_busqueda" class="lista_busqueda">
-                <div class="contenedor-loader-intro">
+            <div id="lista_busqueda_transportista_conductor" class="lista_busqueda">
+                <div class="contenedor-loader">
                     <div class="loader" id="loader">Loading...</div>
                 </div>
             </div>
@@ -24,8 +26,22 @@
             <div class="contenedor-loaderCentral">
                 <div class="loaderCentral" id="loader">Loading...</div>
             </div>
-            <div class="mensaje_bienvenida">
-                SELECCIONE OPCIONES PARA AGREGAR EDITAR Y/O MODIFICAR TRANSPORTISTAS
+            <div id="opcion-agregar" class="opcion-agregar">
+                <input type="radio" class="radio-tipo" id="opcionTransportista" name="tipo" value="0" checked/>
+                Transportista
+                <input type="radio" class="radio-tipo" id="opcionConductor" name="tipo" value="1"/>
+                Conductor
+                <input type="radio" class="radio-tipo" id="opcionAmbos" name="tipo" value="2"/>
+                Ambos
+            </div>
+            <div id="contenedor-boton-siguiente" class="contenedor-boton-siguiente">
+                <div class="boton" id="siguiente">
+                    <img src="img/next.svg" width="12" height="12">
+                    Siguiente
+                </div>
+            </div>
+            <div class="mensaje_bienvenida" id="mensaje_bienvenida">
+                SELECCIONE OPCIONES PARA AGREGAR EDITAR Y/O MODIFICAR TRANSPORTISTA 0 CONDUCTORES
             </div>
         </div>
         <div class="pie">

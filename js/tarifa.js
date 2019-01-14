@@ -143,7 +143,7 @@ function buscarTarifa()
     var success = function(response)
     {
         cerrarSession(response);
-        var tarifas = $("#lista_busqueda");
+        var tarifas = $("#lista_busqueda_tarifa");
         tarifas.html("");
         TARIFAS = response;
         if(response.length === 0)

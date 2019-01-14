@@ -22,30 +22,6 @@ class PasajeroDao {
         return $id;
     }
     
-    public function getUsuarioDatos($user)
-    {
-        $conn = new Conexion();
-        $usuario = new Usuario();
-        try {
-            $query = "SELECT * FROM tbl_usuario WHERE usuario_nick = '$user'"; 
-            $conn->conectar();
-            $result = mysqli_query($conn->conn,$query); 
-            while($row = mysqli_fetch_array($result)) {
-                $usuario->setId($row["usuario_id"]);
-                $usuario->setNombre($row["usuario_nombre"]);
-                $usuario->setCliente($row["usuario_cliente"]);
-                $usuario->setCelular($row["usuario_celular"]);
-                $usuario->setDireccion($row["usuario_direccion"]);
-                $usuario->setNick($row['usuario_nick']);
-                $usuario->setPassword($row["usuario_password"]);
-                $usuario->setEstado($row["usuario_estado"]);
-            }
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-        return $usuario;
-    }
-    
     public function agregarPasajero($pasajero)
     {
         $id = 0;
@@ -164,12 +140,62 @@ class PasajeroDao {
         return $array;
     }
     
+    function getPasajero($nick)
+    {
+        $pasajero = new Pasajero();
+        $conn = new Conexion();
+        try {
+            $query = "SELECT * FROM tbl_pasajero WHERE pasajero_nick = '$nick'";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            while($row = mysqli_fetch_array($result)) {
+                $pasajero->setId($row["pasajero_id"]);
+                $pasajero->setNombre($row["pasajero_nombre"]);
+                $pasajero->setPapellido($row["pasajero_papellido"]);
+                $pasajero->setMapellido($row["pasajero_mapellido"]);
+                $pasajero->setRut($row["pasajero_rut"]);
+                $pasajero->setNick($row["pasajero_nick"]);
+                $pasajero->setTelefono($row["pasajero_telefono"]);
+                $pasajero->setCelular($row["pasajero_celular"]);
+                $pasajero->setDireccion($row["pasajero_direccion"]);
+                $pasajero->setMail($row["pasajero_mail"]);
+                $pasajero->setCargo($row["pasajero_cargo"]);
+                $pasajero->setNivel($row["pasajero_nivel"]);
+                $pasajero->setCliente($row["pasajero_cliente"]);
+                $pasajero->setCentroCosto($row["pasajero_centro_costo"]);
+                $pasajero->setEmpresa($row["pasajero_empresa"]);
+                $pasajero->setRuta($row["pasajero_ruta"]);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $pasajero;
+    }
+    
     function eliminarPasajero($rut)
     {
         $id = 0;
         $conn = new Conexion();
         try {
             $query = "DELETE FROM tbl_pasajero WHERE pasajero_rut = '$rut'"; 
+            $conn->conectar();
+            if (mysqli_query($conn->conn,$query)) {
+                $id = mysqli_insert_id($conn->conn);
+            } else {
+                echo mysqli_error($conn->conn);
+            }           
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $id;
+    }
+    
+    public function cambiarEstadoPasajero($estado,$pasajero)
+    {
+        $id = 0;
+        $conn = new Conexion();
+        try {
+            $query = "UPDATE tbl_pasajero SET pasajero_estado = $estado WHERE pasajero_nick = '$pasajero'"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);

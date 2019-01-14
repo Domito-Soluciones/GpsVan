@@ -181,7 +181,7 @@ function buscarPasajero()
     var success = function(response)
     {
         cerrarSession(response);
-        var pasajeros = $("#lista_busqueda");
+        var pasajeros = $("#lista_busqueda_pasajero");
         pasajeros.html("");
         PASAJEROS = response;
         if(response.length === 0)

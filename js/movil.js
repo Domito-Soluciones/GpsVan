@@ -185,7 +185,7 @@ function buscarMovil()
     var success = function(response)
     {
         cerrarSession(response);
-        var moviles = $("#lista_busqueda");
+        var moviles = $("#lista_busqueda_movil");
         moviles.html("");
         MOVILES = response;
         if(response.length === 0)

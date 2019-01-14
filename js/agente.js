@@ -78,7 +78,7 @@ function agregarAgente()
     var password2 = $("#password2").val();
     var cargo = $("#cargo").val();
     var perfil = $("#perfil").val();
-    var array = [nombre,papellido,mapellido,rut,celular,direccion,mail,cargo,perfil,nick,password,password2];
+    var array = [rut,nombre,papellido,mapellido,celular,direccion,mail,cargo,perfil,nick,password,password2];
     if(!validarCamposOr(array))
     {
         activarPestania(array);
@@ -142,7 +142,7 @@ function modificarAgente()
             alertify.error("La password no coincide");
             return;
         }
-        array = [nombre,papellido,mapellido,rut,celular,direccion,mail,cargo,perfil,nick,password,password2];
+        array = [rut,nombre,papellido,mapellido,celular,direccion,mail,cargo,perfil,nick,password,password2];
         params.password = encriptar(password);
     }
     else
@@ -179,7 +179,7 @@ function buscarAgente()
     var success = function(response)
     {
         cerrarSession(response);
-        var agentes = $("#lista_busqueda");
+        var agentes = $("#lista_busqueda_agente");
         agentes.html("");
         AGENTES = response;
         if(response.length === 0)

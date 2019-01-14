@@ -56,7 +56,7 @@ function buscarServicio()
     var success = function(response)
     {
         cerrarSession(response);
-        var servicios = $("#lista_busqueda");
+        var servicios = $("#lista_busqueda_monitoreo");
         var lista_servicio = $("#lservicio");
         var lista_movil = $("#lmovil");
         var lista_pasajero = $("#lpasajero");

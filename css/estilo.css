@@ -865,3 +865,33 @@ select
     height: 30px;
     cursor: pointer;
 }
+
+.opcion-agregar
+{
+    width: 100%;
+    font-weight: bold;
+    font-size: 25px;
+    color: #0b41d3;
+    text-align: center;
+    display: none;
+}
+
+.radio-tipo
+{
+    transform:scale(1.2);
+}
+
+.contenedor-boton-siguiente
+{
+    padding-top: 30px;
+    padding-left: 40%;
+    padding-right: 40%;
+    display: none;
+    width: 20%;
+}
+.opcion-volver
+{
+    cursor: pointer;
+    float: right;
+    padding-right: 30px;
+}

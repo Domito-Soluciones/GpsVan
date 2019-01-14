@@ -42,13 +42,13 @@ function postRequest(url,params,success)
         cache: false,
         async: true,
         beforeSend: function (xhr) {
-            cambiarPropiedad($("#loaderCentral"),"visibility","visible");
+            cambiarPropiedad($("#loader"),"visibility","visible");
         },
         success: success,
         error: function (resposeError)
         {
             $("#error").text(resposeError);
-            cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
+            cambiarPropiedad($("#loader"),"visibility","hidden");
         }
     });
 }
@@ -348,18 +348,18 @@ function validarRut(rut){
     for(i=2;continuar;i++){
         suma += (rutSolo%10)*i;
         rutSolo = parseInt((rutSolo /10));
-        i=(i===7)?1:i;
-        continuar = (rutSolo === 0)?false:true;
+        i=(i==7)?1:i;
+        continuar = (rutSolo == 0)?false:true;
     }
     resto = suma%11;
     dv = 11-resto;
-    if(dv===10){
-        if(verif.toUpperCase() === 'K')
+    if(dv==10){
+        if(verif.toUpperCase() == 'K')
         return true;
     }
-    else if (dv === 11 && verif === 0)
+    else if (dv == 11 && verif == 0)
         return true;
-    else if (dv === verif)
+    else if (dv == verif)
         return true;
     else
     return false;
@@ -532,4 +532,10 @@ function encriptar(password)
     var blowfishInstance = new Blowfish(KEY);
     var passwordEncrypted = blowfishInstance.encrypt(password);
     return passwordEncrypted;
+}
+
+function opcionVolver()
+{
+    alert()
+    $("#cont_general").load("html/transportista-conductor.html");
 }

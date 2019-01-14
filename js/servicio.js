@@ -28,7 +28,7 @@ function buscarServicio()
     var success = function(response)
     {
         cerrarSession(response);
-        var servicios = $("#lista_busqueda");
+        var servicios = $("#lista_busqueda_servicio");
         servicios.html("");
         SERVICIOS = response;
         if(response.length === 0)

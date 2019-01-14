@@ -3,9 +3,10 @@ include '../../util/validarPeticion.php';
 include '../../query/AgenteDao.php';
 include '../../cripto/Cripto.php';
 
+$cripto = new Cripto();
 $respuesta = '0';
 $nombre = filter_input(INPUT_POST, 'usuario');
-$password = filter_input(INPUT_POST, 'password');
+$password = $cripto->encriptar(filter_input(INPUT_POST, 'password'));
 $agenteDao = new AgenteDao();
 $agente = $agenteDao->getAgente($nombre, $password);
 if ($agente->getId() > 0)

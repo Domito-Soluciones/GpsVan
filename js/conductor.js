@@ -3,14 +3,13 @@ var ID_CONDUCTOR;
 var CONDUCTORES;
 var MOVILES;
 var AGREGAR = true;
-var PAGINA = 'CONDUCTORES';
+var PAGINA = 'TRANSPORTISTAS O CONDUCTORES';
 var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","mail","nacimiento","tipoLicencia",
                 "renta","tipoContrato","afp","isapre","mutual","seguroInicio","seguroRenovacion",
                 "nick","password","password2"];
 
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
-    buscarConductor();
     $("#agregar").click(function(){
         quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
         cambiarPropiedad($("#agregar"),"visibility","hidden");
@@ -63,6 +62,9 @@ $(document).ready(function(){
         function(){
                 eliminarConductor();
             },null);
+    });
+    $("#opcionVolver").click(function(){
+        opcionVolver();
     });
 });
 
@@ -217,7 +219,7 @@ function buscarConductor()
     var success = function(response)
     {
         cerrarSession(response);
-        var conductores = $("#lista_busqueda");
+        var conductores = $("#lista_busqueda_conductor");
         conductores.html("");
         CONDUCTORES = response;
         if(response.length === 0)

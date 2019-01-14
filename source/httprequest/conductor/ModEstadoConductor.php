@@ -8,5 +8,6 @@ $conductor = filter_input(INPUT_POST, 'usuario');
 $estado = filter_input(INPUT_POST, 'estado');
 $movilDao = new MovilDao();
 $movilDao->cambiarEstadoConductor($estado, $conductor);
-echo "{\"conductor_nick\":".$conductor.",\"conductor_estado\":".$estado."}";
+echo "{\"conductor_nick\":".$conductor.","
+    . "\"conductor_estado\":".$estado."}";
 
