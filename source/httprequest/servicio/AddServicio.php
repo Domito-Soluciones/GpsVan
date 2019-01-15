@@ -13,7 +13,11 @@ $transportista = filter_input(INPUT_POST, 'transportista');
 $movil = filter_input(INPUT_POST, 'movil');    
 $tipo = filter_input(INPUT_POST, 'tipo');    
 $tarifa = filter_input(INPUT_POST, 'tarifa');    
-$agente = $_SESSION['agente'];
+$agente = 0;
+if(filter_input(INPUT_POST, 'app') == '')
+{
+    $agente = $_SESSION['agente'];
+}
 $servicio = new Servicio();
 $servicio->setPartida(urldecode($partida));
 $servicio->setDestino(urldecode($destino));

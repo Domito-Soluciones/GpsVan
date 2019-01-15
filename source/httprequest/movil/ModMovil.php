@@ -20,10 +20,18 @@ $kilo = filter_input(INPUT_POST, 'kilo');
 $motor = filter_input(INPUT_POST, 'motor');
 $chasis = filter_input(INPUT_POST, 'chasis');
 $segOb = filter_input(INPUT_POST, 'segob');
-$venSegOb = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_POST, 'vensegob'))->format('Y/m/d');
+$venSegOb = '';
+if(filter_input(INPUT_POST, 'vensegob') != '')
+{
+    $venSegOb = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_POST, 'vensegob'))->format('Y/m/d');
+}
 $polizaSegOb = filter_input(INPUT_POST, 'polizasegob');
 $segRcDm = filter_input(INPUT_POST, 'segrcdm');
-$venSegRcDm = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_POST, 'vensegrcdm'))->format('Y/m/d');
+$venSegRcDm = '';
+if(filter_input(INPUT_POST, 'vensegrcdm') != '')
+{
+    $venSegRcDm = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_POST, 'vensegrcdm'))->format('Y/m/d');
+}
 $polizaSegRcDm = filter_input(INPUT_POST, 'polizasegrcdm');
 $conductores = filter_input(INPUT_POST, 'conductores');
 $delConductor = filter_input(INPUT_POST, 'delConductor');

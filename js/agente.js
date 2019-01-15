@@ -95,7 +95,7 @@ function agregarAgente()
     if(validarTipoDato())
     {
         var params = {nombre: nombre,papellido :papellido, mapellido : mapellido, rut : rut,
-                        nick: nick, password : encriptar(password), telefono: telefono, celular : celular,
+                        nick: nick, password : btoa(password), telefono: telefono, celular : celular,
                         direccion : direccion, mail : mail, cargo : cargo, perfil : perfil};
         var url = urlBase + "/agente/AddAgente.php";
         var success = function(response)
@@ -143,7 +143,7 @@ function modificarAgente()
             return;
         }
         array = [rut,nombre,papellido,mapellido,celular,direccion,mail,cargo,perfil,nick,password,password2];
-        params.password = encriptar(password);
+        params.password = btoa(password);
     }
     else
     {

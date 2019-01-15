@@ -13,7 +13,6 @@ $nombre = filter_input(INPUT_POST, 'nombre');
 $telefono = filter_input(INPUT_POST, 'telefono');
 $mail = filter_input(INPUT_POST, 'mail');
 $mail2 = filter_input(INPUT_POST, 'mail2');
-$centro = filter_input(INPUT_POST, 'centros');
 $pasajeros = filter_input(INPUT_POST, 'pasajeros');
 $delPasajero = filter_input(INPUT_POST, 'delPasajero');
 $cliente = new Cliente();
@@ -26,7 +25,6 @@ $cliente->setNombreContacto($nombre);
 $cliente->setFonoContacto($telefono);
 $cliente->setMailContacto($mail);
 $cliente->setMailFacturacion($mail2);
-$cliente->setCentroCosto($centro);
 $clienteDao = new ClienteDao();
 $clienteDao->modificarCliente($cliente);
 if($cliente->getId() > 0)

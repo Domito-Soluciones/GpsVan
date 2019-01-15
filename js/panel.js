@@ -1,4 +1,5 @@
-/* global, CORS_PROXY, POSITION, API_KEY, DIRECTIONS_API, map, google, urlBase, alertify, flightPath, POLYLINE, EN_PROCCESO_DE_ASIGNACION, PLACES_AUTOCOMPLETE_API */
+
+/* global POLYLINE, alertify, urlBase, PLACES_AUTOCOMPLETE_API, CORS_PROXY, POSITION, API_KEY, PLACES_DETAILS_API, google, map, DIRECTIONS_API, EN_PROCCESO_DE_ASIGNACION */
 
 var transportistas = [];
 var clientes = [];
@@ -45,68 +46,68 @@ $(document).ready(function(){
     });
     
     /** CLIENTE **/
-    $("#cliente").keyup(function () {
+    $("#clientes").keyup(function () {
         cargarClientes();
     });
-    $("#cliente").on('input',function () {
+    $("#clientes").on('input',function () {
         cargarPasajeros();
     });
-    $("#cliente").on('blur',function () {
-        if($("#cliente").val() === "")
+    $("#clientes").on('blur',function () {
+        if($("#clientes").val() === "")
         {
             cargarPasajeros();
         }
-        var noExiste = validarInexistencia($("#cliente").val(),clientes);
+        var noExiste = validarInexistencia($("#clientes").val(),clientes);
         if(noExiste)
         {
             alertify.error("Cliente inexistente");
-            $("#cliente").val("");
+            $("#clientes").val("");
             
         }
     });
     /** TRANSPORTISTA **/
-    $("#transportista").keyup(function () {
+    $("#transportistas").keyup(function () {
         cargarTransportistas();
     });
     
-    $("#transportista").on('input',function () {
+    $("#transportistas").on('input',function () {
         cargarMoviles();
     });
     
-    $("#transportista").on('blur',function () {
-        if($("#transportista").val() === "")
+    $("#transportistas").on('blur',function () {
+        if($("#transportistas").val() === "")
         {
             cargarTransportistas();
         }
-        var noExiste = validarInexistencia($("#transportista").val(),transportistas);
+        var noExiste = validarInexistencia($("#transportistas").val(),transportistas);
         if(noExiste)
         {
             alertify.error("Transportista inexistente");
-            $("#transportista").val("");
+            $("#transportistas").val("");
         }
     });
-    $("#usuario").keyup(function () {
+    $("#usuarios").keyup(function () {
         cargarPasajeros();
     });
     
-    $("#usuario").on('blur',function () {
-        var noExiste = validarInexistencia($("#usuario").val(),usuarios);
+    $("#usuarios").on('blur',function () {
+        var noExiste = validarInexistencia($("#usuarios").val(),usuarios);
         if(noExiste)
         {
             alertify.error("Pasajero inexistente");
-            $("#usuario").val("");
+            $("#usuarios").val("");
         }
     });
-    $("#vehiculo").keyup(function(){
+    $("#vehiculos").keyup(function(){
         cargarMoviles();
     });
     
-    $("#vehiculo").on('blur',function () {
-        var noExiste = validarInexistencia($("#vehiculo").val(),moviles);
+    $("#vehiculos").on('blur',function () {
+        var noExiste = validarInexistencia($("#vehiculos").val(),moviles);
         if(noExiste)
         {
             alertify.error("Veh&iacute;culo inexistente");
-            $("#vehiculo").val("");
+            $("#vehiculos").val("");
         }
     });
     
@@ -130,7 +131,7 @@ function init()
 
 function cargarClientes()
 {
-    var busqueda = $("#cliente").val();
+    var busqueda = $("#clientes").val();
     var params = {busqueda : busqueda};
     var url = urlBase + "/cliente/GetClientes.php";
     var success = function(response)
@@ -148,7 +149,7 @@ function cargarClientes()
 
 function cargarPasajeros()
 {
-    var busqueda = $('#cliente').val();
+    var busqueda = $('#clientes').val();
     var params = {busqueda : busqueda};
     var url = urlBase + "/pasajero/GetPasajeros.php";
     var success = function(response)
@@ -166,7 +167,7 @@ function cargarPasajeros()
 
 function cargarTransportistas()
 {
-    var busqueda = $("#transportista").val();
+    var busqueda = $("#transportistas").val();
     var params = {busqueda : busqueda};
     var url = urlBase + "/transportista/GetTransportistas.php";
     var success = function(response)
@@ -184,7 +185,7 @@ function cargarTransportistas()
 
 function cargarMoviles()
 {
-    var busqueda = $('#transportista').val();
+    var busqueda = $('#transportistas').val();
     var params = {busqueda : busqueda};
     var url = urlBase + "/movil/GetMoviles.php";
     var success = function(response)
@@ -222,11 +223,11 @@ function agregarServicio()
 {
     var partida = $("#partida").val();
     var destino = $("#destino").val();
-    var cliente = $("#cliente").val();
-    var usuario = $("#usuario").val();
-    var transportista = $("#transportista").val();
-    var movil = $("#vehiculo").val();
-    var tipo = $("#tipo").val();
+    var cliente = $("#clientes").val();
+    var usuario = $("#usuarios").val();
+    var transportista = $("#transportistas").val();
+    var movil = $("#vehiculos").val();
+    var tipo = $("#tipos").val();
     var tarifa = $("#tarifas").val();
     var array = [partida,destino,cliente,usuario,transportista,movil,tipo,tarifa];
     if(!validarCamposOr(array))
@@ -421,8 +422,8 @@ function abrirServicio(idServicio)
         $("#partida").val(partida);
         $("#test").html(partida);
         $("#destino").val(destino);
-        $("#cliente").val(cliente);
-        $("#usuario").val(pasajero);
+        $("#clientes").val(cliente);
+        $("#usuarios").val(pasajero);
     }
     marcarServicioEnProceso(idServicio);
     cambiarPropiedad($("#servicios_pendientes"),"display","none");

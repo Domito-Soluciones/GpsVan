@@ -3,7 +3,7 @@ var ID_TARIFA;
 var TARIFAS;
 var AGREGAR = true;
 var PAGINA = 'TARIFAS';
-var CAMPOS = ["cliente","ruta","nombre","origen","destino","valor1","valor2"];
+var CAMPOS = ["clientes","ruta","nombre","origen","destino","valor1","valor2"];
 var clientes = [];
 
 $(document).ready(function(){
@@ -16,6 +16,28 @@ $(document).ready(function(){
         $("#contenedor_central").load("html/datos_tarifa.html", function( response, status, xhr ) {
             cambioEjecutado();
             cargarClientes();
+            $("#clientes").blur(function(){
+                if(validarExistencia('cliente-ruta',$(this).val()+"-"+$("#ruta").val()))
+                {
+                    if($(this).val() !== "" && $("#ruta").val() !== "")
+                    {
+                        alertify.error("La tarifa ya existe");
+                        $("#clientes").val("");
+                        return;
+                    }
+                }
+            });
+            $("#ruta").blur(function(){
+                if(validarExistencia('cliente-ruta',$("#clientes").val()+"-"+$(this).val()))
+                {
+                    if($(this).val() !== "" && $("#clientes").val() !== "")
+                    {
+                        alertify.error("La tarifa ya existe");
+                        $("#ruta").val("");
+                        return;
+                    }
+                }
+            });
             $("#nombre").blur(function (){
                 if(validarExistencia('nombre',$(this).val()))
                 {
@@ -24,16 +46,16 @@ $(document).ready(function(){
                     return;
                 }
             });
-            $("#cliente").on('blur',function () {
-                if($("#cliente").val() === "")
+            $("#clientes").on('blur',function () {
+                if($("#clientes").val() === "")
                 {
                     cargarPasajeros();
                 }
-                var noExiste = validarInexistencia($("#cliente").val(),clientes);
+                var noExiste = validarInexistencia($("#clientes").val(),clientes);
                 if(noExiste)
                 {
                     alertify.error("Cliente inexistente");
-                    $("#cliente").val("");
+                    $("#clientes").val("");
 
                 }
             });
@@ -68,7 +90,7 @@ $(document).ready(function(){
 
 function agregarTarifa()
 {
-    var cliente = $("#cliente").val();
+    var cliente = $("#clientes").val();
     var ruta = $("#ruta").val();
     var nombre = $("#nombre").val();
     var origen = $("#origen").val();
@@ -104,7 +126,7 @@ function agregarTarifa()
 function modificarTarifa()
 {
     var id = ID_TARIFA;
-    var cliente = $("#cliente").val();
+    var cliente = $("#clientes").val();
     var ruta = $("#ruta").val();
     var nombre = $("#nombre").val();
     var origen = $("#origen").val();
@@ -207,8 +229,10 @@ function abrirModificar(id)
                 tarifa = TARIFAS[i];
             }
         }
-        $("#cliente").val(tarifa.tarifa_cliente);
+        $("#clientes").prop("readonly",true);
+        $("#clientes").val(tarifa.tarifa_cliente);
         cargarClientes();
+        $("#ruta").prop("readonly",true);
         $("#ruta").val(tarifa.tarifa_ruta);
         $("#nombre").prop("readonly",true);
         $("#nombre").val(tarifa.tarifa_nombre);
@@ -247,6 +271,13 @@ function validarExistencia(tipo,valor)
         if(tipo === 'nombre')
         {
             if(valor === TARIFAS[i].tarifa_nombre)
+            {
+                return true;
+            }
+        }
+        else if(tipo === 'cliente-ruta')
+        {
+            if(valor === TARIFAS[i].tarifa_cliente+"-"+TARIFAS[i].tarifa_ruta)
             {
                 return true;
             }
@@ -294,7 +325,7 @@ function activarPestania(array)
 
 function cargarClientes()
 {
-    var busqueda = $("#cliente").val();
+    var busqueda = $("#clientes").val();
     var params = {busqueda : busqueda};
     var url = urlBase + "/cliente/GetClientes.php";
     var success = function(response)

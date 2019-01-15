@@ -6,7 +6,8 @@ var PAGINA = 'CLIENTES';
 var ID_CLIENTE;
 var AGREGAR_PASAJEROS = [];
 var ELIMINAR_PASAJEROS = [];
-var CAMPOS = ["rut","razon","tipo","direccion","nombre","telefono","mail","mail2","centros"];
+var CENTROS_COSTO = [];
+var CAMPOS = ["rut","razon","tipo","direccion","nombre","telefono","mail","mail2"];
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
     buscarCliente();
@@ -26,10 +27,17 @@ $(document).ready(function(){
                     return;
                 }
             });
+            $("#agregar_cc").click(function(){
+                agregarCentroCosto();
+            });
 
+            $("#quitar_cc").click(function(){
+                quitarCentroCosto();
+            });
         });
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
+        
     });
     $("#cancelar").click(function(){
         validarCancelar(PAGINA);
@@ -55,6 +63,7 @@ $(document).ready(function(){
                 eliminarCliente();
             },null);
     });
+    
 });
 
 function agregarCliente()
@@ -67,8 +76,15 @@ function agregarCliente()
     var telefono = $("#telefono").val();
     var mail = $("#mail").val();
     var mail2 = $("#mail2").val();
-    var cc = $("#centros").val();
-    var array = [razon,tipo,rut,direccion,nombre,telefono,mail,mail2,cc];
+    var cc = $(".centro_costo");
+    cc.each(
+        function (index){
+            if($(this).val() !== '')
+            {   
+                CENTROS_COSTO.push($(this).val());
+            }
+        });
+    var array = [rut,razon,tipo,direccion,nombre,telefono,mail,mail2];
     if(!validarCamposOr(array))
     {
         activarPestania(array);
@@ -78,9 +94,8 @@ function agregarCliente()
     if(validarTipoDato())
     {
         var params = { razon : razon, tipo : tipo, rut : rut, direccion : direccion, nombre : nombre,
-                telefono : telefono, mail : mail, mail2 : mail2, centros : cc , pasajeros : AGREGAR_PASAJEROS + "",
-                delpasajero : ELIMINAR_PASAJEROS + "" };
-        alert(JSON.stringify(params));
+                telefono : telefono, mail : mail, mail2 : mail2, pasajeros : AGREGAR_PASAJEROS + "",
+                delpasajero : ELIMINAR_PASAJEROS + "" ,  centros : CENTROS_COSTO + "" };
         var url = urlBase+"/cliente/AddCliente.php";
         var success = function(response)
         {
@@ -93,6 +108,7 @@ function agregarCliente()
             resetFormulario();
             buscarCliente();
             buscarPasajeros();
+            CENTROS_COSTO = [];
         };
         postRequest(url,params,success);
     }
@@ -109,8 +125,15 @@ function modificarCliente()
     var telefono = $("#telefono").val();
     var mail = $("#mail").val();
     var mail2 = $("#mail2").val();
-    var cc = $("#centros").val();
-    var array = [rut,razon,tipo,direccion,nombre,telefono,mail,mail2,cc];
+    var cc = $(".centro_costo");
+    cc.each(
+        function (index){
+            if($(this).val() !== '')
+            {   
+                CENTROS_COSTO.push($(this).val());
+            }
+        });
+    var array = [rut,razon,tipo,direccion,nombre,telefono,mail,mail2];
     if(!validarCamposOr(array))
     {
         activarPestania(array);
@@ -120,8 +143,8 @@ function modificarCliente()
     if(validarTipoDato())
     {
         var params = { id : id, razon : razon, tipo : tipo, rut : rut, direccion : direccion, nombre : nombre,
-            telefono : telefono, mail : mail, mail2 : mail2, centros : cc , pasajeros : AGREGAR_PASAJEROS + "",
-            delpasajero : ELIMINAR_PASAJEROS + "" };
+            telefono : telefono, mail : mail, mail2 : mail2, pasajeros : AGREGAR_PASAJEROS + "",
+            delpasajero : ELIMINAR_PASAJEROS + "",  centros : CENTROS_COSTO + "" };
         var url = urlBase + "/cliente/ModCliente.php";
         var success = function(response)
         {
@@ -132,6 +155,7 @@ function modificarCliente()
             resetFormulario();
             buscarCliente();
             buscarPasajeros();
+            CENTROS_COSTO = [];
         };
         postRequest(url,params,success);
     }
@@ -233,10 +257,29 @@ function abrirModificar(id)
         $("#direccion").val(cliente.cliente_direccion);
         $("#mail").val(cliente.cliente_mail_contacto);
         $("#mail2").val(cliente.cliente_mail_facturacion);
-        $("#centros").val(cliente.cliente_centro_costo);
+        alert(JSON.stringify(cliente.cliente_centro_costo));
+        for(var j = 0; j < cliente.cliente_centro_costo.length; j++)
+        {
+            if(j === 0)
+            {
+                $("#centros").val(cliente.cliente_centro_costo[j].centro_costo_nombre);
+            }
+            else if(j > 0)
+            {
+                agregarCentroCosto(j);
+            }
+        }
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
         cambiarPropiedad($("#eliminar"),"visibility","visible");
+        
+        $("#agregar_cc").click(function(){
+            agregarCentroCosto();
+        });
+
+        $("#quitar_cc").click(function(){
+            quitarCentroCosto();
+        });
         
     });
 }
@@ -284,24 +327,28 @@ function validarTipoDato()
     var mail2 = $("#mail2");
     if(!validarRut(rut.val()))
     {
+        cambiarPestaniaGeneral();
         marcarCampoError(rut);
         alertify.error('Rut invalido');
         return false;
     }
     if(!validarNumero(telefono.val()))
     {
+        cambiarPestaniaGeneral();
         marcarCampoError(telefono);
         alertify.error('Telefono debe ser numerico');
         return false;
     }
     if(!validarEmail(mail.val()))
     {
+        cambiarPestaniaGeneral();
         marcarCampoError(mail);
         alertify.error('E-mail contacto invalido');
         return false;
     }
     if(!validarEmail(mail2.val()))
     {
+        cambiarPestaniaGeneral();
         marcarCampoError(mail2);
         alertify.error('E-mail facturaci&oacute;n invalido');
         return false;
@@ -312,6 +359,7 @@ function validarTipoDato()
 
 function activarPestania(array)
 {
+    var general = false;
     for(var i = 0 ; i < CAMPOS.length ; i++)
     {
         if(array[i] === '')
@@ -323,12 +371,19 @@ function activarPestania(array)
             marcarCampoOk($("#"+CAMPOS[i]));
         }
     }
+    if(general)
+    {
+        cambiarPestaniaGeneral();
+    }
 }
 
 function iniciarPestanias()
 {
     $("#p_general").click(function(){
         cambiarPestaniaGeneral();
+    });
+    $("#p_ccosto").click(function(){
+        cambiarPestaniaCC();
     });
     $("#p_pasajero").click(function(){
         cambiarPestaniaPasajero();
@@ -412,16 +467,30 @@ function cambiarPestaniaGeneral()
 {
     cambiarPropiedad($("#cont_general"),"display","block");
     cambiarPropiedad($("#cont_pasajero"),"display","none");
+    cambiarPropiedad($("#cont_ccosto"),"display","none");
     quitarclase($("#p_general"),"dispose");
     agregarclase($("#p_pasajero"),"dispose");
+    agregarclase($("#p_ccosto"),"dispose");
+}
+
+function cambiarPestaniaCC()
+{
+    cambiarPropiedad($("#cont_general"),"display","none");
+    cambiarPropiedad($("#cont_ccosto"),"display","block");
+    cambiarPropiedad($("#cont_pasajero"),"display","none");
+    quitarclase($("#p_ccosto"),"dispose");
+    agregarclase($("#p_general"), "dispose");
+    agregarclase($("#p_pasajero"), "dispose");
 }
 
 function cambiarPestaniaPasajero()
 {
     cambiarPropiedad($("#cont_general"),"display","none");
+    cambiarPropiedad($("#cont_ccosto"),"display","none");
     cambiarPropiedad($("#cont_pasajero"),"display","block");
     quitarclase($("#p_pasajero"),"dispose");
     agregarclase($("#p_general"), "dispose");
+    agregarclase($("#p_ccosto"), "dispose");
 }
 function agregarPasajeros(obj)
 {
@@ -451,5 +520,41 @@ function eliminarPasajeros(obj)
                 break;
             }
         }
+    }
+}
+
+
+function agregarCentroCosto()
+{
+    var i = 1;
+    $(".centro_costo").each(function(index){
+        i++;
+    });
+    $("#centro_costo").append("<div class=\"contenedor-pre-input\" id=\"cont-pre-cc-"+i+"\">Centro Costo "+i+" (*)</div>"+
+            "<div class=\"contenedor-input\" id=\"cont-cc-"+i+"\"><input class=\"centro_costo\" type=\"text\" id=\"centros"+i+"\" placeholder=\"Ej: Principal\" maxlength=\"40\">");
+    $('#centro_costo').animate({ scrollTop: $('#centro_costo').height() });
+}
+
+function agregarCentroCosto(i)
+{
+    $("#centro_costo").append("<div class=\"contenedor-pre-input\" id=\"cont-pre-cc-"+i+"\">Centro Costo "+i+" (*)</div>"+
+            "<div class=\"contenedor-input\" id=\"cont-cc-"+i+"\"><input class=\"centro_costo\" type=\"text\" id=\"centros"+i+"\" placeholder=\"Ej: Principal\" maxlength=\"40\">");
+}
+
+function quitarCentroCosto()
+{
+    var i = 1;
+    var largo = $(".centro_costo").length;
+    if(largo > 1 )
+    {
+        $(".centro_costo").each(function(index){
+            if(i === largo)
+            {
+                $(this).remove();
+                $("#cont-cc-"+i).remove();
+                $("#cont-pre-cc-"+i).remove();
+            }
+            i++;
+        });
     }
 }

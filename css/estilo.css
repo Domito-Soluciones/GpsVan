@@ -449,7 +449,7 @@ select
     background-color: white;
     height: calc(100% - 82px);
     padding-top: 20px;
-    min-height: 470px;
+    min-height: 460px;
 }
 .dispose
 {
@@ -894,4 +894,15 @@ select
     cursor: pointer;
     float: right;
     padding-right: 30px;
+}
+
+.contenor-centro-costo
+{
+    height: 400px;
+    overflow: auto;
+    width: 100%;
+}
+.contenedor-fila-cc
+{
+    width: 450px !important;
 }

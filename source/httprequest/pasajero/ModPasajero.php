@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/PasajeroDao.php';
+include '../../cripto/Cripto.php';
 
 header('Content-Type: application/json');
 $cripto = new Cripto();

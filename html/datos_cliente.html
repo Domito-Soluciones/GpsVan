@@ -5,8 +5,11 @@
     <div class="titulo_pagina_general" id="p_general">
         1. General
     </div>
+    <div class="titulo_pagina_general dispose" id="p_ccosto">
+        2. Centros de Costo
+    </div>
     <div class="titulo_pagina_general dispose" id="p_pasajero">
-        2. Asignar Pasajeros
+        3. Asignar Pasajeros
     </div>
 </div>
 <div class="contenedor-info general" id="cont_general">
@@ -81,12 +84,30 @@
                 <input type="text" id="mail2" placeholder="Ej: user@dominio.cl" maxlength="40">
             </div>
         </div>
-        <div class="contenedor-fila">
-            <div class="contenedor-pre-input">
-                Centro Costo (*)
+    </div>
+</div>
+<div class="contenedor-info contenedor_oculto" id="cont_ccosto">
+    <div class="contenedor-formulario">
+        <div class="contenedor-fila contenedor-fila-cc">
+            <div class="contenor-centro-costo" id="centro_costo">
+                <div class="contenedor-pre-input">
+                    Centro Costo 1 (*)
+                </div>
+                <div class="contenedor-input">
+                    <input class="centro_costo" type="text" id="centros" placeholder="Ej: Principal" maxlength="40">
+                </div>
             </div>
-            <div class="contenedor-input">
-                <input type="text" id="centros" placeholder="Ej: Principal" maxlength="40">
+        </div>
+        <div>
+            <div class="input-monitoreo">
+                <div class="boton" id="agregar_cc">
+                    <img src="img/anadir.svg" width="12" height="12">
+                    Agregar
+                </div>
+                <div class="boton" id="quitar_cc">
+                    <img src="img/cancelar.svg" width="12" height="12">
+                    Quitar
+                </div>
             </div>
         </div>
     </div>

@@ -83,13 +83,23 @@ function addTexto(div,texto)
     div.text(texto);
 }
 
-function validarCamposOr(array)
+function validarCamposOr(array,exepciones = null)
 {
     for (var i = 0 ; i < array.length; i++)
     {
-        if(array[i] === undefined || array[i] === '')
+        if(exepciones === null)
         {
-            return false;
+            if(array[i] === undefined || array[i] === '')
+            {
+                return false;
+            }
+        }
+        else if(exepciones.indexOf('|'+i+'|') === -1)
+        {
+            if(array[i] === undefined || array[i] === '')
+            {
+                return false;
+            }
         }
     }
     return true;
@@ -527,15 +537,8 @@ function validarInexistencia(val,array)
     return true;
 }
 
-function encriptar(password)
-{
-    var blowfishInstance = new Blowfish(KEY);
-    var passwordEncrypted = blowfishInstance.encrypt(password);
-    return passwordEncrypted;
-}
 
 function opcionVolver()
 {
-    alert()
     $("#cont_general").load("html/transportista-conductor.html");
 }

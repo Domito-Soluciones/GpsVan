@@ -10,9 +10,7 @@ class Cliente {
     private $nombreContacto;
     private $fonoContacto;
     private $mailContacto;
-    private $mailFacturacion;
-    private $centroCosto;
-    
+    private $mailFacturacion;    
 
     function getId() {
         return $this->id;

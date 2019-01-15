@@ -94,7 +94,7 @@ function agregarPasajero()
     if(validarTipoDato())
     {
         var params = {nombre : nombre, papellido : papellido, mapellido : mapellido,
-            rut : rut, nick : nick, password : encriptar(password), telefono : telefono, celular : celular,
+            rut : rut, nick : nick, password : btoa(password), telefono : telefono, celular : celular,
             direccion : direccion, mail : mail, cargo : cargo, centro : centro, empresa : empresa, ruta : ruta};
         var url = urlBase + "/pasajero/AddPasajero.php";
         var success = function(response)
@@ -145,7 +145,7 @@ function modificarPasajero()
         }
         array = [rut,nombre,papellido,mapellido,celular,direccion,centro,empresa,
         nick,password,password2];
-        params.password = encriptar(password);
+        params.password = btoa(password);
     }
     else
     {
@@ -370,6 +370,9 @@ function iniciarPestanias()
     $("#p_general").click(function(){
         cambiarPestaniaGeneral();
     });
+    $("#p_empresa").click(function(){
+        cambiarPestaniaEmpresa();
+    });
     $("#p_app").click(function(){
         cambiarPestaniaAplicacion();
     });
@@ -378,18 +381,26 @@ function iniciarPestanias()
 function activarPestania(array)
 {
     var general = false;
+    var empresa = false;
     var app = false;
     for(var i = 0 ; i < CAMPOS.length ; i++)
     {
         if(array[i] === '')
         {
-            if(i < 8)
+            if(i < 6)
             {
                 general = true;
             }
-            else if(i > 7)
+            if(i > 5 && i < 8)
             {
                 if(!general)
+                {
+                    empresa = true;
+                }
+            }
+            if(i > 7)
+            {
+                if(!empresa)
                 {
                     app = true;
                 }
@@ -406,6 +417,10 @@ function activarPestania(array)
     {
         cambiarPestaniaGeneral();
     }
+    else if(empresa)
+    {
+        cambiarPestaniaEmpresa();
+    }
     else if(app)
     {
         cambiarPestaniaAplicacion();
@@ -415,16 +430,30 @@ function activarPestania(array)
 function cambiarPestaniaGeneral()
 {
     cambiarPropiedad($("#cont_general"),"display","block");
+    cambiarPropiedad($("#cont_empresa"),"display","none");
     cambiarPropiedad($("#cont_app"),"display","none");
     quitarclase($("#p_general"),"dispose");
+    agregarclase($("#p_empresa"), "dispose");
     agregarclase($("#p_app"),"dispose");
+}
+
+function cambiarPestaniaEmpresa()
+{
+    cambiarPropiedad($("#cont_general"),"display","none");
+    cambiarPropiedad($("#cont_empresa"),"display","block");
+    cambiarPropiedad($("#cont_app"),"display","none");
+    quitarclase($("#p_empresa"),"dispose");
+    agregarclase($("#p_general"), "dispose");
+    agregarclase($("#p_app"), "dispose");
 }
 
 function cambiarPestaniaAplicacion()
 {
     cambiarPropiedad($("#cont_general"),"display","none");
+    cambiarPropiedad($("#cont_empresa"),"display","none");
     cambiarPropiedad($("#cont_app"),"display","block");
     quitarclase($("#p_app"),"dispose");
     agregarclase($("#p_general"), "dispose");
+    agregarclase($("#p_empresa"), "dispose");
 }
 

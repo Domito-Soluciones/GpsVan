@@ -32,5 +32,13 @@ if($clienteId > 0)
     {
         $clienteDao->asociarPasajeros($clienteId,$pasajeros);
     }
+    
+    $nombres = explode(",", filter_input(INPUT_POST, 'centros'));
+    $cliente = filter_input(INPUT_POST, 'cliente');
+    if(count($nombres) > 0)
+    {
+        $clienteId = $clienteDao->agregarCentroCosto($nombres,$clienteId);
+    }
 }
+
 echo "{\"cliente_id\":\"".$clienteId."\"}";

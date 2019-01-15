@@ -35,6 +35,21 @@ $(document).ready(function(){
         });
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
+        
+        $("#SegObSi").change(function(){
+            $("#venSegOb").prop("disabled",false);
+        });
+        $("#SegObNo").change(function(){
+            $("#venSegOb").prop("disabled",true);        
+            $("#venSegOb").val("");
+        });
+        $("#SegRcDmSi").change(function(){
+            $("#venSegRcDm").prop("disabled",false);
+        });
+        $("#SegRcDmNo").change(function(){
+            $("#venSegRcDm").prop("disabled",true);
+            $("#venSegRcDm").val("");
+        });
     });
     $("#cancelar").click(function(){
         validarCancelar(PAGINA);
@@ -60,7 +75,7 @@ $(document).ready(function(){
                 eliminarMovil();
             },null);
     });
-    });
+});
 
 function agregarMovil()
 {
@@ -87,7 +102,8 @@ function agregarMovil()
     var array = [patente,marca,nombre,modelo,anio,color,cantidad,clase,
         venPerCir,venRevTec,venExt,motor,chasis,
         segOb,venSegOb,polizaSegOb,segRcDm,venSegRcDm,polizaSegRcDm];
-    if(!validarCamposOr(array))
+    var exp = obtenerExcepciones();
+    if(!validarCamposOr(array,exp))
     {
         activarPestania(array);
         alertify.error("Ingrese todos los campos necesarios");
@@ -147,7 +163,8 @@ function modificarMovil()
     var array = [patente,marca,nombre,modelo,anio,color,cantidad,clase,
         venPerCir,venRevTec,venExt,motor,chasis,
         segOb,venSegOb,polizaSegOb,segRcDm,venSegRcDm,polizaSegRcDm];
-    if(!validarCamposOr(array))
+    var exp = obtenerExcepciones();
+    if(!validarCamposOr(array,exp))
     {
         activarPestania(array);
         alertify.error("Ingrese todos los campos necesarios");
@@ -244,7 +261,6 @@ function abrirModificar(id)
     $("#contenedor_central").load("html/datos_movil.html", function( response, status, xhr ) {
         iniciarPestanias();
         cambioEjecutado();
-        validarCambioRadio();
         iniciarFecha(['#venPerCir','#venRevTec','#venExt','#venSegOb','#venSegRcDm']);
         var movil;
         for(var i = 0 ; i < MOVILES.length; i++)
@@ -278,6 +294,21 @@ function abrirModificar(id)
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
         cambiarPropiedad($("#eliminar"),"visibility","visible");
+        
+        $("#SegObSi").change(function(){
+            $("#venSegOb").prop("disabled",false);
+        });
+        $("#SegObNo").change(function(){
+            $("#venSegOb").prop("disabled",true);        
+            $("#venSegOb").val("");
+        });
+        $("#SegRcDmSi").change(function(){
+            $("#venSegRcDm").prop("disabled",false);
+        });
+        $("#SegRcDmNo").change(function(){
+            $("#venSegRcDm").prop("disabled",true);
+            $("#venSegRcDm").val("");
+        });
         
     });
 }
@@ -611,11 +642,16 @@ function agregarConductores(obj)
     if(obj.prop("checked"))
     {
         AGREGAR_CONDUCTORES.push(obj.val());
+        MODIFICADO = true;
         for(var i = 0; i < ELIMINAR_CONDUCTORES.length; i++)
         {
             if(ELIMINAR_CONDUCTORES[i] === obj.val())
             {
                 ELIMINAR_CONDUCTORES.splice(i, 1);
+                if(ELIMINAR_CONDUCTORES.length === 0)
+                {
+                    MODIFICADO = false;
+                }
                 break;
             }
         }
@@ -626,21 +662,32 @@ function eliminarConductores(obj)
     if(obj.prop("checked"))
     {
         ELIMINAR_CONDUCTORES.push(obj.val());
+        MODIFICADO = true;
         for(var i = 0; i < AGREGAR_CONDUCTORES.length; i++)
         {
             if(AGREGAR_CONDUCTORES[i] === obj.val())
             {
                 AGREGAR_CONDUCTORES.splice(i, 1);
+                if(AGREGAR_CONDUCTORES.length === 0)
+                {
+                    MODIFICADO = false;
+                }
                 break;
             }
         }
     }
 }
 
-function validarCambioRadio()
+function obtenerExcepciones()
 {
-    if(AGREGAR_CONDUCTORES.length > 0 || ELIMINAR_CONDUCTORES.length > 0)
+    var exp;
+    if($("#SegObNo").is(':checked'))
     {
-        MODIFICADO = true;
+        exp += '|14|';
     }
+    if($("#SegRcDmNo").is(':checked'))
+    {
+        exp += '|17|';
+    }
+    return exp;
 }

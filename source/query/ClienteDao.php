@@ -10,8 +10,8 @@ class ClienteDao {
         $array = array();
         $conn = new Conexion();
         try {
-            $query = "SELECT * FROM tbl_cliente WHERE "
-                    . "cliente_rut LIKE '%".$busqueda."%' OR "
+            $query = "SELECT * FROM tbl_cliente WHERE"
+                    . " cliente_rut LIKE '%".$busqueda."%' OR "
                     . "cliente_razon_social LIKE '%".$busqueda."%' OR "
                     . "cliente_tipo LIKE '%".$busqueda."%' OR "
                     . "cliente_nombre_contacto LIKE '%".$busqueda."%' OR "
@@ -29,8 +29,26 @@ class ClienteDao {
                 $cliente->setFonoContacto($row["cliente_fono_contacto"]);
                 $cliente->setMailContacto($row["cliente_mail_contacto"]);
                 $cliente->setMailFacturacion($row["cliente_mail_facturacion"]);
-                $cliente->setCentroCosto($row["cliente_centro_costo"]);
                 array_push($array, $cliente);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $array;
+    }
+    
+        public function getCentrosCosto($cliente)
+    {
+        $array = array();
+        $conn = new Conexion();
+        try {
+            $query = "SELECT centro_costo_nombre FROM tbl_centro_costo WHERE"
+                    . " centro_costo_cliente = '$cliente'";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn));
+            while($row = mysqli_fetch_array($result)) {
+                array_push($array, $row["centro_costo_nombre"]);
+                echo $row["centro_costo_nombre"];
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -49,13 +67,12 @@ class ClienteDao {
         $telefono = $cliente->getFonoContacto();
         $mail = $cliente->getMailContacto();
         $mail2 = $cliente->getMailFacturacion();
-        $centro = $cliente->getCentroCosto();
         $conn = new Conexion();
         try {
             $query = "INSERT INTO tbl_cliente (cliente_razon_social,cliente_tipo,cliente_rut,"
                     . "cliente_direccion,cliente_nombre_contacto,cliente_fono_contacto,"
-                    . "cliente_mail_contacto,cliente_mail_facturacion,cliente_centro_costo"
-                    . ") VALUES ('$razon','$tipo','$rut','$direccion','$nombre','$telefono','$mail','$mail2','$centro')"; 
+                    . "cliente_mail_contacto,cliente_mail_facturacion"
+                    . ") VALUES ('$razon','$tipo','$rut','$direccion','$nombre','$telefono','$mail','$mail2')"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -79,14 +96,13 @@ class ClienteDao {
         $telefono = $cliente->getFonoContacto();
         $mail = $cliente->getMailContacto();
         $mail2 = $cliente->getMailFacturacion();
-        $centro = $cliente->getCentroCosto();
         $conn = new Conexion();
         try {
             $query = "UPDATE tbl_cliente SET cliente_razon_social = '$razon',"
                     . "cliente_tipo = '$tipo',"
                     . "cliente_direccion = '$direccion', cliente_nombre_contacto = '$nombre',"
                     . "cliente_fono_contacto = '$telefono',cliente_mail_contacto = '$mail',"
-                    . "cliente_mail_facturacion = '$mail2', cliente_centro_costo = '$centro'"
+                    . "cliente_mail_facturacion = '$mail2'"
                     ." WHERE cliente_rut = '$rut'";
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
@@ -148,6 +164,28 @@ class ClienteDao {
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
+    }
+    
+    public function agregarCentroCosto($nombres,$cliente)
+    {
+        $id = 0;
+        $conn = new Conexion();
+        try {
+            $query = "";
+            for($i = 0 ; $i < count($nombres) ; $i++)
+            {
+                $query .= "INSERT INTO tbl_centro_costo (centro_costo_nombre,centro_costo_cliente) VALUES ('$nombres[$i]','$cliente');"; 
+            }
+            $conn->conectar();
+            if (mysqli_multi_query($conn->conn,$query)) {
+                $id = mysqli_insert_id($conn->conn);
+            } else {
+                echo mysqli_error($conn->conn);
+            }           
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $id;
     }
    
 }

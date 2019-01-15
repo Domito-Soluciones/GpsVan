@@ -17,7 +17,6 @@
         <link rel="icon" type="image/png" href="img/ico.png" />
         <script src="js/lib/jquery.js" type="text/javascript"></script>
         <script src="js/lib/alertify.js" type="text/javascript"></script>
-        <script src="js/lib/javascript-blowfish.js" type="text/javascript"></script>
         <script src="js/index.js" type="text/javascript"></script>
         <script src="js/funciones.js" type="text/javascript"></script>
     </head>

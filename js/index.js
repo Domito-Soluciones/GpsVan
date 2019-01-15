@@ -38,7 +38,7 @@ function cambiarFocoCamposLogin(campoActual,campoAnterior)
 
 function login(){
     var usuario = $("#usuario").val();
-    var password = $("#password").val();
+    var password = btoa($("#password").val());
     if(usuario === '' || password === '')
     {
         alertify.error("Ingrese usuario y contraseña");
@@ -53,7 +53,7 @@ function login(){
         return;
     }
     var url = urlBase + "/agente/Login.php";
-    var params = { usuario: usuario, password : encriptar(password)};
+    var params = { usuario: usuario, password : (password)};
     var success = function(response){
         if(response === '0')
         {

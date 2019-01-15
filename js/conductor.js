@@ -113,7 +113,7 @@ function agregarConductor()
         var imagen = $("#imagenOculta").val();
         var archivoContrato = $("#contratoOculta").val();
         var params = {nombre : nombre, papellido : papellido, mapellido : mapellido,
-        rut : rut, nick : nick, password : encriptar(password), telefono : telefono, celular : celular, 
+        rut : rut, nick : nick, password : btoa(password), telefono : telefono, celular : celular, 
         direccion : direccion, mail : mail, tipoLicencia : tipoLicencia, nacimiento : nacimiento,
         renta : renta, contrato : contrato, afp : afp, isapre : isapre, mutual : mutual, 
         seguroInicio : seguroInicio, seguroRenovacion : seguroRenovacion, descuento : descuento,
@@ -173,13 +173,13 @@ function modificarConductor()
         {
             alertify.error("La password no coincide");
             marcarCampoError(password);
-            marcarCampoError(password2)
+            marcarCampoError(password2);
             return;
         }
         array = [rut,nombre,papellido,mapellido,celular,direccion,mail,
         tipoLicencia,nacimiento,renta,contrato,afp,isapre,mutual,seguroInicio,
         seguroRenovacion,nick,password,password2];
-        params.password = encriptar(password);
+        params.password = btoa(password);
     }
     else
     {
