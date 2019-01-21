@@ -237,5 +237,4 @@ class Conductor {
         $this->movil = $movil;
     }
 
-
 }

@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../conexion/Conexion.php';
 include '../../dominio/Tarifa.php';
+include './LogQuery.php';
 
 class TarifaDao {
     

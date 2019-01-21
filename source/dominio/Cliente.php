@@ -48,11 +48,7 @@ class Cliente {
         return $this->mailFacturacion;
     }
 
-     function getCentroCosto() {
-        return $this->centroCosto;
-    }
-
-     function setId($id) {
+    function setId($id) {
         $this->id = $id;
     }
 
@@ -87,10 +83,5 @@ class Cliente {
      function setMailFacturacion($mailFacturacion) {
         $this->mailFacturacion = $mailFacturacion;
     }
-
-     function setCentroCosto($centroCosto) {
-        $this->centroCosto = $centroCosto;
-    }
-
 }
 

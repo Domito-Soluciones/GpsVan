@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../conexion/Conexion.php';
 include '../../dominio/Agente.php';
+include './LogQuery.php';
 
 class AgenteDao {
     
