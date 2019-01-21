@@ -1,8 +1,8 @@
 <?php
 include '../../util/validarPeticion.php';
-
 include '../../conexion/Conexion.php';
 include '../../dominio/Cliente.php';
+include './LogQuery.php';
 
 class ClienteDao {
     public function getClientes($busqueda)
@@ -37,7 +37,7 @@ class ClienteDao {
         return $array;
     }
     
-        public function getCentrosCosto($cliente)
+    public function getCentrosCosto($cliente)
     {
         $array = array();
         $conn = new Conexion();
@@ -48,7 +48,6 @@ class ClienteDao {
             $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn));
             while($row = mysqli_fetch_array($result)) {
                 array_push($array, $row["centro_costo_nombre"]);
-                echo $row["centro_costo_nombre"];
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

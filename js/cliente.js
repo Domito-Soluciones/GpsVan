@@ -1,4 +1,4 @@
-/* global urlBase, alertify, ARRAY_ELIMINAR_PASAJEROS */
+/* global urlBase, alertify, ARRAY_ELIMINAR_PASAJEROS, obj */
 var CLIENTES;
 var PASAJEROS;
 var AGREGAR = true;
@@ -257,18 +257,19 @@ function abrirModificar(id)
         $("#direccion").val(cliente.cliente_direccion);
         $("#mail").val(cliente.cliente_mail_contacto);
         $("#mail2").val(cliente.cliente_mail_facturacion);
-        alert(JSON.stringify(cliente.cliente_centro_costo));
-        for(var j = 0; j < cliente.cliente_centro_costo.length; j++)
-        {
+        var j = 0;
+        Object.keys(cliente.cliente_centro_costo).forEach(function(key){
+        var value = cliente.cliente_centro_costo[key];
             if(j === 0)
             {
-                $("#centros").val(cliente.cliente_centro_costo[j].centro_costo_nombre);
+                $("#centros").val(value);
             }
             else if(j > 0)
             {
-                agregarCentroCosto(j);
+                agregarCentroCostoValor(j+1,value);
             }
-        }
+            j++;
+        });
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
         cambiarPropiedad($("#eliminar"),"visibility","visible");
@@ -531,14 +532,15 @@ function agregarCentroCosto()
         i++;
     });
     $("#centro_costo").append("<div class=\"contenedor-pre-input\" id=\"cont-pre-cc-"+i+"\">Centro Costo "+i+" (*)</div>"+
-            "<div class=\"contenedor-input\" id=\"cont-cc-"+i+"\"><input class=\"centro_costo\" type=\"text\" id=\"centros"+i+"\" placeholder=\"Ej: Principal\" maxlength=\"40\">");
+            "<div class=\"contenedor-input\" id=\"cont-cc-"+i+"\">"+
+                "<input class=\"centro_costo\" type=\"text\" id=\"centros"+i+"\" placeholder=\"Ej: Principal\" maxlength=\"40\">");
     $('#centro_costo').animate({ scrollTop: $('#centro_costo').height() });
 }
 
-function agregarCentroCosto(i)
+function agregarCentroCostoValor(i,val)
 {
     $("#centro_costo").append("<div class=\"contenedor-pre-input\" id=\"cont-pre-cc-"+i+"\">Centro Costo "+i+" (*)</div>"+
-            "<div class=\"contenedor-input\" id=\"cont-cc-"+i+"\"><input class=\"centro_costo\" type=\"text\" id=\"centros"+i+"\" placeholder=\"Ej: Principal\" maxlength=\"40\">");
+            "<div class=\"contenedor-input\" id=\"cont-cc-"+i+"\"><input class=\"centro_costo\" type=\"text\" id=\"centros"+i+"\" value=\""+val+"\" placeholder=\"Ej: Principal\" maxlength=\"40\">");
 }
 
 function quitarCentroCosto()

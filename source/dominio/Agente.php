@@ -120,6 +120,4 @@ class Agente {
         $this->perfil = $perfil;
     }
 
-
-
 }

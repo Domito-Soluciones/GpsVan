@@ -33,5 +33,6 @@ $agente->setCargo($cargo);
 $agente->setPerfil($perfil);
 $agenteDao = new AgenteDao();
 $agenteId = $agenteDao->agregarAgente($agente);
+//$agenteDao->insertarLog('REQUEST: ADD AGENTE','PARAMS: '$rut' '$nombre);
 echo "{\"cliente_id\":\"".$agenteId."\"}";
 

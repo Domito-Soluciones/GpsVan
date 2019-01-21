@@ -33,7 +33,7 @@ for ($i = 0 ; $i < count($clientes); $i++)
         . "\"cliente_centro_costo\": {";
             for($j = 0; $j < count($centrosCosto) ; $j++)
             {
-                echo "\"centro_costo_nombre\":\"".$centrosCosto[$j]."\"";
+                echo "\"centro_costo_".$j."\":\"".$centrosCosto[$j]."\"";
                 if (($j+1) != count($centrosCosto))
                 {
                     echo ",";

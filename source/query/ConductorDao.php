@@ -1,9 +1,9 @@
 <?php
 include '../../util/validarPeticion.php';
-
 include '../../conexion/Conexion.php';
 include '../../dominio/Conductor.php';
 include '../../dominio/Movil.php';
+include './LogQuery.php';
 
 class ConductorDao {
     
