@@ -187,24 +187,6 @@ class MovilDao {
         }
         return $movil;
     }
-        
-    public function cambiarEstadoConductor($estado,$conductor)
-    {
-        $id = 0;
-        $conn = new Conexion();
-        try {
-            $query = "UPDATE tbl_movil SET movil_estado = $estado WHERE movil_conductor = '$conductor'"; 
-            $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
-                $id = mysqli_insert_id($conn->conn);
-            } else {
-                echo mysqli_error($conn->conn);
-            }           
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-        return $id;
-    }
     
     public function modificarUbicacion($conductor, $lat, $lon)
     {

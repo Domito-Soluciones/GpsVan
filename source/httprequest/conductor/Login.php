@@ -8,4 +8,4 @@ $nombre = filter_input(INPUT_POST, 'usuario');
 $password = filter_input(INPUT_POST, 'password');
 $conductorDao = new ConductorDao();
 $id = $conductorDao->getConductor($nombre, $password);
-echo "{\"id\":".$id."}";
+echo "{\"conductor_id\":".$id."}";

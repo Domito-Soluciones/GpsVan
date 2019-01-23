@@ -3,7 +3,7 @@ include '../../util/validarPeticion.php';
 include '../../conexion/Conexion.php';
 include '../../dominio/Conductor.php';
 include '../../dominio/Movil.php';
-include './LogQuery.php';
+include 'LogQuery.php';
 
 class ConductorDao {
     
@@ -174,7 +174,7 @@ class ConductorDao {
         return $id;
     }
     
-    public function getDatosConductor($rut)
+    public function getDatosConductor($nick)
     {
         $conn = new Conexion();
         $array = array();
@@ -183,7 +183,7 @@ class ConductorDao {
         try {
             $hoy = getdate();
             $fecha = $hoy['year'] . "-" . $hoy['mon'] . "-" . $hoy['mday']. " 00:00:00";
-            $query = "SELECT conductor_nombre,conductor_papellido,(SELECT count(*) FROM tbl_servicio WHERE servicio_fecha > '$fecha' AND servicio_movil = (SELECT movil_nombre FROM tbl_movil WHERE movil_conductor = '$rut')) AS viajes FROM tbl_conductor WHERE conductor_rut = '$rut'"; 
+            $query = "SELECT conductor_nombre,conductor_papellido,(SELECT count(*) FROM tbl_servicio WHERE servicio_fecha > '$fecha' AND servicio_movil = (SELECT movil_nombre FROM tbl_movil WHERE movil_id = conductor_movil)) AS viajes FROM tbl_conductor WHERE conductor_nick = '$nick'"; 
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query); 
             while($row = mysqli_fetch_array($result)) {
@@ -277,6 +277,24 @@ class ConductorDao {
             echo $exc->getTraceAsString();
         }
         return $array;
+    }
+    
+    public function cambiarEstadoConductor($estado,$conductor)
+    {
+        $id = 0;
+        $conn = new Conexion();
+        try {
+            $query = "UPDATE tbl_conductor SET conductor_estado = '$estado' WHERE conductor_nick = '$conductor'"; 
+            $conn->conectar();
+            if (mysqli_query($conn->conn,$query)) {
+                $id = mysqli_insert_id($conn->conn);
+            } else {
+                echo mysqli_error($conn->conn);
+            }           
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $id;
     }
     
 }
