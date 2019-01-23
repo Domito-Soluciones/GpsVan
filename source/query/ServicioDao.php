@@ -123,6 +123,36 @@ class ServicioDao {
         return $array;
     }
     
+    public function getServicio($id)
+    {
+        $conn = new Conexion();
+        try {
+            $query = "SELECT * FROM tbl_servicio WHERE "
+                    . "servicio_id = $id";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            while($row = mysqli_fetch_array($result)) {
+                $servicio = new Servicio();
+                $servicio->setId($row["servicio_id"]);          
+                $servicio->setPartida($row["servicio_partida"]);
+                $servicio->setDestino($row["servicio_destino"]);
+                $servicio->setCliente($row["servicio_cliente"]);
+                $servicio->setUsuario_nombre($row["servicio_usuario"]);
+                $servicio->setTransportista($row["servicio_transportista"]);
+                $servicio->setMovil($row["servicio_movil"]);
+                $servicio->setTipo($row["servicio_tipo"]);
+                $servicio->setTarifa($row["servicio_tarifa"]);
+                $servicio->setAgente($row["servicio_agente"]);
+                $date = new DateTime($row["servicio_fecha"]);
+                $servicio->setFecha(date_format($date, 'd-m-Y H:i:s'));
+                $servicio->setEstado($row["servicio_estado"]);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $servicio;
+    }
+    
     public function getServiciosDetalle($id)
     {
         $servicioDetalle = new ServicioDetalle();

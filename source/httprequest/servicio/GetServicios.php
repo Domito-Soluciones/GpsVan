@@ -2,7 +2,6 @@
 include '../../util/validarPeticion.php';
 include '../../query/ServicioDao.php';
 include '../../dominio/Servicio.php';
-include '../../dominio/Movil.php';
 
 header('Content-Type: application/json; charset=utf-8');
 $busqueda = filter_input(INPUT_POST, 'busqueda');
