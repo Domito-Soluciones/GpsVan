@@ -215,8 +215,7 @@ class ServicioDao {
         try {
             $servicio = new Servicio();            
             $query = "SELECT * FROM tbl_servicio JOIN tbl_pasajero ON servicio_usuario = CONCAT(pasajero_nombre,' ',pasajero_papellido) "
-                    . "WHERE servicio_estado = 1 AND servicio_movil = (select movil_nombre from tbl_movil JOIN tbl_conductor ON"
-                    . " movil_patente = conductor_movil WHERE conductor_nick = '".$usuario."')";
+                    . "WHERE servicio_estado = 1 AND servicio_movil = (SELECT (SELECT movil_nombre FROM tbl_movil WHERE movil_id = conductor_movil) as conductor_movil FROM tbl_conductor WHERE conductor_nick = '$usuario')";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
             while($row = mysqli_fetch_array($result)) {
