@@ -21,19 +21,25 @@ $servicio = $servicioDao->getServicioAsignado($usuario);
     $servicioTarifa = $servicio->getTarifa();
     $servicioAgente = $servicio->getAgente();
     $servicioFecha = $servicio->getFecha();
-    
-    echo "{\"servicio_id\":\"".$servicioId."\","
-        . "\"servicio_partida\":\"".$servicioPartida."\","
-        . "\"servicio_destino\":\"".$servicioDestino."\","
-        . "\"servicio_cliente\":\"".$servicioCliente."\","
-        . "\"servicio_pasajero\":\"".$usuarioNom."\","
-        . "\"servicio_pasajero_direccion\":\"".$usuarioDir."\","
-        . "\"servicio_pasajero_celular\":\"".$usuarioCel."\","
-        . "\"servicio_transportista\":\"".$servicioTransportista."\","
-        . "\"servicio_movil\":\"".$servicioMovil."\","
-        . "\"servicio_tipo\":\"".$servicioTipo."\","
-        . "\"servicio_tarifa\":\"".$servicioTarifa."\","
-        . "\"servicio_agente\":\"".$servicioAgente."\","
-        . "\"servicio_fecha\":\"".$servicioFecha."\""
-        . "}";
+    if($servicioId != "")
+    {
+        echo "{\"servicio_id\":\"".$servicioId."\","
+            . "\"servicio_partida\":\"".$servicioPartida."\","
+            . "\"servicio_destino\":\"".$servicioDestino."\","
+            . "\"servicio_cliente\":\"".$servicioCliente."\","
+            . "\"servicio_pasajero\":\"".$usuarioNom."\","
+            . "\"servicio_pasajero_direccion\":\"".$usuarioDir."\","
+            . "\"servicio_pasajero_celular\":\"".$usuarioCel."\","
+            . "\"servicio_transportista\":\"".$servicioTransportista."\","
+            . "\"servicio_movil\":\"".$servicioMovil."\","
+            . "\"servicio_tipo\":\"".$servicioTipo."\","
+            . "\"servicio_tarifa\":\"".$servicioTarifa."\","
+            . "\"servicio_agente\":\"".$servicioAgente."\","
+            . "\"servicio_fecha\":\"".$servicioFecha."\""
+            . "}";
+    }
+    else
+    {
+        echo "{}";
+    }
 

@@ -1,8 +1,9 @@
 <?php
 include '../../util/validarPeticion.php';
 include '../../conexion/Conexion.php';
+include '../../dominio/Servicio.php';
 include '../../dominio/ServicioDetalle.php';
-include './LogQuery.php';
+//include './LogQuery.php';
 
 class ServicioDao {
     
