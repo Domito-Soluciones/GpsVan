@@ -2,7 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../conexion/Conexion.php';
 include '../../dominio/Cliente.php';
-include './LogQuery.php';
+//include './LogQuery.php';
 
 class ClienteDao {
     public function getClientes($busqueda)

@@ -2,7 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../conexion/Conexion.php';
 include '../../dominio/Transportista.php';
-include './LogQuery.php';
+//include './LogQuery.php';
 
 class TransportistaDao {
     public function getTransportistas($busqueda)
