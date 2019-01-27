@@ -23,7 +23,6 @@ $cliente->setNombreContacto($nombre);
 $cliente->setFonoContacto($telefono);
 $cliente->setMailContacto($mail);
 $cliente->setMailFacturacion($mail2);
-$cliente->setCentroCosto($centro);
 $clienteDao = new ClienteDao();
 $clienteId = $clienteDao->agregarCliente($cliente);
 if($clienteId > 0)

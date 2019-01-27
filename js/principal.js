@@ -22,6 +22,7 @@ var ASIGNADO = "2";
 var ACEPTADO = "3";
 var EN_PROGRESO = "4";
 var FINALIZADO = "5";
+var CANCELADO = "6";
 
 $(document).ready(function(){
     $("#menu").load("menu.html", function( response, status, xhr ) {

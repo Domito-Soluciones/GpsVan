@@ -193,7 +193,27 @@ class MovilDao {
         $id = 0;
         $conn = new Conexion();
         try {
-            $query = "UPDATE tbl_movil SET movil_lat = $lat, movil_lon = $lon WHERE movil_conductor = '$conductor'"; 
+            $query = "UPDATE tbl_movil SET movil_lat = $lat, movil_lon = $lon WHERE movil_id = "
+                    . "(SELECT conductor_movil FROM tbl_conductor WHERE conductor_nick =  '$conductor')"; 
+            $conn->conectar();
+            if (mysqli_query($conn->conn,$query)) {
+                $id = mysqli_insert_id($conn->conn);
+            } else {
+                echo mysqli_error($conn->conn);
+            }           
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $id;
+    }
+    
+    public function modificarEstado($conductor, $estado)
+    {
+        $id = 0;
+        $conn = new Conexion();
+        try {
+            $query = "UPDATE tbl_movil SET movil_estado = $estado WHERE movil_id = "
+                    . "(SELECT conductor_movil FROM tbl_conductor WHERE conductor_nick =  '$conductor')"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);

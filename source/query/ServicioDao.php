@@ -216,7 +216,7 @@ class ServicioDao {
         try {
             $servicio = new Servicio();            
             $query = "SELECT * FROM tbl_servicio JOIN tbl_pasajero ON servicio_usuario = CONCAT(pasajero_nombre,' ',pasajero_papellido) "
-                    . "WHERE servicio_estado = 1 AND servicio_movil = (SELECT (SELECT movil_nombre FROM tbl_movil WHERE movil_id = conductor_movil) as conductor_movil FROM tbl_conductor WHERE conductor_nick = '$usuario')";
+                    . "WHERE servicio_estado = 2 AND servicio_movil = (SELECT (SELECT movil_nombre FROM tbl_movil WHERE movil_id = conductor_movil) as conductor_movil FROM tbl_conductor WHERE conductor_nick = '$usuario')";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
             while($row = mysqli_fetch_array($result)) {
@@ -279,11 +279,11 @@ class ServicioDao {
             echo $exc->getTraceAsString();
         }
     }
-    public function asignarServicio($id,$movil)
+    public function asignarServicio($id,$conductor)
     {
         $conn = new Conexion();
         try {
-            $query = "UPDATE tbl_servicio SET servicio_movil = '$movil' WHERE servicio_id = $id"; 
+            $query = "UPDATE tbl_servicio SET servicio_movil = (SELECT conductor_movil FROM tbl_conductor WHERE conductor_nick = '$conductor') WHERE servicio_id = $id"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 return $id;
@@ -331,12 +331,12 @@ class ServicioDao {
         return $movil;
     }
         
-    public function actualizarMovil($idMovil)
+    public function actualizarMovil($idConductor)
     {
          $id = 0;
         $conn = new Conexion();
         try {
-            $query = "UPDATE tbl_movil SET movil_ultima_asignacion = NOW() WHERE movil_nombre = '$idMovil' OR movil_conductor = '$idMovil'"; 
+            $query = "UPDATE tbl_movil SET movil_ultima_asignacion = NOW() WHERE movil_id = (SELECT conductor_movil FROM tbl_conductor WHERE conductor_nick = '$idConductor')"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -349,12 +349,31 @@ class ServicioDao {
         return $id;
     }
     
-    public function cambiarEstadoServicio($idServicio,$estado)
+        public function actualizarMovil($idConductor)
+    {
+         $id = 0;
+        $conn = new Conexion();
+        try {
+            $query = "UPDATE tbl_movil SET movil_ultima_asignacion = NOW() WHERE movil_id = (SELECT conductor_movil FROM tbl_conductor WHERE conductor_nick = '$idConductor')"; 
+            $conn->conectar();
+            if (mysqli_query($conn->conn,$query)) {
+                $id = mysqli_insert_id($conn->conn);
+            } else {
+                echo mysqli_error($conn->conn);
+            }           
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $id;
+    }
+    
+    
+    public function cancelarServicio($idServicio)
     {
         $id = 0;
         $conn = new Conexion();
         try {
-            $query = "UPDATE tbl_servicio SET servicio_estado = $estado WHERE servicio_id = $idServicio"; 
+            $query = "UPDATE tbl_servicio SET servicio_estado = 6 WHERE servicio_id = '$idServicio'"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);

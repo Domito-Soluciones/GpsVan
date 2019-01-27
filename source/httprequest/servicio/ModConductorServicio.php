@@ -7,13 +7,13 @@ header('Content-Type: application/json; charset=utf-8');
 $id = filter_input(INPUT_POST, 'id');
 $conductor = filter_input(INPUT_POST, 'conductor');
 $servicioDao = new ServicioDao();
-$servicio = $servicioDao->desAsignarServicio($id);
+$servicio = $servicioDao->desAsignarServicio($id,$conductor);
 $servicioDao->actualizarMovil($conductor);
-if($servicio > 0)
+if($id > 0)
 {
     $movil = $servicioDao->obtenerMovilDisponible();
     $servicioDao->asignarServicio($id, $movil);
 }
     
-    echo "{\"servicio_id\":\"".$servicio."\"}";
+echo "{\"servicio_id\":\"".$servicio."\"}";
 

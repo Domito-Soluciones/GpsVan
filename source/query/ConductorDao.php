@@ -180,17 +180,20 @@ class ConductorDao {
         $array = array();
         $nombre = "";
         $viajes = "";
+        $estado = "";
         try {
             $hoy = getdate();
             $fecha = $hoy['year'] . "-" . $hoy['mon'] . "-" . $hoy['mday']. " 00:00:00";
-            $query = "SELECT conductor_nombre,conductor_papellido,(SELECT count(*) FROM tbl_servicio WHERE servicio_fecha > '$fecha' AND servicio_movil = (SELECT movil_nombre FROM tbl_movil WHERE movil_id = conductor_movil)) AS viajes FROM tbl_conductor WHERE conductor_nick = '$nick'"; 
+            $query = "SELECT conductor_nombre,conductor_papellido,conductor_estado,(SELECT count(*) FROM tbl_servicio WHERE servicio_fecha > '$fecha' AND servicio_movil = (SELECT movil_nombre FROM tbl_movil WHERE movil_id = conductor_movil)) AS conductor_viajes FROM tbl_conductor WHERE conductor_nick = '$nick'"; 
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query); 
             while($row = mysqli_fetch_array($result)) {
                 $nombre = $row["conductor_nombre"].' '.$row["conductor_papellido"];
-                $viajes = $row["viajes"];
+                $viajes = $row["conductor_viajes"];
+                $estado = $row["conductor_estado"];
             }
             array_push($array, $nombre);
+            array_push($array, $estado);
             array_push($array, $viajes);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

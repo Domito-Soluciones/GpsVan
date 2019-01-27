@@ -9,5 +9,5 @@ $id = filter_input(INPUT_POST, 'id');
 $clienteDao = new ClienteDao();
 $clienteDao->eliminarCliente($rut);
 $clienteDao->desAsociarPasajeros($id);
+$clienteDao->eliminarCentroCosto($id);
 echo "{\"cliente_eliminado\":\"".$rut."\"}";
-

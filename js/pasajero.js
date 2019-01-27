@@ -1,8 +1,10 @@
 /* global urlBase, alertify */
 var ID_PASAJERO;
+var ID_EMPRESA;
 var PASAJEROS;
 var AGREGAR = true;
 var PAGINA = 'PASAJEROS';
+var CC;
 var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","centro","empresa","nick"];
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
@@ -257,6 +259,7 @@ function abrirModificar(id)
                 pasajero = PASAJEROS[i];
             }
         }
+        ID_EMPRESA = pasajero.pasajero_cliente;
         $("#rut").val(pasajero.pasajero_rut);
         $("#rut").prop("readonly",true);
         $("#nombre").val(pasajero.pasajero_nombre);
@@ -378,6 +381,30 @@ function iniciarPestanias()
     });
 }
 
+function cargarCentroCosto(empresa)
+{
+    var params = {cliente : empresa};
+    var url = urlBase + "/cliente/GetCentroCosto.php";
+    var success = function(response)
+    {
+        cerrarSession(response);
+        var cc = $("#centro");
+        cc.html("");
+        CC = response;
+        if(response.length === 0)
+        {
+            alertify.error("No hay centros de costo asociados");
+            return;
+        }
+        console.log(JSON.stringify(response));
+        Object.keys(response).forEach(function(key){
+            var value = response[key];
+            cc.append("<option value=\""+value+"\">"+value+"</option>");
+        });
+    };
+    postRequest(url,params,success);
+}
+
 function activarPestania(array)
 {
     var general = false;
@@ -445,6 +472,7 @@ function cambiarPestaniaEmpresa()
     quitarclase($("#p_empresa"),"dispose");
     agregarclase($("#p_general"), "dispose");
     agregarclase($("#p_app"), "dispose");
+    cargarCentroCosto(ID_EMPRESA);
 }
 
 function cambiarPestaniaAplicacion()
