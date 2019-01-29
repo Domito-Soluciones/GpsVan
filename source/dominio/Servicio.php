@@ -4,7 +4,9 @@ include '../../util/validarPeticion.php';
 class Servicio {
     private $id;
     private $partida;
+    private $horaPartida;
     private $destino;
+    private $horaDestino;
     private $cliente;
     private $usuario_id;
     private $usuario_nombre;
@@ -26,16 +28,16 @@ class Servicio {
         return $this->partida;
     }
 
-    function getPartidaId() {
-        return $this->partidaId;
+    function getHoraPartida() {
+        return $this->horaPartida;
     }
 
     function getDestino() {
         return $this->destino;
     }
 
-    function getDestinoId() {
-        return $this->destinoId;
+    function getHoraDestino() {
+        return $this->horaDestino;
     }
 
     function getCliente() {
@@ -94,16 +96,16 @@ class Servicio {
         $this->partida = $partida;
     }
 
-    function setPartidaId($partidaId) {
-        $this->partidaId = $partidaId;
+    function setHoraPartida($horaPartida) {
+        $this->horaPartida = $horaPartida;
     }
 
     function setDestino($destino) {
         $this->destino = $destino;
     }
 
-    function setDestinoId($destinoId) {
-        $this->destinoId = $destinoId;
+    function setHoraDestino($horaDestino) {
+        $this->horaDestino = $horaDestino;
     }
 
     function setCliente($cliente) {
@@ -155,5 +157,4 @@ class Servicio {
     }
 
 
-   
 }

@@ -120,4 +120,12 @@ class Agente {
         $this->perfil = $perfil;
     }
 
+    public function toString() {
+        return "DATOS AGENTE: ID : ".$this->id." NOMBRE : ".$this->nombre.
+                " PAPELLIDO : ".$this->apellidoPat." MAPELLIDO : ".$this->apellidoMat.
+                " RUT : ".$this->rut." clave : ".$this->clave." TELEFONO : ".$this->telefono.
+                " CELULAR : ".$this->celular." DIRECCION : ".$this->direccion.
+                " MAIL : ".$this->mail." CARGO : ".$this->cargo." PERFIL : ". $this->perfil;
+    }
+
 }

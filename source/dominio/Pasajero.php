@@ -165,6 +165,14 @@ class Pasajero {
         $this->ruta = $ruta;
     }
 
-
-
+    public function toString() {
+        return "DATOS PASAJERO: ID : ".$this->id." NOMBRE : ".$this->nombre.
+                " PAPELLIDO : ".$this->papellido." MAPELLIDO : ".$this->mapellido.
+                " RUT : ".$this->rut." NICK : ".$this->nick." PASSWORD : ".$this->password.
+                " TELEFONO : ".$this->telefono." CELULAR : ".$this->celular.
+                " DIRECCION : ".$this->direccion." MAIL : ".$this->mail
+                ." CARGO : ". $this->cargo." NIVEL : ". $this->nivel
+                ." ESTADO : ". $this->estado." CLIENTE : ". $this->cliente
+                ." CENTRO COSTO : ". $this->centroCosto." EMPRESA : ". $this->empresa." RUTA : ". $this->ruta;
+    }
 }

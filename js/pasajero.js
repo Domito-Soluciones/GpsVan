@@ -33,6 +33,7 @@ $(document).ready(function(){
                     return;
                 }
             });
+            cargarCentroCosto('','');
         });
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
@@ -259,7 +260,6 @@ function abrirModificar(id)
                 pasajero = PASAJEROS[i];
             }
         }
-        ID_EMPRESA = pasajero.pasajero_cliente;
         $("#rut").val(pasajero.pasajero_rut);
         $("#rut").prop("readonly",true);
         $("#nombre").val(pasajero.pasajero_nombre);
@@ -274,6 +274,8 @@ function abrirModificar(id)
         $("#centro").val(pasajero.pasajero_centro_costo);
         $("#empresa").val(pasajero.pasajero_empresa);
         $("#ruta").val(pasajero.pasajero_ruta);
+        ID_EMPRESA = pasajero.pasajero_cliente;
+        cargarCentroCosto(ID_EMPRESA,pasajero.pasajero_centro_costo);
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
         cambiarPropiedad($("#eliminar"),"visibility","visible");
@@ -381,7 +383,7 @@ function iniciarPestanias()
     });
 }
 
-function cargarCentroCosto(empresa)
+function cargarCentroCosto(empresa,centro)
 {
     var params = {cliente : empresa};
     var url = urlBase + "/cliente/GetCentroCosto.php";
@@ -391,16 +393,22 @@ function cargarCentroCosto(empresa)
         var cc = $("#centro");
         cc.html("");
         CC = response;
+        cc.append("<option value=\"\">Seleccione</option>");
         if(response.length === 0)
         {
             alertify.error("No hay centros de costo asociados");
             return;
         }
-        console.log(JSON.stringify(response));
-        Object.keys(response).forEach(function(key){
-            var value = response[key];
-            cc.append("<option value=\""+value+"\">"+value+"</option>");
-        });
+        for(var i = 0 ; i < response.length; i++){
+            if(centro === response[i].cc_nombre)
+            {
+                cc.append("<option value=\""+response[i].cc_nombre+"\" selected>"+response[i].cc_nombre+"</option>");
+            }
+            else
+            {
+                cc.append("<option value=\""+response[i].cc_nombre+"\">"+response[i].cc_nombre+"</option>");
+            }
+        }
     };
     postRequest(url,params,success);
 }
@@ -472,7 +480,6 @@ function cambiarPestaniaEmpresa()
     quitarclase($("#p_empresa"),"dispose");
     agregarclase($("#p_general"), "dispose");
     agregarclase($("#p_app"), "dispose");
-    cargarCentroCosto(ID_EMPRESA);
 }
 
 function cambiarPestaniaAplicacion()

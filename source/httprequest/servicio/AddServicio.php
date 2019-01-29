@@ -2,7 +2,6 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/ServicioDao.php';
-include '../../dominio/Servicio.php';
 
 header('Content-Type: application/json');
 $partida = urlencode(filter_input(INPUT_POST, 'partida'));

@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../conexion/Conexion.php';
 include '../../dominio/Movil.php';
+include '../../dominio/Conductor.php';
 //include './LogQuery.php';
 
 class MovilDao {
@@ -181,6 +182,47 @@ class MovilDao {
                 $movil->setLat($row['movil_lat']);
                 $movil->setLon($row['movil_lon']);
                 $movil->setServicio($row['movil_servicio']);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $movil;
+    }
+    
+    public function getMovilConductor($movil)
+    {
+        $conn = new Conexion();
+        try {
+            $query = "SELECT * FROM tbl_movil JOIN tbl_conductor ON movil_id = conductor_movil WHERE movil_id = ".$movil;
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            while($row = mysqli_fetch_array($result)) {
+                $movil = new Movil();
+                $movil->setId($row["movil_id"]);
+                $movil->setPatente($row["movil_patente"]);
+                $movil->setMarca($row["movil_marca"]);
+                $movil->setModelo($row["movil_modelo"]);
+                $movil->setNombre($row["movil_nombre"]);
+                $movil->setAnio($row["movil_anio"]);
+                $movil->setColor($row["movil_color"]);
+                $movil->setCantidad($row["movil_cantidad"]);
+                $movil->setTransportista($row["movil_transportista"]);
+                $movil->setEstado($row['movil_estado']);
+                $movil->setLat($row['movil_lat']);
+                $movil->setLon($row['movil_lon']);
+                $movil->setServicio($row['movil_servicio']);
+                $conductor = new Conductor();
+                $conductor->setId($row["conductor_id"]);
+                $conductor->setNombre($row["conductor_nombre"]);
+                $conductor->setPapellido($row["conductor_papellido"]);
+                $conductor->setMapellido($row["conductor_mapellido"]);
+                $conductor->setRut($row["conductor_rut"]);
+                $conductor->setNick($row["conductor_nick"]);
+                $conductor->setTelefono($row["conductor_telefono"]);
+                $conductor->setCelular($row["conductor_celular"]);
+                $conductor->setDireccion($row["conductor_direccion"]);
+                $conductor->setMail($row["conductor_mail"]);
+                $movil->setConductor($conductor);
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

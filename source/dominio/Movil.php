@@ -29,6 +29,7 @@ class Movil {
     private $segRcDm;
     private $venSegRcDm;
     private $polizaSegRcDm;
+    private $conductor;
     
     function getId() {
         return $this->id;
@@ -136,6 +137,10 @@ class Movil {
 
     function getPolizaSegRcDm() {
         return $this->polizaSegRcDm;
+    }
+
+    function getConductor() {
+        return $this->conductor;
     }
 
     function setId($id) {
@@ -246,6 +251,27 @@ class Movil {
         $this->polizaSegRcDm = $polizaSegRcDm;
     }
 
+    function setConductor($conductor) {
+        $this->conductor = $conductor;
+    }
 
     
+    public function toString() {
+        return "DATOS MOVIL: ID : ".$this->id." PATENTE : ".$this->patente.
+            " MARCA : ".$this->marca." MODELO : ".$this->modelo.
+            " NOMBRE : ".$this->nombre." ANIO : ".$this->anio." COLOR : ".$this->color.
+            " CANTIDAD : ".$this->cantidad." CLASE : ".$this->clase.
+            " VEN PER CIR : ".$this->venPerCir." VEN REV TEC : ".$this->venRevTec.
+            " VEN EXT : ". $this->venExt." KILOMETRAJE : ".$this->kilometraje.
+            " MOTOR : ". $this->motor." CHASIS : ".$this->chasis.
+            " SEG OB : ". $this->segOb." VEN SEG OB : ".$this->venSegOb.
+            " TRANSPORTISTA : ". $this->transportista." ESTADO : ".$this->estado.
+            " LATITUD : ". $this->lat." LONGITUD : ".$this->lon.
+            " ULTIMA ASIGNACION : ". $this->ultimaAsignacion." SERVICIO : ".$this->servicio.
+            " POLIZA SEG OB : ". $this->polizaSegOb." SEG RC DM : ".$this->segRcDm.
+            " VEN SEG RC DM : ". $this->venSegRcDm." POLIZA SEG RC DM : ".$this->polizaSegRcDm.
+            " CONUCTOR : ".$this->conductor->toString();
+    }
+    
 }
+

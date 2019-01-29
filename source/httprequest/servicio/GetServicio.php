@@ -1,24 +1,23 @@
 <?php
 include '../../util/validarPeticion.php';
 include '../../query/ServicioDao.php';
-include '../../dominio/Servicio.php';
 
 header('Content-Type: application/json; charset=utf-8');
 $idServicio = filter_input(INPUT_POST, 'id');
 $servicioDao = new ServicioDao();
 $servicio = $servicioDao->getServicio($idServicio);
-$servicioId = $servicios[$i]->getId();
-$servicioPartida = $servicios[$i]->getPartida();
-$servicioDestino = $servicios[$i]->getDestino();
-$servicioCliente = $servicios[$i]->getCliente();
-$servicioUsuario = $servicios[$i]->getUsuario_nombre();
-$servicioTransportista = $servicios[$i]->getTransportista();
-$servicioMovil = $servicioDao->obtenerMovilServicio($servicios[$i]->getMovil());
-$servicioTipo = $servicios[$i]->getTipo();
-$servicioTarifa = $servicios[$i]->getTarifa();
-$servicioAgente = $servicios[$i]->getAgente();
-$servicioFecha = $servicios[$i]->getFecha();
-$servicioEstado = $servicios[$i]->getEstado();
+$servicioId = $servicio->getId();
+$servicioPartida = $servicio->getPartida();
+$servicioDestino = $servicio->getDestino();
+$servicioCliente = $servicio->getCliente();
+$servicioUsuario = $servicio->getUsuario_nombre();
+$servicioTransportista = $servicio->getTransportista();
+$servicioMovil = $servicioDao->obtenerMovilServicio($servicio->getMovil());
+$servicioTipo = $servicio->getTipo();
+$servicioTarifa = $servicio->getTarifa();
+$servicioAgente = $servicio->getAgente();
+$servicioFecha = $servicio->getFecha();
+$servicioEstado = $servicio->getEstado();
 echo "{\"servicio_id\":\"".$servicioId."\","
     . "\"servicio_partida\":\"".$servicioPartida."\","
     . "\"servicio_destino\":\"".$servicioDestino."\","
