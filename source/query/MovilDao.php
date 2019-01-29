@@ -193,7 +193,7 @@ class MovilDao {
     {
         $conn = new Conexion();
         try {
-            $query = "SELECT * FROM tbl_movil JOIN tbl_conductor ON movil_id = conductor_movil WHERE movil_id = ".$movil;
+            $query = "SELECT * FROM tbl_movil JOIN tbl_conductor ON movil_id = conductor_movil WHERE movil_nombre = '".$movil."'";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
             while($row = mysqli_fetch_array($result)) {
