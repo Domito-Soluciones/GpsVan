@@ -1,8 +1,10 @@
 /* global urlBase, alertify */
 var ID_PASAJERO;
+var ID_EMPRESA;
 var PASAJEROS;
 var AGREGAR = true;
 var PAGINA = 'PASAJEROS';
+var CC;
 var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","centro","empresa","nick"];
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
@@ -31,6 +33,7 @@ $(document).ready(function(){
                     return;
                 }
             });
+            cargarCentroCosto('','');
         });
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
@@ -271,6 +274,8 @@ function abrirModificar(id)
         $("#centro").val(pasajero.pasajero_centro_costo);
         $("#empresa").val(pasajero.pasajero_empresa);
         $("#ruta").val(pasajero.pasajero_ruta);
+        ID_EMPRESA = pasajero.pasajero_cliente;
+        cargarCentroCosto(ID_EMPRESA,pasajero.pasajero_centro_costo);
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
         cambiarPropiedad($("#eliminar"),"visibility","visible");
@@ -376,6 +381,36 @@ function iniciarPestanias()
     $("#p_app").click(function(){
         cambiarPestaniaAplicacion();
     });
+}
+
+function cargarCentroCosto(empresa,centro)
+{
+    var params = {cliente : empresa};
+    var url = urlBase + "/cliente/GetCentroCosto.php";
+    var success = function(response)
+    {
+        cerrarSession(response);
+        var cc = $("#centro");
+        cc.html("");
+        CC = response;
+        cc.append("<option value=\"\">Seleccione</option>");
+        if(response.length === 0)
+        {
+            alertify.error("No hay centros de costo asociados");
+            return;
+        }
+        for(var i = 0 ; i < response.length; i++){
+            if(centro === response[i].cc_nombre)
+            {
+                cc.append("<option value=\""+response[i].cc_nombre+"\" selected>"+response[i].cc_nombre+"</option>");
+            }
+            else
+            {
+                cc.append("<option value=\""+response[i].cc_nombre+"\">"+response[i].cc_nombre+"</option>");
+            }
+        }
+    };
+    postRequest(url,params,success);
 }
 
 function activarPestania(array)

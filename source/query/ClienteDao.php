@@ -133,6 +133,24 @@ class ClienteDao {
         return $id;
     }
     
+    function eliminarCentroCosto($idCliente)
+    {
+        $id = 0;
+        $conn = new Conexion();
+        try {
+            $query = "DELETE FROM tbl_centro_costo WHERE centro_costo_cliente = $idCliente"; 
+            $conn->conectar();
+            if (mysqli_query($conn->conn,$query)) {
+                $id = mysqli_insert_id($conn->conn);
+            } else {
+                echo mysqli_error($conn->conn);
+            }           
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $id;
+    }
+    
     public function asociarPasajeros($cliente,$pasajeros)
     {
         $conn = new Conexion();

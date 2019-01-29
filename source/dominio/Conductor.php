@@ -236,5 +236,18 @@ class Conductor {
     function setMovil($movil) {
         $this->movil = $movil;
     }
-
+    public function toString() {
+        return "DATOS CONDUCTOR: ID : ".$this->id." NOMBRE : ".$this->nombre.
+                " PAPELLIDO : ".$this->papellido." MAPELLIDO : ".$this->mapellido.
+                " RUT : ".$this->rut." NICK : ".$this->nick." PASSWORD : ".$this->password.
+                " TELEFONO : ".$this->telefono." CELULAR : ".$this->celular.
+                " DIRECCION : ".$this->direccion." MAIL : ".$this->mail.
+                " TIPO LICENCIA : ". $this->tipoLicencia." NACIMIENTO : ".$this->nacimiento.
+                " RENTA : ". $this->renta." CONTRATO : ".$this->contrato.
+                " AFP : ". $this->afp." ISAPRE : ".$this->isapre.
+                " MUTUAL : ". $this->mutual." SEGURO INICIO : ".$this->seguroInicio.
+                " DESCUENTO : ". $this->descuento." ANTICIPO : ".$this->anticipo.
+                " IMAGEN ADJUNTA : ". $this->imagenAdjunta." CONTRATO ADJUNTO : ".$this->contratoAdjunto.
+                " TRANSPORTISTA : ". $this->transportista." MOVIL : ".$this->movil;
+    }
 }

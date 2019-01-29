@@ -9,5 +9,6 @@ $nick = filter_input(INPUT_POST, 'id');
 $conductorDao = new ConductorDao();
 $datos = $conductorDao->getDatosConductor($nick);
 echo "{\"conductor_nombre\":\"".$datos[0]."\","
-        ."\"conductor_viajes\":\"".$datos[1]."\""
+        ."\"conductor_estado\":\"".$datos[1]."\","
+        ."\"conductor_viajes\":\"".$datos[2]."\""
         . "}";

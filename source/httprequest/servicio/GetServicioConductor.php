@@ -42,4 +42,3 @@ $servicio = $servicioDao->getServicioAsignado($usuario);
     {
         echo "{}";
     }
-

@@ -83,5 +83,14 @@ class Cliente {
      function setMailFacturacion($mailFacturacion) {
         $this->mailFacturacion = $mailFacturacion;
     }
+    
+    public function toString() {
+        return "DATOS CLIENTE: ID : ".$this->id." RAZON : ".$this->razon.
+                " TIPO : ".$this->tipo." RUT : ".$this->rut.
+                " RUT : ".$this->rut." CLAVE : ".$this->clave." TELEFONO : ".$this->telefono.
+                " DIRECCION : ".$this->direccion." NOMBRE CONTACTO : ".$this->nombreContacto.
+                " FONO CONTACTO : ".$this->fonoContacto." MAIL CONTACTO : ".$this->mailContacto
+                ." MAIL FACTURACION : ". $this->mailFacturacion;
+    }
 }
 

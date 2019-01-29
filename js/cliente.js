@@ -298,6 +298,7 @@ function eliminarCliente()
         cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
         resetBotones();
         buscarCliente();
+        buscarPasajeros();
     };
     postRequest(url,params,success);
 }
