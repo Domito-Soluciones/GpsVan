@@ -1,7 +1,6 @@
 <?php
 include '../../util/validarPeticion.php';
 include '../../query/ServicioDao.php';
-include '../../dominio/Servicio.php';
 
 header('Content-Type: application/json');
 $idServicio = filter_input(INPUT_POST, 'id');
