@@ -12,7 +12,10 @@ class ServicioDao {
     {
         $id = 0;
         $partida = $servicio->getPartida();
-        $destino = $servicio->getDestino();
+        $destInt1 = $servicio->getDestinoInt1();
+        $destInt2 = $servicio->getDestinoInt2();
+        $destInt3 = $servicio->getDestinoInt3();
+        $destFinal = $servicio->getDestinoFinal();
         $cliente = $servicio->getCliente();
         $usuario = $servicio->getUsuario_nombre();
         $transportista = $servicio->getTransportista();
@@ -22,9 +25,11 @@ class ServicioDao {
         $agente = $servicio->getAgente();
         $conn = new Conexion();
         try {
-            $query = "INSERT INTO tbl_servicio (servicio_partida,servicio_destino,"
+            $query = "INSERT INTO tbl_servicio (servicio_partida,servicio_destino_intermedio_uno,"
+                    . "servicio_destino_intermedio_dos,servicio_destino_intermedio_tres,servicio_destino_final,"
                     . "servicio_cliente,servicio_usuario,servicio_transportista,"
-                    . "servicio_movil,servicio_tipo,servicio_tarifa,servicio_agente,servicio_fecha,servicio_estado) VALUES ('$partida','$destino','$cliente','$usuario','$transportista','$movil','$tipo','$tarifa',$agente,NOW(),1)";
+                    . "servicio_movil,servicio_tipo,servicio_tarifa,servicio_agente,"
+                    . "servicio_fecha,servicio_estado) VALUES ('$partida','$destInt1','$destInt2','$destInt3','$destFinal','$cliente','$usuario','$transportista','$movil','$tipo','$tarifa',$agente,NOW(),1)";
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -105,7 +110,10 @@ class ServicioDao {
                 $servicio = new Servicio();
                 $servicio->setId($row["servicio_id"]);          
                 $servicio->setPartida($row["servicio_partida"]);
-                $servicio->setDestino($row["servicio_destino"]);
+                $servicio->setDestinoInt1($row["servicio_destino_intermedio_uno "]);
+                $servicio->setDestinoInt2($row["servicio_destino_intermedio_dos"]);
+                $servicio->setDestinoInt3($row["servicio_destino_intermedio_tres"]);
+                $servicio->setDestinoFinal($row["servicio_destino_final"]);
                 $servicio->setCliente($row["servicio_cliente"]);
                 $servicio->setUsuario_nombre($row["servicio_usuario"]);
                 $servicio->setTransportista($row["servicio_transportista"]);
@@ -136,7 +144,10 @@ class ServicioDao {
             while($row = mysqli_fetch_array($result)) {
                 $servicio->setId($row["servicio_id"]);          
                 $servicio->setPartida($row["servicio_partida"]);
-                $servicio->setDestino($row["servicio_destino"]);
+                $servicio->setDestinoInt1($row["servicio_destino_intermedio_uno "]);
+                $servicio->setDestinoInt2($row["servicio_destino_intermedio_dos"]);
+                $servicio->setDestinoInt3($row["servicio_destino_intermedio_tres"]);
+                $servicio->setDestinoFinal($row["servicio_destino_final"]);
                 $servicio->setCliente($row["servicio_cliente"]);
                 $servicio->setUsuario_nombre($row["servicio_usuario"]);
                 $servicio->setTransportista($row["servicio_transportista"]);
@@ -222,7 +233,10 @@ class ServicioDao {
             while($row = mysqli_fetch_array($result)) {
                 $servicio->setId($row["servicio_id"]);          
                 $servicio->setPartida($row["servicio_partida"]);
-                $servicio->setDestino($row["servicio_destino"]);
+                $servicio->setDestinoInt1($row["servicio_destino_intermedio_uno "]);
+                $servicio->setDestinoInt2($row["servicio_destino_intermedio_dos"]);
+                $servicio->setDestinoInt3($row["servicio_destino_intermedio_tres"]);
+                $servicio->setDestinoFinal($row["servicio_destino_final"]);
                 $servicio->setCliente($row["servicio_cliente"]);
                 $servicio->setUsuario_id($row["pasajero_id"]);
                 $servicio->setUsuario_nombre($row["pasajero_nombre"]);

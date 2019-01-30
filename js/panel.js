@@ -445,12 +445,18 @@ function agregarDestino()
 {
     var i = 1;
     $(".destino").each(function(index){
-        i++;
+        if(i < 4)
+        {
+            i++;
+        }
     });
-    $("#destinos").append("<div class=\"cont-pre-monitor\" id=\"cont-destino"+i+"\">Destino "+i+"</div><input type=\"text\" class=\"input_asignar destino\" id=\"destino"+i+"\" placeholder=\"Ej: Av los pinos 723\">");
-    $("#destino"+i).on('input',function(){
-        mostrarDatalist($(this).val(),$("#destinol"),'destino'+i);
-    });
+    if(i <= 4)
+    {
+        $("#destinos").append("<div class=\"cont-pre-monitor\" id=\"cont-destino"+i+"\">Destino "+i+"</div><input type=\"text\" class=\"input_asignar destino\" id=\"destino"+i+"\" placeholder=\"Ej: Av los pinos 723\">");
+        $("#destino"+i).on('input',function(){
+            mostrarDatalist($(this).val(),$("#destinol"),'destino'+i);
+        });
+    }
 }
 
 function quitarDestino()

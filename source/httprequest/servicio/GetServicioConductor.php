@@ -9,7 +9,10 @@ $servicioDao = new ServicioDao();
 $servicio = $servicioDao->getServicioAsignado($usuario);
     $servicioId = $servicio->getId();
     $servicioPartida = $servicio->getPartida();
-    $servicioDestino = $servicio->getDestino();
+    $servicioDestInt1 = $servicios[$i]->getDestinoInt1();
+    $servicioDestInt2 = $servicios[$i]->getDestinoInt2();
+    $servicioDestInt3 = $servicios[$i]->getDestinoInt3();
+    $servicioDestFinal = $servicios[$i]->getDestinoFinal();
     $servicioCliente = $servicio->getCliente();
     $usuarioId = $servicio->getUsuario_id();
     $usuarioNom = $servicio->getUsuario_nombre();
@@ -25,7 +28,10 @@ $servicio = $servicioDao->getServicioAsignado($usuario);
     {
         echo "{\"servicio_id\":\"".$servicioId."\","
             . "\"servicio_partida\":\"".$servicioPartida."\","
-            . "\"servicio_destino\":\"".$servicioDestino."\","
+            . "\"servicio_destino_int1\":\"".$servicioDestInt1."\","
+            . "\"servicio_destino_int2\":\"".$servicioDestInt2."\","
+            . "\"servicio_destino_int3\":\"".$servicioDestInt3."\","
+            . "\"servicio_destino_final\":\"".$servicioDestFinal."\","
             . "\"servicio_cliente\":\"".$servicioCliente."\","
             . "\"servicio_pasajero\":\"".$usuarioNom."\","
             . "\"servicio_pasajero_direccion\":\"".$usuarioDir."\","

@@ -5,7 +5,10 @@ include '../../query/ServicioDao.php';
 
 header('Content-Type: application/json');
 $partida = urlencode(filter_input(INPUT_POST, 'partida'));
-$destino = urlencode(filter_input(INPUT_POST, 'destino'));
+$destinoInt1 = urlencode(filter_input(INPUT_POST, 'destInt1'));
+$destinoInt2 = urlencode(filter_input(INPUT_POST, 'destInt2'));
+$destinoInt3 = urlencode(filter_input(INPUT_POST, 'destInt3'));
+$destinoFinal = urlencode(filter_input(INPUT_POST, 'destFinal'));
 $cliente = filter_input(INPUT_POST, 'cliente');
 $usuario = filter_input(INPUT_POST, 'usuario');
 $transportista = filter_input(INPUT_POST, 'transportista');    
@@ -19,7 +22,10 @@ if(filter_input(INPUT_POST, 'app') == '')
 }
 $servicio = new Servicio();
 $servicio->setPartida(urldecode($partida));
-$servicio->setDestino(urldecode($destino));
+$servicio->setDestinoInt1(urldecode($destinoInt1));
+$servicio->setDestinoInt2(urldecode($destinoInt2));
+$servicio->setDestinoInt3(urldecode($destinoInt3));
+$servicio->setDestinoFinal(urldecode($destinoFinal));
 $servicio->setCliente($cliente);
 $servicio->setUsuario_nombre($usuario);
 $servicio->setTransportista($transportista);
