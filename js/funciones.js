@@ -734,3 +734,13 @@ function verAdjunto(valor,i)
         $("#contenedor_contrato"+i).html(enlace);
     }
 }
+
+function abrirTooltip(tooltip)
+{
+    cambiarPropiedad($("#"+tooltip),"display","block");
+}
+
+function cerrarTooltip(tooltip)
+{
+    cambiarPropiedad($("#"+tooltip),"display","none");
+}

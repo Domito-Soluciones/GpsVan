@@ -13,37 +13,21 @@
  */
 class Cripto {
     
-    private $key = "sdfjingisdfjnvsdijnsdfrg";
-    private $iv = "56434567";
-
-
-    function encriptar($data)
-    {
-        if($data != '')
-        {
-            if (strlen($this->key)!=24){
-                echo "La longitud de la key ha de ser de 24 dígitos.<br>";
-                return -1;
-            }
-            if ((strlen($this->iv) % 8 )!=0){
-                echo "La longitud del vector iv ha de ser múltiple de 8 dígitos.<br>";
-                return -2;
-            }
-            return @base64_encode(mcrypt_encrypt(MCRYPT_3DES, $this->key, $data, MCRYPT_MODE_CBC, $this->iv));
-        }
-        return $data;
+    private static $encrypt_method = "AES-256-CBC";
+    private static $secret_key = 'WS-SERVICE-KEY';
+    private static $secret_iv = 'WS-SERVICE-VALUE';
+    
+    public static function encriptar($data) {
+        $key = hash('sha256', self::$secret_key);
+        $iv = substr(hash('sha256', self::$secret_iv), 0, 16);
+        $cipherText = openssl_encrypt($data, Cripto::$encrypt_method, $key, true, $iv);
+        return $cipherText;
     }
- 
- 
-    function desencriptar($data){
-        if (strlen($this->key)!=24){
-            echo "La longitud de la key ha de ser de 24 dígitos.<br>";
-            return -1;
-        }
-        if ((strlen($this->iv) % 8 )!=0){
-            echo "La longitud del vector iv ha de ser múltiple de 8 dígitos.<br>";
-            return -2;
-        }
-        return @mcrypt_decrypt(MCRYPT_3DES, $this->key, base64_decode($data), MCRYPT_MODE_CBC, $this->iv);
+
+    public static function desencriptar($data){
+        // hash
+        $key = hash('sha256', self::$secret_key);
+        $iv = substr(hash('sha256', self::$secret_iv), 0, 16);
+        return openssl_decrypt(base64_decode($data), Cripto::$encrypt_method, $key, 0, $iv);
     }
 }

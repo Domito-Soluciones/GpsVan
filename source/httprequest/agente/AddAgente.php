@@ -5,7 +5,6 @@ include '../../query/AgenteDao.php';
 include '../../cripto/Cripto.php';
 
 header('Content-Type: application/json');
-$cripto = new Cripto();
 $rut = filter_input(INPUT_POST, 'rut');
 $nombre = filter_input(INPUT_POST, 'nombre');
 $papellido = filter_input(INPUT_POST, 'papellido');
@@ -14,7 +13,7 @@ $telefono = filter_input(INPUT_POST, 'telefono');
 $celular = filter_input(INPUT_POST, 'celular');
 $direccion = filter_input(INPUT_POST, 'direccion');
 $nick = filter_input(INPUT_POST, 'nick');
-$password = $cripto->encriptar(filter_input(INPUT_POST, 'password'));
+$password = Cripto::encriptar(filter_input(INPUT_POST, 'password'));
 $mail = filter_input(INPUT_POST, 'mail');
 $perfil = filter_input(INPUT_POST, 'perfil');
 $empresa = filter_input(INPUT_POST, 'empresa');

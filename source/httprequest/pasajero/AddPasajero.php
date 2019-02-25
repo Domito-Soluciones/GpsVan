@@ -5,7 +5,6 @@ include '../../query/PasajeroDao.php';
 include '../../cripto/Cripto.php';
 
 header('Content-Type: application/json');
-$cripto = new Cripto();
 $rut = filter_input(INPUT_POST, 'rut');
 $nombre = filter_input(INPUT_POST, 'nombre');
 $papellido = filter_input(INPUT_POST, 'papellido');
@@ -15,7 +14,7 @@ $celular = filter_input(INPUT_POST, 'celular');
 $direccion = filter_input(INPUT_POST, 'direccion');
 $punto = filter_input(INPUT_POST, 'punto');
 $nick = filter_input(INPUT_POST, 'nick');
-$password = $cripto->encriptar(filter_input(INPUT_POST, 'password'));
+$password = Cripto::encriptar(filter_input(INPUT_POST, 'password'));
 $mail = filter_input(INPUT_POST, 'mail');
 $cargo = filter_input(INPUT_POST, 'cargo');
 $centroCosto = filter_input(INPUT_POST, 'centro');

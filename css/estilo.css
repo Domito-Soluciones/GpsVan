@@ -1390,3 +1390,18 @@ select
     width: 32%;
     border: solid 1px silver;
 }
+
+.extenso
+{
+    height: calc(100% - 0px);
+}
+
+.pie-extenso
+{
+    height: 60px;
+}
+
+.lista_busqueda_extendida
+{
+    height: calc(100% - 0px);
+}

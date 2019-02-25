@@ -4,10 +4,9 @@ include '../../query/AgenteDao.php';
 include '../../cripto/Cripto.php';
 
 header('Content-Type: application/json');
-$cripto = new Cripto();
 $respuesta = '0';
 $nombre = filter_input(INPUT_POST, 'usuario');
-$password = $cripto->encriptar(filter_input(INPUT_POST, 'password'));
+$password = base64_encode(Cripto::encriptar(filter_input(INPUT_POST, 'password')));
 $agenteDao = new AgenteDao();
 $agente = $agenteDao->getAgente($nombre, $password);
 if ($agente->getId() > 0)

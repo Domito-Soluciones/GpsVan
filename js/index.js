@@ -49,7 +49,3 @@ function login(){
     };
     postRequest(url,params,success,error);
 }
-
-
-
-

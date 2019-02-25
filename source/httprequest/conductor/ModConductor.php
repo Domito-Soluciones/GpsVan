@@ -5,7 +5,6 @@ include '../../query/ConductorDao.php';
 include '../../cripto/Cripto.php';
 
 header('Content-Type: application/json');
-$cripto = new Cripto();
 $id =filter_input(INPUT_POST, 'id');
 $nombre =filter_input(INPUT_POST, 'nombre');
 $papellido =filter_input(INPUT_POST, 'papellido');
@@ -13,7 +12,7 @@ $mapellido =filter_input(INPUT_POST, 'mapellido');
 $tipo =filter_input(INPUT_POST, 'tipo');
 $rut =filter_input(INPUT_POST, 'rut');
 $nick =filter_input(INPUT_POST, 'nick');
-$password = $cripto->encriptar(filter_input(INPUT_POST, 'password'));
+$password = Cripto::encriptar(filter_input(INPUT_POST, 'password'));
 $telefono =filter_input(INPUT_POST, 'telefono');
 $celular =filter_input(INPUT_POST, 'celular');
 $direccion =filter_input(INPUT_POST, 'direccion');

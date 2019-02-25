@@ -172,11 +172,11 @@ function buscarCliente()
             var titulo = recortar(rut+" / "+nombre);
             if (typeof ID_CLIENTE !== "undefined" && ID_CLIENTE === id)
             {
-                clientes.append("<div class=\"fila_contenedor fila_contenedor_activa\" id=\""+id+"\" onClick=\"cambiarFila('"+nombre+"')\">"+titulo+"</div>");
+                clientes.append("<div class=\"fila_contenedor fila_contenedor_activa\" id=\""+nombre+"\" onClick=\"cambiarFila('"+nombre+"')\">"+titulo+"</div>");
             }
             else
             {
-                clientes.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"cambiarFila('"+nombre+"')\">"+titulo+"</div>");
+                clientes.append("<div class=\"fila_contenedor\" id=\""+nombre+"\" onClick=\"cambiarFila('"+nombre+"')\">"+titulo+"</div>");
             }
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
@@ -249,9 +249,7 @@ function abrirBuscador(id)
 {
     AGREGAR = false;
     ID_TARIFA = id;
-    quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
-    agregarclase($("#"+id),"fila_contenedor_activa");
-    $("#contenedor_central").load("html/datos_tarifa.html", function( response, status, xhr ) {
+    $("#lista_busqueda_tarifa_detalle").load("html/datos_tarifa.html", function( response, status, xhr ) {
         cambioEjecutado();
         var tarifa;
         for(var i = 0 ; i < TARIFAS.length; i++)
@@ -285,7 +283,7 @@ function abrirBuscador(id)
         cambiarPropiedad($("#eliminar"),"visibility","visible");
         
         $("#volver").click(function(){
-            buscarTarifas(ID_TARIFA);
+            buscarTarifas(ID_CLIENTE);
         });
         
     });

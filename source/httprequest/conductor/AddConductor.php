@@ -5,7 +5,6 @@ include '../../query/ConductorDao.php';
 include '../../cripto/Cripto.php';
 
 header('Content-Type: application/json');
-$cripto = new Cripto();
 $tipo = filter_input(INPUT_POST, 'tipo');
 $rut = filter_input(INPUT_POST, 'rut');
 $nombre = filter_input(INPUT_POST, 'nombre');
@@ -15,7 +14,7 @@ $telefono = filter_input(INPUT_POST, 'telefono');
 $celular = filter_input(INPUT_POST, 'celular');
 $direccion = filter_input(INPUT_POST, 'direccion');
 $nick = filter_input(INPUT_POST, 'nick');
-$password = $cripto->encriptar(filter_input(INPUT_POST, 'password'));
+$password = Cripto::encriptar(filter_input(INPUT_POST, 'password'));
 $mail = filter_input(INPUT_POST, 'mail');
 $tipoLicencia = filter_input(INPUT_POST, 'tipoLicencia');
 $nacimiento = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_POST, 'nacimiento'))->format('Y/m/d');
