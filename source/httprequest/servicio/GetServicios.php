@@ -1,48 +1,57 @@
 <?php
 include '../../util/validarPeticion.php';
 include '../../query/ServicioDao.php';
-include '../../dominio/Servicio.php';
 
 header('Content-Type: application/json; charset=utf-8');
-$busqueda = filter_input(INPUT_POST, 'busqueda');
-$desde = filter_input(INPUT_POST, 'desde');
-$hasta = filter_input(INPUT_POST, 'hasta');
+$id = filter_input(INPUT_POST, 'id');
+$empresa = filter_input(INPUT_POST, 'empresa');
+$conductor = filter_input(INPUT_POST, 'conductor');
+$estado = filter_input(INPUT_POST, 'estado');
+$movil = filter_input(INPUT_POST, 'movil');
+$desde = '';
+if(filter_input(INPUT_POST, 'desde') != '')
+{
+    $desde = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_POST, 'desde'))->format('Y/m/d');
+}
+else
+{
+    $desde = filter_input(INPUT_POST, 'desde');
+}
+$hasta = '';
+if(filter_input(INPUT_POST, 'hasta') != '')
+{
+    $hasta = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_POST, 'hasta'))->format('Y/m/d');
+}
+else
+{
+    $hasta = filter_input(INPUT_POST, 'hasta');
+}
 $servicioDao = new ServicioDao();
-$servicios = $servicioDao->getServicios($busqueda,$desde,$hasta);
+$servicios = $servicioDao->getServicios($id,$empresa,$conductor,$estado,$movil,$desde,$hasta);
 echo "[";
 for ($i = 0 ; $i < count($servicios); $i++)
 {
     $servicioId = $servicios[$i]->getId();
-    $servicioPartida = $servicios[$i]->getPartida();
-    $servicioDestInt1 = $servicios[$i]->getDestinoInt1();
-    $servicioDestInt2 = $servicios[$i]->getDestinoInt2();
-    $servicioDestInt3 = $servicios[$i]->getDestinoInt3();
-    $servicioDestFinal = $servicios[$i]->getDestinoFinal();
     $servicioCliente = $servicios[$i]->getCliente();
-    $servicioUsuario = $servicios[$i]->getUsuario_nombre();
-    $servicioTransportista = $servicios[$i]->getTransportista();
-    $servicioMovil = $servicioDao->obtenerMovilServicio($servicios[$i]->getMovil());
-    $servicioTipo = $servicios[$i]->getTipo();
-    $servicioTarifa = $servicios[$i]->getTarifa();
-    $servicioAgente = $servicios[$i]->getAgente();
+    $servicioRuta = $servicios[$i]->getRuta();
     $servicioFecha = $servicios[$i]->getFecha();
+    $servicioHora = $servicios[$i]->getHora();
+    $servicioMovil = $servicios[$i]->getMovil();
+    $servicioConductor = $servicios[$i]->getConductor();
+    $servicioTarifa1 = $servicios[$i]->getTarifa1();
+    $servicioTarifa2 = $servicios[$i]->getTarifa2();
+    $servicioAgente = $servicios[$i]->getAgente();
     $servicioEstado = $servicios[$i]->getEstado();
     echo "{\"servicio_id\":\"".$servicioId."\","
-        . "\"servicio_partida\":\"".$servicioPartida."\","
-        . "\"servicio_destino_int1\":\"".$servicioDestInt1."\","
-        . "\"servicio_destino_int2\":\"".$servicioDestInt2."\","
-        . "\"servicio_destino_int3\":\"".$servicioDestInt3."\","
-        . "\"servicio_destino_final\":\"".$servicioDestFinal."\","
         . "\"servicio_cliente\":\"".$servicioCliente."\","
-        . "\"servicio_pasajero\":\"".$servicioUsuario."\","
-        . "\"servicio_transportista\":\"".$servicioTransportista."\","
-        . "\"servicio_movil\":\"".$servicioMovil->getNombre()."\","
-        . "\"servicio_movil_lat\":\"".$servicioMovil->getLat()."\","
-        . "\"servicio_movil_lon\":\"".$servicioMovil->getLon()."\","
-        . "\"servicio_tipo\":\"".$servicioTipo."\","
-        . "\"servicio_tarifa\":\"".$servicioTarifa."\","
-        . "\"servicio_agente\":\"".$servicioAgente."\","
+        . "\"servicio_ruta\":\"".$servicioRuta."\","
         . "\"servicio_fecha\":\"".$servicioFecha."\","
+        . "\"servicio_hora\":\"".$servicioHora."\","
+        . "\"servicio_movil\":\"".$servicioMovil."\","
+        . "\"servicio_conductor\":\"".$servicioConductor."\","
+        . "\"servicio_tarifa1\":\"".$servicioTarifa1."\","
+        . "\"servicio_tarifa2\":\"".$servicioTarifa2."\","
+        . "\"servicio_agente\":\"".$servicioAgente."\","
         . "\"servicio_estado\":\"".$servicioEstado."\""
         . "}";
     if (($i+1) != count($servicios))

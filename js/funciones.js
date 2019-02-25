@@ -1,13 +1,10 @@
 
-/* global MODIFICADO, alertify, PAGINA_ANTERIOR, INTERVAL_SERVICIOS */
+/* global MODIFICADO, alertify, PAGINA_ANTERIOR, INTERVAL_SERVICIOS, MENU_OCULTO, PLACES_AUTOCOMPLETE_API, CORS_PROXY, POSITION, API_KEY */
 var MODIFICADO = false;
 var KEY = "DGFSGHJRTJTHWGWEJNGWI9EFN";
-var bordeAzul = "solid 1px #0b41d3";
-var bordeRojo = "solid 1px red";
-var bordeBlanco = "solid 1px white";
 var urlBase= "source/httprequest";
 var urlUtil= "source/util";
-
+var ADJUNTANDO = false;
 
 function darFoco(elemento)
 {
@@ -60,6 +57,7 @@ function getRequest(url,success,cargar = true)
         success: success,
         async: true,
         cache: false,
+        crossDomain: true,
         beforeSend: function (xhr) {
             if(cargar)
             {
@@ -104,6 +102,7 @@ function validarCamposOr(array,exepciones = null)
     }
     return true;
 }
+
 function validarCamposAnd(array)
 {
     var cont = 0;
@@ -130,7 +129,7 @@ function quitarclase(div,clase)
     div.removeClass(clase);
 }
 
-function cambiarModulo(pagina){
+function cambiarModulo(pagina,params = null){
     if(MODIFICADO)
     {
         confirmar("Cambiar de modulo","¿Desea cambiar de modulo sin guardar los cambios?",
@@ -138,7 +137,7 @@ function cambiarModulo(pagina){
                 MODIFICADO = false;
                 quitarclase($(".opcion-menu"),"menu-activo");
                 agregarclase($("#"+pagina),"menu-activo");
-                if(pagina !== 'panel' || pagina !== 'monitoreo')
+                if(pagina !== 'panel' || pagina !== 'monitoreo' || pagina !== 'servicio')
                 {
                     if(pagina !== 'panel')
                     {
@@ -151,6 +150,14 @@ function cambiarModulo(pagina){
                     variable = undefined;
                     if(pagina === 'panel' || pagina === 'monitoreo')
                     {
+                        if(pagina === 'panel' && params !== null)
+                        {
+                            $("#ids").val(params.ids);
+                            $("#clientes").val(params.clientes);
+                            $("#fechas").val(params.fechas);
+                            $("#hora").val(params.hora);
+                            $("#observacion").val(params.observacion);
+                        }
                         mostrarMapa();
                     }
                 });
@@ -163,7 +170,7 @@ function cambiarModulo(pagina){
     {
         quitarclase($(".opcion-menu"),"menu-activo");
         agregarclase($("#"+pagina),"menu-activo");
-        if(pagina !== 'panel' || pagina !== 'monitoreo')
+        if(pagina !== 'panel' || pagina !== 'monitoreo' || pagina !== 'servicio')
         {
             if(pagina !== 'panel')
             {
@@ -176,6 +183,14 @@ function cambiarModulo(pagina){
             variable = undefined;
             if(pagina === 'panel' || pagina === 'monitoreo')
             {
+                if(pagina === 'panel' && params !== null)
+                {
+                    $("#ids").val(params.ids);
+                    $("#clientes").val(params.clientes);
+                    $("#fechas").val(params.fechas);
+                    $("#hora").val(params.hora);
+                    $("#observacion").val(params.observacion);
+                }
                 mostrarMapa();
             }
         });
@@ -211,9 +226,9 @@ function resetPagina()
     {
         ID_PASAJERO = undefined;
     }
-    if(PAGINA_ANTERIOR === "TRANSPORTISTAS")
+    if(PAGINA_ANTERIOR === "LIQUIDACION")
     {
-        ID_TRANSPORTISTA = undefined;
+        ID_LIQUIDACION = undefined;
     }
 }
 
@@ -235,6 +250,10 @@ function vaciarFormulario()
         marcarCampoOk($(this));
     });
     $("select").each(function() {
+        $(this).val("");
+        marcarCampoOk($(this));
+    });
+    $("textarea").each(function() {
         $(this).val("");
         marcarCampoOk($(this));
     });
@@ -298,25 +317,88 @@ function abrirFile(e,obj){
     obj.trigger("click");
 }
 
-function subirFichero(event,form,url,success)
+function subirFicheroPDF(event,form,nombre,archivo,index)
 {
-    $.ajax({
-        async: true,
-        type: 'POST',
-        url: url,
-        data: new FormData(form[0]),
-        cache: false,
-        contentType: false,
-        processData: false,
-        success: success
-    });
+    ADJUNTANDO = true;
+    if(nombre.val() !== '' && (validarRut(nombre.val()) || validarPatente(nombre.val())))
+    {
+        var url = 'source/util/subirFichero.php?nombre='+nombre.val()+'&tipo=pdf&archivo='+archivo.val();
+        $.ajax({
+            async: true,
+            type: 'POST',
+            url: url,
+            data: new FormData(form[0]),
+            cache: false,
+            contentType: false,
+            processData: false,
+            beforeSend: function (xhr) {
+                cambiarPropiedad($("#loader"+index),"visibility","visible");
+            },
+            success: function()
+            {
+                ADJUNTANDO = false;
+                cambiarPropiedad($("#loader"+index),"visibility","hidden");
+                var archivo = $("#contratoOculta"+index).val();
+                var ext = archivo.split("\.")[1];
+                if(ext !== 'pdf'){
+                    alertify.error("Archivo invalido");
+                    return;
+                }
+                else
+                {
+                    var enlace = "<a href=\"source/util/pdf/"+archivo+"\" target=\"_blanck\">Ver</a>";
+                    $("#contenedor_contrato"+index).html(enlace);
+                }       
+            }
+        });
+    }
+    else
+    {
+        alertify.error("El contrato debe ir asociado a un "+nombre.attr("id") );
+    }
     event.preventDefault();
 }
 
-function enviarFormFile(file,hidden,form)
+function subirFicheroJPG(event,form,nombre,archivo)
+{
+    ADJUNTANDO = true;
+    if(nombre.val() !== '' && validarRut(nombre.val()))
+    {
+        var url = 'source/util/subirFichero.php?nombre='+nombre.val()+'&tipo=img&archivo='+archivo.val();
+        $.ajax({
+            async: true,
+            type: 'POST',
+            url: url,
+            data: new FormData(form[0]),
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function()
+            {
+                ADJUNTANDO = false;
+                var archivo = $("#imagenOculta").val();
+                var ext = archivo.split("\.")[1];
+                if(ext !== 'png'){
+                    if(ext !== 'jpg'){
+                        alertify.error("Archivo invalido");
+                        return;
+                    }
+                }
+                cambiarPropiedad($(".imagen"),"background-image","url('source/util/img/"+archivo+"')"); 
+            }
+        });
+    }
+    else
+    {
+        alertify.error("La imagen debe ir asociada a un "+nombre.attr("id"));
+    }
+    event.preventDefault();
+}
+
+function enviarFormFile(file,nombre,hidden,form)
 {   
     var filename = file.replace(/.*(\/|\\)/, '');
-    hidden.val(filename);
+    hidden.val(nombre+"_"+filename);
     form.submit();
 }
 
@@ -338,6 +420,17 @@ function iniciarFecha(inputs) {
         },
         timepicker:false,
         format:'d/m/Y'
+    };
+    for(var i = 0 ; i < inputs.length; i++)
+    {
+        jQuery(inputs[i]).datetimepicker(conf);    
+    }
+}
+function iniciarHora(inputs) {
+    jQuery.datetimepicker.setLocale('es');
+    var conf = {
+        datepicker:false,
+        format:'H:i'
     };
     for(var i = 0 ; i < inputs.length; i++)
     {
@@ -431,13 +524,31 @@ function seleccionar(div)
 
 function marcarCampoError(campo)
 {
-    cambiarPropiedad(campo,"backgroundColor","red");
-    cambiarPropiedad(campo,"color","white");
+    var dis = typeof  campo.attr("disabled") !== "undefined";
+    if(dis === false)
+    {
+        cambiarPropiedad(campo,"backgroundColor","red");
+    }
+    cambiarPropiedad(campo,"color","black");
 }
 
 function marcarCampoOk(campo)
 {
-    cambiarPropiedad(campo,"backgroundColor","white");
+    var dis = typeof  campo.attr("disabled") !== "undefined";
+    if(dis === false)
+    {
+        cambiarPropiedad(campo,"backgroundColor","white");
+    }
+    cambiarPropiedad(campo,"color","black");
+}
+
+function marcarCampoDisabled(campo)
+{
+    var dis = typeof  campo.attr("disabled") !== "undefined";
+    if(dis === false)
+    {
+        cambiarPropiedad(campo,"backgroundColor","silver");
+    }
     cambiarPropiedad(campo,"color","black");
 }
 
@@ -537,8 +648,89 @@ function validarInexistencia(val,array)
     return true;
 }
 
-
-function opcionVolver()
+function abrirMenu()
 {
-    $("#cont_general").load("html/transportista-conductor.html");
+    if(MENU_VISIBLE)
+    {
+        $("#btn_menu_img").attr("src","img/menu.svg");
+        cambiarPropiedad($("#menu"),"width","calc(4% - 1px)");
+        cambiarPropiedad($("#contenido-central"),"width","96%");
+        cambiarPropiedad($(".contenido-menu"),"width","calc(30% - 10px)");
+        cambiarPropiedad($(".contenido-menu"),"display","none");
+        MENU_VISIBLE = false;
+    }
+    else
+    {
+        $("#btn_menu_img").attr("src","img/cancelar.svg");
+        cambiarPropiedad($("#menu"),"width","calc(15% - 1px)");
+        cambiarPropiedad($("#contenido-central"),"width","calc(89% - 60px)");
+        cambiarPropiedad($(".contenido-menu"),"width","calc(90% - 10px)");
+        cambiarPropiedad($(".contenido-menu"),"display","block");
+        MENU_VISIBLE = true;
+
+    }
+}
+
+function abrirTooltip(tooltip)
+{
+    cambiarPropiedad($("#"+tooltip),"display","block");
+}
+
+function cerrarTooltip(tooltip)
+{
+    cambiarPropiedad($("#"+tooltip),"display","none");
+}
+
+function marcarCampoNoAplicable()
+{
+    return "-";
+}
+
+function mostrarDatalist(val,datalist,campo)
+{
+    if(val === "") return;
+    var url = CORS_PROXY + PLACES_AUTOCOMPLETE_API + "input="+val+
+            "&location="+POSITION[0]+","+POSITION[1]+"&sensor=true&radius=500&key="+API_KEY;
+    var success = function(response)
+    {
+        datalist.html("");
+        var places =  response.predictions;
+        for(var i = 0 ; i < places.length;i++)
+        {
+            var descripcion = places[i].description;
+            var encodeDescripcion = descripcion.replace(/'/g,'');
+            datalist.append(
+                    "<div class=\"option-datalist\" onclick=\"selecionarPlace('"+encodeDescripcion+"')\"><img src=\"img/ubicacion.svg\" width=\"12\" heifgt=\"12\">"+descripcion+"</div>");
+        }
+    };
+    getRequest(url,success);
+}
+
+function selecionarPlace(val,obj)
+{
+    $("#punto").val(decodeURI(val));
+    $("#partida").html("");
+}
+
+function enviarCorreoPassword(mail,password)
+{
+    var url = urlUtil + "/enviarMail.php";
+    var asunto = "Envio de password";
+    var mensaje = "Estimado, su password para uso de aplicacion es la siguiente ";
+    var params = {email : mail,asunto : asunto, mensaje : mensaje, extra : password};
+    var success = function(response)
+    {
+        alertify.success("Password enviada al correo "+mail);
+    };
+    postRequest(url,params,success);
+}
+
+function verAdjunto(valor,i)
+{
+    if(valor !== '')
+    {
+        $("#contratoOculta"+i).val(valor);
+        var enlace = "<a href=\"source/util/pdf/"+valor+"\" target=\"_blanck\">Ver</a>";
+        $("#contenedor_contrato"+i).html(enlace);
+    }
 }

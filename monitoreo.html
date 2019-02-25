@@ -4,44 +4,19 @@
         <script src="js/monitoreo.js" type="text/javascript"></script>
     </head>
     <body>
-        <div class="contenedor-lateral buscador-monitoreo contenedor_oculto" id="buscador">
+        <div class="contenedor-lateral buscador-monitoreo" id="buscador">
             <div class="buscador barra_monitoreo">
                 <div>
                     <div class="cont-pre-monitor">
-                        Servicio:
+                        Buscar:
                     </div>
                     <div class="input-monitoreo">
-                        <input type="text" id="servicio" list="lservicio">
-                        <datalist id="lservicio"></datalist>
-                    </div>
-                </div>
-                <div>
-                    <div class="cont-pre-monitor">
-                        Veh&iacute;culo:
-                    </div>
-                    <div class="input-monitoreo">
-                        <input type="text" id="vehiculo" list="lmovil">
-                        <datalist id="lmovil"></datalist>
-                    </div>
-                </div>
-                <div>
-                    <div class="cont-pre-monitor">
-                        Pasajero:
-                    </div>
-                    <div class="input-monitoreo">
-                        <input type="text" id="pasajero" list="lpasajero">
-                        <datalist id="lpasajero"></datalist>
-                    </div>
-                </div>
-                <div>
-                    <div class="boton boton-monitoreo" id="buscar">
-                        <img src="img/buscar.svg" width="12" height="12">
-                        Buscar
+                        <input type="text" id="busqueda">
                     </div>
                 </div>
             </div>
             <div class="buscador_titulo">
-                Servicios / Veh&iacute;culos
+                Veh&iacute;culos
             </div>
             <div id="lista_busqueda_monitoreo" class="lista_busqueda">
                 <div class="contenedor-loader">
@@ -50,14 +25,6 @@
             </div>
             <div id="mensaje-error" class="mensaje-error">
 
-            </div>
-        </div>
-        <div class="contenedor-titulo">
-            <div class="titulo_pagina_general" id="p_monitoreo">
-                1. Monitoreo General
-            </div>
-            <div class="titulo_pagina_general dispose" id="p_buscador">
-                2. Buscador
             </div>
         </div>
         <div class="contenedor_central monitoreo" id="contenedor_mapa">

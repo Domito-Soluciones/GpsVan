@@ -33,6 +33,7 @@ class PasajeroDao {
         $telefono = $pasajero->getTelefono();
         $celular = $pasajero->getCelular();
         $direccion = $pasajero->getDireccion();
+        $punto = $pasajero->getPunto();
         $mail = $pasajero->getMail();
         $nick = $pasajero->getNick();
         $password = $pasajero->getPassword();
@@ -44,8 +45,8 @@ class PasajeroDao {
         try {
             $query = "INSERT INTO tbl_pasajero (pasajero_nombre,pasajero_papellido,"
                     . "pasajero_mapellido,pasajero_rut,pasajero_nick,pasajero_password,pasajero_telefono,"
-                    . "pasajero_celular,pasajero_direccion,pasajero_mail,pasajero_cargo,pasajero_nivel,pasajero_centro_costo,pasajero_empresa,pasajero_ruta) VALUES "
-                    . "('$nombre','$papellido','$mapellido','$rut','$nick','$password','$telefono','$celular','$direccion','$mail','$cargo','0','$centro','$empresa','$ruta')"; 
+                    . "pasajero_celular,pasajero_direccion,pasajero_punto_encuentro,pasajero_mail,pasajero_cargo,pasajero_nivel,pasajero_centro_costo,pasajero_empresa,pasajero_ruta) VALUES "
+                    . "('$nombre','$papellido','$mapellido','$rut','$nick','$password','$telefono','$celular','$direccion','$punto','$mail','$cargo','0','$centro','$empresa','$ruta')"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -70,6 +71,7 @@ class PasajeroDao {
         $telefono = $pasajero->getTelefono();
         $celular = $pasajero->getCelular();
         $direccion = $pasajero->getDireccion();
+        $punto = $pasajero->getPunto();
         $mail = $pasajero->getMail();
         $cargo = $pasajero->getCargo();
         $centro = $pasajero->getCentroCosto();
@@ -80,14 +82,14 @@ class PasajeroDao {
             $query = "UPDATE tbl_pasajero SET pasajero_nombre = '$nombre',"
                     . "pasajero_papellido = '$papellido', pasajero_mapellido = '$mapellido',"
                     . "pasajero_telefono = '$telefono',pasajero_celular = '$celular',"
-                    . "pasajero_direccion = '$direccion',pasajero_mail = '$mail',"
+                    . "pasajero_direccion = '$direccion',pasajero_punto_encuentro = '$punto',pasajero_mail = '$mail',"
                     . "pasajero_nick = '$nick',";
                     if($pasajero->getPassword() != '')
                     {
                     $query .= "pasajero_password = '$password',";
                     }
                     $query .= "pasajero_cargo = '$cargo',pasajero_nivel = '0',pasajero_centro_costo = '$centro',"
-                            . "pasajero_empresa = '$empresa', pasajero_ruta = '$ruta' WHERE pasajero_rut = '$rut'";           
+                            . "pasajero_empresa = '$empresa', pasajero_ruta = '$ruta' WHERE pasajero_rut = '$rut'";   
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -111,7 +113,7 @@ class PasajeroDao {
                     . "pasajero_papellido LIKE '%".$busqueda."%' OR "
                     . "pasajero_mapellido LIKE '%".$busqueda."%' OR "
                     . "pasajero_mail LIKE '%".$busqueda."%' OR "
-                    . "pasajero_cliente = (SELECT cliente_id FROM tbl_cliente WHERE cliente_razon_social = '".$busqueda."') "
+                    . "pasajero_empresa = (SELECT cliente_id FROM tbl_cliente WHERE cliente_razon_social = '".$busqueda."') "
                     . " LIMIT 20";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
@@ -126,12 +128,47 @@ class PasajeroDao {
                 $pasajero->setTelefono($row["pasajero_telefono"]);
                 $pasajero->setCelular($row["pasajero_celular"]);
                 $pasajero->setDireccion($row["pasajero_direccion"]);
+                $pasajero->setPunto($row["pasajero_punto_encuentro"]);
                 $pasajero->setMail($row["pasajero_mail"]);
                 $pasajero->setCargo($row["pasajero_cargo"]);
                 $pasajero->setNivel($row["pasajero_nivel"]);
-                $pasajero->setCliente($row["pasajero_cliente"]);
-                $pasajero->setCentroCosto($row["pasajero_centro_costo"]);
                 $pasajero->setEmpresa($row["pasajero_empresa"]);
+                $pasajero->setCentroCosto($row["pasajero_centro_costo"]);
+                $pasajero->setRuta($row["pasajero_ruta"]);
+                array_push($array, $pasajero);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $array;
+    }
+    
+    function getPasajerosRuta($cliente)
+    {
+        $array = array();
+        $conn = new Conexion();
+        try {
+            $query = "SELECT * FROM tbl_pasajero JOIN tbl_cliente ON pasajero_empresa = cliente_razon_social WHERE pasajero_empresa = '".$cliente."' ORDER BY pasajero_ruta_orden";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            while($row = mysqli_fetch_array($result)) {
+                $pasajero = new Pasajero();
+                $pasajero->setId($row["pasajero_id"]);
+                $pasajero->setNombre($row["pasajero_nombre"]);
+                $pasajero->setPapellido($row["pasajero_papellido"]);
+                $pasajero->setMapellido($row["pasajero_mapellido"]);
+                $pasajero->setRut($row["pasajero_rut"]);
+                $pasajero->setNick($row["pasajero_nick"]);
+                $pasajero->setTelefono($row["pasajero_telefono"]);
+                $pasajero->setCelular($row["pasajero_celular"]);
+                $pasajero->setDireccion($row["pasajero_direccion"]);
+                $pasajero->setPunto($row["pasajero_punto_encuentro"]);
+                $pasajero->setMail($row["pasajero_mail"]);
+                $pasajero->setCargo($row["pasajero_cargo"]);
+                $pasajero->setNivel($row["pasajero_nivel"]);
+                $pasajero->setEmpresa($row["pasajero_empresa"]);
+                $pasajero->setEmpresaDireccion($row["cliente_direccion"]);
+                $pasajero->setCentroCosto($row["pasajero_centro_costo"]);
                 $pasajero->setRuta($row["pasajero_ruta"]);
                 array_push($array, $pasajero);
             }
@@ -159,12 +196,12 @@ class PasajeroDao {
                 $pasajero->setTelefono($row["pasajero_telefono"]);
                 $pasajero->setCelular($row["pasajero_celular"]);
                 $pasajero->setDireccion($row["pasajero_direccion"]);
+                $pasajero->setPunto($row["pasajero_punto_encuentro"]);
                 $pasajero->setMail($row["pasajero_mail"]);
                 $pasajero->setCargo($row["pasajero_cargo"]);
                 $pasajero->setNivel($row["pasajero_nivel"]);
-                $pasajero->setCliente($row["pasajero_cliente"]);
-                $pasajero->setCentroCosto($row["pasajero_centro_costo"]);
                 $pasajero->setEmpresa($row["pasajero_empresa"]);
+                $pasajero->setCentroCosto($row["pasajero_centro_costo"]);
                 $pasajero->setRuta($row["pasajero_ruta"]);
             }
         } catch (Exception $exc) {

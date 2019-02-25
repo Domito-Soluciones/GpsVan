@@ -10,80 +10,90 @@ class Cliente {
     private $nombreContacto;
     private $fonoContacto;
     private $mailContacto;
-    private $mailFacturacion;    
-
+    private $mailFacturacion; 
+    private $contrato;
+    
     function getId() {
         return $this->id;
     }
 
-     function getRazon() {
+    function getRazon() {
         return $this->razon;
     }
 
-     function getTipo() {
+    function getTipo() {
         return $this->tipo;
     }
 
-     function getRut() {
+    function getRut() {
         return $this->rut;
     }
 
-     function getDireccion() {
+    function getDireccion() {
         return $this->direccion;
     }
 
-     function getNombreContacto() {
+    function getNombreContacto() {
         return $this->nombreContacto;
     }
 
-     function getFonoContacto() {
+    function getFonoContacto() {
         return $this->fonoContacto;
     }
 
-     function getMailContacto() {
+    function getMailContacto() {
         return $this->mailContacto;
     }
 
-     function getMailFacturacion() {
+    function getMailFacturacion() {
         return $this->mailFacturacion;
+    }
+
+    function getContrato() {
+        return $this->contrato;
     }
 
     function setId($id) {
         $this->id = $id;
     }
 
-     function setRazon($razon) {
+    function setRazon($razon) {
         $this->razon = $razon;
     }
 
-     function setTipo($tipo) {
+    function setTipo($tipo) {
         $this->tipo = $tipo;
     }
 
-     function setRut($rut) {
+    function setRut($rut) {
         $this->rut = $rut;
     }
 
-     function setDireccion($direccion) {
+    function setDireccion($direccion) {
         $this->direccion = $direccion;
     }
 
-     function setNombreContacto($nombreContacto) {
+    function setNombreContacto($nombreContacto) {
         $this->nombreContacto = $nombreContacto;
     }
 
-     function setFonoContacto($fonoContacto) {
+    function setFonoContacto($fonoContacto) {
         $this->fonoContacto = $fonoContacto;
     }
 
-     function setMailContacto($mailContacto) {
+    function setMailContacto($mailContacto) {
         $this->mailContacto = $mailContacto;
     }
 
-     function setMailFacturacion($mailFacturacion) {
+    function setMailFacturacion($mailFacturacion) {
         $this->mailFacturacion = $mailFacturacion;
     }
-    
+
+    function setContrato($contrato) {
+        $this->contrato = $contrato;
+    }
+
+        
     public function toString() {
         return "DATOS CLIENTE: ID : ".$this->id." RAZON : ".$this->razon.
                 " TIPO : ".$this->tipo." RUT : ".$this->rut.

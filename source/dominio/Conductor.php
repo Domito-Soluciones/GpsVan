@@ -6,6 +6,7 @@ class Conductor {
     private $nombre;
     private $papellido;
     private $mapellido;
+    private $tipo;
     private $rut;
     private $nick;
     private $password;
@@ -19,11 +20,11 @@ class Conductor {
     private $contrato;
     private $afp;
     private $isapre;
+    private $isapreAd;
     private $mutual;
     private $seguroInicio;
     private $seguroRenovacion;
     private $descuento;
-    private $anticipo;
     private $imagenAdjunta;
     private $contratoAdjunto;
     private $transportista;
@@ -43,6 +44,10 @@ class Conductor {
 
     function getMapellido() {
         return $this->mapellido;
+    }
+
+    function getTipo() {
+        return $this->tipo;
     }
 
     function getRut() {
@@ -97,6 +102,10 @@ class Conductor {
         return $this->isapre;
     }
 
+    function getIsapreAd() {
+        return $this->isapreAd;
+    }
+
     function getMutual() {
         return $this->mutual;
     }
@@ -111,10 +120,6 @@ class Conductor {
 
     function getDescuento() {
         return $this->descuento;
-    }
-
-    function getAnticipo() {
-        return $this->anticipo;
     }
 
     function getImagenAdjunta() {
@@ -147,6 +152,10 @@ class Conductor {
 
     function setMapellido($mapellido) {
         $this->mapellido = $mapellido;
+    }
+
+    function setTipo($tipo) {
+        $this->tipo = $tipo;
     }
 
     function setRut($rut) {
@@ -201,6 +210,10 @@ class Conductor {
         $this->isapre = $isapre;
     }
 
+    function setIsapreAd($isapreAd) {
+        $this->isapreAd = $isapreAd;
+    }
+
     function setMutual($mutual) {
         $this->mutual = $mutual;
     }
@@ -215,10 +228,6 @@ class Conductor {
 
     function setDescuento($descuento) {
         $this->descuento = $descuento;
-    }
-
-    function setAnticipo($anticipo) {
-        $this->anticipo = $anticipo;
     }
 
     function setImagenAdjunta($imagenAdjunta) {
@@ -236,6 +245,7 @@ class Conductor {
     function setMovil($movil) {
         $this->movil = $movil;
     }
+
     public function toString() {
         return "DATOS CONDUCTOR: ID : ".$this->id." NOMBRE : ".$this->nombre.
                 " PAPELLIDO : ".$this->papellido." MAPELLIDO : ".$this->mapellido.
@@ -244,9 +254,9 @@ class Conductor {
                 " DIRECCION : ".$this->direccion." MAIL : ".$this->mail.
                 " TIPO LICENCIA : ". $this->tipoLicencia." NACIMIENTO : ".$this->nacimiento.
                 " RENTA : ". $this->renta." CONTRATO : ".$this->contrato.
-                " AFP : ". $this->afp." ISAPRE : ".$this->isapre.
+                " AFP : ". $this->afp." ISAPRE : ".$this->isapre." ISAPRE AD : ".$this->isapreAd.
                 " MUTUAL : ". $this->mutual." SEGURO INICIO : ".$this->seguroInicio.
-                " DESCUENTO : ". $this->descuento." ANTICIPO : ".$this->anticipo.
+                " DESCUENTO : ". $this->descuento." TIPO : ".$this->tipo.
                 " IMAGEN ADJUNTA : ". $this->imagenAdjunta." CONTRATO ADJUNTO : ".$this->contratoAdjunto.
                 " TRANSPORTISTA : ". $this->transportista." MOVIL : ".$this->movil;
     }

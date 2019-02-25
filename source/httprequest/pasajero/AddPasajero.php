@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/PasajeroDao.php';
+include '../../cripto/Cripto.php';
 
 header('Content-Type: application/json');
 $cripto = new Cripto();
@@ -12,6 +13,7 @@ $mapellido = filter_input(INPUT_POST, 'mapellido');
 $telefono = filter_input(INPUT_POST, 'telefono');
 $celular = filter_input(INPUT_POST, 'celular');
 $direccion = filter_input(INPUT_POST, 'direccion');
+$punto = filter_input(INPUT_POST, 'punto');
 $nick = filter_input(INPUT_POST, 'nick');
 $password = $cripto->encriptar(filter_input(INPUT_POST, 'password'));
 $mail = filter_input(INPUT_POST, 'mail');
@@ -27,6 +29,7 @@ $pasajero->setMapellido($mapellido);
 $pasajero->setTelefono($telefono);
 $pasajero->setCelular($celular);
 $pasajero->setDireccion($direccion);
+$pasajero->setPunto($punto);
 $pasajero->setMail($mail);
 $pasajero->setNick($nick);
 $pasajero->setPassword($password);

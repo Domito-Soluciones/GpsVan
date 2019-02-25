@@ -9,6 +9,19 @@
   -webkit-animation: load4 1.3s infinite linear;
   animation: load4 1.3s infinite linear;
 }
+.loader-mini {
+  font-size: 3px;
+  display: inline-block;
+  margin-left: 15px;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  position: relative;
+  text-indent: -9999em;
+  visibility: hidden;
+  -webkit-animation: load4 1.3s infinite linear;
+  animation: load4 1.3s infinite linear;
+}
 .loaderCentral {
   font-size: 20px;
   width: 1em;

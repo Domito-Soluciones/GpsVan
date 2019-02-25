@@ -2,7 +2,6 @@
 include '../../util/validarPeticion.php';
 include '../../conexion/Conexion.php';
 include '../../dominio/Agente.php';
-//include './LogQuery.php';
 
 class AgenteDao {
     
@@ -26,8 +25,8 @@ class AgenteDao {
                 $agente->setCelular($row["agente_celular"]);
                 $agente->setDireccion($row["agente_direccion"]);
                 $agente->setMail($row["agente_mail"]);
-                $agente->setCargo($row["agente_cargo"]);
                 $agente->setPerfil($row["agente_perfil"]);
+                $agente->setEmpresa($row["agente_empresa"]);
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -60,8 +59,8 @@ class AgenteDao {
                 $agente->setCelular($row["agente_celular"]);
                 $agente->setDireccion($row["agente_direccion"]);
                 $agente->setMail($row["agente_mail"]);
-                $agente->setCargo($row["agente_cargo"]);
                 $agente->setPerfil($row["agente_perfil"]);
+                $agente->setEmpresa($row["agente_empresa"]);
                 array_push($array, $agente);
             }
         } catch (Exception $exc) {
@@ -100,14 +99,14 @@ class AgenteDao {
         $mail = $agente->getMail();
         $nick = $agente->getNick();
         $password = $agente->getClave();
-        $cargo = $agente->getCargo();
         $perfil = $agente->getPerfil();
+        $empresa = $agente->getEmpresa();
         $conn = new Conexion();
         try {
             $query = "INSERT INTO tbl_agente (agente_nombre,agente_papellido,"
                     . "agente_mapellido,agente_rut,agente_nick,agente_clave,agente_telefono,"
-                    . "agente_celular,agente_direccion,agente_mail,agente_cargo,agente_perfil) VALUES "
-                    . "('$nombre','$papellido','$mapellido','$rut','$nick','$password','$telefono','$celular','$direccion','$mail','$cargo','$perfil')"; 
+                    . "agente_celular,agente_direccion,agente_mail,agente_perfil,agente_empresa) VALUES "
+                    . "('$nombre','$papellido','$mapellido','$rut','$nick','$password','$telefono','$celular','$direccion','$mail','$perfil','$empresa')"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -133,8 +132,8 @@ class AgenteDao {
         $celular = $agente->getCelular();
         $direccion = $agente->getDireccion();
         $mail = $agente->getMail();
-        $cargo = $agente->getCargo();
         $perfil = $agente->getPerfil();
+        $empresa = $agente->getEmpresa();
         $conn = new Conexion();
         try {
             $query = "UPDATE tbl_agente SET agente_nombre = '$nombre',"
@@ -146,7 +145,7 @@ class AgenteDao {
                     {
                     $query .= "agente_clave = '$password',";
                     }
-                    $query .= "agente_cargo = '$cargo',agente_perfil = '$perfil' WHERE agente_rut = '$rut'";           
+                    $query .= "agente_perfil = '$perfil',agente_empresa = '$empresa' WHERE agente_rut = '$rut'";           
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);

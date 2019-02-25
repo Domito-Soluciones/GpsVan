@@ -17,8 +17,7 @@ class TarifaDao {
                     . "tarifa_destino LIKE '%".$busqueda."%' OR "
                     . "tarifa_valor1 LIKE '%".$busqueda."%' OR "
                     . "tarifa_valor2 LIKE '%".$busqueda."%' OR "
-                    . "tarifa_cliente LIKE '%".$busqueda."%' OR "
-                    . "tarifa_ruta LIKE '%".$busqueda."%' LIMIT 20";
+                    . "tarifa_cliente LIKE '%".$busqueda."%' LIMIT 20";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die; 
             while($row = mysqli_fetch_array($result)) {
@@ -30,7 +29,34 @@ class TarifaDao {
                 $tarifa->setValor1($row["tarifa_valor1"]);
                 $tarifa->setValor2($row["tarifa_valor2"]);
                 $tarifa->setCliente($row["tarifa_cliente"]);
-                $tarifa->setRuta($row["tarifa_ruta"]);
+                $tarifa->setTipo($row["tarifa_tipo"]);
+                $tarifa->setHorario($row["tarifa_horario"]);
+                array_push($array, $tarifa);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $array;
+    }
+    public function getTarifasEmpresa($empresa)
+    {
+        $array = array();
+        $conn = new Conexion();
+        try {
+            $query = "SELECT * FROM tbl_tarifa WHERE tarifa_cliente = '".$empresa."'";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die; 
+            while($row = mysqli_fetch_array($result)) {
+                $tarifa = new Tarifa();
+                $tarifa->setId($row["tarifa_id"]);
+                $tarifa->setNombre($row["tarifa_nombre"]);
+                $tarifa->setOrigen($row["tarifa_origen"]);
+                $tarifa->setDestino($row["tarifa_destino"]);
+                $tarifa->setValor1($row["tarifa_valor1"]);
+                $tarifa->setValor2($row["tarifa_valor2"]);
+                $tarifa->setCliente($row["tarifa_cliente"]);
+                $tarifa->setTipo($row["tarifa_tipo"]);
+                $tarifa->setHorario($row["tarifa_horario"]);
                 array_push($array, $tarifa);
             }
         } catch (Exception $exc) {
@@ -65,12 +91,13 @@ class TarifaDao {
         $valor1 = $tarifa->getValor1();
         $valor2 = $tarifa->getValor2();
         $cliente = $tarifa->getCliente();
-        $ruta = $tarifa->getRuta();
+        $tipo = $tarifa->getTipo();
+        $horario = $tarifa->getHorario();
         $conn = new Conexion();
         try {
             $query = "INSERT INTO tbl_tarifa (tarifa_nombre,tarifa_origen,"
-                    . "tarifa_destino,tarifa_valor1,tarifa_valor2,tarifa_cliente,tarifa_ruta) VALUES "
-                    . "('$nombre','$origen','$destino','$valor1','$valor2','$cliente','$ruta')"; 
+                    . "tarifa_destino,tarifa_valor1,tarifa_valor2,tarifa_cliente,tarifa_tipo,tarifa_horario) VALUES "
+                    . "('$nombre','$origen','$destino','$valor1','$valor2','$cliente','$tipo','$horario')";
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -85,20 +112,21 @@ class TarifaDao {
     
     public function modificarTarifa($tarifa)
     {
-        $id = 0;
+        $id = $tarifa->getId();
         $nombre = $tarifa->getNombre();
         $origen = $tarifa->getOrigen();
         $destino = $tarifa->getDestino();
         $valor1 = $tarifa->getValor1();
         $valor2 = $tarifa->getValor2();
         $cliente = $tarifa->getCliente();
-        $ruta = $tarifa->getRuta();
+        $tipo = $tarifa->getTipo();
+        $horario = $tarifa->getHorario();
         $conn = new Conexion();
         try {
             $query = "UPDATE tbl_tarifa SET tarifa_origen = '$origen',"
                     . " tarifa_destino = '$destino',tarifa_valor1 = $valor1,tarifa_valor2 = $valor2,"
-                    . " tarifa_cliente = '$cliente',tarifa_ruta = '$ruta'"
-                    . " WHERE tarifa_nombre = '$nombre'";       
+                    . " tarifa_cliente = '$cliente',tarifa_tipo = '$tipo', tarifa_horario = '$horario',"
+                    . " tarifa_nombre = '$nombre' WHERE tarifa_id = $id";       
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);

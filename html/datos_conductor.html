@@ -1,8 +1,5 @@
 <div class="titulo_pagina">
     Informaci&oacute;n Conductor
-    <div id="opcionVolver" class="opcion-volver">
-        Volver
-    </div>
 </div>
 <div class="contenedor-titulo">
     <div class="titulo_pagina_general" id="p_general">
@@ -14,32 +11,41 @@
     <div class="titulo_pagina_general dispose" id="p_app">
         3. Aplicaci&oacute;n
     </div>
-<!--    <div class="titulo_pagina_general dispose" id="p_movil">
-        4. Veh&iacute;culo
-    </div>-->
 </div>
 <div class="contenedor-info general" id="cont_general">
     <div class="contenedor-formulario">
         <div class="contenedor-fila">
-            <div class="contenedor-fila">
-                <div class="contenedor-pre-input">
-                    Rut (*)
-                </div>
-                <div class="contenedor-input">
-                    <input type="text" id="rut" placeholder="Ej: 11111111-1"  autocomplete="off" maxlength="10">
-                </div>
+            <div class="contenedor-pre-input-conductor">
+                Tipo (*)
             </div>
-            <div class="contenedor-fila">
-                <div class="contenedor-pre-input">
-                    Nombre (*)
-                </div>
-                <div class="contenedor-input">
-                    <input type="text" id="nombre" placeholder="Ej: Manuel" maxlength="20">
-                </div>
+            <div class="contenedor-input">
+                <select id="tipo">
+                    <option value="">Seleccione</option>
+                    <option value="0">Transportista</option>
+                    <option value="1">Conductor Empresa</option>
+                    <option value="2">Conductor Externo</option>
+                    <option value="3">Transportista/Conductor</option>
+                </select>
             </div>
         </div>
         <div class="contenedor-fila">
-            <div class="contenedor-pre-input">
+            <div class="contenedor-pre-input-conductor">
+                Rut (*)
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="rut" placeholder="Ej: 11111111-1"  autocomplete="off" maxlength="10">
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input-conductor">
+                Nombre (*)
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="nombre" placeholder="Ej: Manuel" maxlength="20">
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input-conductor">
                 Apellido Paterno (*)
             </div>
             <div class="contenedor-input">
@@ -47,7 +53,7 @@
             </div>
         </div>
         <div class="contenedor-fila">
-            <div class="contenedor-pre-input">
+            <div class="contenedor-pre-input-conductor">
                 Apellido Materno (*)
             </div>
             <div class="contenedor-input">
@@ -55,7 +61,7 @@
             </div>
         </div>
         <div class="contenedor-fila">
-            <div class="contenedor-pre-input">
+            <div class="contenedor-pre-input-conductor">
                 Tel&eacute;fono 
             </div>
             <div class="contenedor-input">
@@ -63,7 +69,7 @@
             </div>
         </div>
         <div class="contenedor-fila">
-            <div class="contenedor-pre-input">
+            <div class="contenedor-pre-input-conductor">
                 Celular (*)
             </div>
             <div class="contenedor-input">
@@ -71,7 +77,7 @@
             </div>
         </div>
         <div class="contenedor-fila">
-            <div class="contenedor-pre-input">
+            <div class="contenedor-pre-input-conductor">
                 Direcci&oacute;n (*)
             </div> 
             <div class="contenedor-input">
@@ -79,7 +85,7 @@
             </div>
         </div>
         <div class="contenedor-fila">
-            <div class="contenedor-pre-input">
+            <div class="contenedor-pre-input-conductor">
                 E-mail (*)
             </div>
             <div class="contenedor-input">
@@ -87,7 +93,7 @@
             </div>
         </div>
         <div class="contenedor-fila">
-            <div class="contenedor-pre-input">
+            <div class="contenedor-pre-input-conductor">
                 Fecha Nacimiento (*)
             </div>
             <div class="contenedor-input">
@@ -95,7 +101,7 @@
             </div>
         </div>
         <div class="contenedor-fila">
-            <div class="contenedor-pre-input">
+            <div class="contenedor-pre-input-conductor">
                 Tipo Licencia (*)
             </div>
             <div class="contenedor-input">
@@ -115,8 +121,8 @@
         <div class="info">(recomendado 150x150)</div>
         <input type="hidden" id="imagenOculta">
         <form id="formImagen" enctype="multipart/form-data" method="POST" 
-              onsubmit="subirFichero(event,$('#formImagen'),'source/util/subirFichero.php?nombre='+$('#rut').val()+'&tipo=img&archivo='+$('#imagenOculta').val(),succesSubirImagen())">
-            <input name="foto" type="file" class="file" id="fotoConductor" accept="image/x-png,image/jpeg" onchange="enviarFormFile($('#fotoConductor').val(),$('#imagenOculta'),$('#formImagen'))">
+              onsubmit="subirFicheroJPG(event,$('#formImagen'),$('#rut'),$('#imagenOculta'))">
+            <input name="foto" type="file" class="file" id="fotoConductor" accept="image/x-png,image/jpeg" onchange="enviarFormFile($('#fotoConductor').val(),$('#rut').val(),$('#imagenOculta'),$('#formImagen'))">
         </form>
         <div class="boton" id="adjuntarImagen" onclick="abrirFile(event,$('#fotoConductor:hidden'))">
             <img src="img/anadir.svg" width="12" height="12">
@@ -127,19 +133,21 @@
 <div class="contenedor-info contenedor_oculto" id="cont_contrato">
     <div class="contenedor-formulario">
         <div class="contenedor-fila">
-            <div class="contenedor-pre-input">
+            <div class="contenedor-pre-input-conductor">
                 Renta Imponible (*)
             </div>
             <div class="contenedor-input">
                 <input type="text" id="renta" placeholder="Ej: 100000" maxlength="10">
+                <input type="checkbox" id="checkRenta" class="check checkbox-oculto">
             </div>
         </div>
         <div class="contenedor-fila">
-            <div class="contenedor-pre-input">
+            <div class="contenedor-pre-input-conductor">
                 Tipo Contrato (*)
             </div>
             <div class="contenedor-input">
                 <input type="text" list="lcontrato" id="tipoContrato" placeholder="Ej: Indefinido" maxlength="20">
+                <input type="checkbox" id="checkContrato" class="check checkbox-oculto">
                 <datalist id="lcontrato" >
                     <option value="Indefinido">Indefinido</option>
                     <option value="Plazo fijo">Plazo fijo</option>
@@ -148,11 +156,12 @@
             </div>
         </div>
         <div class="contenedor-fila">
-            <div class="contenedor-pre-input">
-                Inst. Previsional (*)
+            <div class="contenedor-pre-input-conductor">
+                AFP (*)
             </div>
             <div class="contenedor-input">
                 <input type="text" list="lafp" id="afp" placeholder="Ej: Modelo" maxlength="20">
+                <input type="checkbox" id="checkAfp" class="check checkbox-oculto">
                 <datalist id="lafp" >
                     <option value="Modelo">Modelo</option>
                     <option value="Capital">Capital</option>
@@ -163,11 +172,12 @@
             </div>
         </div>
         <div class="contenedor-fila">
-            <div class="contenedor-pre-input">
+            <div class="contenedor-pre-input-conductor">
                 Isapre (*)
             </div>
             <div class="contenedor-input">
                 <input type="text" list="lisapre" id="isapre" placeholder="Ej: Consalud" maxlength="20">
+                <input type="checkbox" id="checkIsapre" class="check checkbox-oculto">
                 <datalist id="lisapre" >
                     <option value="Banmédica">Banm&eacute;dica</option>
                     <option value="Colmena Golden Cross">Colmena Golden Cross</option>
@@ -178,62 +188,71 @@
             </div>
         </div>
         <div class="contenedor-fila">
-            <div class="contenedor-pre-input">
-                Mutual (%) (*)
+            <div class="contenedor-pre-input-conductor">
+                Salud adicional (*)
             </div>
             <div class="contenedor-input">
-                <input type="text" id="mutual" placeholder="Ej: 34" maxlength="10">
+                <input type="text" id="isapread" placeholder="Ej: 20000" maxlength="20">
+                <input type="checkbox" id="checkIsapreAd" class="check checkbox-oculto">
             </div>
         </div>
         <div class="contenedor-fila">
-            <div class="contenedor-pre-input">
-                Inicio Seguro (*)
+            <div class="contenedor-pre-input-conductor">
+                Mutual (*)
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="mutual" list="lmutual" placeholder="Ej: ACHS" maxlength="10">
+                <input type="checkbox"  id="checkMutual" class="check checkbox-oculto">
+                <datalist id="lmutual" >
+                    <option value="ACHS">ACHS</option>
+                    <option value="Mutual de seguridad">Mutual de seguridad</option>
+                </datalist>
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input-conductor">
+                Inicio Seguro Conductor (*)
             </div>
             <div class="contenedor-input">
                 <input type="text" id="seguroInicio" placeholder="Ej: 01/01/2018">
             </div>
         </div>
         <div class="contenedor-fila">
-            <div class="contenedor-pre-input">
-                Renovaci&oacute;n Seguro (*)
-            </div>
-            <div class="contenedor-input">
-                <input type="text" id="seguroRenovacion" placeholder="Ej: 01/01/2018">
-            </div>
-        </div>
-        <div class="contenedor-fila">
-            <div class="contenedor-pre-input">
-                % Descuento
+            <div class="contenedor-pre-input-conductor">
+                % Descuento (*)
             </div>
             <div class="contenedor-input">
                 <input type="text" id="descuento" placeholder="Ej: 45" maxlength="10">
+                <input type="checkbox"  id="checkDescuento" class="check checkbox-oculto">
             </div>
         </div>
         <div class="contenedor-fila">
-            <div class="contenedor-pre-input">
-                Anticipos
+            <div class="contenedor-pre-input-conductor">
+                Transportista
             </div>
             <div class="contenedor-input">
-                <input type="text" id="anticipo" placeholder="Ej: 50000" maxlength="10">
+                <select id="transportista">
+                    <option value="">Seleccione</option>
+                </select>
             </div>
         </div>
         <div class="contenedor-fila">
-            <div class="contenedor-pre-input">
+            <div class="contenedor-pre-input-conductor">
                 Contrato
+                <div class="loader-mini" id="loader">Loading...</div>   
             </div>
             <div class="contenedor-input">
                 <input type="hidden" id="contratoOculta">
-                <div id="contenedor_contrato">
-
-                </div>
                 <form id="formContrato" enctype="multipart/form-data" method="POST" 
-                      onsubmit="subirFichero(event,$('#formContrato'),'source/util/subirFichero.php?nombre='+$('#rut').val()+'&tipo=pdf&archivo='+$('#contratoOculta').val(),succesSubirContrato())">
-                    <input name="contrato" type="file" class="file" id="contratoConductor" accept="application/pdf" onchange="enviarFormFile($('#contratoConductor').val(),$('#contratoOculta'),$('#formContrato'))">         
+                      onsubmit="subirFicheroPDF(event,$('#formContrato'),$('#rut'),$('#contratoOculta'),'')">
+                    <input name="contrato" type="file" class="file" id="contratoConductor" accept="application/pdf" onchange="enviarFormFile($('#contratoConductor').val(),$('#rut').val(),$('#contratoOculta'),$('#formContrato'))">         
                 </form>
                 <div class="boton" id="adjuntarContrato" onclick="abrirFile(event,$('#contratoConductor:hidden'))">
                     <img src="img/adjuntar.svg" width="12" height="12">
                     Adjuntar
-                </div>
+                </div>                 
+            </div>
+            <div class="contenedor_contrato_movil" id="contenedor_contrato">
             </div>
         </div>
     </div>
@@ -241,7 +260,7 @@
 <div class="contenedor-info contenedor_oculto" id="cont_app">
     <div class="contenedor-formulario">
         <div class="contenedor-fila">
-            <div class="contenedor-pre-input">
+            <div class="contenedor-pre-input-conductor">
                 Nick (*)
             </div>
             <div class="contenedor-input">
@@ -250,7 +269,7 @@
             </div>
         </div>
         <div class="contenedor-fila">
-            <div class="contenedor-pre-input">
+            <div class="contenedor-pre-input-conductor">
                 Password (*)
             </div>
             <div class="contenedor-input">
@@ -259,7 +278,7 @@
             </div>
         </div>
         <div class="contenedor-fila">
-            <div class="contenedor-pre-input">
+            <div class="contenedor-pre-input-conductor">
                 Repite Password (*)
             </div>
             <div class="contenedor-input">
@@ -268,43 +287,3 @@
         </div>
     </div>
 </div>
-<!--<div class="contenedor-info contenedor_oculto" id="cont_movil">
-    <div class="contenedor-formulario">
-        <div class="contenedor-fila">
-            <div class="contenedor-fila">
-                <div class="contenedor-pre-input">
-                    Patente (*)
-                </div>
-                <div class="contenedor-input">
-                    <select id="moviles" onchange="cambiarMovil()">
-                        
-                    </select>
-                </div>
-            </div>
-            <div class="contenedor-fila">
-                <div class="contenedor-pre-input">
-                    N&deg; Veh&iacute;culo (*)
-                </div>
-                <div class="contenedor-input">
-                    <input type="text" id="nombreM" placeholder="Ej: M201" maxlength="20" readonly>
-                </div>
-            </div>
-            <div class="contenedor-fila">
-                <div class="contenedor-pre-input">
-                    Marca (*)
-                </div>
-                <div class="contenedor-input">
-                    <input type="text" id="marca" placeholder="Ej: Kia" maxlength="20" readonly>
-                </div>
-            </div>
-        </div>
-        <div class="contenedor-fila">
-            <div class="contenedor-pre-input">
-                Modelo (*)
-            </div>
-            <div class="contenedor-input">
-                <input type="text" id="modelo" placeholder="Ej: Cerato" maxlength="20" readonly>
-            </div>
-        </div>
-    </div>
-</div>-->

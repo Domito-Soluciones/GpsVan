@@ -1,21 +1,18 @@
 <div class="titulo_pagina">
-    Informaci&oacute;n Servicio
+    <img src="img/atras.svg" class="img_volver" id="volver"> Informaci&oacute;n Servicio
 </div>
 <div class="contenedor-titulo">
     <div class="titulo_pagina_general" id="p_general">
         1. General
     </div>
-    <div class="titulo_pagina_general dispose" id="p_transportista">
-        2. Transportistas
+    <div class="titulo_pagina_general dispose" id="p_pasajero">
+        2. Pasajeros
     </div>
-    <div class="titulo_pagina_general dispose" id="p_viaje">
-        3. Viaje
-    </div>
-    <div class="titulo_pagina_general dispose" id="p_tarifa">
-        4. Tarifa
+    <div class="titulo_pagina_general dispose" id="p_ruta">
+        3. Ruta
     </div>
 </div>
-<div class="contenedor-info general" id="cont_general">
+<div class="contenedor-info info-servicio general" id="cont_general">
     <div class="contenedor-formulario">
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
@@ -27,7 +24,7 @@
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Cliente Coorporativo
+                Empresa
             </div>
             <div class="contenedor-input">
                 <div id="clienteServicio" class="resultado_busqueda" ></div>
@@ -35,38 +32,49 @@
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Pasajero
+                Ruta
             </div>
             <div class="contenedor-input">
-                <div id="pasajeroServicio" class="resultado_busqueda" ></div>
+                <div id="rutaServicio" class="resultado_busqueda" ></div>
             </div>
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Estado Servicio
+                Fecha
             </div>
             <div class="contenedor-input">
-                <div id="estadoServicio" class="resultado_busqueda" ></div>
+                    <input type="text" id="fechaServicio" placeholder="Ej: 23/12/2005" maxlength="20">
             </div>
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Tipo Servicio
+                Hora Inicio
             </div>
             <div class="contenedor-input">
-                <div id="tipoServicio" class="resultado_busqueda" ></div>                   
+                <input type="text" id="inicioServicio" placeholder="Ej: 15:34" maxlength="5">  
             </div>
         </div>
-    </div>
-</div>
-<div class="contenedor-info contenedor_oculto" id="cont_transportista">
-    <div class="contenedor-formulario">
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Transportista
+                Estado
             </div>
             <div class="contenedor-input">
-                <div id="transportistaServicio" class="resultado_busqueda" ></div>
+                <select id="estadoServicio">
+                    <option value="1">En Proceso de asignación</option>
+                    <option value="3">Asignado</option>
+                    <option value="4">En Ruta</option>
+                    <option value="5">Finalizado</option>
+                </select>
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                Veh&iacute;culo
+            </div>
+            <div class="contenedor-input">
+                <select id="movilServicio">
+                    <option value="">Seleccione</option>
+                </select>
             </div>
         </div>
         <div class="contenedor-fila">
@@ -79,59 +87,53 @@
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Veh&iacute;culo
-            </div>
-            <div class="contenedor-input">
-                <div id="movilServicio" class="resultado_busqueda" ></div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="contenedor-info contenedor_oculto" id="cont_viaje">
-    <div class="contenedor-formulario">
-        <div class="contenedor-fila">
-            <div class="contenedor-pre-input">
-                Origen
-            </div>
-            <div class="contenedor-input">
-                <div id="origenServicio" class="resultado_busqueda" ></div>
-            </div>
-        </div>
-        <div class="contenedor-fila">
-            <div class="contenedor-pre-input">
-                Hora Inicio
-            </div>
-            <div class="contenedor-input">
-                <div id="horaOrigenServicio" class="resultado_busqueda" ></div>
-            </div>
-        </div>
-        <div class="contenedor-fila">
-            <div class="contenedor-pre-input">
-                Destino
-            </div>
-            <div class="contenedor-input">
-                <div id="destinoServicio" class="resultado_busqueda" ></div>
-            </div>
-        </div>
-        <div class="contenedor-fila">
-            <div class="contenedor-pre-input">
-                Hora Termino
-            </div>
-            <div class="contenedor-input">
-                <div id="horaDestinoServicio" class="resultado_busqueda" ></div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="contenedor-info contenedor_oculto" id="cont_tarifa">
-    <div class="contenedor-formulario">
-        <div class="contenedor-fila">
-            <div class="contenedor-pre-input">
-                Tarifa
+                Tarifa 1
             </div>
             <div class="contenedor-input">
                 <div id="tarifaServicio" class="resultado_busqueda" ></div>
             </div>
         </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                Tarifa 2
+            </div>
+            <div class="contenedor-input">
+                <div id="tarifa2Servicio" class="resultado_busqueda" ></div>
+            </div>
+        </div>
+        <div class="pie-servicio">
+            <div class="boton" id="guardar">
+                <img src="img/guardar.svg" width="12" height="12">
+                Guardar
+            </div>
+            <div class="boton btn-eliminar" id="eliminar">
+                <img src="img/eliminar.svg" width="12" height="12">
+                Eliminar
+            </div>
+        </div>
+    </div>
+</div>
+<div class="contenedor-info info-servicio contenedor_oculto" id="cont_pasajero">
+    <div class="titulo_pasajero">
+        <div>
+            Pasajero
+        </div>
+        <div>
+            Destino
+        </div>
+        <div>
+            Hora Destino
+        </div>
+        <div>
+            Estado
+        </div>
+    </div>
+    <div class="pasajeros_contenido" id="pasajeros_contenido">
+        
+    </div>
+</div>
+<div class="contenedor-info info-servicio-mapa contenedor_oculto" id="cont_ruta">
+    <div id="contenedor_mapa" class="contenedor_mapa">
+
     </div>
 </div>

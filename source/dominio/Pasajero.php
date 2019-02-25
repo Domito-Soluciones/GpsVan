@@ -12,6 +12,7 @@ class Pasajero {
     private $telefono;
     private $celular;
     private $direccion;
+    private $punto;
     private $mail;
     private $cargo;
     private $nivel;
@@ -19,6 +20,7 @@ class Pasajero {
     private $cliente;
     private $centroCosto;
     private $empresa;
+    private $empresaDireccion;
     private $ruta;
     
     function getId() {
@@ -61,6 +63,10 @@ class Pasajero {
         return $this->direccion;
     }
 
+    function getPunto() {
+        return $this->punto;
+    }
+
     function getMail() {
         return $this->mail;
     }
@@ -87,6 +93,10 @@ class Pasajero {
 
     function getEmpresa() {
         return $this->empresa;
+    }
+
+    function getEmpresaDireccion() {
+        return $this->empresaDireccion;
     }
 
     function getRuta() {
@@ -133,6 +143,10 @@ class Pasajero {
         $this->direccion = $direccion;
     }
 
+    function setPunto($punto) {
+        $this->punto = $punto;
+    }
+
     function setMail($mail) {
         $this->mail = $mail;
     }
@@ -161,11 +175,16 @@ class Pasajero {
         $this->empresa = $empresa;
     }
 
+    function setEmpresaDireccion($empresaDireccion) {
+        $this->empresaDireccion = $empresaDireccion;
+    }
+
     function setRuta($ruta) {
         $this->ruta = $ruta;
     }
 
-    public function toString() {
+    
+        public function toString() {
         return "DATOS PASAJERO: ID : ".$this->id." NOMBRE : ".$this->nombre.
                 " PAPELLIDO : ".$this->papellido." MAPELLIDO : ".$this->mapellido.
                 " RUT : ".$this->rut." NICK : ".$this->nick." PASSWORD : ".$this->password.

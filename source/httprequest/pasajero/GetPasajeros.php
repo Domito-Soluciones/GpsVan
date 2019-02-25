@@ -19,10 +19,10 @@ for ($i = 0 ; $i < count($pasajeros); $i++)
     $telefono = $pasajeros[$i]->getTelefono();
     $celular = $pasajeros[$i]->getCelular();
     $direccion = $pasajeros[$i]->getDireccion();
+    $punto = $pasajeros[$i]->getPunto();
     $mail = $pasajeros[$i]->getMail();
     $cargo = $pasajeros[$i]->getCargo();
     $nivel = $pasajeros[$i]->getNivel();
-    $cliente = $pasajeros[$i]->getCliente();
     $centroCosto = $pasajeros[$i]->getCentroCosto();
     $empresa = $pasajeros[$i]->getEmpresa();
     $ruta = $pasajeros[$i]->getRuta();
@@ -35,10 +35,10 @@ for ($i = 0 ; $i < count($pasajeros); $i++)
         . "\"pasajero_telefono\":\"".$telefono."\","
         . "\"pasajero_celular\":\"".$celular."\","
         . "\"pasajero_direccion\":\"".$direccion."\","
+        . "\"pasajero_punto_encuentro\":\"".$punto."\","
         . "\"pasajero_mail\":\"".$mail."\","
         . "\"pasajero_cargo\":\"".$cargo."\","
         . "\"pasajero_nivel\":\"".$nivel."\","
-        . "\"pasajero_cliente\":\"".$cliente."\","
         . "\"pasajero_centro_costo\":\"".$centroCosto."\","
         . "\"pasajero_empresa\":\"".$empresa."\","
         . "\"pasajero_ruta\":\"".$ruta."\""

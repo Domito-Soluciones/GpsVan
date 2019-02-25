@@ -1,5 +1,5 @@
 <div class="titulo_pagina">
-    Informaci&oacute;n Tarifa
+    <img src="img/atras.svg" class="img_volver" id="volver"> Informaci&oacute;n Tarifa
 </div>
 <div class="contenedor-titulo">
     <div class="titulo_pagina_general" id="p_general">
@@ -10,19 +10,27 @@
     <div class="contenedor-formulario">
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Cliente (*)
+                Tipo (*)
             </div>
             <div class="contenedor-input">
-                <input type="text" list="lcliente" id="clientes" placeholder="Ej: Falabella" onkeyup="cargarClientes()">
-                <datalist id="lcliente"></datalist>
+                <select id="tipo">
+                    <option value="">Seleccione</option>
+                    <option value="ZP">Zarpe</option>
+                    <option value="RG">Regreso</option>
+                </select>
             </div>
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Ruta (*)
+                Horario (*)
             </div>
             <div class="contenedor-input">
-                <input type="text" id="ruta" placeholder="Ej: Ruta 1">
+                <select id="horario">
+                    <option value="">Seleccione</option>
+                    <option value="MAN">Mañana</option>
+                    <option value="TAR">Tarde</option>
+                    <option value="NOC">Noche</option>
+                </select>
             </div>
         </div>
         <div class="contenedor-fila">
@@ -30,12 +38,12 @@
                 Nombre (*)
             </div>
             <div class="contenedor-input">
-                <input type="text" id="nombre" placeholder="Ej: Tarifa 1" maxlength="20">
+                <input type="text" id="nombre" placeholder="Ej: Tarifa 1" maxlength="20" readonly>
             </div>
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Origen (*)
+                Origen
             </div>
             <div class="contenedor-input">
                 <input type="text" id="origen" placeholder="Ej: Sotomayor 234" maxlength="20">
@@ -43,7 +51,7 @@
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Destino (*)
+                Destino
             </div>
             <div class="contenedor-input">
                 <input type="text" id="destino" placeholder="Ej: Vergara 123" maxlength="20">

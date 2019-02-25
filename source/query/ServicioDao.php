@@ -2,8 +2,11 @@
 include '../../util/validarPeticion.php';
 include '../../conexion/Conexion.php';
 include '../../dominio/Servicio.php';
+include '../../dominio/ServicioEspecial.php';
 include '../../dominio/ServicioDetalle.php';
+include '../../dominio/ServicioPasajero.php';
 include '../../dominio/Movil.php';
+include '../../dominio/Pasajero.php';
 //include './LogQuery.php';
 
 class ServicioDao {
@@ -11,25 +14,22 @@ class ServicioDao {
     public function addServicio($servicio)
     {
         $id = 0;
-        $partida = $servicio->getPartida();
-        $destInt1 = $servicio->getDestinoInt1();
-        $destInt2 = $servicio->getDestinoInt2();
-        $destInt3 = $servicio->getDestinoInt3();
-        $destFinal = $servicio->getDestinoFinal();
         $cliente = $servicio->getCliente();
-        $usuario = $servicio->getUsuario_nombre();
-        $transportista = $servicio->getTransportista();
+        $ruta = $servicio->getRuta();
+        $fecha = $servicio->getFecha();
+        $hora = $servicio->getHora();
         $movil = $servicio->getMovil();
-        $tipo = $servicio->getTipo();
-        $tarifa = $servicio->getTarifa();
+        $conductor = $servicio->getConductor();
+        $tarifa1 = $servicio->getTarifa1();
+        $tarifa2 = $servicio->getTarifa2();
+        $observaciones = $servicio->getObservaciones();
         $agente = $servicio->getAgente();
+        $estado = $servicio->getEstado();
         $conn = new Conexion();
         try {
-            $query = "INSERT INTO tbl_servicio (servicio_partida,servicio_destino_intermedio_uno,"
-                    . "servicio_destino_intermedio_dos,servicio_destino_intermedio_tres,servicio_destino_final,"
-                    . "servicio_cliente,servicio_usuario,servicio_transportista,"
-                    . "servicio_movil,servicio_tipo,servicio_tarifa,servicio_agente,"
-                    . "servicio_fecha,servicio_estado) VALUES ('$partida','$destInt1','$destInt2','$destInt3','$destFinal','$cliente','$usuario','$transportista','$movil','$tipo','$tarifa',$agente,NOW(),1)";
+            $query = "INSERT INTO tbl_servicio (servicio_cliente,servicio_ruta,servicio_fecha,"
+                    . "servicio_hora,servicio_movil,servicio_conductor,servicio_tarifa1,servicio_tarifa2,servicio_observacion,servicio_agente,servicio_estado)"
+                    . " VALUES ('$cliente','$ruta','$fecha','$hora','$movil','$conductor','$tarifa1','$tarifa2','$observaciones',$agente,$estado)";
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -42,16 +42,75 @@ class ServicioDao {
         return $id;
     }
     
-    public function addServicioDetalle($lat,$lon,$idServicio)
+    public function addServicioEspecial($servicio)
+    {
+        $id = 0;
+        $partida = $servicio->getPartida();
+        $destino = $servicio->getDestino();
+        $pasajero = $servicio->getPasajero();
+        $celular = $servicio->getCelular();
+        $fecha = $servicio->getFecha();
+        $hora = $servicio->getHora();
+        $movil = $servicio->getMovil();
+        $conductor = $servicio->getConductor();
+        $tarifa = $servicio->getTarifa();
+        $observaciones = $servicio->getObservaciones();
+        $agente = $servicio->getAgente();
+        $conn = new Conexion();
+        try {
+            $query = "INSERT INTO tbl_servicio_especial(servicio_especial_partida, servicio_especial_destino, "
+                    . "servicio_especial_pasajero, servicio_especial_celular, servicio_especial_fecha, servicio_especial_hora, servicio_especial_movil,"
+                    . " servicio_especial_conductor, servicio_especial_tarifa, servicio_especial_observacion, servicio_especial_agente, "
+                    . "servicio_especial_estado)"
+                    . " VALUES ('$partida','$destino','$pasajero',$celular,'$fecha','$hora','$movil','$conductor','$tarifa','$observaciones',$agente,1)";
+            $conn->conectar();
+            if (mysqli_query($conn->conn,$query)) {
+                $id = mysqli_insert_id($conn->conn);
+            } else {
+                echo mysqli_error($conn->conn);
+            }           
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $id;
+    }
+    
+    public function addServicioDetalle($lat,$lon,$pasajeros,$destinos,$idServicio)
     {
         $id = 0;
         $conn = new Conexion();
         try {
             $query = "INSERT INTO tbl_servicio_detalle "
                     . "(servicio_detalle_servicio,servicio_detalle_lat,servicio_detalle_lon)"
-                    . " VALUES ($idServicio,'$lat','$lon')"; 
+                    . " VALUES ($idServicio,'$lat','$lon');";
+            for($i = 0 ; $i < count($pasajeros) ; $i++)
+            {
+                if($destinos[$i]!="")
+                {
+                    $query .= "INSERT INTO tbl_servicio_pasajero (servicio_pasajero_id_servicio,servicio_pasajero_id_pasajero,servicio_pasajero_destino) VALUES ($idServicio,$pasajeros[$i],'$destinos[$i]');"; 
+                }
+            }
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_multi_query($conn->conn,$query)) {
+                $id = mysqli_insert_id($conn->conn);
+            } else {
+                echo mysqli_error($conn->conn);
+            }           
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $id;
+    }
+    public function addServicioDetalleReal($lat,$lon,$idServicio)
+    {
+        $id = 0;
+        $conn = new Conexion();
+        try {
+            $query = "INSERT INTO tbl_servicio_detalle_real "
+                    . "(servicio_detalle_real_servicio,servicio_detalle_real_lat,servicio_detalle_real_lon)"
+                    . " VALUES ($idServicio,'$lat','$lon');";
+            $conn->conectar();
+            if (mysqli_multi_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
@@ -62,25 +121,26 @@ class ServicioDao {
         return $id;
     }
     
-    public function modServicio($idServicio,$servicio)
+    public function modificarServicio($servicio)
     {
-        $id = 0;
+        $id = $servicio->getId();
         $cliente = $servicio->getCliente();
-        $usuario = $servicio->getUsuario_nombre();
-        $transportista = $servicio->getTransportista();
+        $ruta = $servicio->getRuta();
+        $fecha = $servicio->getFecha();
+        $hora = $servicio->getHora();
+        $estado = $servicio->getEstado();
         $movil = $servicio->getMovil();
-        $tipo = $servicio->getTipo();
-        $tarifa = $servicio->getTarifa();
-        $agente = $servicio->getAgente();
+        $tarifa1 = $servicio->getTarifa1();
+        $tarifa2 = $servicio->getTarifa2();
+        $observacion = $servicio->getObservaciones();
+        $conductor = $servicio->getConductor();
         $conn = new Conexion();
         try {
-            $query = "UPDATE tbl_servicio SET servicio_cliente = '$cliente',"
-                    . "servicio_usuario = '$usuario',servicio_transportista = '$transportista',"
-                    . "servicio_movil = '$movil',servicio_tipo = '$tipo',"
-                    . "servicio_tarifa = $tarifa,servicio_agente = $agente WHERE servicio_id = $idServicio"; 
+            $query = "UPDATE tbl_servicio SET servicio_cliente = '$cliente',servicio_ruta = '$ruta', servicio_fecha = '$fecha',"
+                    . "servicio_hora = '$hora',servicio_movil = '$movil',servicio_estado = '$estado',"
+                    . "servicio_conductor = '$conductor',servicio_observacion = '$observacion', servicio_tarifa1 = '$tarifa1', servicio_tarifa2 = '$tarifa2' WHERE servicio_id = ".$id; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
-                $id = $idServicio;
             } else {
                 echo mysqli_error($conn->conn);
             }           
@@ -90,39 +150,66 @@ class ServicioDao {
         return $id;
     }
     
-    public function getServicios($busqueda,$desde,$hasta)
+    public function getServicios($id,$empresa,$conductor,$estado,$movil,$desde,$hasta)
     {
         $array = array();
         $conn = new Conexion();
         try {
-            $query = "SELECT * FROM tbl_servicio WHERE "
-                    . "servicio_id LIKE '%$busqueda%' OR "
-                    . "servicio_partida LIKE '%$busqueda%' OR "
-                    . "servicio_destino LIKE '%$busqueda%' OR "
-                    . "servicio_cliente LIKE '%$busqueda%' OR "
-                    . "servicio_usuario LIKE '%$busqueda%' OR "
-                    . "servicio_transportista LIKE '%$busqueda%' OR "
-                    . "servicio_movil LIKE '%$busqueda%' AND servicio_fecha BETWEEN '".$desde."' AND '".$hasta
-                    ."' ORDER BY servicio_fecha DESC LIMIT 20";
+            $buscaId = '';
+            $buscaEmpresa = '';
+            $buscaConductor = '';
+            $buscaMovil = '';
+            $buscaEstado = '';
+            $buscaFecha = '';
+            if($id != '')
+            {
+                $buscaId = " AND servicio_id LIKE '%$id%' ";
+            }
+            if($empresa != '')
+            {
+                $buscaEmpresa = " AND servicio_cliente LIKE '%$empresa%' ";
+            }
+            if($conductor != '')
+            {
+                $buscaConductor = " AND servicio_conductor = '$conductor' ";
+            }
+            if($movil != '')
+            {
+                $buscaMovil = " AND servicio_movil LIKE '%$movil%' ";
+            }
+            if($estado != '')
+            {
+                $buscaEstado = " AND servicio_estado = $estado ";
+            }
+            if($desde != '' && $hasta == '')
+            {
+                $buscaFecha = "AND servicio_fecha > '".$desde."' ";
+            }
+            if($hasta != '' && $desde == '')
+            {
+                $buscaFecha = "AND servicio_fecha < '".$hasta."' ";
+            }
+            if($desde != '' && $hasta != '')
+            {
+                $buscaFecha = "AND servicio_fecha BETWEEN '".$desde."' AND '".$hasta."'";
+            }
+            $query = "SELECT * FROM tbl_servicio WHERE servicio_estado NOT IN (0,6) "
+                    .$buscaFecha." ".$buscaId." ".$buscaEmpresa." ".$buscaConductor." ".$buscaMovil." ".$buscaEstado
+                    . " ORDER BY servicio_id DESC LIMIT 15";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
             while($row = mysqli_fetch_array($result)) {
                 $servicio = new Servicio();
                 $servicio->setId($row["servicio_id"]);          
-                $servicio->setPartida($row["servicio_partida"]);
-                $servicio->setDestinoInt1($row["servicio_destino_intermedio_uno "]);
-                $servicio->setDestinoInt2($row["servicio_destino_intermedio_dos"]);
-                $servicio->setDestinoInt3($row["servicio_destino_intermedio_tres"]);
-                $servicio->setDestinoFinal($row["servicio_destino_final"]);
                 $servicio->setCliente($row["servicio_cliente"]);
-                $servicio->setUsuario_nombre($row["servicio_usuario"]);
-                $servicio->setTransportista($row["servicio_transportista"]);
-                $servicio->setMovil($row["servicio_movil"]);
-                $servicio->setTipo($row["servicio_tipo"]);
-                $servicio->setTarifa($row["servicio_tarifa"]);
-                $servicio->setAgente($row["servicio_agente"]);
+                $servicio->setRuta($row["servicio_ruta"]);
                 $date = new DateTime($row["servicio_fecha"]);
-                $servicio->setFecha(date_format($date, 'd-m-Y H:i:s'));
+                $servicio->setFecha(date_format($date, 'd/m/Y'));
+                $servicio->setHora($row["servicio_hora"]);
+                $servicio->setMovil($row["servicio_movil"]);
+                $servicio->setConductor($row["servicio_conductor"]);
+                $servicio->setTarifa1($row["servicio_tarifa1"]);
+                $servicio->setTarifa2($row["servicio_tarifa2"]);
                 $servicio->setEstado($row["servicio_estado"]);
                 array_push($array, $servicio);
             }
@@ -165,6 +252,29 @@ class ServicioDao {
         return $servicio;
     }
     
+    public function getPasajerosServicios($id)
+    {
+        $array = array();
+        $conn = new Conexion();
+        try {
+            $query = "SELECT * FROM tbl_servicio_pasajero JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id WHERE "
+                    . "servicio_pasajero_id_servicio = '$id'";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            while($row = mysqli_fetch_array($result)) {
+                $servicioPasajero = new ServicioPasajero();
+                $servicioPasajero->setId($row["servicio_pasajero_id_servicio"]);          
+                $servicioPasajero->setPasajero($row["pasajero_nombre"]." ".$row["pasajero_papellido"]);
+                $servicioPasajero->setEstado($row["servicio_pasajero_estado"]);
+                $servicioPasajero->setHora($row["servicio_pasajero_hora_destino"]);
+                $servicioPasajero->setDestino($row["servicio_pasajero_destino"]);
+                array_push($array, $servicioPasajero);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $array;
+    }
     public function getServiciosDetalle($id)
     {
         $servicioDetalle = new ServicioDetalle();
@@ -259,16 +369,17 @@ class ServicioDao {
         $array = array();
         $conn = new Conexion();
         try {
-            $query = "SELECT * FROM tbl_servicio WHERE servicio_movil = '' AND servicio_estado = 0 ORDER BY servicio_fecha";
+            $query = "SELECT * FROM tbl_servicio WHERE servicio_estado = 0 ORDER BY servicio_fecha";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query); 
             while($row = mysqli_fetch_array($result)) {
                 $servicio = new Servicio();            
                 $servicio->setId($row["servicio_id"]);
-                $servicio->setPartida($row["servicio_partida"]);
-                $servicio->setDestino($row["servicio_destino"]);
                 $servicio->setCliente($row["servicio_cliente"]);
-                $servicio->setUsuario_nombre($row["servicio_usuario"]);
+                $date = new DateTime($row["servicio_fecha"]);
+                $servicio->setFecha(date_format($date, 'd/m/Y'));
+                $servicio->setHora($row["servicio_hora"]);
+                $servicio->setObservaciones($row["servicio_observacion"]);
                 array_push($array, $servicio);
             }
         } catch (Exception $exc) {
@@ -277,9 +388,120 @@ class ServicioDao {
         return $array;
     }
     
+    public function getServicioProgramados($conductor)
+    {
+        $array = array();
+        $conn = new Conexion();
+        try {
+            $query = "SELECT servicio_id,servicio_cliente,servicio_ruta,servicio_fecha,"
+                    . "servicio_hora,servicio_conductor,servicio_estado,servicio_tarifa1,"
+                    . "servicio_observacion,servicio_conductor,movil_nombre,"
+                    . "servicio_pasajero_destino,pasajero_id,pasajero_nombre,pasajero_papellido,pasajero_celular,cliente_direccion "
+                    . " FROM tbl_servicio JOIN tbl_servicio_pasajero ON"
+                    . " servicio_id = servicio_pasajero_id_servicio JOIN tbl_servicio_detalle"
+                    . " ON servicio_id = servicio_detalle_servicio "
+                    . "JOIN tbl_movil ON servicio_movil = movil_nombre "
+                    . "JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id "
+                    . "JOIN tbl_cliente ON servicio_cliente = cliente_razon_social "
+                    . "WHERE servicio_conductor = '$conductor' AND servicio_estado NOT IN (4,5,6) "
+                    . "ORDER BY servicio_id desc LIMIT 20";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query); 
+            while($row = mysqli_fetch_array($result)) {
+                $servicio = new Servicio();            
+                $servicio->setId($row["servicio_id"]);
+                $servicio->setCliente($row["servicio_cliente"]);
+                $servicio->setClienteDireccion($row["cliente_direccion"]);
+                $servicio->setRuta($row["servicio_ruta"]);
+                $servicio->setFecha($row["servicio_fecha"]);
+                $servicio->setHora($row["servicio_hora"]);
+                $servicio->setMovil($row["movil_nombre"]);
+                $servicio->setEstado($row["servicio_estado"]);
+                $servicio->setConductor($row["servicio_conductor"]);
+                $servicio->setTarifa1($row["servicio_tarifa1"]); 
+                $servicio->setObservaciones($row["servicio_observacion"]);
+                $pasajero = new Pasajero();
+                $pasajero->setId($row["pasajero_id"]);
+                $pasajero->setNombre($row["pasajero_nombre"] . " " . $row["pasajero_papellido"]);
+                $pasajero->setCelular($row["pasajero_celular"]);
+                $servicio->setPasajero($pasajero);
+                $servicio->setDestino($row["servicio_pasajero_destino"]);
+                array_push($array, $servicio);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $array;
+    }
+    
+    public function getServicioProgramado($idServicio,$idConductor)
+    {
+        $array = array();
+        $conn = new Conexion();
+        try {
+            $query = "SELECT servicio_id,servicio_cliente,servicio_ruta,servicio_fecha,"
+                    . "servicio_hora,servicio_conductor,servicio_estado,servicio_tarifa1,"
+                    . "servicio_observacion,servicio_conductor,movil_nombre,"
+                    . "servicio_pasajero_destino,pasajero_id,pasajero_nombre,pasajero_papellido,pasajero_celular,cliente_direccion "
+                    . " FROM tbl_servicio JOIN tbl_servicio_pasajero ON"
+                    . " servicio_id = servicio_pasajero_id_servicio JOIN tbl_servicio_detalle"
+                    . " ON servicio_id = servicio_detalle_servicio "
+                    . "JOIN tbl_movil ON servicio_movil = movil_nombre "
+                    . "JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id "
+                    . "JOIN tbl_cliente ON servicio_cliente = cliente_razon_social "
+                    . "WHERE servicio_id = $idServicio AND servicio_conductor = '$idConductor' AND servicio_estado IN (3,4) ORDER BY servicio_pasajero_id";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query); 
+            while($row = mysqli_fetch_array($result)) {
+                $servicio = new Servicio();            
+                $servicio->setId($row["servicio_id"]);
+                $servicio->setCliente($row["servicio_cliente"]);
+                $servicio->setClienteDireccion($row["cliente_direccion"]);
+                $servicio->setRuta($row["servicio_ruta"]);
+                $servicio->setFecha($row["servicio_fecha"]);
+                $servicio->setHora($row["servicio_hora"]);
+                $servicio->setMovil($row["movil_nombre"]);
+                $servicio->setEstado($row["servicio_estado"]);
+                $servicio->setConductor($row["servicio_conductor"]);
+                $servicio->setTarifa1($row["servicio_tarifa1"]); 
+                $servicio->setObservaciones($row["servicio_observacion"]);
+                $pasajero = new Pasajero();
+                $pasajero->setId($row["pasajero_id"]);
+                $pasajero->setNombre($row["pasajero_nombre"] . " " . $row["pasajero_papellido"]);
+                $pasajero->setCelular($row["pasajero_celular"]);
+                $servicio->setPasajero($pasajero);
+                $servicio->setDestino($row["servicio_pasajero_destino"]);
+                array_push($array, $servicio);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $array;
+    }
+    
+    public function getServicioReal($idServicio)
+    {
+        $array = array();
+        $conn = new Conexion();
+        try {
+            $query = "SELECT * FROM tbl_servicio_detalle_real WHERE servicio_detalle_real_id = $idServicio";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query); 
+            while($row = mysqli_fetch_array($result)) {
+                $servicioDetalle = new ServicioDetalle();
+                $servicioDetalle->setId($row["servicio_detalle_real_servicio"]);
+                $servicioDetalle->setLat($row["servicio_detalle_real_lat"]);
+                $servicioDetalle->setLat($row["servicio_detalle_real_lon"]);
+                array_push($array, $servicioDetalle);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $array;
+    }
 
     
-        public function desAsignarServicio($id,$estado)
+    public function desAsignarServicio($id,$estado)
     {
         $conn = new Conexion();
         try {
@@ -371,6 +593,24 @@ class ServicioDao {
         $conn = new Conexion();
         try {
             $query = "UPDATE tbl_servicio SET servicio_estado = 6 WHERE servicio_id = '$idServicio'"; 
+            $conn->conectar();
+            if (mysqli_query($conn->conn,$query)) {
+                $id = mysqli_insert_id($conn->conn);
+            } else {
+                echo mysqli_error($conn->conn);
+            }           
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $idServicio;
+    }
+    
+    public function modificarEstadoServicioPasajero($idServicio,$idPasajero)
+    {
+        $id = 0;
+        $conn = new Conexion();
+        try {
+            $query = "UPDATE tbl_servicio_pasajero SET servicio_pasajero_estado = 1,servicio_pasajero_hora_destino = CURRENT_TIME() WHERE servicio_pasajero_id_servicio = $idServicio AND servicio_pasajero_id_pasajero  = $idPasajero";
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);

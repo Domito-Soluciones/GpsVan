@@ -20,8 +20,8 @@ for ($i = 0 ; $i < count($agentes); $i++)
     $celular = $agentes[$i]->getCelular();
     $direccion = $agentes[$i]->getDireccion();
     $mail = $agentes[$i]->getMail();
-    $cargo = $agentes[$i]->getCargo();
     $perfil = $agentes[$i]->getPerfil();
+    $empresa = $agentes[$i]->getEmpresa();
     echo "{\"agente_id\":\"".$cId."\","
         . "\"agente_nombre\":\"".$nombre."\","
         . "\"agente_papellido\":\"".$papellido."\","
@@ -32,8 +32,8 @@ for ($i = 0 ; $i < count($agentes); $i++)
         . "\"agente_celular\":\"".$celular."\","
         . "\"agente_direccion\":\"".$direccion."\","
         . "\"agente_mail\":\"".$mail."\","
-        . "\"agente_cargo\":\"".$cargo."\","
-        . "\"agente_perfil\":\"".$perfil."\""
+        . "\"agente_perfil\":\"".$perfil."\","
+        . "\"agente_empresa\":\"".$empresa."\""
         . "}";
     if (($i+1) != count($agentes))
     {

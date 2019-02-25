@@ -2,8 +2,9 @@
 var ID_AGENTE;
 var AGENTES;
 var AGREGAR = true;
+var clientesArray = [];
 var PAGINA = 'AGENTES';
-var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","mail","cargo","perfil","nick","password","password2"];
+var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","mail","perfil","clientes","nick","password","password2"];
 $(document).ready(function(){
    PAGINA_ANTERIOR = PAGINA;
     buscarAgente();
@@ -29,6 +30,30 @@ $(document).ready(function(){
                     alertify.error("El nick "+$(this).val()+" no se encuentra disponible");
                     $("#nick").val("");
                     return;
+                }
+            });
+            
+            $("#perfil").change(function(){
+                if($(this).val() === '1')
+                {
+                    $("#clientes").val("");
+                    cargarClientes();
+                    quitarclase($("#empresa"),"oculto");
+                }      
+                else
+                {
+                    agregarclase($("#empresa"),"oculto")
+                    $("#clientes").val("-");   
+                }
+            });
+            
+            $("#clientes").on('blur',function () {
+                var noExiste = validarInexistencia($("#clientes").val(),clientesArray);
+                if(noExiste)
+                {
+                    alertify.error("Cliente inexistente");
+                    $("#clientes").val("");
+
                 }
             });
         });
@@ -76,9 +101,9 @@ function agregarAgente()
     var nick = $("#nick").val();
     var password = $("#password").val();
     var password2 = $("#password2").val();
-    var cargo = $("#cargo").val();
     var perfil = $("#perfil").val();
-    var array = [rut,nombre,papellido,mapellido,celular,direccion,mail,cargo,perfil,nick,password,password2];
+    var empresa = $("#clientes").val();
+    var array = [rut,nombre,papellido,mapellido,celular,direccion,mail,perfil,empresa,nick,password,password2];
     if(!validarCamposOr(array))
     {
         activarPestania(array);
@@ -96,7 +121,7 @@ function agregarAgente()
     {
         var params = {nombre: nombre,papellido :papellido, mapellido : mapellido, rut : rut,
                         nick: nick, password : btoa(password), telefono: telefono, celular : celular,
-                        direccion : direccion, mail : mail, cargo : cargo, perfil : perfil};
+                        direccion : direccion, mail : mail, perfil : perfil, empresa : empresa};
         var url = urlBase + "/agente/AddAgente.php";
         var success = function(response)
         {
@@ -127,12 +152,12 @@ function modificarAgente()
     var nick = $("#nick").val();
     var password = $("#password").val();
     var password2 = $("#password2").val();
-    var cargo = $("#cargo").val();
     var perfil = $("#perfil").val();
+    var empresa = $("#clientes").val();
     var array;
     var params = {id : id,nombre: nombre,papellido :papellido, mapellido : mapellido, rut : rut,
             nick: nick, telefono: telefono, celular : celular,
-            direccion : direccion, mail : mail, cargo : cargo, perfil : perfil};
+            direccion : direccion, mail : mail, perfil : perfil, empresa : empresa};
     if(password !== '' || password2 !== '')
     {
         if(password !== password2)
@@ -142,12 +167,12 @@ function modificarAgente()
             alertify.error("La password no coincide");
             return;
         }
-        array = [rut,nombre,papellido,mapellido,celular,direccion,mail,cargo,perfil,nick,password,password2];
+        array = [rut,nombre,papellido,mapellido,celular,direccion,mail,perfil,empresa,nick,password,password2];
         params.password = btoa(password);
     }
     else
     {
-        array = [nombre,papellido,mapellido,rut,celular,direccion,mail,cargo,perfil,nick];   
+        array = [nombre,papellido,mapellido,rut,celular,direccion,mail,perfil,empresa,nick];   
     }
     if(!validarCamposOr(array))
     {
@@ -266,8 +291,18 @@ function abrirModificar(id)
         $("#celular").val(agente.agente_celular);
         $("#direccion").val(agente.agente_direccion);
         $("#mail").val(agente.agente_mail);
-        $("#cargo").val(agente.agente_cargo);
         $("#perfil").val(agente.agente_perfil);
+        if(agente.agente_perfil === '1')
+        {
+            $("#clientes").val("");
+            cargarClientes();
+            quitarclase($("#empresa"),"oculto");
+        }
+        else
+        {
+            $("#clientes").val("-");   
+        }
+        $("#clientes").val(agente.agente_empresa);
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
         if(agente.agente_nick !== NICK_GLOBAL)
@@ -278,6 +313,29 @@ function abrirModificar(id)
         {
             cambiarPropiedad($("#eliminar"),"visibility","hidden");
         }
+        $("#perfil").change(function(){
+            if($(this).val() === '1')
+            {
+                $("#clientes").val("");
+                cargarClientes();
+                quitarclase($("#empresa"),"oculto");
+            }
+            else
+            {
+                agregarclase($("#empresa"),"oculto");
+                $("#clientes").val("-");   
+            }
+        });
+        
+        $("#clientes").on('blur',function () {
+            var noExiste = validarInexistencia($("#clientes").val(),clientesArray);
+            if(noExiste)
+            {
+                alertify.error("Cliente inexistente");
+                $("#clientes").val("");
+
+            }
+        });
     });
 }
 
@@ -427,3 +485,23 @@ function cambiarPestaniaAplicacion()
     quitarclase($("#p_app"),"dispose");
     agregarclase($("#p_general"), "dispose");
 }
+
+function cargarClientes()
+{
+    var busqueda = $("#clientes").val();
+    var params = {busqueda : busqueda,buscaCC : '0'};
+    var url = urlBase + "/cliente/GetClientes.php";
+    var success = function(response)
+    {
+        $("#lcliente").html("");
+        for(var i = 0 ; i < response.length ; i++)
+        {
+            var nombre = response[i].cliente_razon;
+            $("#lcliente").append("<option value=\""+nombre+"\">"+nombre+"</option>");
+            CLIENTES = response;
+            clientesArray.push(nombre);
+        }
+    };
+    postRequest(url,params,success);
+}
+

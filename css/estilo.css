@@ -39,11 +39,12 @@ select
     cursor: pointer;
     -moz-appearance: none;
     border-radius: 5px;
-    width: 150px;
+    width: 156px;
     height: 30px;
     background: #FFFFFF url("../img/flecha-abajo.svg")no-repeat right;
     background-size: 10px;
-    background-position: 125px, 0;
+    background-position: 130px, 0;
+    margin-top: 5px;
 }
 .button-succes
 {
@@ -95,7 +96,6 @@ select
     border-bottom: solid 1px #8a9cb2;
     height: 40px;
     font-size: 15px;
-    min-width: 180px;
     cursor: pointer;
     color: #8a9cb2;
 }
@@ -122,22 +122,45 @@ select
 .menu
 {
     color: white;
-    width: calc(15% - 1px);
+    width: calc(4% - 1px);
     height: calc(100% - 60px);
     float: left;
     display: inline;
     border-right: solid 1px silver;
-    min-width: 180px;
 }
 .contenido-menu
 {
     padding-top: 5%;
-    width: 100%;
+    width: calc(90% - 10px);
     text-align: center;
+    display: none;
 }
+
+.img-menu
+{
+    margin-top: 10px;
+    width: 20px;
+    height: 20px;
+}
+
+.img-cancelar
+{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+}
+
+.cont-img-menu
+{
+   width: 10%;
+   height: 40px;
+   float: left;
+   margin-left: 10px;
+}
+
 .contenido-central
 {
-    width: 85%;
+    width: 96%;
     height: calc(100% - 60px);
     float: left;
     display: inline;
@@ -155,7 +178,7 @@ select
     float: left;
     margin-top: 21px;
     margin-left: 1%;
-    width: 15%;
+    width: 10%;
     height: 60%;
     min-width: 200px;
 }
@@ -186,11 +209,15 @@ select
     height: 60px;
     min-width: 160px;
 }
-
+.pre-buscador
+{
+    display: inline-block;
+    width: 50px;
+}
 .buscador
 {
     margin-top: 3%;
-    margin-left: 23%;
+    margin-left: 10%;
     margin-bottom: 3%;
 }
 .buscador_titulo
@@ -239,7 +266,6 @@ select
     float: left;
     width: 25%;
     height: calc(100% - 50px);
-    min-width: 250px;
     border-right: solid 1px silver;
     overflow-y: auto;
 }
@@ -265,10 +291,18 @@ select
     height: calc(100% - 50px);
     overflow: auto;
 }
+.contenedor_central_servicio
+{
+    position: relative;
+    margin-left: 20%;
+    width: calc(80% - 1px);
+    height: calc(100% - 0px);
+    overflow: auto;
+}
 .monitoreo
 {
     margin-left: 0 !important;
-    width: 100% !important;
+    width: 74% !important;
     height: calc(100% - 32px);
 }
 .monitoreo_buscador
@@ -280,8 +314,8 @@ select
 
 .asignacion_buscador
 {
-    /*margin-left: 30% !important;*/
-    width: calc(70% - 1px) !important;
+    margin-left: 19% !important;
+    width: calc(81% - 1px) !important;
     height: calc(100% - 1px);
 }
 
@@ -290,10 +324,27 @@ select
     height: calc(100% - 10px);
 }
 
+.buscador-servicio
+{
+    width: 20%;
+    height: calc(100% - 10px);
+}
+
 .buscador-asignacion
 {
-    width: 30%;
-    height: calc(100% - 47px);
+    width: 19%;
+    height: 100%;
+}
+.buscador-pasajero
+{
+    width: 24%;
+    height: 100%;
+    display: none;
+    min-width: 0 !important;
+}
+.mapa_bajo
+{
+    width : calc(57% - 6px) !important;
 }
 .buscador-asignacion-boton
 {
@@ -357,6 +408,7 @@ select
 
 .boton
 {
+    font-size: 12px;
     color: white;
     background-color: #a7b9bd;
     text-align: center;
@@ -365,10 +417,11 @@ select
     padding-right: 10px;
     margin-top: 10px;
     margin-right: 20px;
-    width: 130px;
+    width: 80px;
     height: 30px;
     vertical-align: middle;
     border: solid 1px #0099ff;
+    border-radius: 5px;
     cursor:pointer;
     line-height: 30px;
 }
@@ -377,16 +430,13 @@ select
     color: white;
     background-color: #a7b9bd;
     text-align: center;
-    padding-left: 10px;
-    padding-right: 10px;
-    margin-top: 10px;
     margin-right: 20px;
     width: 30px;
-    height: 30px;
+    height: 25px;
     vertical-align: middle;
     border: solid 1px #0099ff;
     cursor:pointer;
-    line-height: 30px;
+    line-height: 25px;
 }
 .boton:hover
 {
@@ -447,10 +497,11 @@ select
 {
     border: solid 1px silver;
     background-color: white;
-    height: calc(100% - 82px);
+    height: calc(100% - 135px);
     padding-top: 20px;
     min-height: 460px;
 }
+
 .dispose
 {
     color: white !important;
@@ -499,6 +550,14 @@ select
     height: 30px;
     display: inline-block;
 }
+.contenedor-pre-input-conductor
+{
+    font-size: 13px;
+    margin-top: 7px;
+    width: 185px;
+    height: 29px;
+    display: inline-block;
+}
 .contenedor-pre-input-login
 {
     width: 85px;
@@ -507,6 +566,14 @@ select
 {
     margin-left: 5%;
     width: 200px;
+    height: 30px;
+    display: inline-block;
+}
+.contenedor-input-radio
+{
+    font-size: 13px;
+    margin-left: 5%;
+    width: 100%;
     height: 30px;
     display: inline-block;
 }
@@ -735,9 +802,10 @@ select
 {
     margin-left: 10% !important;
 }
+
 .barra_asignacion
 {
-    margin-left: 0% !important;
+    margin-left: 4% !important;
 }
 
 .input-monitoreo
@@ -787,8 +855,39 @@ select
 }
 .input_asignar
 {
-    width: 300px !important;
+    width: 130% !important;
     height: 25px !important;   
+}
+
+.select_asignar
+{
+    width: 104% !important;
+    height: 30px !important;
+    background-position: 175px, 0 !important;
+}
+
+.textarea_asignar
+{
+    width: 75%;
+    min-width: 192px;
+    max-width: 300px;
+    height: 90px; 
+    min-height: 90px; 
+    max-height: 90px; 
+    border-radius: 5px;
+    border: solid 1px silver;
+}
+
+.textarea_asignar2
+{
+    width: 75%;
+    min-width: 192px;
+    max-width: 300px;
+    height: 50px; 
+    min-height: 50px; 
+    max-height: 50px; 
+    border-radius: 5px;
+    border: solid 1px silver;
 }
 
 .contenedorPartida
@@ -799,7 +898,7 @@ select
     position:absolute;
     display: block;
     background-color: white;
-    width: 300px;
+    width: 220px;
 }
 .datalist-invisible {
     position:absolute;
@@ -843,7 +942,6 @@ select
 
 .servicios_pendientes
 {
-    display: none;
     width: 300px;
     height: calc(100% - 60px);
     text-align: center;
@@ -858,6 +956,7 @@ select
 {
     width: 100%;
     height: auto;
+    overflow: auto;
 }
 .opcion_servicios
 {
@@ -905,4 +1004,389 @@ select
 .contenedor-fila-cc
 {
     width: 450px !important;
+}
+
+.btn-menu
+{
+    float: left;
+    margin-left: 1%;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.tooltip
+{
+    position:absolute;
+    width: 140px;
+    height: 35px;
+    background-color:#cccccc;
+    left:70px;
+    z-index: 2; 
+    color: black;
+    text-align: center;
+    line-height: 30px;
+    display: none;
+    border-radius: 10px;
+    font-size: 14px;
+}
+.tooltip:before
+{
+    content: "";
+    position: absolute;
+    width: 0;
+    left: -50px;
+    top: -10px;
+    height: 0;
+    border-right: 20px solid #cccccc;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+	margin: 24px 0 0 32px;
+}
+.cont-pasajero-gral
+{
+    border-bottom: solid 1px silver;
+    cursor: pointer;
+}
+.cont-pasajero-gral:hover
+{
+    background-color: #cccccc;
+}
+.cont-pasajero
+{
+    width: 70%;
+    margin-left: 2%;
+    font-size: 14px;
+    font-weight: bold;
+}
+.cont-mini-pasajero
+{
+    width: 70%;
+    margin-left: 5%;
+    font-size: 12px;
+}
+.img-estado-ok
+{
+ width:10px;
+ height:10px;
+ background-color:green;   
+ border-radius: 100%;
+ display: inline-block;
+ margin-right: 20px;
+}
+.img-estado-no
+{
+ width:10px;
+ height:10px;
+ background-color:red;   
+ border-radius: 100%;
+ display: inline-block;
+  margin-right: 20px;
+
+}
+.visor_pdf
+{
+    width: calc(100% - 1px);
+    height: calc(100% - 3px);
+}
+.contenedor_contrato
+{
+    margin-left: 25%;
+    width: calc(75% - 1px);
+    height: calc(100% - 3px);
+}
+
+.liquidacion{
+    width: 100%;
+    height: 100%;
+}
+
+.titulo_liquidacion
+{
+    font-size: 15px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    margin-left: 25%;
+    width: 75%;
+    font-weight: 600;
+}
+.subtitulo_liquidacion
+{
+    font-size: 14px;
+    border-top: solid 1px silver;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+    margin-left: 25%;
+    width: 75%;
+}
+.datos_conductor
+{
+    font-size: 14px;
+    height: 25px;
+    line-height: 25px;
+    margin-left: 25%;
+    padding-left: 5%;
+    width: 70%;
+}
+.titulo_tabla_liq
+{
+    border: solid 1px silver;
+    text-align: center;
+    width: 37%;
+    font-weight: bold;
+    display: inline-block;
+}
+.contenido_tabla_liq
+{
+    width: 37%;
+    height: 300px;
+    border: solid 1px silver;
+    display: inline-block;
+}
+.detalle_tabla_liq
+{
+    border: solid 1px silver;
+    width: 37%;
+    display: inline-block;
+}
+.contenedor_liquidacion
+{
+    height: calc(100% - 50px);
+}
+
+.conductores
+{
+    font-size: 13px;
+    width: 190px;
+    height: 18px;
+}
+
+.contenedor-dashboard
+{
+    padding-top: 40px;
+    float: left;
+    width: 80%;
+    height: calc(100% - 40px);
+}
+.contenedor-servicios
+{
+    float: left;
+    width: 20%;
+    height: calc(100% - 0px);
+}
+.checkbox-oculto
+{
+    visibility: hidden;
+}
+
+.contenedor_contrato_movil
+{
+    float: right;
+    margin-top: -30px   
+}
+
+#servicio-especial
+{
+    display: none;
+}
+
+.radio-asignar
+{
+    margin-left: 10px;
+}
+
+.contenedor_punto_encuentro
+{
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+.indicador-dashboard
+{
+    float: left;
+    margin: 8px;
+    width: 30%;
+    background-color: white;
+    height: 200px;
+    border: solid 1px silver;
+    min-width: 300px;
+}
+.indicador-titulo
+{
+    width: 100%;
+    height: 20px;
+    font-weight: bold;
+    font-size: 15px;
+    padding-top: 10px;
+    padding-left: 10px;
+}
+.indicador-valor
+{
+    width: 100%;
+    font-size: 60px;
+    color: green;
+    text-align: center;
+}
+
+.contenedor_central_titulo
+{
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    background: white;
+}
+.contenedor_central_titulo_tarifa
+{
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    background: white;
+}
+.contenedor_central_titulo div
+{
+    font-size: 17px;
+    color:#0099ff;
+    float: left;
+    width: 19%;
+    text-align: center;
+}
+.contenedor_central_titulo_tarifa div
+{
+    font-size: 17px;
+    color:#0099ff;
+    float: left;
+    width: 33%;
+    text-align: center;
+}
+
+.fila_contenedor_servicio
+{
+    padding: 0 !important;
+    width: 100% !important;
+}
+
+.fila_contenedor_servicio div
+{
+    float: left;
+    width: 19%;
+    text-align: center;    
+}
+
+.fila_contenedor_tarifa_detalle
+{
+    padding: 0 !important;
+    width: 100% !important;
+}
+
+.fila_contenedor_tarifa_detalle div
+{
+    float: left;
+    width: 33%;
+    text-align: center;    
+}
+
+.info-servicio
+{
+    height: calc(100% - 85px) !important;
+}
+.info-servicio-mapa
+{
+    padding-top: 0 !important;
+    height: calc(100% - 65px);
+}
+    
+.contenedor_mapa
+{
+    width: 100%;
+    height: 100%;
+}
+
+.img_volver
+{
+    width: 20px;
+    height: 20px;
+    margin-top: 5px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.pie-servicio
+{
+    margin-top: 15%;
+    width: 200%;
+    background-color: #ecf0f1;
+}
+
+.btn-eliminar
+{
+    float: right;
+}
+
+.titulo_pasajero
+{
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    background-color: #ecf0f1;
+    color: #0099ff;
+}
+.titulo_pasajero div
+{
+    text-align: center;
+    width: 25%;
+    float: left;
+    font-size: 17px;
+}
+.pasajeros_contenido
+{
+    width: 100%;
+    height: calc(100% - 46px);
+    line-height: 50px;
+    background-color: #f9f9f9;
+}
+
+.pasajeros_contenido div
+{
+    text-align: center;
+    width: 25%;
+    float: left;
+    font-size: 17px;
+}
+
+#lista_busqueda_tarifa_detalle
+{
+    display: none;
+}
+
+.pendiente
+{
+    cursor: pointer;
+    height: 40px;
+    line-height: 40px;
+}
+.pendiente:nth-child(even)
+{
+    background-color: #dfe8e8;    
+}
+.pendiente:nth-child(odd)
+{
+    background-color: #ffffff;
+}
+
+.contenedor-conf
+{
+
+  height: calc(100% - 0px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sub-cont-conf
+{
+    background-color: white;
+    padding: 2%;
+    width: 32%;
+    border: solid 1px silver;
 }

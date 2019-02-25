@@ -8,7 +8,8 @@ class Tarifa {
     private $valor1;
     private $valor2;
     private $cliente;
-    private $ruta;
+    private $tipo;
+    private $horario;
     
     function getId() {
         return $this->id;
@@ -38,8 +39,12 @@ class Tarifa {
         return $this->cliente;
     }
 
-    function getRuta() {
-        return $this->ruta;
+    function getTipo() {
+        return $this->tipo;
+    }
+
+    function getHorario() {
+        return $this->horario;
     }
 
     function setId($id) {
@@ -70,10 +75,13 @@ class Tarifa {
         $this->cliente = $cliente;
     }
 
-    function setRuta($ruta) {
-        $this->ruta = $ruta;
+    function setTipo($tipo) {
+        $this->tipo = $tipo;
     }
 
+    function setHorario($horario) {
+        $this->horario = $horario;
+    }
 
 
 }

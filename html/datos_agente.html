@@ -79,23 +79,23 @@
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Cargo (*)
-            </div>
-            <div class="contenedor-input">
-                <input type="text" class="input-formulario" id="cargo" placeholder="Ej: ayudante" maxlength="40">
-            </div>
-        </div>
-        <div class="contenedor-fila">
-            <div class="contenedor-pre-input">
                 Perfil (*)
             </div>
             <div class="contenedor-input">
                 <select id="perfil" class="select-formulario">
                     <option value="">Seleccione</option>
-                    <option value="Usuario">Usuario</option>
-                    <option value="Administrador">Administrador</option>
-                    <option value="Super Administrador">Super Administrador</option>
+                    <option value="0">Administrador</option>
+                    <option value="1">Cliente</option>
                 </select>
+            </div>
+        </div>
+        <div class="contenedor-fila oculto" id="empresa">
+            <div class="contenedor-pre-input">
+                Empresa
+            </div>
+            <div class="contenedor-input">
+                <input type="text" value="-" list="lcliente" id="clientes" placeholder="Ej: Falabella">
+                <datalist id="lcliente"></datalist>
             </div>
         </div>
     </div>

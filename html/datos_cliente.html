@@ -8,9 +8,6 @@
     <div class="titulo_pagina_general dispose" id="p_ccosto">
         2. Centros de Costo
     </div>
-    <div class="titulo_pagina_general dispose" id="p_pasajero">
-        3. Asignar Pasajeros
-    </div>
 </div>
 <div class="contenedor-info general" id="cont_general">
     <div class="contenedor-formulario">
@@ -50,6 +47,7 @@
             </div> 
             <div class="contenedor-input">
                 <input type="text"  id="direccion" placeholder="Ej: Av los valles 234" maxlength="50">
+                <div class="datalist-visible" id="partida"></div>
             </div>
         </div>
         <div class="contenedor-fila">
@@ -84,6 +82,24 @@
                 <input type="text" id="mail2" placeholder="Ej: user@dominio.cl" maxlength="40">
             </div>
         </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input-conductor">
+                Contrato
+                <div class="loader-mini" id="loader">Loading...</div>   
+            </div>
+            <div class="contenedor-input">
+                <input type="hidden" id="contratoOculta">
+                <form id="formContrato" enctype="multipart/form-data" method="POST" 
+                      onsubmit="subirFicheroPDF(event,$('#formContrato'),$('#rut'),$('#contratoOculta'),'')">
+                    <input name="contrato" type="file" class="file" id="contratoCliente" accept="application/pdf" onchange="enviarFormFile($('#contratoCliente').val(),$('#rut').val(),$('#contratoOculta'),$('#formContrato'))">         
+                </form>
+                <div class="boton" id="adjuntarContrato" onclick="abrirFile(event,$('#contratoCliente:hidden'))">
+                    <img src="img/adjuntar.svg" width="12" height="12">
+                    Adjuntar
+                </div>
+            </div>
+            <div id="contenedor_contrato" class="contenedor_contrato_movil"></div>
+        </div>
     </div>
 </div>
 <div class="contenedor-info contenedor_oculto" id="cont_ccosto">
@@ -110,30 +126,5 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
-<div class="contenedor-info contenedor_oculto" id="cont_pasajero">
-    <div id="tablaConductores" class="tabla-general">
-        <div class="tablaCabecera">
-            <div>
-                Rut
-            </div>
-            <div>
-                Nombre
-            </div>
-            <div>
-                Apellido Paterno
-            </div>
-            <div>
-                Apellido Materno
-            </div>
-            <div>
-                Asignar
-            </div>
-        </div>
-        <div class="tablaContenido" id="tablaContenidoPasajero"></div>
-    </div>
-    <div class="contenedor-loader-intro">
-        <div class="loader" id="loaderV">Loading...</div>
     </div>
 </div>

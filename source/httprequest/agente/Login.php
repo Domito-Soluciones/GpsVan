@@ -3,6 +3,7 @@ include '../../util/validarPeticion.php';
 include '../../query/AgenteDao.php';
 include '../../cripto/Cripto.php';
 
+header('Content-Type: application/json');
 $cripto = new Cripto();
 $respuesta = '0';
 $nombre = filter_input(INPUT_POST, 'usuario');
@@ -14,7 +15,12 @@ if ($agente->getId() > 0)
     session_start();
     $_SESSION['agente']=$agente->getId();
     $_SESSION['nick']=$agente->getNick();
+    $_SESSION['tipo']=$agente->getPerfil();
+    $_SESSION['empresa']=$agente->getEmpresa();
     $respuesta = $_SESSION['agente'];
+    echo "{\"agente_id\":".$respuesta.",\"agente_tipo\":".$agente->getPerfil()."}";
 }
-
-echo $respuesta;
+else
+{
+    echo "{\"agente_id\":".$respuesta."}";
+}

@@ -14,6 +14,7 @@ for ($i = 0 ; $i < count($conductores); $i++)
     $nombre = $conductores[$i]->getNombre();
     $papellido = $conductores[$i]->getPapellido();
     $mapellido = $conductores[$i]->getMapellido();
+    $tipo = $conductores[$i]->getTipo();
     $rut = $conductores[$i]->getRut();
     $nick = $conductores[$i]->getNick();
     $telefono = $conductores[$i]->getTelefono();
@@ -26,11 +27,10 @@ for ($i = 0 ; $i < count($conductores); $i++)
     $tipoContrato = $conductores[$i]->getContrato();
     $afp = $conductores[$i]->getAfp();
     $isapre = $conductores[$i]->getIsapre();
+    $isapreAd = $conductores[$i]->getIsapreAd();
     $mutual = $conductores[$i]->getMutual();
     $seguroInicio = date("d/m/Y", strtotime($conductores[$i]->getSeguroInicio()));
-    $seguroRenovacion = date("d/m/Y", strtotime($conductores[$i]->getSeguroRenovacion()));
     $descuento = $conductores[$i]->getDescuento();
-    $anticipo = $conductores[$i]->getAnticipo();
     $imagen = $conductores[$i]->getImagenAdjunta();
     $contrato = $conductores[$i]->getContratoAdjunto();
     $transportista = $conductores[$i]->getTransportista();
@@ -39,6 +39,7 @@ for ($i = 0 ; $i < count($conductores); $i++)
         . "\"conductor_nombre\":\"".$nombre."\","
         . "\"conductor_papellido\":\"".$papellido."\","
         . "\"conductor_mapellido\":\"".$mapellido."\","
+        . "\"conductor_tipo\":\"".$tipo."\","
         . "\"conductor_rut\":\"".$rut."\","
         . "\"conductor_nick\":\"".$nick."\","
         . "\"conductor_telefono\":\"".$telefono."\","
@@ -51,11 +52,10 @@ for ($i = 0 ; $i < count($conductores); $i++)
         . "\"conductor_tipo_contrato\":\"".$tipoContrato."\","
         . "\"conductor_afp\":\"".$afp."\","
         . "\"conductor_isapre\":\"".$isapre."\","
+        . "\"conductor_isapre_ad\":\"".$isapreAd."\","
         . "\"conductor_mutual\":\"".$mutual."\","
         . "\"conductor_seguro_inicio\":\"".$seguroInicio."\","
-        . "\"conductor_seguro_renovacion\":\"".$seguroRenovacion."\","
         . "\"conductor_descuento\":\"".$descuento."\","
-        . "\"conductor_anticipo\":\"".$anticipo."\","
         . "\"conductor_imagen\":\"".$imagen."\","
         . "\"conductor_contrato\":\"".$contrato."\","
         . "\"conductor_transportista\":\"".$transportista."\","

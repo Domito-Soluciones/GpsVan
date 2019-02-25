@@ -1,20 +1,19 @@
-/* global urlBase, alertify, ID_AGENTE */
+/* global urlBase, alertify, ID_AGENTE, ADJUNTANDO */
 var ID_MOVIL;
 var MOVILES;
-var CONDUCTORES;
-var MOVILES_CONDUCTORES = [];
-var AGREGAR_CONDUCTORES = [];
-var ELIMINAR_CONDUCTORES = [];
+var conductores = new Map();
+var ID_CONDUCTOR;
 var AGREGAR = true;
 var PAGINA = 'VEHÍCULOS';
-var CAMPOS = ["patente","marca","nombre","modelo","anio","color","cantidad","clase",
+var CAMPOS = ["patente","marca","nombre","modelo","anio","color","cantidad","clase","gps","celular","app",
     "venPerCir","venRevTec","venExt","motor","chasis",
-    "segOb","venSegOb","polizaSegOb","segRcDm","venSegRcDm","polizaSegRcDm"];
+    "segOb","venSegOb","polizaSegOb","valorSegOb","segRcDm","venSegRcDm","polizaSegRcDm","valorSegRcDm",
+    "segAs","venSegAs","polizaSegAs","valorSegAs"];
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
     buscarMovil();
-    buscarConductores();
     $("#agregar").click(function(){
+        ID_CONDUCTOR = undefined;
         ID_MOVIL = undefined;
         quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
         cambiarPropiedad($("#agregar"),"visibility","hidden");
@@ -22,8 +21,8 @@ $(document).ready(function(){
         $("#contenedor_central").load("html/datos_movil.html", function( response, status, xhr ) {
             iniciarPestanias();
             cambioEjecutado();
-            validarCambioRadio();
-            iniciarFecha(['#venPerCir','#venRevTec','#venExt','#venSegOb','#venSegRcDm']);
+            buscarConductores();
+            iniciarFecha(['#venPerCir','#venRevTec','#venExt','#venSegOb','#venSegRcDm','#venSegAs']);
             $("#patente").blur(function (){
                 if(validarExistencia('patente',$(this).val()))
                 {
@@ -32,24 +31,11 @@ $(document).ready(function(){
                     return;
                 }
             });
+            iniciarEventosCheck();
         });
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
         
-        $("#SegObSi").change(function(){
-            $("#venSegOb").prop("disabled",false);
-        });
-        $("#SegObNo").change(function(){
-            $("#venSegOb").prop("disabled",true);        
-            $("#venSegOb").val("");
-        });
-        $("#SegRcDmSi").change(function(){
-            $("#venSegRcDm").prop("disabled",false);
-        });
-        $("#SegRcDmNo").change(function(){
-            $("#venSegRcDm").prop("disabled",true);
-            $("#venSegRcDm").val("");
-        });
     });
     $("#cancelar").click(function(){
         validarCancelar(PAGINA);
@@ -87,21 +73,68 @@ function agregarMovil()
     var color = $("#color").val();
     var cantidad = $("#cantidad").val();
     var clase = $("#clase").val();
+    var conductor = $("#conductores").val();
+    var gps = $("#gps").val();
+    var celular = $("#celular").val();
+    var app = $("#app").val();
     var venPerCir = $("#venPerCir").val();
     var venRevTec = $("#venRevTec").val();
     var venExt = $("#venExt").val();
     var kilo = $("#kilo").val() === '' ? '0' : $("#kilo").val();
     var motor = $("#motor").val();
     var chasis = $("#chasis").val();
-    var segOb = $("#SegObSi").is(':checked') ? 'SI' : 'NO';
+    var segOb;
+    if($("#SegObSi").is(':checked'))
+    {
+        segOb = 'SI';
+    }
+    else if($("#SegObNo").is(':checked'))
+    {
+        segOb = 'NO';
+    }
+    else
+    {
+        segOb = 'EXT';
+    }
     var venSegOb = $("#venSegOb").val();
     var polizaSegOb = $("#polizaSegOb").val();
-    var segRcDm = $("#SegRcDmSi").is(':checked') ? 'SI' : 'NO';
+    var valorSegOb = $("#valorSegOb").val();
+    var segRcDm;
+    if($("#SegRcDmSi").is(':checked'))
+    {
+        segRcDm = 'SI';
+    }
+    else if($("#SegRcDmNo").is(':checked'))
+    {
+        segRcDm = 'NO';
+    }
+    else
+    {
+        segRcDm = 'EXT';
+    }
     var venSegRcDm = $("#venSegRcDm").val();
     var polizaSegRcDm = $("#polizaSegRcDm").val();
-    var array = [patente,marca,nombre,modelo,anio,color,cantidad,clase,
+    var valorSegRcDm =  $("#valorSegRcDm").val();
+    var segAs;
+    if($("#SegAsSi").is(':checked'))
+    {
+        segAs = 'SI';
+    }
+    else if($("#SegAsNo").is(':checked'))
+    {
+        segAs = 'NO';
+    }
+    else
+    {
+        segAs = 'EXT';
+    }
+    var venSegAs = $("#venSegAs").val();
+    var polizaSegAs = $("#polizaSegAs").val();
+    var valorSegAs =  $("#valorSegAs").val();
+    var array = [patente,marca,nombre,modelo,anio,color,cantidad,clase,gps,celular,app,
         venPerCir,venRevTec,venExt,motor,chasis,
-        segOb,venSegOb,polizaSegOb,segRcDm,venSegRcDm,polizaSegRcDm];
+        segOb,venSegOb,polizaSegOb,valorSegOb,segRcDm,venSegRcDm,polizaSegRcDm,valorSegRcDm,
+        segAs,venSegAs,polizaSegAs,valorSegAs];
     var exp = obtenerExcepciones();
     if(!validarCamposOr(array,exp))
     {
@@ -109,15 +142,32 @@ function agregarMovil()
         alertify.error("Ingrese todos los campos necesarios");
         return;
     }
+    if(ADJUNTANDO)
+    {
+            alertify.error("Espere a que se adjunten los documentos");
+        return;
+    }
     if(validarTipoDato())
     {
+        var archivoContrato1 = $("#contratoOculta1").val();
+        var archivoContrato2 = $("#contratoOculta2").val();
+        var archivoContrato3 = $("#contratoOculta3").val();
+        var archivoContrato4 = $("#contratoOculta4").val();
+        var archivoContrato5 = $("#contratoOculta5").val();
+        var archivoContrato6 = $("#contratoOculta6").val();
+        var archivoContrato7 = $("#contratoOculta7").val();
+
         var params = {patente : patente, marca : marca, nombre : nombre, modelo : modelo, anio : anio,
-                    color : color, cantidad : cantidad , clase : clase, venpercir : venPerCir, 
+                    color : color, cantidad : cantidad , clase : clase, conductor : conductor,  gps : gps,
+                    celular : celular, app : app,venpercir : venPerCir, 
                     venrevtec : venRevTec, venext : venExt, kilo : kilo, motor : motor, chasis : chasis,
-                    segob : segOb, vensegob : venSegOb, polizasegob : polizaSegOb, segrcdm : segRcDm,
-                    vensegrcdm : venSegRcDm, polizasegrcdm : polizaSegRcDm, conductores : AGREGAR_CONDUCTORES+"", 
-                    delConductor : ELIMINAR_CONDUCTORES + ""}; 
-        var url = urlBase + "/movil/AddMovil.php"
+                    segob : segOb, vensegob : venSegOb, polizasegob : polizaSegOb, valorsegob : valorSegOb, segrcdm : segRcDm,
+                    vensegrcdm : venSegRcDm, polizasegrcdm : polizaSegRcDm, valorsegrcdm : valorSegRcDm,segas : segAs,
+                    vensegas : venSegAs, polizasegas : polizaSegAs, valorsegas : valorSegAs,
+                    adjuntoPerCir : archivoContrato1, adjuntoRevTec : archivoContrato2, adjuntoNMotor : archivoContrato3,
+                    adjuntoSeremi : archivoContrato4, adjuntoSegOb : archivoContrato5, adjuntoSegRcDm : archivoContrato6,
+                    adjuntoSegAs : archivoContrato7}; 
+        var url = urlBase + "/movil/AddMovil.php";
     };
     var success = function(response)
     {
@@ -130,8 +180,7 @@ function agregarMovil()
         resetFormulario();
         buscarMovil();
         buscarConductores();
-        AGREGAR_CONDUCTORES = [];
-        ELIMINAR_CONDUCTORES = [];
+        $(".contenedor_contrato_movil").html("");
     };
     postRequest(url,params,success);
 }
@@ -147,22 +196,67 @@ function modificarMovil()
     var color = $("#color").val();
     var cantidad = $("#cantidad").val();
     var clase = $("#clase").val();
+    var conductor = $("#conductores").val();
+    var gps = $("#gps").val();
+    var celular = $("#celular").val();
+    var app = $("#app").val();
     var venPerCir = $("#venPerCir").val();
     var venRevTec = $("#venRevTec").val();
     var venExt = $("#venExt").val();
     var kilo = $("#kilo").val() === '' ? '0' : $("#kilo").val();
     var motor = $("#motor").val();
     var chasis = $("#chasis").val();
-    var segOb = $("#SegObSi").is(':checked') ? 'SI' : 'NO';
+    var segOb;
+    if($("#SegObSi").is(':checked'))
+    {
+        segOb = 'SI';
+    }
+    else if($("#SegObNo").is(':checked'))
+    {
+        segOb = 'NO';
+    }
+    else
+    {
+        segOb = 'EXT';
+    }
     var venSegOb = $("#venSegOb").val();
     var polizaSegOb = $("#polizaSegOb").val();
-    var segRcDm = $("#SegRcDmSi").is(':checked') ? 'SI' : 'NO';
+    var valorSegOb = $("#valorSegOb").val();
+    var segRcDm;
+    if($("#SegRcDmSi").is(':checked'))
+    {
+        segRcDm = 'SI';
+    }
+    else if($("#SegRcDmNo").is(':checked'))
+    {
+        segRcDm = 'NO';
+    }
+    else
+    {
+        segRcDm = 'EXT';
+    }
     var venSegRcDm = $("#venSegRcDm").val();
     var polizaSegRcDm = $("#polizaSegRcDm").val();
-    
-    var array = [patente,marca,nombre,modelo,anio,color,cantidad,clase,
+    var valorSegRcDm = $("#valorSegRcDm").val();
+    var segAs;
+    if($("#SegAsSi").is(':checked'))
+    {
+        segAs = 'SI';
+    }
+    else if($("#SegAsNo").is(':checked'))
+    {
+        segAs = 'NO';
+    }
+    else
+    {
+        segAs = 'EXT';
+    }
+    var venSegAs = $("#venSegAs").val();
+    var polizaSegAs = $("#polizaSegAs").val();
+    var valorSegAs = $("#valorSegAs").val();
+    var array = [patente,marca,nombre,modelo,anio,color,cantidad,clase,gps,celular,app,
         venPerCir,venRevTec,venExt,motor,chasis,
-        segOb,venSegOb,polizaSegOb,segRcDm,venSegRcDm,polizaSegRcDm];
+        segOb,venSegOb,polizaSegOb,valorSegOb,segRcDm,venSegRcDm,polizaSegRcDm,valorSegRcDm,segAs,venSegAs,polizaSegAs,valorSegAs];
     var exp = obtenerExcepciones();
     if(!validarCamposOr(array,exp))
     {
@@ -170,14 +264,30 @@ function modificarMovil()
         alertify.error("Ingrese todos los campos necesarios");
         return;
     }
+    if(ADJUNTANDO)
+    {
+            alertify.error("Espere a que se adjunten los documentos");
+        return;
+    }
     if(validarTipoDato())
     {
-                var params = {id : id, patente : patente, marca : marca, nombre : nombre, modelo : modelo, anio : anio,
-                    color : color, cantidad : cantidad , clase : clase, venpercir : venPerCir, 
+        var archivoContrato1 = $("#contratoOculta1").val();
+        var archivoContrato2 = $("#contratoOculta2").val();
+        var archivoContrato3 = $("#contratoOculta3").val();
+        var archivoContrato4 = $("#contratoOculta4").val();
+        var archivoContrato5 = $("#contratoOculta5").val();
+        var archivoContrato6 = $("#contratoOculta6").val();
+        var archivoContrato7 = $("#contratoOculta7").val();
+        var params = {id : id,patente : patente, marca : marca, nombre : nombre, modelo : modelo, anio : anio,
+                    color : color, cantidad : cantidad , clase : clase, conductor : conductor,  gps : gps,
+                    celular : celular, app : app,venpercir : venPerCir, 
                     venrevtec : venRevTec, venext : venExt, kilo : kilo, motor : motor, chasis : chasis,
-                    segob : segOb, vensegob : venSegOb, polizasegob : polizaSegOb, segrcdm : segRcDm,
-                    vensegrcdm : venSegRcDm, polizasegrcdm : polizaSegRcDm, conductores : AGREGAR_CONDUCTORES+"", 
-                    delConductor : ELIMINAR_CONDUCTORES + ""}; 
+                    segob : segOb, vensegob : venSegOb, polizasegob : polizaSegOb, valorsegob : valorSegOb, segrcdm : segRcDm,
+                    vensegrcdm : venSegRcDm, polizasegrcdm : polizaSegRcDm, valosegrcdm : valorSegRcDm,segas : segAs,
+                    vensegas : venSegAs, polizasegas : polizaSegAs, valorsegas : valorSegAs,
+                    adjuntoPerCir : archivoContrato1, adjuntoRevTec : archivoContrato2, adjuntoNMotor : archivoContrato3,
+                    adjuntoSeremi : archivoContrato4, adjuntoSegOb : archivoContrato5, adjuntoSegRcDm : archivoContrato6,
+                    adjuntoSegAs : archivoContrato7}; 
         var url = urlBase + "/movil/ModMovil.php";
         var success = function(response)
         {
@@ -187,8 +297,6 @@ function modificarMovil()
             resetFormulario();
             buscarMovil();
             buscarConductores();
-            AGREGAR_CONDUCTORES = [];
-            ELIMINAR_CONDUCTORES = [];
         };
         postRequest(url,params,success);
     }
@@ -215,6 +323,7 @@ function buscarMovil()
             var id = response[i].movil_id;
             var patente = response[i].movil_patente;
             var nombre = response[i].movil_nombre;
+            var conductor = response[i].movil_conductor;
             var titulo = recortar(nombre+" / "+patente);
             if (typeof ID_MOVIL !== "undefined" && ID_MOVIL === id)
             {
@@ -223,6 +332,10 @@ function buscarMovil()
             else
             {
                 moviles.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+titulo+"</div>");
+            }
+            if(conductor !== '')
+            {
+                conductores.set(conductor,conductor);
             }
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
@@ -261,7 +374,7 @@ function abrirModificar(id)
     $("#contenedor_central").load("html/datos_movil.html", function( response, status, xhr ) {
         iniciarPestanias();
         cambioEjecutado();
-        iniciarFecha(['#venPerCir','#venRevTec','#venExt','#venSegOb','#venSegRcDm']);
+        iniciarFecha(['#venPerCir','#venRevTec','#venExt','#venSegOb','#venSegRcDm','#venSegAs']);
         var movil;
         for(var i = 0 ; i < MOVILES.length; i++)
         {
@@ -279,36 +392,88 @@ function abrirModificar(id)
         $("#color").val(movil.movil_color);
         $("#cantidad").val(movil.movil_cantidad);
         $("#clase").val(movil.movil_clase);
+        $("#gps").val(movil.movil_gps);
+        $("#celular").val(movil.movil_celular);
+        $("#app").val(movil.movil_app);
         $("#venPerCir").val(movil.movil_ven_per_cir);
         $("#venRevTec").val(movil.movil_ven_rev_tec);
         $("#venExt").val(movil.movil_ven_ext);
         $("#kilo").val(movil.movil_kilo);
         $("#motor").val(movil.movil_motor);
         $("#chasis").val(movil.movil_chasis);
-        $("#SegOb").val(movil.movil_seg_ob);
+        if(movil.movil_seg_ob !== 'NO')
+        {
+            if(movil.movil_seg_ob === 'SI')
+            {
+                $("#SegObSi").prop("checked",true);
+            }
+            if(movil.movil_seg_ob === 'EXT')
+            {
+                $("#SegObEx").prop("checked",true);
+            }
+            $("#venSegOb").prop("disabled",false);
+            $("#polizaSegOb").prop("disabled",false);
+            $("#valorSegOb").prop("disabled",false);
+        }
         $("#venSegOb").val(movil.movil_ven_seg_ob);
         $("#polizaSegOb").val(movil.movil_pol_seg_ob); 
-        $("#SegRcDm").val(movil.movil_seg_rcdm);
+        $("#valorSegOb").val(movil.movil_seg_ob_valor); 
+        if(movil.movil_seg_rcdm !== 'NO')
+        {
+            if(movil.movil_seg_rcdm === 'SI')
+            {
+                $("#SegRcDmSi").prop("checked",true);
+            }
+            if(movil.movil_seg_rcdm === 'EXT')
+            {
+                $("#SegRcDmEx").prop("checked",true);
+            }
+            $("#venSegRcDm").prop("disabled",false);
+            $("#polizaSegRcDm").prop("disabled",false);
+            $("#valorSegRcDm").prop("disabled",false);
+        }
         $("#venSegRcDm").val(movil.movil_ven_seg_rcdm);
         $("#polizaSegRcDm").val(movil.movil_pol_seg_rcdm); 
+        $("#valorSegRcDm").val(movil.movil_seg_rcdm_valor); 
+        if(movil.movil_seg_as !== 'NO')
+        {
+            if(movil.movil_seg_as === 'SI')
+            {
+                $("#SegAsSi").prop("checked",true);
+            }
+            if(movil.movil_seg_as === 'EXT')
+            {
+                $("#SegAsEx").prop("checked",true);
+            }
+            $("#venSegAs").prop("disabled",false);
+            $("#polizaSegAs").prop("disabled",false);
+            $("#valorSegAs").prop("disabled",false);
+        }
+        $("#venSegAs").val(movil.movil_ven_seg_as);
+        $("#polizaSegAs").val(movil.movil_pol_seg_as); 
+        $("#valorSegAs").val(movil.movil_seg_as_valor); 
+        $("#conductor").val(movil.movil_conductor);
+        ID_CONDUCTOR = movil.movil_conductor;
+        buscarConductores();
+        var percir = movil.movil_adj_per_cir;
+        var revtec = movil.movil_adj_rev_tec;
+        var nmotor = movil.movil_adj_n_motor;
+        var seremi = movil.movil_adj_seremi;
+        var segOb = movil.movil_adj_seg_ob;
+        var segRcDm = movil.movil_adj_seg_rcdm;
+        var segAs = movil.movil_adj_seg_as;
+        verAdjunto(percir,1);
+        verAdjunto(revtec,2),
+        verAdjunto(nmotor,3);
+        verAdjunto(seremi,4);
+        verAdjunto(segOb,5);
+        verAdjunto(segRcDm,6);
+        verAdjunto(segAs,7);
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
         cambiarPropiedad($("#eliminar"),"visibility","visible");
         
-        $("#SegObSi").change(function(){
-            $("#venSegOb").prop("disabled",false);
-        });
-        $("#SegObNo").change(function(){
-            $("#venSegOb").prop("disabled",true);        
-            $("#venSegOb").val("");
-        });
-        $("#SegRcDmSi").change(function(){
-            $("#venSegRcDm").prop("disabled",false);
-        });
-        $("#SegRcDmNo").change(function(){
-            $("#venSegRcDm").prop("disabled",true);
-            $("#venSegRcDm").val("");
-        });
+        iniciarEventosCheck();
         
     });
 }
@@ -358,6 +523,13 @@ function validarTipoDato()
     var chasis = $("#chasis");
     var polizaSegOb = $("#polizaSegOb");
     var polizaSegRcDm = $("#polizaSegRcDm");
+    var polizaSegAs = $("#polizaSegAs");
+    var valorSegOb = $("#valorSegOb");
+    var valorSegRcDm = $("#valorSegRcDm");
+    var valorSegAs = $("#valorSegAs");
+    var gps = $("#gps");
+    var celular = $("#celular");
+    var app = $("#app");
     if(!validarPatente(patente.val()))
     {
         cambiarPestaniaGeneral();
@@ -390,6 +562,39 @@ function validarTipoDato()
     else
     {
         marcarCampoOk(anio);
+    }
+    if(!validarNumero(gps.val()))
+    {
+        cambiarPestaniaGeneral();
+        marcarCampoError(gps);
+        alertify.error('Descuento GPS debe ser numerico');
+        return false;
+    }
+    else
+    {
+        marcarCampoOk(gps);
+    }
+    if(!validarNumero(celular.val()))
+    {
+        cambiarPestaniaGeneral();
+        marcarCampoError(celular);
+        alertify.error('Descuento Celular debe ser numerico');
+        return false;
+    }
+    else
+    {
+        marcarCampoOk(celular);
+    }
+    if(!validarNumero(app.val()))
+    {
+        cambiarPestaniaGeneral();
+        marcarCampoError(app);
+        alertify.error('Descuento Celular debe ser numerico');
+        return false;
+    }
+    else
+    {
+        marcarCampoOk(app);
     }
     if(!validarNumero(kilo.val()))
     {
@@ -446,6 +651,50 @@ function validarTipoDato()
     {
         marcarCampoOk(polizaSegRcDm);
     }
+    if(!validarNumero(polizaSegAs.val()))
+    {
+        cambiarPestaniaSeguro();
+        marcarCampoError(polizaSegAs);
+        alertify.error('N° Poliza Seguro Asientos debe ser numerico');
+        return false;
+    }
+    else
+    {
+        marcarCampoOk(polizaSegAs);
+    }
+    if(!validarNumero(valorSegOb.val()))
+    {
+        cambiarPestaniaSeguro();
+        marcarCampoError(valorSegOb);
+        alertify.error('Valor Seguro Obligatorio debe ser numerico');
+        return false;
+    }
+    else
+    {
+        marcarCampoOk(valorSegOb);
+    }
+    if(!validarNumero(valorSegRcDm.val()))
+    {
+        cambiarPestaniaSeguro();
+        marcarCampoError(valorSegRcDm);
+        alertify.error('Valor Seguro RC+DM debe ser numerico');
+        return false;
+    }
+    else
+    {
+        marcarCampoOk(valorSegRcDm);
+    }
+    if(!validarNumero(valorSegAs.val()))
+    {
+        cambiarPestaniaSeguro();
+        marcarCampoError(valorSegAs);
+        alertify.error('Valor Seguro Asientos debe ser numerico');
+        return false;
+    }
+    else
+    {
+        marcarCampoOk(valorSegAs);
+    }
     return true;
 }
 
@@ -464,6 +713,9 @@ function iniciarPestanias()
         cambiarPestaniaConductor();
         cargarConductores();
     });
+    $("#p_documento").click(function(){
+        cambiarPestaniaDocumento();
+    });
 }
 
 function activarPestania(array)
@@ -475,18 +727,18 @@ function activarPestania(array)
     {
         if(array[i] === '')
         {
-            if(i < 8)
+            if(i < 10)
             {
                 general = true;
             }
-            if(i > 7 && i < 13)
+            if(i > 10 && i < 16)
             {
                 if(!general)
                 {
                     ficha = true;
                 }
             }
-            if(i > 12)
+            if(i > 15)
             {
                 if(!ficha)
                 {
@@ -520,101 +772,45 @@ function cambiarPestaniaGeneral()
     cambiarPropiedad($("#cont_general"),"display","block");
     cambiarPropiedad($("#cont_ficha"),"display","none");
     cambiarPropiedad($("#cont_seguro"),"display","none");
-    cambiarPropiedad($("#cont_conductor"),"display","none");
+    cambiarPropiedad($("#cont_documento"),"display","none");
     quitarclase($("#p_general"),"dispose");
     agregarclase($("#p_ficha"),"dispose");
     agregarclase($("#p_seguro"),"dispose");
-    agregarclase($("#p_conductor"),"dispose");
+    agregarclase($("#p_documento"),"dispose");
 }
 function cambiarPestaniaFicha()
 {
     cambiarPropiedad($("#cont_general"),"display","none");
     cambiarPropiedad($("#cont_ficha"),"display","block");
     cambiarPropiedad($("#cont_seguro"),"display","none");
-    cambiarPropiedad($("#cont_conductor"),"display","none");
+    cambiarPropiedad($("#cont_documento"),"display","none");
     quitarclase($("#p_ficha"),"dispose");
     agregarclase($("#p_general"),"dispose");
     agregarclase($("#p_seguro"),"dispose");
-    agregarclase($("#p_conductor"),"dispose");
+    agregarclase($("#p_documento"),"dispose");
 }
 function cambiarPestaniaSeguro()
 {
     cambiarPropiedad($("#cont_general"),"display","none");
     cambiarPropiedad($("#cont_ficha"),"display","none");
     cambiarPropiedad($("#cont_seguro"),"display","block");
-    cambiarPropiedad($("#cont_conductor"),"display","none");
+    cambiarPropiedad($("#cont_documento"),"display","none");
     quitarclase($("#p_seguro"),"dispose");
     agregarclase($("#p_general"),"dispose");
     agregarclase($("#p_ficha"),"dispose");
-    agregarclase($("#p_conductor"),"dispose");
+    agregarclase($("#p_documento"),"dispose");
 }
-function cambiarPestaniaConductor()
+
+function cambiarPestaniaDocumento()
 {
     cambiarPropiedad($("#cont_general"),"display","none");
     cambiarPropiedad($("#cont_ficha"),"display","none");
     cambiarPropiedad($("#cont_seguro"),"display","none");
-    cambiarPropiedad($("#cont_conductor"),"display","block");
-    quitarclase($("#p_conductor"),"dispose");
+    cambiarPropiedad($("#cont_documento"),"display","block");
+    quitarclase($("#p_documento"),"dispose");
     agregarclase($("#p_general"),"dispose");
     agregarclase($("#p_ficha"),"dispose");
     agregarclase($("#p_seguro"),"dispose");
-}
-
-function cargarConductores()
-{
-    var tablaMovil = $("#tablaContenidoConductor");
-    tablaMovil.html("");
-    cambiarPropiedad($("#loaderV"),"visibility","hidden");
-    if (typeof CONDUCTORES !== "undefined")
-    {
-        if(CONDUCTORES.length === 0)
-        {
-            alertify.error("No hay conductores disponibles");    
-        }
-        for(var i = 0 ; i < CONDUCTORES.length; i++)
-        {
-            var id = CONDUCTORES[i].conductor_id;
-            var rut = CONDUCTORES[i].conductor_rut;
-            var nombre = CONDUCTORES[i].conductor_nombre;
-            var papellido = CONDUCTORES[i].conductor_papellido;
-            var movil = CONDUCTORES[i].conductor_movil;
-            var asignacion = "";
-            var claseAsignacion = "tablaFila";
-            if(ID_MOVIL === movil)
-            {
-                asignacion = "<input type=\"radio\" onchange=\"agregarConductores($(this))\" name=\""+id+"\" value=\""+id+"\" checked>SI\n\
-                              <input type=\"radio\" onchange=\"eliminarConductores($(this))\" name=\""+id+"\" value=\""+id+"\">NO";
-            }
-            else if(movil === '0')
-            {
-
-                asignacion = "<input type=\"radio\" onchange=\"agregarConductores($(this))\" name=\""+id+"\" value=\""+id+"\">SI\n\
-                              <input type=\"radio\" onchange=\"eliminarConductores($(this))\" name=\""+id+"\" value=\""+id+"\" checked>NO";
-            }
-            else if (ID_MOVIL !== movil)
-            {
-                for(var j = 0; j < MOVILES.length ; j++)
-                {
-                    var c = MOVILES[j];
-                    if(c.movil_id === movil)
-                    {
-                        asignacion = "Asignado a "+c.movil_nombre;
-                        break;
-                    }
-                }
-            }
-            if(MOVILES_CONDUCTORES.indexOf(id) === -1)
-            {
-                tablaMovil.append("<div id=\""+id+"\" class=\""+claseAsignacion+"\"><div>"
-                    +id+"</div><div>"+rut+"</div><div>"+nombre+"</div><div>"+papellido+"</div><div>"+asignacion+"</div></div>");
-            }
-        }
-        if(tablaMovil.html() === "")
-        {
-            alertify.success("No hay conductores disponibles para asociar");
-        }
-    }
-    cambiarPropiedad($("#loader"),"visibility","hidden");
 }
 
 function buscarConductores()
@@ -623,71 +819,113 @@ function buscarConductores()
     var url = urlBase + "/conductor/GetConductores.php";
     var success = function(response)
     {
-        cambiarPropiedad($("#loader"),"visibility","hidden");
-        cerrarSession(response);
-        CONDUCTORES = response;
+        for(var i = 0 ; i < response.length ; i++)
+        {
+            var id = response[i].conductor_id;
+            var nombre = response[i].conductor_nombre + " " + response[i].conductor_papellido;
+            var sel = "";
+            if(id === ID_CONDUCTOR)
+            {
+                sel = " selected";
+                $("#conductores").append("<option value=\""+id+"\" "+sel+">"+id+" - "+nombre+"</option>");                
+            }
+            if(typeof conductores.get(id) === 'undefined')
+            {
+                $("#conductores").append("<option value=\""+id+"\" "+sel+">"+id+" - "+nombre+"</option>");                
+            }
+        }
     };
     postRequest(url,params,success);
-}
-function obtenerMovilesConductores()
-{
-    for (var i = 0; i < CONDUCTORES.length ; i++)
-    {
-        var movil = CONDUCTORES[i].conductor_movil;
-        MOVILES_CONDUCTORES.push(movil);
-    }
-}
-function agregarConductores(obj)
-{
-    if(obj.prop("checked"))
-    {
-        AGREGAR_CONDUCTORES.push(obj.val());
-        MODIFICADO = true;
-        for(var i = 0; i < ELIMINAR_CONDUCTORES.length; i++)
-        {
-            if(ELIMINAR_CONDUCTORES[i] === obj.val())
-            {
-                ELIMINAR_CONDUCTORES.splice(i, 1);
-                if(ELIMINAR_CONDUCTORES.length === 0)
-                {
-                    MODIFICADO = false;
-                }
-                break;
-            }
-        }
-    }
-}
-function eliminarConductores(obj)
-{
-    if(obj.prop("checked"))
-    {
-        ELIMINAR_CONDUCTORES.push(obj.val());
-        MODIFICADO = true;
-        for(var i = 0; i < AGREGAR_CONDUCTORES.length; i++)
-        {
-            if(AGREGAR_CONDUCTORES[i] === obj.val())
-            {
-                AGREGAR_CONDUCTORES.splice(i, 1);
-                if(AGREGAR_CONDUCTORES.length === 0)
-                {
-                    MODIFICADO = false;
-                }
-                break;
-            }
-        }
-    }
 }
 
 function obtenerExcepciones()
 {
-    var exp;
+    var exp = "";
     if($("#SegObNo").is(':checked'))
     {
-        exp += '|14|';
+        exp += '||17||18||19||';
     }
     if($("#SegRcDmNo").is(':checked'))
     {
-        exp += '|17|';
+        exp += '||21||22||23||';
+    }
+    if($("#SegAsNo").is(':checked'))
+    {
+        exp += '||25||26||27||';
     }
     return exp;
+}
+
+function succesSubirContrato(id)
+{
+    var archivo = $("#contratoOculta"+id).val();
+    var ext = archivo.split("\.")[1];
+    if(ext !== 'pdf'){
+        alertify.error("Archivo invalido");
+        return;
+    }
+    else
+    {
+        var enlace = "<a href=\"source/util/pdf/"+$("#patente").val()+"_"+archivo+"\" target=\"_blanck\">Ver</a>";
+        $("#contenedor_contrato"+id).html(enlace);
+    }
+}
+
+
+function iniciarEventosCheck()
+{
+    $("#SegObSi").click(function(){
+        $("#venSegOb").prop("disabled",false);
+        $("#polizaSegOb").prop("disabled",false);        
+        $("#valorSegOb").prop("disabled",false); 
+    });
+    $("#SegObNo").click(function(){
+        $("#venSegOb").prop("disabled",true);        
+        $("#polizaSegOb").prop("disabled",true);        
+        $("#valorSegOb").prop("disabled",true);        
+        $("#venSegOb").val("");
+        $("#polizaSegOb").val("");
+        $("#valorSegOb").val("");
+    });
+    $("#SegObEx").click(function(){
+        $("#venSegOb").prop("disabled",false);
+        $("#polizaSegOb").prop("disabled",false);        
+        $("#valorSegOb").prop("disabled",false); 
+    });
+    $("#SegRcDmSi").click(function(){
+        $("#venSegRcDm").prop("disabled",false);
+        $("#polizaSegRcDm").prop("disabled",false);
+        $("#valorSegRcDm").prop("disabled",false);
+    });
+    $("#SegRcDmNo").click(function(){
+        $("#venSegRcDm").prop("disabled",true);
+        $("#polizaSegRcDm").prop("disabled",true);
+        $("#valorSegRcDm").prop("disabled",true);
+        $("#venSegRcDm").val("");
+        $("#polizaSegRcDm").val("");
+        $("#valorSegRcDm").val("");
+    });
+    $("#SegRcDmEx").click(function(){
+        $("#venSegRcDm").prop("disabled",false);
+        $("#polizaSegRcDm").prop("disabled",false);
+        $("#valorSegRcDm").prop("disabled",false);
+    });
+    $("#SegAsSi").click(function(){
+        $("#venSegAs").prop("disabled",false);
+        $("#polizaSegAs").prop("disabled",false);
+        $("#valorSegAs").prop("disabled",false);
+    });
+    $("#SegAsNo").click(function(){
+        $("#venSegAs").prop("disabled",true);
+        $("#polizaSegAs").prop("disabled",true);
+        $("#valorSegAs").prop("disabled",true);
+        $("#venSegAs").val("");
+        $("#polizaSegAs").val("");
+        $("#valorSegAs").val("");
+    });
+    $("#SegAsEx").click(function(){
+        $("#venSegAs").prop("disabled",false);
+        $("#polizaSegAs").prop("disabled",false);
+        $("#valorSegAs").prop("disabled",false);
+    });
 }

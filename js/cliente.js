@@ -1,17 +1,13 @@
-/* global urlBase, alertify, ARRAY_ELIMINAR_PASAJEROS, obj */
+/* global urlBase, alertify, obj */
 var CLIENTES;
-var PASAJEROS;
 var AGREGAR = true;
 var PAGINA = 'CLIENTES';
 var ID_CLIENTE;
-var AGREGAR_PASAJEROS = [];
-var ELIMINAR_PASAJEROS = [];
 var CENTROS_COSTO = [];
 var CAMPOS = ["rut","razon","tipo","direccion","nombre","telefono","mail","mail2"];
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
     buscarCliente();
-    buscarPasajeros();
     $("#agregar").click(function(){
         quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
         cambiarPropiedad($("#agregar"),"visibility","hidden");
@@ -33,6 +29,10 @@ $(document).ready(function(){
 
             $("#quitar_cc").click(function(){
                 quitarCentroCosto();
+            });
+            
+            $("#direccion").on("input",function(){
+                mostrarDatalist($(this).val(),$("#partida"),'direccion');
             });
         });
         cambiarPropiedad($("#guardar"),"visibility","visible");
@@ -76,6 +76,7 @@ function agregarCliente()
     var telefono = $("#telefono").val();
     var mail = $("#mail").val();
     var mail2 = $("#mail2").val();
+    var contrato = $("#contratoOculta").val();
     var cc = $(".centro_costo");
     cc.each(
         function (index){
@@ -94,8 +95,7 @@ function agregarCliente()
     if(validarTipoDato())
     {
         var params = { razon : razon, tipo : tipo, rut : rut, direccion : direccion, nombre : nombre,
-                telefono : telefono, mail : mail, mail2 : mail2, pasajeros : AGREGAR_PASAJEROS + "",
-                delpasajero : ELIMINAR_PASAJEROS + "" ,  centros : CENTROS_COSTO + "" };
+                telefono : telefono, mail : mail, mail2 : mail2 , contrato : contrato, centros : CENTROS_COSTO + ""};
         var url = urlBase+"/cliente/AddCliente.php";
         var success = function(response)
         {
@@ -107,8 +107,8 @@ function agregarCliente()
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
             resetFormulario();
             buscarCliente();
-            buscarPasajeros();
             CENTROS_COSTO = [];
+            $(".contenedor_contrato_movil").html("");
         };
         postRequest(url,params,success);
     }
@@ -125,6 +125,7 @@ function modificarCliente()
     var telefono = $("#telefono").val();
     var mail = $("#mail").val();
     var mail2 = $("#mail2").val();
+    var contrato = $("#contratoOculta").val();
     var cc = $(".centro_costo");
     cc.each(
         function (index){
@@ -143,8 +144,7 @@ function modificarCliente()
     if(validarTipoDato())
     {
         var params = { id : id, razon : razon, tipo : tipo, rut : rut, direccion : direccion, nombre : nombre,
-            telefono : telefono, mail : mail, mail2 : mail2, pasajeros : AGREGAR_PASAJEROS + "",
-            delpasajero : ELIMINAR_PASAJEROS + "",  centros : CENTROS_COSTO + "" };
+            telefono : telefono, mail : mail, mail2 : mail2, contrato : contrato , centros : CENTROS_COSTO+""};
         var url = urlBase + "/cliente/ModCliente.php";
         var success = function(response)
         {
@@ -154,7 +154,6 @@ function modificarCliente()
             alertify.success("Cliente Modificado");
             resetFormulario();
             buscarCliente();
-            buscarPasajeros();
             CENTROS_COSTO = [];
         };
         postRequest(url,params,success);
@@ -164,7 +163,7 @@ function modificarCliente()
 function buscarCliente()
 {
     var busqueda = $("#busqueda").val();
-    var params = {busqueda : busqueda};
+    var params = {busqueda : busqueda,buscaCC : '1'};
     var url = urlBase + "/cliente/GetClientes.php";
     var success = function(response)
     {
@@ -239,6 +238,9 @@ function abrirModificar(id)
                 $("#razon").val("");
                 return;
             }
+        });     
+        $("#direccion").on("input",function(){
+            mostrarDatalist($(this).val(),$("#partida"),'direccion');
         });
         var cliente;
         for(var i = 0 ; i < CLIENTES.length; i++)
@@ -257,6 +259,7 @@ function abrirModificar(id)
         $("#direccion").val(cliente.cliente_direccion);
         $("#mail").val(cliente.cliente_mail_contacto);
         $("#mail2").val(cliente.cliente_mail_facturacion);
+        verAdjunto(cliente.cliente_contrato,'');
         var j = 0;
         Object.keys(cliente.cliente_centro_costo).forEach(function(key){
         var value = cliente.cliente_centro_costo[key];
@@ -298,7 +301,6 @@ function eliminarCliente()
         cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
         resetBotones();
         buscarCliente();
-        buscarPasajeros();
     };
     postRequest(url,params,success);
 }
@@ -387,91 +389,13 @@ function iniciarPestanias()
     $("#p_ccosto").click(function(){
         cambiarPestaniaCC();
     });
-    $("#p_pasajero").click(function(){
-        cambiarPestaniaPasajero();
-        cargarPasajeros();
-    });
-}
-
-function buscarPasajeros()
-{
-    var url = urlBase + "/pasajero/GetPasajeros.php";
-    var params = {busqueda : ""};
-    var success = function(response)
-    {
-        cambiarPropiedad($("#loader"),"visibility","hidden");
-        cerrarSession(response);
-        PASAJEROS = response;
-    };
-    postRequest(url,params,success);
-}
-
-function cargarPasajeros()
-{
-    var tablaPasajero = $("#tablaContenidoPasajero");
-    tablaPasajero.html("");
-    cambiarPropiedad($("#loaderV"),"visibility","hidden");
-    if (typeof PASAJEROS !== "undefined")
-    {
-        if(PASAJEROS.length === 0)
-        {
-            alertify.error("No hay pasajeros asociados");    
-        }
-        for(var i = 0 ; i < PASAJEROS.length; i++)
-        {
-            var id = PASAJEROS[i].pasajero_id;
-            var rut = PASAJEROS[i].pasajero_rut;
-            var nombre = PASAJEROS[i].pasajero_nombre;
-            var papellido = PASAJEROS[i].pasajero_papellido;
-            var mapellido = PASAJEROS[i].pasajero_mapellido;
-            var cliente = PASAJEROS[i].pasajero_cliente;
-            var asignacion = "";
-            var claseAsignacion = "tablaFila";
-            console.log(ID_CLIENTE +" "+ cliente);
-            if(ID_CLIENTE === cliente)
-            {
-                asignacion = "<input type=\"radio\" onchange=\"agregarPasajeros($(this))\" name=\""+rut+"\" value=\""+id+"\" checked>SI\n\
-                              <input type=\"radio\" onchange=\"eliminarPasajeros($(this))\" name=\""+rut+"\" value=\""+id+"\">NO";
-            }
-            else if(cliente === '0')
-            {
-                asignacion = "<input type=\"radio\" onchange=\"agregarPasajeros($(this))\" name=\""+rut+"\" value=\""+id+"\">SI\n\
-                              <input type=\"radio\" onchange=\"eliminarPasajeros($(this))\" name=\""+rut+"\" value=\""+id+"\" checked>NO";
-            }
-            else if (ID_CLIENTE !== cliente)
-            {
-                for(var j = 0; j < CLIENTES.length ; j++)
-                {
-                    var c = CLIENTES[j];
-                    if(c.cliente_id === cliente)
-                    {
-                        asignacion = "Asignado a "+c.cliente_razon;
-                        break;
-                    }
-                }
-            }
-            tablaPasajero.append("<div id=\""+rut+"\" class=\""+claseAsignacion+"\"><div>"
-                    +rut+"</div><div>"+nombre+"</div><div>"+papellido+"</div><div>"+mapellido+"</div><div>"+asignacion+"</div></div>");
-        }
-    }
-    cambiarPropiedad($("#loader"),"visibility","hidden");
-}
-
-function eliminarFilaPasajero(obj)
-{
-    ARRAY_ELIMINAR_PASAJEROS.push(obj);
-    $("#"+obj).remove();
-    $("#data-"+obj).remove();
-    $("#rutPasajeroL").append("<option id=\"data-"+obj+"\" value=\""+obj+"\">"+obj+"</option>");
 }
 
 function cambiarPestaniaGeneral()
 {
     cambiarPropiedad($("#cont_general"),"display","block");
-    cambiarPropiedad($("#cont_pasajero"),"display","none");
     cambiarPropiedad($("#cont_ccosto"),"display","none");
     quitarclase($("#p_general"),"dispose");
-    agregarclase($("#p_pasajero"),"dispose");
     agregarclase($("#p_ccosto"),"dispose");
 }
 
@@ -479,52 +403,9 @@ function cambiarPestaniaCC()
 {
     cambiarPropiedad($("#cont_general"),"display","none");
     cambiarPropiedad($("#cont_ccosto"),"display","block");
-    cambiarPropiedad($("#cont_pasajero"),"display","none");
     quitarclase($("#p_ccosto"),"dispose");
     agregarclase($("#p_general"), "dispose");
-    agregarclase($("#p_pasajero"), "dispose");
 }
-
-function cambiarPestaniaPasajero()
-{
-    cambiarPropiedad($("#cont_general"),"display","none");
-    cambiarPropiedad($("#cont_ccosto"),"display","none");
-    cambiarPropiedad($("#cont_pasajero"),"display","block");
-    quitarclase($("#p_pasajero"),"dispose");
-    agregarclase($("#p_general"), "dispose");
-    agregarclase($("#p_ccosto"), "dispose");
-}
-function agregarPasajeros(obj)
-{
-    if(obj.prop("checked"))
-    {
-        AGREGAR_PASAJEROS.push(obj.val());
-        for(var i = 0; i < ELIMINAR_PASAJEROS.length; i++)
-        {
-            if(ELIMINAR_PASAJEROS[i] === obj.val())
-            {
-                ELIMINAR_PASAJEROS.splice(i, 1);
-                break;
-            }
-        }
-    }
-}
-function eliminarPasajeros(obj)
-{
-    if(obj.prop("checked"))
-    {
-        ELIMINAR_PASAJEROS.push(obj.val());
-        for(var i = 0; i < AGREGAR_PASAJEROS.length; i++)
-        {
-            if(AGREGAR_PASAJEROS[i] === obj.val())
-            {
-                AGREGAR_PASAJEROS.splice(i, 1);
-                break;
-            }
-        }
-    }
-}
-
 
 function agregarCentroCosto()
 {
@@ -559,5 +440,20 @@ function quitarCentroCosto()
             }
             i++;
         });
+    }
+}
+
+function succesSubirContrato()
+{
+    var archivo = $("#contratoOculta").val();
+    var ext = archivo.split("\.")[1];
+    if(ext !== 'pdf'){
+        alertify.error("Archivo invalido");
+        return;
+    }
+    else
+    {
+        var enlace = "<a href=\"source/util/pdf/"+$("#patente").val()+"_"+archivo+"\" target=\"_blanck\">Ver</a>";
+        $("#contenedor_contrato").html(enlace);
     }
 }

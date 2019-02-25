@@ -9,39 +9,17 @@ $(document).ready(function(){
     {
         POLYLINE.setMap(null);
     }
-    iniciarPestaniasMonitoreo();
-    buscarServicio();
-    cargarMovilesMapa();
+    for(var i = 0; i < markers.length;i++)
+    {
+        markers[i].setMap(null);
+    }
+    cargarMovilesMapa(true);
     setInterval('moverMovilesMapa()',5000);
     
-    $("#servicio").on('keydown',function(e){
-        if(isTeclaEnter(e))
-        {
-            buscarServicio();
-        }
-    });
-    
-    $("#vehiculo").on('keydown',function(e){
-        if(isTeclaEnter(e))
-        {
-            buscarServicio();
-        }
-    });
-    
-    $("#pasajero").on('keydown',function(e){
-        if(isTeclaEnter(e))
-        {
-            buscarServicio();
-        }
-    });
-   
-    
-    $("#buscar").click(function(){
-        buscarServicio();
+    $("#busqueda").keyup(function(e){
+        cargarMovilesMapa(false);
     });
 });
-
-
 
 function buscarServicio()
 {
@@ -109,16 +87,15 @@ function buscarServicio()
     getRequest(url,success);
 }
 
-function cargarMovilesMapa()
+function cargarMovilesMapa(monitor)
 {
-    var url = urlBase + "/movil/GetMoviles.php?busqueda=";
+    var busqueda = $("#busqueda").val();
+    var params = {busqueda : busqueda}
+    var url = urlBase + "/movil/GetMoviles.php";
     var success = function(response)
     {
-        if(response.length === 0)
-        {
-            alertify.error("No hay veh&iacute;culos conectados");
-            return;
-        }
+        var moviles = $("#lista_busqueda_monitoreo");
+        moviles.html("");
         for(var i = 0 ; i < response.length ; i++)
         {
             var patente = response[i].movil_patente;
@@ -127,14 +104,24 @@ function cargarMovilesMapa()
             var lon = response[i].movil_lon;
             var estado = response[i].movil_estado;
             var servicio = response[i].movil_servicio;
-            if(estado !== '0')
+            var imgEstado = '';
+            if(estado === '0')
+            {
+                imgEstado = "<div class=\"img-estado-no\"></div>";
+            }
+            else
+            {
+                imgEstado = "<div class=\"img-estado-ok\"></div>";   
+            }
+            if(monitor && lat !== '0.0000000' && lon !== '0.0000000')
             {
                 dibujarMarcador(patente,parseFloat(lat),parseFloat(lon),nombre,servicio);
             }
+            moviles.append("<div class=\"fila_contenedor\" id=\""+patente+"\" onClick=\"cambiarFila('"+patente+"')\">"+imgEstado+nombre+"</div>");
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
-    getRequest(url,success,false);
+    postRequest(url,params,success);
 }
 
 function moverMovilesMapa()
@@ -152,14 +139,14 @@ function moverMovilesMapa()
                 var lon = response[i].movil_lon;
                 var estado = response[i].movil_estado;
                 var servicio = response[i].movil_servicio;
-                if(estado !== '0')
-                {
+                //if(estado !== '0')
+                //{
                     if(markers[j].get("idMarker") === patente)
                     {
                         var latlng = new google.maps.LatLng(lat, lon);
                         markers[j].setPosition(latlng);
                     }
-                }
+                //}
             }
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
@@ -201,30 +188,6 @@ function dibujarMarcador(id,lat,lon,nombre,servicio)
 
     markers.push(marker);
 
-}
-
-function iniciarPestaniasMonitoreo()
-{
-    $("#p_monitoreo").click(function(){
-        quitarclase($(this),"dispose");
-        agregarclase($("#p_buscador"),"dispose");
-        quitarclase($("#contenedor_mapa"),"monitoreo_buscador");
-        agregarclase($("#contenedor_mapa"),"monitoreo");
-        agregarclase($("#buscador"),"contenedor_oculto");
-        flightPath.setMap(null);
-        cargarMovilesMapa();
-    });
-    $("#p_buscador").click(function(){
-        quitarclase($(this),"dispose");
-        agregarclase($("#p_monitoreo"),"dispose");
-        quitarclase($("#contenedor_mapa"),"monitoreo");
-        agregarclase($("#contenedor_mapa"),"monitoreo_buscador");
-        quitarclase($("#buscador"),"contenedor_oculto");
-        for (var i = 0; i < markers.length; i++) {
-          markers[i].setMap(null);
-        }
-
-    });
 }
 
 function dibujarServicio(id,movil)

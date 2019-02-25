@@ -13,8 +13,8 @@ class Agente {
     private $celular;
     private $direccion;
     private $mail;
-    private $cargo;
     private $perfil;
+    private $empresa;
 
     function getId() {
         return $this->id;
@@ -60,12 +60,12 @@ class Agente {
         return $this->mail;
     }
 
-    function getCargo() {
-        return $this->cargo;
-    }
-
     function getPerfil() {
         return $this->perfil;
+    }
+
+    function getEmpresa() {
+        return $this->empresa;
     }
 
     function setId($id) {
@@ -112,20 +112,14 @@ class Agente {
         $this->mail = $mail;
     }
 
-    function setCargo($cargo) {
-        $this->cargo = $cargo;
-    }
-
     function setPerfil($perfil) {
         $this->perfil = $perfil;
     }
 
-    public function toString() {
-        return "DATOS AGENTE: ID : ".$this->id." NOMBRE : ".$this->nombre.
-                " PAPELLIDO : ".$this->apellidoPat." MAPELLIDO : ".$this->apellidoMat.
-                " RUT : ".$this->rut." clave : ".$this->clave." TELEFONO : ".$this->telefono.
-                " CELULAR : ".$this->celular." DIRECCION : ".$this->direccion.
-                " MAIL : ".$this->mail." CARGO : ".$this->cargo." PERFIL : ". $this->perfil;
+    function setEmpresa($empresa) {
+        $this->empresa = $empresa;
     }
+
+
 
 }

@@ -66,10 +66,19 @@
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Direcci&oacute;n/Pto de Encuentro (*)
+                Direcci&oacute;n (*)
             </div> 
             <div class="contenedor-input">
                 <input type="text"  id="direccion" placeholder="Ej: Av los valles 234" maxlength="50">
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                Punto de Encuentro (*)
+            </div> 
+            <div class="contenedor-input">
+                <input type="text" id="punto" placeholder="Ej: Av los valles 234" maxlength="50">
+                <div class="datalist-visible" id="partida"></div>
             </div>
         </div>
         <div class="contenedor-fila">
@@ -94,6 +103,16 @@
     <div class="contenedor-formulario">
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
+                Empresa (*)
+            </div>
+            <div class="contenedor-input">
+                <select id="empresa">
+                    <option value="">Seleccione</option>
+                </select>
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
                 Centro costo (*)
             </div>
             <div class="contenedor-input">
@@ -105,18 +124,13 @@
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input">
-                Empresa (*)
-            </div>
-            <div class="contenedor-input">
-                <input type="text" id="empresa" placeholder="Ej: Falabella" maxlength="40">
-            </div>
-        </div>
-        <div class="contenedor-fila">
-            <div class="contenedor-pre-input">
                 Ruta
             </div>
             <div class="contenedor-input">
-                <input type="text" id="ruta" placeholder="Ej: Ruta 1" maxlength="40">
+                <select id="ruta">
+                    <option value="" selected>Seleccione</option>
+                </select>
+                <!--<input type="text" id="ruta" placeholder="Ej: Ruta 1" maxlength="40">-->
             </div>
         </div>
     </div>

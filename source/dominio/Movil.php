@@ -11,6 +11,12 @@ class Movil {
     private $color;
     private $cantidad;
     private $clase;
+    private $conductor;
+    private $conductorNombre;
+    private $conductorNick;
+    private $gps;
+    private $celular;
+    private $app;
     private $venPerCir;
     private $venRevTec;
     private $venExt;
@@ -26,10 +32,22 @@ class Movil {
     private $ultimaAsignacion;
     private $servicio;
     private $polizaSegOb;
+    private $valorSegOb;
     private $segRcDm;
     private $venSegRcDm;
     private $polizaSegRcDm;
-    private $conductor;
+    private $valorSegRcDm;
+    private $segAs;
+    private $venSegAs;
+    private $polizaSegAs;
+    private $valorSegAs;
+    private $adjuntoPerCir;
+    private $adjuntoRevTec;
+    private $adjuntoNMotor;
+    private $adjuntoSeremi;
+    private $adjuntoSegOb;
+    private $adjuntoSegRcDm;
+    private $adjuntoSegAsiento;
     
     function getId() {
         return $this->id;
@@ -65,6 +83,30 @@ class Movil {
 
     function getClase() {
         return $this->clase;
+    }
+
+    function getConductor() {
+        return $this->conductor;
+    }
+
+    function getConductorNombre() {
+        return $this->conductorNombre;
+    }
+
+    function getConductorNick() {
+        return $this->conductorNick;
+    }
+
+    function getGps() {
+        return $this->gps;
+    }
+
+    function getCelular() {
+        return $this->celular;
+    }
+
+    function getApp() {
+        return $this->app;
     }
 
     function getVenPerCir() {
@@ -127,6 +169,10 @@ class Movil {
         return $this->polizaSegOb;
     }
 
+    function getValorSegOb() {
+        return $this->valorSegOb;
+    }
+
     function getSegRcDm() {
         return $this->segRcDm;
     }
@@ -139,8 +185,52 @@ class Movil {
         return $this->polizaSegRcDm;
     }
 
-    function getConductor() {
-        return $this->conductor;
+    function getValorSegRcDm() {
+        return $this->valorSegRcDm;
+    }
+
+    function getSegAs() {
+        return $this->segAs;
+    }
+
+    function getVenSegAs() {
+        return $this->venSegAs;
+    }
+
+    function getPolizaSegAs() {
+        return $this->polizaSegAs;
+    }
+
+    function getValorSegAs() {
+        return $this->valorSegAs;
+    }
+
+    function getAdjuntoPerCir() {
+        return $this->adjuntoPerCir;
+    }
+
+    function getAdjuntoRevTec() {
+        return $this->adjuntoRevTec;
+    }
+
+    function getAdjuntoNMotor() {
+        return $this->adjuntoNMotor;
+    }
+
+    function getAdjuntoSeremi() {
+        return $this->adjuntoSeremi;
+    }
+
+    function getAdjuntoSegOb() {
+        return $this->adjuntoSegOb;
+    }
+
+    function getAdjuntoSegRcDm() {
+        return $this->adjuntoSegRcDm;
+    }
+
+    function getAdjuntoSegAsiento() {
+        return $this->adjuntoSegAsiento;
     }
 
     function setId($id) {
@@ -177,6 +267,30 @@ class Movil {
 
     function setClase($clase) {
         $this->clase = $clase;
+    }
+
+    function setConductor($conductor) {
+        $this->conductor = $conductor;
+    }
+
+    function setConductorNombre($conductorNombre) {
+        $this->conductorNombre = $conductorNombre;
+    }
+
+    function setConductorNick($conductorNick) {
+        $this->conductorNick = $conductorNick;
+    }
+
+    function setGps($gps) {
+        $this->gps = $gps;
+    }
+
+    function setCelular($celular) {
+        $this->celular = $celular;
+    }
+
+    function setApp($app) {
+        $this->app = $app;
     }
 
     function setVenPerCir($venPerCir) {
@@ -239,6 +353,10 @@ class Movil {
         $this->polizaSegOb = $polizaSegOb;
     }
 
+    function setValorSegOb($valorSegOb) {
+        $this->valorSegOb = $valorSegOb;
+    }
+
     function setSegRcDm($segRcDm) {
         $this->segRcDm = $segRcDm;
     }
@@ -251,11 +369,56 @@ class Movil {
         $this->polizaSegRcDm = $polizaSegRcDm;
     }
 
-    function setConductor($conductor) {
-        $this->conductor = $conductor;
+    function setValorSegRcDm($valorSegRcDm) {
+        $this->valorSegRcDm = $valorSegRcDm;
+    }
+
+    function setSegAs($segAs) {
+        $this->segAs = $segAs;
+    }
+
+    function setVenSegAs($venSegAs) {
+        $this->venSegAs = $venSegAs;
+    }
+
+    function setPolizaSegAs($polizaSegAs) {
+        $this->polizaSegAs = $polizaSegAs;
+    }
+
+    function setValorSegAs($valorSegAs) {
+        $this->valorSegAs = $valorSegAs;
+    }
+
+    function setAdjuntoPerCir($adjuntoPerCir) {
+        $this->adjuntoPerCir = $adjuntoPerCir;
+    }
+
+    function setAdjuntoRevTec($adjuntoRevTec) {
+        $this->adjuntoRevTec = $adjuntoRevTec;
+    }
+
+    function setAdjuntoNMotor($adjuntoNMotor) {
+        $this->adjuntoNMotor = $adjuntoNMotor;
+    }
+
+    function setAdjuntoSeremi($adjuntoSeremi) {
+        $this->adjuntoSeremi = $adjuntoSeremi;
+    }
+
+    function setAdjuntoSegOb($adjuntoSegOb) {
+        $this->adjuntoSegOb = $adjuntoSegOb;
+    }
+
+    function setAdjuntoSegRcDm($adjuntoSegRcDm) {
+        $this->adjuntoSegRcDm = $adjuntoSegRcDm;
+    }
+
+    function setAdjuntoSegAsiento($adjuntoSegAsiento) {
+        $this->adjuntoSegAsiento = $adjuntoSegAsiento;
     }
 
     
+            
     public function toString() {
         return "DATOS MOVIL: ID : ".$this->id." PATENTE : ".$this->patente.
             " MARCA : ".$this->marca." MODELO : ".$this->modelo.

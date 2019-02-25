@@ -1,4 +1,4 @@
-/* global google */
+/* global google, urlBase, alertify */
 var NICK_GLOBAL;
 var map;
 var markers = [];
@@ -12,10 +12,8 @@ var CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
 var DIRECTIONS_API = "https://maps.googleapis.com/maps/api/directions/json?";
 var PLACES_AUTOCOMPLETE_API = "https://maps.googleapis.com/maps/api/place/autocomplete/json?";
 var PLACES_DETAILS_API = "https://maps.googleapis.com/maps/api/place/details/json?";
-//placeid=EhhWZXJnYXJhLCBTYW50aWFnbywgQ2hpbGUiLiosChQKEglVkKOVBsVilhE0-ByEvT0DnRIUChIJuzrymgbQYpYRl0jtCfRZnYc&key=AIzaSyDcQylEsZAzuEw3EHBdWbsDAynXvU2Ljzs
 var PAGINA_ANTERIOR;
 var INTERVAL_SERVICIOS;
-
 var CREADO = "0";
 var EN_PROCCESO_DE_ASIGNACION = "1";
 var ASIGNADO = "2";
@@ -23,16 +21,31 @@ var ACEPTADO = "3";
 var EN_PROGRESO = "4";
 var FINALIZADO = "5";
 var CANCELADO = "6";
+var servicios = new Map();
+
+var MENU_VISIBLE = false;
 
 $(document).ready(function(){
-    $("#menu").load("menu.html", function( response, status, xhr ) {
+    $("#menu").load("menu.php", function( response, status, xhr ) {
         agregarclase($("#principal"),"menu-activo");
+        
+        $(".opcion-menu").mouseover(function (){
+            if(!MENU_VISIBLE)
+            {
+                abrirTooltip("tooltip_"+$(this).attr("id"));
+            }
+        });
+        
+        $(".opcion-menu").mouseout(function (){
+            cerrarTooltip("tooltip_"+$(this).attr("id"));
+        });
+    
     });    
     $("#contenido-central").load("home.html");
     getUsuario();
     getfecha();
     setInterval(function(){getfecha();},5000);
-    $.getScript(GOOGLE_MAPS_API+"key="+API_KEY+"&callback=initMap",null);
+    $.getScript(GOOGLE_MAPS_API+"key="+API_KEY+"&callback=initMap&libraries=places",null);
     
     $("#menu-telefono").click(function(){
         if($("#menu-telefono").attr('src') === 'img/menu.svg')
@@ -45,6 +58,10 @@ $(document).ready(function(){
             cambiarPropiedad($("#menu"),"display","none");
             $("#menu-telefono").attr("src","img/menu.svg");
         }
+    });
+    
+    $("#btn_menu").click(function () {
+        abrirMenu();
     });
     
     $("#enlace-salir").click(function() {
@@ -64,6 +81,8 @@ function initMap() {
         }
     };
     map = new google.maps.Map(document.getElementById("map"), myOptions);
+    var placesService = new google.maps.places.PlacesService(map);
+    
 }
 
 function decodePolyline(encoded) {
@@ -106,3 +125,32 @@ function decodePolyline(encoded) {
     }
     return poly;
 }
+
+    function validarServicios()
+    {
+        var params = {};
+        var url = urlBase + "/servicio/GetServiciosPendientes.php";
+        postRequest(url,params,function(response){
+            var cont = $("#contenedor_servicios");
+            cont.html("");
+            if(response.length === 0)
+            {
+                cont.html("No hay servicios pendientes");
+                return;
+            }
+            for(var i = 0; i < response.length ; i++)
+            {
+                var id = response[i].servicio_id;
+                var cliente = response[i].servicio_cliente;
+                var fecha = response[i].servicio_fecha;
+                var hora = response[i].servicio_hora;
+                var observacion = response[i].servicio_observacion;
+                if(typeof servicios.get(id) === 'undefined')
+                {
+                    alertify.success("nuevo servicio para asignar: "+id);
+                }
+                cont.append("<div class=\"pendiente\" onclick=\"abrirServicio('"+id+"','"+cliente+"','"+fecha+"','"+hora+"','"+observacion+"')\" >"+id+" - "+cliente+"</div>");
+                servicios.set(id,id);                
+            }
+        });
+    }

@@ -1,63 +1,74 @@
-
-/* global POLYLINE, alertify, urlBase, PLACES_AUTOCOMPLETE_API, CORS_PROXY, POSITION, API_KEY, PLACES_DETAILS_API, google, map, DIRECTIONS_API, EN_PROCCESO_DE_ASIGNACION */
-
-var transportistas = [];
-var clientes = [];
-var usuarios = [];
+/* global POLYLINE, alertify, urlBase, PLACES_AUTOCOMPLETE_API, CORS_PROXY, POSITION, API_KEY, PLACES_DETAILS_API, google, map, DIRECTIONS_API, EN_PROCCESO_DE_ASIGNACION, markers */
+var CLIENTES = {};
 var moviles = [];
-var tarifas = [];
+var clientesArray = [];
+var TARIFAS = {};
 var SERVICIOS_PENDIENTES;
 var PAGINA = "PANEL";
+var objAnterior;
+var origen;
+var destinos= [];
+var pasajeros = [];
+var NOMBRE_CLIENTE;
+var conductores = new Map();
+
+var CAMPOS = ["clientes","ruta","fechas","hora","vehiculos","tarifa1","tarifa2"];
+var CAMPOS_ESPECIAL = ["partida","destino","usuarios","celular","fechas2","hora2","vehiculos2","tarifas2"];
 
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
     init();
-    INTERVAL_SERVICIOS = setInterval(function(){
-        cargarServiciosPendientes();        
-    },5000);
-    if(typeof POLYLINE !== "undefined")
+    if($("#ids").val() !== "")
     {
-        POLYLINE.setMap(null);
+        cargarRutas();
     }
-    $(".buscador").click(function(){
-        $("#partidal").html("");
-        $("#destinol").html("");
-    });
-    $("#contenedor_mapa").click(function(){
-        cambiarPropiedad($("#servicios_pendientes"),"display","none");        
-    });
-    $("#partida").on("input",function(){
-        mostrarDatalist($(this).val(),$("#partidal"),'partida');
-    });
-    $("#destino").on("input",function(){
-         mostrarDatalist($(this).val(),$("#destinol"),'destino');
-    });
-    
-    $("#agregar_destino").click(function(){
-        agregarDestino();
-    });
-    
-    $("#quitar_destino").click(function(){
-        quitarDestino();
-    });
-    
-    $("#dibujar").click(function(){
-        preDibujarRuta();
-    });
-    
-    /** CLIENTE **/
     $("#clientes").keyup(function () {
         cargarClientes();
     });
     $("#clientes").on('input',function () {
+        cargarRutas();
+    });
+    $("#ruta").on('input',function () {
+        cambiarPropiedad($(".buscador-pasajero"),"display","initial");
+        agregarclase($("#contenedor_mapa"),"mapa_bajo");
+        for(var i = 0; i < TARIFAS.length; i++)
+        {
+            if(TARIFAS[i].tarifa_nombre === $(this).val())
+            {
+                $("#tarifa1").val(TARIFAS[i].tarifa_valor1);
+                $("#tarifa2").val(TARIFAS[i].tarifa_valor2);
+                break;
+            }
+        }
         cargarPasajeros();
     });
-    $("#clientes").on('blur',function () {
-        if($("#clientes").val() === "")
+    $("#vehiculos").change(function () {
+        if($(this).val() !== "")
         {
-            cargarPasajeros();
+            var conductor = $(this).children("option").filter(":selected").text().split(" / ")[1];
+            $("#conductores").html("Conductor: "+conductor);
+            $("#conductorH").val(conductores.get(conductor));
         }
-        var noExiste = validarInexistencia($("#clientes").val(),clientes);
+        else
+        {
+            $("#conductores").html("");
+        }
+    });
+    $("#vehiculos2").change(function () {
+        if($(this).val() !== "")
+        {
+            var conductor = $(this).children("option").filter(":selected").text().split(" / ")[1];
+            $("#conductores2").html("Conductor: "+conductor);
+            $("#conductor2").val(conductor);
+        }
+        else
+        {
+            $("#conductores2").html("");
+        }
+    });
+    
+    $("#clientes").on('blur',function () {
+        var noExiste = validarInexistencia($("#clientes").val(),clientesArray);
         if(noExiste)
         {
             alertify.error("Cliente inexistente");
@@ -65,74 +76,53 @@ $(document).ready(function(){
             
         }
     });
-    /** TRANSPORTISTA **/
-    $("#transportistas").keyup(function () {
-        cargarTransportistas();
-    });
-    
-    $("#transportistas").on('input',function () {
-        cargarMoviles();
-    });
-    
-    $("#transportistas").on('blur',function () {
-        if($("#transportistas").val() === "")
-        {
-            cargarTransportistas();
-        }
-        var noExiste = validarInexistencia($("#transportistas").val(),transportistas);
-        if(noExiste)
-        {
-            alertify.error("Transportista inexistente");
-            $("#transportistas").val("");
-        }
-    });
-    $("#usuarios").keyup(function () {
-        cargarPasajeros();
-    });
-    
-    $("#usuarios").on('blur',function () {
-        var noExiste = validarInexistencia($("#usuarios").val(),usuarios);
-        if(noExiste)
-        {
-            alertify.error("Pasajero inexistente");
-            $("#usuarios").val("");
-        }
-    });
+
     $("#vehiculos").keyup(function(){
         cargarMoviles();
-    });
-    
-    $("#vehiculos").on('blur',function () {
-        var noExiste = validarInexistencia($("#vehiculos").val(),moviles);
-        if(noExiste)
-        {
-            alertify.error("Veh&iacute;culo inexistente");
-            $("#vehiculos").val("");
-        }
-    });
-    
-    $("#titulo_servicios_pendientes").click(function(){
-        abrirServiciosPendientes();
     });
 
     $("#solicitar").click(function () {
         agregarServicio();
+    });
+    $("#solicitar2").click(function () {
+        agregarServicioEspecial();
+    });
+    
+    $("#partida").on("input",function(){
+        mostrarDatalist($(this).val(),'partidal','partida');
+    });
+    $("#destino").on("input",function(){
+         mostrarDatalist($(this).val(),'destinol','destino');
+    });
+    
+    $("#normal").click(function(){
+        cambiarServicioNormal();
+    });
+    $("#especial").click(function(){
+        cambiarServicioEspecial();
     });
 });
 
 function init()
 {
     cargarClientes();
-    cargarTransportistas();
-    cargarPasajeros();
     cargarMoviles();
-    cargarTarifas();
+    if(typeof POLYLINE !== "undefined")
+    {
+        POLYLINE.setMap(null);
+    }
+    for(var i = 0; i < markers.length;i++)
+    {
+        markers[i].setMap(null);
+    }
+    iniciarFecha(['#fechas','#fechas2']);
+    iniciarHora(['#hora','#hora2']);
 }
 
 function cargarClientes()
 {
     var busqueda = $("#clientes").val();
-    var params = {busqueda : busqueda};
+    var params = {busqueda : busqueda,buscaCC : '0'};
     var url = urlBase + "/cliente/GetClientes.php";
     var success = function(response)
     {
@@ -141,7 +131,8 @@ function cargarClientes()
         {
             var nombre = response[i].cliente_razon;
             $("#lcliente").append("<option value=\""+nombre+"\">"+nombre+"</option>");
-            clientes.push(nombre);
+            CLIENTES = response;
+            clientesArray.push(nombre);
         }
     };
     postRequest(url,params,success,false);
@@ -149,71 +140,117 @@ function cargarClientes()
 
 function cargarPasajeros()
 {
-    var busqueda = $('#clientes').val();
-    var params = {busqueda : busqueda};
-    var url = urlBase + "/pasajero/GetPasajeros.php";
+    cambiarPropiedad($("#loader_pasajero"),"visibility","visible");
+    var cliente = $('#clientes').val();
+    var ruta = $('#ruta').val();
+    var params = {cliente : cliente};
+    var url = urlBase + "/pasajero/GetPasajerosRuta.php";
     var success = function(response)
     {
-        $("#lusuario").html("");
+        if(response.length === 0)
+        {
+            cambiarPropiedad($("#loader_pasajero"),"visibility","hidden");
+            alertify.error("No hay pasajeros disponibles para esta ruta");
+            return;
+        }
+        cambiarPropiedad($("#loader_pasajero"),"visibility","hidden");
+        var contenedorDir = $("#contenedor_punto_encuentro");
+        var contenedorDes = $("#contenedor_punto_destino");
+        var contenedor = $("#contenedor_pasajero");
+        var contenedorEx = $("#contenedor_pasajero_no_asignado");
+        contenedor.html("");
+        contenedorEx.html("");
+        if(ruta.indexOf("-ZP-") !== -1)
+        {
+            origen = response[0].pasajero_empresa_direccion;
+        }
+        contenedorDir.html("<b>Origen:</b> "+origen);
+        pasajeros = [];
+        destinos = [];
+        var partidaExiste = true;
         for(var i = 0 ; i < response.length ; i++)
         {
+            var id = response[i].pasajero_id;
             var nombre = response[i].pasajero_nombre + " " + response[i].pasajero_papellido;
-            $("#lusuario").append("<option value=\""+nombre+"\">"+nombre+"</option>");
-            usuarios.push(nombre);
+            var punto = response[i].pasajero_punto_encuentro;
+            var celular = response[i].pasajero_celular;
+            if(ruta === response[i].pasajero_ruta)
+            {
+                if(ruta.indexOf("-RG-") !== -1 && partidaExiste)
+                {
+                    origen = punto;
+                    contenedorDir.html("<b>Origen:</b> "+origen);
+                    partidaExiste = false;
+                }
+                
+                if(ruta.indexOf("-ZP-") !== -1 && i === response.length-1)
+                {
+                    contenedorDes.html("<b>Destino:</b> "+punto);                    
+                }
+                destinos.push(punto);
+                contenedor.append("<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" draggable=\"true\" ondragstart=\"drag(event,$(this))\" ondrop=\"drop(event,$(this))\" ondragover=\"allowDrop(event,$(this))\">"
+                                 +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+punto+"\">"
+                                 +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'><div class=\"boton-chico\" onclick=\"borrarPasajero('pasajero_"+id+"','"+nombre+"','"+punto+"','"+celular+"')\"><img src=\"img/cancelar.svg\" width=\"12\" height=\"12\"></div></div>"+
+                        "<div class=\"cont-mini-pasajero\"><div>"+ punto + "</div><div>" + celular+"</div></div>");
+                pasajeros.push(id);
+            }
+            else
+            {
+                contenedorEx.append("<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" \">"
+                                 +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+punto+"\">"
+                                 +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'><div class=\"boton-chico\" onclick=\"agregarPasajero('pasajero_"+id+"','"+nombre+"','"+punto+"','"+celular+"')\"><img src=\"img/flecha-arriba.svg\" width=\"12\" height=\"12\"></div></div>"+
+                        "<div class=\"cont-mini-pasajero\"><div>"+ punto + "</div><div>" + celular+"</div></div>");
+            }
         }
+        if(ruta.indexOf("-RG-") !== -1)
+        {
+            destinos.push(response[0].pasajero_empresa_direccion);
+            contenedorDes.html("<b>Destino:</b> "+response[0].pasajero_empresa_direccion);
+        }
+        dibujarRuta(origen,destinos);
     };
     postRequest(url,params,success,false);
 }
 
-function cargarTransportistas()
-{
-    var busqueda = $("#transportistas").val();
-    var params = {busqueda : busqueda};
-    var url = urlBase + "/transportista/GetTransportistas.php";
-    var success = function(response)
-    {
-        $("#ltransportista").html("");
-        for(var i = 0 ; i < response.length ; i++)
-        {
-            var nombre = response[i].transportista_nombre;
-            $("#ltransportista").append("<option value=\""+nombre+"\">"+nombre+"</option>");
-            transportistas.push(nombre);
-        }
-    };
-    postRequest(url,params,success,false);
-}
 
 function cargarMoviles()
 {
-    var busqueda = $('#transportistas').val();
-    var params = {busqueda : busqueda};
+    var params = {busqueda : ''};
     var url = urlBase + "/movil/GetMoviles.php";
     var success = function(response)
     {
-        $("#lvehiculo").html("");
         for(var i = 0 ; i < response.length ; i++)
         {
             var nombre = response[i].movil_nombre;
-            $("#lvehiculo").append("<option value=\""+nombre+"\">"+nombre+"</option>");
+            var conductor = response[i].movil_conductor_nombre;
+            var nick = response[i].movil_conductor_nick;
+            conductores.set(conductor,nick);
+            if(conductor.length === 1)
+            {
+                conductor = "No Definido";
+            }
+            $("#vehiculos").append("<option value=\""+nombre+"\">"+nombre+" / "+conductor+"</option>");
+            $("#vehiculos2").append("<option value=\""+nombre+"\">"+nombre+" / "+conductor+"</option>");
             moviles.push(nombre);
         }
     };
     postRequest(url,params,success,false);
 }
 
-function cargarTarifas()
+function cargarRutas()
 {
-    var busqueda = $('#tarifas').val();
-    var params = {busqueda : busqueda};
-    var url = urlBase + "/tarifa/GetTarifas.php";
+    var clientes = $('#clientes').val();
+    NOMBRE_CLIENTE = clientes;
+    var params = {empresa : clientes};
+    var url = urlBase + "/tarifa/GetTarifasEmpresa.php";
     var success = function(response)
     {
-        $("#ltarifa").html("");
+        $("#lruta").html("");
         for(var i = 0 ; i < response.length ; i++)
         {
+            TARIFAS = response;
             var nombre = response[i].tarifa_nombre;
-            $("#ltarifa").append("<option value=\""+nombre+"\">"+nombre+"</option>");
-            tarifas.push(nombre);
+            $("#lruta").append("<option value=\""+nombre+"\">"+nombre+"</option>");
         }
     };
     postRequest(url,params,success,false);
@@ -221,100 +258,113 @@ function cargarTarifas()
 
 function agregarServicio()
 {
-    var partida = $("#partida").val();
-    var destino = $("#destino").val();
+    var id = $("#ids").val();
     var cliente = $("#clientes").val();
-    var usuario = $("#usuarios").val();
-    var transportista = $("#transportistas").val();
+    var ruta = $("#ruta").val();
+    var fecha = $("#fechas").val();
+    var hora = $("#hora").val();
     var movil = $("#vehiculos").val();
-    var tipo = $("#tipos").val();
-    var tarifa = $("#tarifas").val();
-    var array = [partida,destino,cliente,usuario,transportista,movil,tipo,tarifa];
+    var conductor = $("#conductorH").val();
+    var tarifa1 = $("#tarifa1").val();
+    var tarifa2 = $("#tarifa2").val();
+    var observaciones = $("#observacion").val();
+    var array = [cliente,ruta,fecha,hora,movil,tarifa1,tarifa2];
     if(!validarCamposOr(array))
     {
+        activarPestania(array);
         alertify.error("Ingrese todos los campos necesarios");
         return;
     }
-    var params = {partida : partida, destino : destino, cliente : cliente, usuario : usuario,
-        transportista : transportista, movil : movil, tipo : tipo, tarifa : tarifa};
-    var url = urlBase + "/servicio/AddServicio.php";
-    var success = function(response)
+    var fechaFormat = fecha.split('/');
+    var date = new Date(fechaFormat[2]+"-"+fechaFormat[1]+"-"+fechaFormat[0]+" "+hora);
+    var now = new Date();
+    if(date < now)
     {
-        cerrarSession(response);
-        POLYLINE.setMap(null);
-        alertify.success('Servicio agregado con id '+response.servicio_id);
+        alertify.error("Debe seleccionar una fecha futura");
+        return;
+    }
+    if(pasajeros.length === 0)
+    {
+        alertify.error("No hay pasajeros asignados a este servicio");
+        return;
+    }
+    if(conductor === "No Definido")
+    {
+        alertify.error("El veh&iacute;culo "+movil+" no tiene coductor asociado");
+        return;
+    }
+    if(validarTipoDato())
+    {
         vaciarFormulario();
-        cambiarPropiedad($("#loader"),"visibility","hidden");
-        agregarDetalleServicio(response.servicio_id);
-    };
-    postRequest(url,params,success);
-}
-      
-function mostrarDatalist(val,datalist,campo)
-{
-    if(val === "") return;
-    var url = CORS_PROXY + PLACES_AUTOCOMPLETE_API + "input="+val+
-            "&location="+POSITION[0]+","+POSITION[1]+"&sensor=true&radius=500&key="+API_KEY;
-    var success = function(response)
-    {
-        datalist.html("");
-        var places =  response.predictions;
-        for(var i = 0 ; i < places.length;i++)
+        var params = {cliente : cliente, ruta : ruta,fecha : fecha, hora : hora,movil : movil,
+            conductor: conductor ,tarifa1 : tarifa1, tarifa2 : tarifa2, observaciones : observaciones, estado : 1};
+        var url = urlBase + "/servicio/AddServicio.php";
+        if(id !== "")
         {
-            var descripcion = places[i].description;
-            var placeId = places[i].place_id;
-            var encodeDescripcion = descripcion.replace(/'/g,'');
-            datalist.append(
-                    "<div class=\"option-datalist\" onclick=\"selecionarPlace('"+encodeDescripcion+"','"+placeId+"','"+campo+"')\"><img src=\"img/ubicacion.svg\" width=\"12\" heifgt=\"12\">"+descripcion+"</div>");
+            params.id = id;
+            url = urlBase + "/servicio/ModServicio.php";
         }
-    };
-    getRequest(url,success);
+        var success = function(response)
+        {
+            cerrarSession(response);
+            POLYLINE.setMap(null);
+            alertify.success('Servicio agregado con id '+response.servicio_id);
+            cambiarPropiedad($("#loader"),"visibility","hidden");
+            $("#contenedor_pasajero").html("<div class=\"contenedor-loader\"><div class=\"loader\" id=\"loader_pasajero\">Loading...</div></div>");
+            $("#contenedor_pasajero_no_asignado").html("");
+            cambiarPropiedad($(".buscador-pasajero"),"display","none");
+            quitarclase($("#contenedor_mapa"),"mapa_bajo");
+            agregarDetalleServicio(response.servicio_id,false);
+            notificarConductor(response.servicio_id,conductor);
+            notificarServicioFuturo(response.servicio_id,conductor,fecha,hora);
+        };
+        postRequest(url,params,success);
+    }
 }
 
-function selecionarPlace(val,placeId,obj)
-{
-    $("#"+obj).val(decodeURI(val));
-    var url = CORS_PROXY + PLACES_DETAILS_API + "placeid="+placeId+"&key="+API_KEY;
-    var success = function(response)
-    {
-        var status = response.status;
-        
-        if(status === 'OK')
-        {
-            var marker = new google.maps.Marker({
-                map: map,
-                place: {
-                    placeId: placeId,
-                    location: response.result.geometry.location
-                }
-            });
-            map.setZoom(15);
-            map.panTo(marker.getPosition());
-        }
-    };
-    getRequest(url,success);
-}
-function preDibujarRuta()
+function agregarServicioEspecial()
 {
     var partida = $("#partida").val();
-    var destinos = $(".destino");
-    var completado = false;
-    destinos.each(function (index){
-        if($(this).val() !== '')
-        {   
-            completado = true;
-        }
-    });
-    if(partida !== '' && completado)
+    var destino = $("#destino").val();
+    var pasajero = $("#usuarios").val();
+    var celular = $("#celular").val();
+    var fecha = $("#fechas2").val();
+    var hora = $("#hora2").val();
+    var movil = $("#vehiculos2").val();
+    var conductor = $("#conductor2").val();
+    var tarifa = $("#tarifas2").val();
+    var observaciones = $("#observacion2").val();
+    var array = [partida,destino,pasajero,celular,fecha,hora,movil,tarifa];
+    if(!validarCamposOr(array))
     {
-        dibujarRuta(partida,destinos);
-    }    
+        activarPestaniaEspecial(array);
+        alertify.error("Ingrese todos los campos necesarios");
+        return;
+    }
+    if(validarTipoDatoEspecial())
+    {
+        var params = {partida : partida, destino : destino,pasajero : pasajero, celular : celular, fecha: fecha,
+            hora : hora,movil : movil, conductor: conductor ,tarifa : tarifa, observaciones : observaciones, estado : 1};
+        var url = urlBase + "/servicio/AddServicioEspecial.php";
+        var success = function(response)
+        {
+            cerrarSession(response);
+            POLYLINE.setMap(null);
+            alertify.success('Servicio agregado con id '+response.servicio_id);
+            vaciarFormulario();
+            cambiarPropiedad($("#loader"),"visibility","hidden");
+            agregarDetalleServicio(response.servicio_id,true);
+            notificarConductor(response.servicio_id,conductor);
+            notificarServicioFuturo(response.servicio_id,conductor,fecha+" "+hora);
+        };
+        postRequest(url,params,success);
+    }
 }
 
 function dibujarRuta(origen,destinos)
 {
     var largo = destinos.length;
-    var destinoFinal = encodeURI(destinos[largo-1].value);
+    var destinoFinal = destinos[largo-1];
     var waypoints = "";
     if(largo > 1)
     {
@@ -325,11 +375,11 @@ function dibujarRuta(origen,destinos)
             {
                 continue;
             }
-            waypoints += encodeURI(destinos[i].value) + "|";
+            waypoints += destinos[i] + "|";
         }
         waypoints = waypoints.substring(0,waypoints.length-1);
     }
-    var url = CORS_PROXY + DIRECTIONS_API + "origin="+encodeURI(origen)+"&destination="+destinoFinal+waypoints+"&key="+API_KEY;
+    var url = CORS_PROXY + DIRECTIONS_API + "origin="+origen+"&destination="+destinoFinal+waypoints+"&key="+API_KEY;
     var success = function(response)
     {
         if(typeof POLYLINE !== "undefined")
@@ -344,9 +394,9 @@ function dibujarRuta(origen,destinos)
             var flightPath = new google.maps.Polyline({
                 path: polyline,
                 geodesic: true,
-                strokeColor: '#FFFFF',
+                strokeColor: '#7394e7',
                 strokeOpacity: 1.0,
-                strokeWeight: 6
+                strokeWeight: 3
             });
             POLYLINE = flightPath;
             flightPath.setMap(map);
@@ -365,42 +415,46 @@ function dibujarRuta(origen,destinos)
             alertify.error("Ruta no encontrada");
         }
     };
-    getRequest(url,success);
+    getRequest(encodeURI(url),success);
 }
-function agregarDetalleServicio(idServicio)
+function agregarDetalleServicio(idServicio,especial)
 {
-    var params = { lat : POLYLINE_LAT, lon : POLYLINE_LNG, id : idServicio };
+    var params = {};
+    var destinoFinal = "";
+    var pasajeroFinal = "";
+    for(var i = 0; i < destinos.length;i++)
+    {
+        destinoFinal += destinos[i] + "%";
+        pasajeroFinal += pasajeros[i] + "%";
+    }
+    if(especial)
+    {
+        params = { lat : POLYLINE_LAT, lon : POLYLINE_LNG, pasajeros : "" ,destinos : destinoFinal, id : idServicio, especial : especial };
+    }
+    else
+    {
+        params = { lat : POLYLINE_LAT, lon : POLYLINE_LNG, pasajeros : pasajeroFinal ,destinos : destinoFinal, id : idServicio, especial : especial };        
+    }
     var url = urlBase + "/servicio/AddServicioDetalle.php";
     postRequest(url,params,null);
 }
 
-
-function cargarServiciosPendientes()
+function notificarConductor(idServicio,llave)
 {
-    var contenedor = $("#servicios_pendientes");
-    var servicios = $("#contenedor_servicios");
-    var url = urlBase + "/servicio/GetServiciosPendientes.php";
-    var success = function(response)
-    {
-        SERVICIOS_PENDIENTES = response;
-        servicios.html("");
-        for(var i = 0 ; i < SERVICIOS_PENDIENTES.length ; i++)
-        {
-            var id = SERVICIOS_PENDIENTES[i].servicio_id;
-            servicios.append("<div class=\"opcion_servicios\" onclick=\"abrirServicio("+id+")\">"+id+"</div>");
-        }
-        if(SERVICIOS_PENDIENTES.length > 0)
-        {
-            cambiarPropiedad(contenedor,"display","block");
-        }
-        else
-        {
-            servicios.html("No hay servicios pendientes");
-            cambiarPropiedad(contenedor,"display","none");
-            return;
-        }
-    };
-    getRequest(url,success,false);
+    var texto = "Nuevo servicio asignado con id: "+idServicio;
+    var tipo = 0;
+    var params = {texto  : texto, tipo : tipo, llave : llave};        
+    var url = urlBase + "/notificacion/AddNotificacion.php";
+    postRequest(url,params,null);
+}
+
+function notificarServicioFuturo(idServicio,llave,fecha,hora)
+{
+    var texto = "Se aproxima el siguiente servicio: "+idServicio;
+    var tipo = 1;
+    var params = {texto  : texto, tipo : tipo, llave : llave, fecha : fecha, hora : hora};        
+    var url = urlBase + "/notificacion/AddNotificacion.php";
+    postRequest(url,params,null);
 }
 
 function abrirServiciosPendientes()
@@ -409,26 +463,6 @@ function abrirServiciosPendientes()
 
 }
 
-function abrirServicio(idServicio)
-{
-    for(var i = 0 ; i < SERVICIOS_PENDIENTES.length ; i++)
-    {
-        var servicio = SERVICIOS_PENDIENTES[i];
-        var partida = servicio.servicio_partida;
-        var destino = servicio.servicio_destino;
-        var cliente = servicio.servicio_cliente;
-        var pasajero = servicio.servicio_pasajero;
-        $("#idServicio").val(idServicio);
-        $("#partida").val(partida);
-        $("#test").html(partida);
-        $("#destino").val(destino);
-        $("#clientes").val(cliente);
-        $("#usuarios").val(pasajero);
-    }
-    marcarServicioEnProceso(idServicio);
-    cambiarPropiedad($("#servicios_pendientes"),"display","none");
-    dibujarRuta(partida,destino);
-}
 
 function marcarServicioEnProceso(idServicio)
 {
@@ -441,23 +475,6 @@ function marcarServicioEnProceso(idServicio)
     postRequest(url,params,success,false);
 }
 
-function agregarDestino()
-{
-    var i = 1;
-    $(".destino").each(function(index){
-        if(i < 4)
-        {
-            i++;
-        }
-    });
-    if(i <= 4)
-    {
-        $("#destinos").append("<div class=\"cont-pre-monitor\" id=\"cont-destino"+i+"\">Destino "+i+"</div><input type=\"text\" class=\"input_asignar destino\" id=\"destino"+i+"\" placeholder=\"Ej: Av los pinos 723\">");
-        $("#destino"+i).on('input',function(){
-            mostrarDatalist($(this).val(),$("#destinol"),'destino'+i);
-        });
-    }
-}
 
 function quitarDestino()
 {
@@ -474,4 +491,227 @@ function quitarDestino()
             i++;
         });
     }
+}
+
+function allowDrop(ev,obj) {
+    ev.preventDefault();
+}
+
+function drag(ev,obj) {
+    objAnterior = obj.attr("id");
+    ev.dataTransfer.setData("text", obj.html());
+}
+
+function drop(ev,obj) {
+    ev.preventDefault();
+    $("#"+objAnterior).html(obj.html());
+    obj.html(ev.dataTransfer.getData("text"));
+    pasajeros = [];
+    destinos = [];
+    $("#contenedor_pasajero .cont-pasajero-gral .hidden" ).each(function(index) {
+        pasajeros.push($(this).attr("id").split("_")[1]);
+        destinos.push($(this).val());
+        if(index === destinos.length-1)
+        {
+            $("#contenedor_punto_destino").html("<b>Destino: </b>"+$(this).val());
+        }
+    });
+    dibujarRuta(origen,destinos);
+}
+
+function borrarPasajero(obj,nombre,punto,celular)
+{
+    var id = obj.split("_")[1];
+    for(var i = 0; i < pasajeros.length; i++)
+    {
+        if(pasajeros[i] === id)
+        {
+            pasajeros.splice(i, 1);
+        }
+    }
+    for(var i = 0; i < destinos.length; i++)
+    {
+        if(destinos[i] === punto)
+        {
+            destinos.splice(i, 1);
+        }
+    }
+    $("#contenedor_punto_destino").html("<b>Destino: </b>"+destinos[destinos.length-1]);
+    var pasajero = $("#"+obj);
+    var texto = "<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" \">"
+                                 +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+punto+"\">"
+                                 +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'><div class=\"boton-chico\" onclick=\"agregarPasajero('pasajero_"+id+"','"+nombre+"','"+punto+"','"+celular+"')\"><img src=\"img/flecha-arriba.svg\" width=\"12\" height=\"12\"></div></div>"+
+                        "<div class=\"cont-mini-pasajero\"><div>"+ punto + "</div><div>" + celular+"</div></div>";
+    $("#contenedor_pasajero_no_asignado").append(texto);
+    pasajero.remove();
+    dibujarRuta(origen,destinos);
+}
+
+function agregarPasajero(obj,nombre,punto,celular)
+{
+    var id = obj.split("_")[1];
+    pasajeros.push(id);
+    $("#contenedor_punto_destino").html("<b>Destino: </b>"+punto);
+    destinos.push(punto);
+    var pasajero = $("#"+obj);
+    var texto = "<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" draggable=\"true\" ondragstart=\"drag(event,$(this))\" ondrop=\"drop(event,$(this))\" ondragover=\"allowDrop(event,$(this))\">"
+                                 +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+punto+"\">"
+                                 +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'><div class=\"boton-chico\" onclick=\"borrarPasajero('pasajero_"+id+"','"+nombre+"','"+punto+"','"+celular+"')\"><img src=\"img/cancelar.svg\" width=\"12\" height=\"12\"></div></div>"+
+                        "<div class=\"cont-mini-pasajero\"><div>"+ punto + "</div><div>" + celular+"</div></div>";
+    $("#contenedor_pasajero").append(texto);
+    pasajero.remove();
+    dibujarRuta(origen,destinos);
+}
+
+function cambiarServicioNormal()
+{
+    cambiarPropiedad($("#servicio-normal"),"display","block");
+    cambiarPropiedad($("#servicio-especial"),"display","none");
+    vaciarFormulario();
+    if(typeof POLYLINE !== "undefined")
+    {
+        POLYLINE.setMap(null);
+    }
+}
+
+function cambiarServicioEspecial()
+{
+    cambiarPropiedad($("#servicio-normal"),"display","none");
+    cambiarPropiedad($("#servicio-especial"),"display","block");
+    $("#contenedor_pasajero").html("<div class=\"contenedor-loader\"><div class=\"loader\" id=\"loader_pasajero\">Loading...</div></div>");
+    $("#contenedor_pasajero_no_asignado").html("");
+    cambiarPropiedad($(".buscador-pasajero"),"display","none");
+    quitarclase($("#contenedor_mapa"),"mapa_bajo");
+    vaciarFormulario();
+    if(typeof POLYLINE !== "undefined")
+    {
+        POLYLINE.setMap(null);
+    }
+}
+function mostrarDatalist(val,datalist,campo)
+{
+    if(val === "") return;
+    var url = CORS_PROXY + PLACES_AUTOCOMPLETE_API + "input="+val+
+            "&location="+POSITION[0]+","+POSITION[1]+"&sensor=true&radius=500&key="+API_KEY;
+    var success = function(response)
+    {
+        $("#"+datalist).html("");
+        var places =  response.predictions;
+        for(var i = 0 ; i < places.length;i++)
+        {
+            var descripcion = places[i].description;
+            var placeId = places[i].place_id;
+            var encodeDescripcion = descripcion.replace(/'/g,'');
+            $("#"+datalist).append(
+                    "<div class=\"option-datalist\" onclick=\"selecionarPlace('"+encodeDescripcion+"','"+datalist+"','"+campo+"')\"><img src=\"img/ubicacion.svg\" width=\"12\" heifgt=\"12\">"+descripcion+"</div>");
+        }
+    };
+    getRequest(url,success);
+}
+
+function selecionarPlace(val,datalist,obj)
+{
+    $("#"+obj).val(decodeURI(val));
+    $("#"+datalist).html("");
+//    var url = CORS_PROXY + PLACES_DETAILS_API + "placeid="+placeId+"&key="+API_KEY;
+//    var success = function(response)
+//    {
+//        var status = response.status;
+//        
+//        if(status === 'OK')
+//        {
+//            var marker = new google.maps.Marker({
+//                map: map,
+//                place: {
+//                    placeId: placeId,
+//                    location: response.result.geometry.location
+//                }
+//            });
+//            map.setZoom(15);
+            //map.panTo(marker.getPosition());
+            var origen = $("#partida").val();
+            var destino = $("#destino").val();
+            if(destino !== "")
+            {
+                dibujarRuta(origen,[destino]);
+            }
+//        }
+//    };
+//    getRequest(url,success);
+    
+}
+
+function activarPestania(array)
+{
+    for(var i = 0 ; i < CAMPOS.length ; i++)
+    {
+        if(array[i] === '')
+        {
+            marcarCampoError($("#"+CAMPOS[i]));
+        }
+        else
+        {
+            marcarCampoOk($("#"+CAMPOS[i]));
+        }
+    }
+}
+function activarPestaniaEspecial(array)
+{
+    for(var i = 0 ; i < CAMPOS_ESPECIAL.length ; i++)
+    {
+        if(array[i] === '')
+        {
+            marcarCampoError($("#"+CAMPOS_ESPECIAL[i]));
+        }
+        else
+        {
+            marcarCampoOk($("#"+CAMPOS_ESPECIAL[i]));
+        }
+    }
+}
+
+function validarTipoDato()
+{
+    for(var i = 0 ; i < CAMPOS.length ; i++)
+    {
+        marcarCampoOk($("#"+CAMPOS[i]));
+    }
+    var tarifa1 = $("#tarifa1");
+    var tarifa2 = $("#tarifa2");
+    if(!validarNumero(tarifa1.val()))
+    {
+        marcarCampoError(tarifa1);
+        alertify.error('Tarifa 1 debe ser numerico');
+        return false;
+    }
+    if(!validarNumero(tarifa2.val()))
+    {
+        marcarCampoError(tarifa2);
+        alertify.error('Tarifa 2 debe ser numerico');
+        return false;
+    }
+    return true;
+}
+
+function validarTipoDatoEspecial()
+{
+    for(var i = 0 ; i < CAMPOS_ESPECIAL.length ; i++)
+    {
+        marcarCampoOk($("#"+CAMPOS_ESPECIAL[i]));
+    }
+    var celular = $("#celular");
+    var tarifa = $("#tarifas2");
+    if(!validarNumero(celular.val()))
+    {
+        marcarCampoError(celular);
+        alertify.error('Celular debe ser numerico');
+        return false;
+    }
+    if(!validarNumero(tarifa.val()))
+    {
+        marcarCampoError(tarifa);
+        alertify.error('Tarifa debe ser numerico');
+        return false;
+    }
+    return true;
 }

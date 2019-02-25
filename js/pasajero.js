@@ -1,11 +1,12 @@
-/* global urlBase, alertify */
+/* global urlBase, alertify, PLACES_AUTOCOMPLETE_API, CORS_PROXY, POSITION */
 var ID_PASAJERO;
 var ID_EMPRESA;
+var ID_RUTA;
 var PASAJEROS;
 var AGREGAR = true;
 var PAGINA = 'PASAJEROS';
 var CC;
-var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","centro","empresa","nick"];
+var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","punto","empresa","centro","nick"];
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
     buscarPasajero();
@@ -14,6 +15,7 @@ $(document).ready(function(){
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
         $("#contenedor_central").load("html/datos_pasajero.html", function( response, status, xhr ) {
+            cargarClientes();
             iniciarPestanias();
             cambioEjecutado();
             $("#rut").blur(function (){
@@ -33,7 +35,14 @@ $(document).ready(function(){
                     return;
                 }
             });
-            cargarCentroCosto('','');
+            $("#empresa").change(function (){
+                cargarCentroCosto($(this).val(),'');
+                cargarRutas($(this).val(),'');
+            });
+            
+            $("#punto").on("input",function(){
+                mostrarDatalist($(this).val(),$("#partida"),'punto');
+            });
         });
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
@@ -72,6 +81,7 @@ function agregarPasajero()
     var telefono = $("#telefono").val();
     var celular = $("#celular").val();
     var direccion = $("#direccion").val();
+    var punto = $("#punto").val();
     var mail = $("#mail").val();
     var nick = $("#nick").val();
     var password = $("#password").val();
@@ -80,7 +90,7 @@ function agregarPasajero()
     var centro = $("#centro").val();
     var empresa = $("#empresa").val();
     var ruta = $("#ruta").val();
-    var array = [nombre,papellido,mapellido,rut,celular,direccion,centro,empresa,nick,password,password2];
+    var array = [nombre,papellido,mapellido,rut,celular,direccion,punto,empresa,centro,nick,password,password2];
     if(!validarCamposOr(array))
     {
         activarPestania(array);
@@ -98,7 +108,7 @@ function agregarPasajero()
     {
         var params = {nombre : nombre, papellido : papellido, mapellido : mapellido,
             rut : rut, nick : nick, password : btoa(password), telefono : telefono, celular : celular,
-            direccion : direccion, mail : mail, cargo : cargo, centro : centro, empresa : empresa, ruta : ruta};
+            direccion : direccion,punto : punto, mail : mail, cargo : cargo, centro : centro, empresa : empresa, ruta : ruta};
         var url = urlBase + "/pasajero/AddPasajero.php";
         var success = function(response)
         {
@@ -125,6 +135,7 @@ function modificarPasajero()
     var telefono = $("#telefono").val();
     var celular = $("#celular").val();
     var direccion = $("#direccion").val();
+    var punto = $("#punto").val();
     var mail = $("#mail").val();
     var nick = $("#nick").val();
     var password = $("#password").val();
@@ -136,7 +147,7 @@ function modificarPasajero()
     var array;
     var params = {id : id, nombre : nombre, papellido : papellido, mapellido : mapellido,
         rut : rut, nick : nick, telefono : telefono, celular : celular,
-        direccion : direccion, mail : mail, cargo : cargo, centro : centro, empresa : empresa, ruta : ruta};
+        direccion : direccion, punto : punto, mail : mail, cargo : cargo, centro : centro, empresa : empresa, ruta : ruta};
     if(password !== '' || password2 !== '')
     {
         if(password !== password2)
@@ -146,13 +157,13 @@ function modificarPasajero()
             alertify.error("La password no coincide");
             return;
         }
-        array = [rut,nombre,papellido,mapellido,celular,direccion,centro,empresa,
+        array = [rut,nombre,papellido,mapellido,celular,direccion,punto,empresa,centro,
         nick,password,password2];
         params.password = btoa(password);
     }
     else
     {
-        array = [rut,nombre,papellido,mapellido,celular,direccion,centro,empresa,nick];   
+        array = [rut,nombre,papellido,mapellido,celular,direccion,punto,empresa,centro,nick];   
     }
     if(!validarCamposOr(array))
     {
@@ -245,12 +256,20 @@ function abrirModificar(id)
     $("#contenedor_central").load("html/datos_pasajero.html", function( response, status, xhr ) {
         iniciarPestanias();
         cambioEjecutado();
+        cargarClientes();
         $("#nick").blur(function (){
             if(validarExistencia('nick',$(this).val()))
             {
                 $("#nick").val("");
                 return;
             }
+        });
+        $("#empresa").change(function (){
+            cargarCentroCosto($(this).val(),'');
+            cargarRutas($(this).val(),'');
+        });
+        $("#punto").on("input",function(){
+            mostrarDatalist($(this).val(),$("#partida"),'punto');
         });
         var pasajero;
         for(var i = 0 ; i < PASAJEROS.length; i++)
@@ -269,13 +288,18 @@ function abrirModificar(id)
         $("#telefono").val(pasajero.pasajero_telefono);
         $("#celular").val(pasajero.pasajero_celular);
         $("#direccion").val(pasajero.pasajero_direccion);
+        $("#punto").val(pasajero.pasajero_punto_encuentro);
         $("#mail").val(pasajero.pasajero_mail);
         $("#cargo").val(pasajero.pasajero_cargo);
         $("#centro").val(pasajero.pasajero_centro_costo);
         $("#empresa").val(pasajero.pasajero_empresa);
         $("#ruta").val(pasajero.pasajero_ruta);
-        ID_EMPRESA = pasajero.pasajero_cliente;
-        cargarCentroCosto(ID_EMPRESA,pasajero.pasajero_centro_costo);
+        ID_EMPRESA = pasajero.pasajero_empresa;
+        if(ID_EMPRESA !== '')
+        {
+            cargarCentroCosto(ID_EMPRESA,pasajero.pasajero_centro_costo);
+            cargarRutas(ID_EMPRESA,pasajero.pasajero_ruta);
+        }
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
         cambiarPropiedad($("#eliminar"),"visibility","visible");
@@ -389,25 +413,15 @@ function cargarCentroCosto(empresa,centro)
     var url = urlBase + "/cliente/GetCentroCosto.php";
     var success = function(response)
     {
-        cerrarSession(response);
         var cc = $("#centro");
-        cc.html("");
-        CC = response;
-        cc.append("<option value=\"\">Seleccione</option>");
-        if(response.length === 0)
-        {
-            alertify.error("No hay centros de costo asociados");
-            return;
-        }
+        cc.html("<option value=\"\">Seleccione</option>");
         for(var i = 0 ; i < response.length; i++){
+            var sel = "";
             if(centro === response[i].cc_nombre)
             {
-                cc.append("<option value=\""+response[i].cc_nombre+"\" selected>"+response[i].cc_nombre+"</option>");
+                sel = " selected ";
             }
-            else
-            {
-                cc.append("<option value=\""+response[i].cc_nombre+"\">"+response[i].cc_nombre+"</option>");
-            }
+            cc.append("<option value=\""+response[i].cc_nombre+"\" "+sel+">"+response[i].cc_nombre+"</option>");
         }
     };
     postRequest(url,params,success);
@@ -422,18 +436,18 @@ function activarPestania(array)
     {
         if(array[i] === '')
         {
-            if(i < 6)
+            if(i < 7)
             {
                 general = true;
             }
-            if(i > 5 && i < 8)
+            if(i > 6 && i < 9)
             {
                 if(!general)
                 {
                     empresa = true;
                 }
             }
-            if(i > 7)
+            if(i > 8)
             {
                 if(!empresa)
                 {
@@ -491,4 +505,77 @@ function cambiarPestaniaAplicacion()
     agregarclase($("#p_general"), "dispose");
     agregarclase($("#p_empresa"), "dispose");
 }
+
+
+function cargarClientes()
+{
+    var busqueda = $("#clientes").val();
+    var params = {busqueda : busqueda,buscaCC : '0'};
+    var url = urlBase + "/cliente/GetClientes.php";
+    var success = function(response)
+    {
+        $("#empresa").html("<option value=''>Seleccione</option>");
+        for(var i = 0 ; i < response.length ; i++)
+        {
+            var nombre = response[i].cliente_razon;
+            var sel = "";
+            if(ID_EMPRESA === response[i].cliente_razon)
+            {
+                sel = " selected ";
+            }
+            $("#empresa").append("<option value=\""+nombre+"\" "+sel+">"+nombre+"</option>");
+        }
+    };
+    postRequest(url,params,success,false);
+}
+
+function cargarRutas(empresa,ruta)
+{
+    var params = {empresa : empresa};
+    var url = urlBase + "/tarifa/GetTarifasEmpresa.php";
+    var success = function(response)
+    {
+        $("#ruta").html("<option value=\"\">Seleccione</option>");
+        for(var i = 0 ; i < response.length ; i++)
+        {
+            var sel = "";
+            if(ruta === response[i].tarifa_nombre)
+            {
+                sel = " selected ";
+            }
+            var nombre = response[i].tarifa_nombre;
+            $("#ruta").append("<option value=\""+nombre+"\" "+sel+">"+nombre+"</option>");
+            
+        }
+    };
+    postRequest(url,params,success,false);
+}
+
+function mostrarDatalist(val,datalist)
+{
+    if(val === "") return;
+    var url = CORS_PROXY + PLACES_AUTOCOMPLETE_API + "input="+val+
+            "&location="+POSITION[0]+","+POSITION[1]+"&sensor=true&radius=500&key="+API_KEY;
+    var success = function(response)
+    {
+        datalist.html("");
+        var places =  response.predictions;
+        for(var i = 0 ; i < places.length;i++)
+        {
+            var descripcion = places[i].description;
+            var placeId = places[i].place_id;
+            var encodeDescripcion = descripcion.replace(/'/g,'');
+            datalist.append(
+                    "<div class=\"option-datalist\" onclick=\"selecionarPlace('"+encodeDescripcion+"')\"><img src=\"img/ubicacion.svg\" width=\"12\" heifgt=\"12\">"+descripcion+"</div>");
+        }
+    };
+    getRequest(url,success);
+}
+
+function selecionarPlace(val)
+{
+    $("#punto").val(decodeURI(val));
+    $("#partida").html("");
+}
+
 

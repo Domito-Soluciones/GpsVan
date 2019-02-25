@@ -1,15 +1,17 @@
-/* global urlBase, alertify */
+/* global urlBase, alertify, ADJUNTANDO */
 var ID_CONDUCTOR;
+var ID_TRANSPORTISTA;
 var CONDUCTORES;
-var MOVILES;
 var AGREGAR = true;
-var PAGINA = 'TRANSPORTISTAS O CONDUCTORES';
-var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","mail","nacimiento","tipoLicencia",
-                "renta","tipoContrato","afp","isapre","mutual","seguroInicio","seguroRenovacion",
+var PAGINA = 'CONDUCTORES';
+var CAMPOS = ["tipo","rut","nombre","papellido","mapellido","celular","direccion","mail","nacimiento","tipoLicencia",
+                "renta","tipoContrato","afp","isapre","isapread","mutual","seguroInicio","descuento",
                 "nick","password","password2"];
+var TIPO = '';
 
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
+    buscarConductor();
     $("#agregar").click(function(){
         quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
         cambiarPropiedad($("#agregar"),"visibility","hidden");
@@ -17,7 +19,7 @@ $(document).ready(function(){
         $("#contenedor_central").load("html/datos_conductor.html", function( response, status, xhr ) {
             iniciarPestanias();
             cambioEjecutado();
-            iniciarFecha(['#nacimiento','#seguroInicio','#seguroRenovacion']);
+            iniciarFecha(['#nacimiento','#seguroInicio']);
             $("#rut").blur(function (){
                 if(validarExistencia('rut',$(this).val()))
                 {
@@ -35,13 +37,28 @@ $(document).ready(function(){
                     return;
                 }
             });
+            $("#tipo").change(function () {
+                TIPO = $(this).val();
+                if(TIPO === '2')
+                {
+                    quitarclase($("input:checkbox"),"checkbox-oculto");
+                }
+                else
+                {
+                    agregarclase($("input:checkbox"),"checkbox-oculto");
+                }
+                validarTipo();
+            });
+            
+            obtenerChecks();
+            
         });
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
     });
     
     $("#cancelar").click(function(){
-        validarCancelar();
+        validarCancelar(PAGINA);
     });
     $("#guardar").click(function(){
         if(AGREGAR)
@@ -70,6 +87,7 @@ $(document).ready(function(){
 
 function agregarConductor()
 {
+    var tipo = $("#tipo").val();
     var rut = $("#rut").val();
     var nombre = $("#nombre").val();
     var papellido = $("#papellido").val();
@@ -83,19 +101,26 @@ function agregarConductor()
     var contrato = $("#tipoContrato").val();
     var afp = $("#afp").val();
     var isapre = $("#isapre").val();
+    var isapread = $("#isapread").val();
     var mutual = $("#mutual").val();
     var seguroInicio = formato_fecha($("#seguroInicio").val());
-    var seguroRenovacion = formato_fecha($("#seguroRenovacion").val());
-    var descuento = $("#descuento").val() === '' ? '0' : $("#descuento").val();
-    var anticipo = $("#anticipo").val() === '' ? '0' : $("#anticipo").val();
+    var descuento = $("#descuento").val();
+    var transportista = $("#transportista").val();
     var nick = $("#nick").val();
     var password = $("#password").val();
     var password2 = $("#password2").val();
     var tipoLicencia = $("#tipoLicencia").val();
-    var array = [rut,nombre,papellido,mapellido,celular,direccion,mail,nacimiento,tipoLicencia,
-                renta,contrato,afp,isapre,mutual,seguroInicio,seguroRenovacion,
-                nick,password,password2];
-    if(!validarCamposOr(array))
+    var array = [tipo,rut,nombre,papellido,mapellido,celular,direccion,mail,nacimiento,tipoLicencia,
+                renta,contrato,afp,isapre,isapread,mutual,seguroInicio,descuento,nick,
+                password,password2];
+    var exp = obtenerExcepciones();
+    alert(exp);
+    if(ADJUNTANDO)
+    {
+            alertify.error("Espere a que se adjunten los documentos");
+        return;
+    }
+    if(!validarCamposOr(array,exp))
     {
         activarPestania(array);
         alertify.error("Ingrese todos los campos necesarios");
@@ -115,9 +140,9 @@ function agregarConductor()
         var params = {nombre : nombre, papellido : papellido, mapellido : mapellido,
         rut : rut, nick : nick, password : btoa(password), telefono : telefono, celular : celular, 
         direccion : direccion, mail : mail, tipoLicencia : tipoLicencia, nacimiento : nacimiento,
-        renta : renta, contrato : contrato, afp : afp, isapre : isapre, mutual : mutual, 
-        seguroInicio : seguroInicio, seguroRenovacion : seguroRenovacion, descuento : descuento,
-        anticipo : anticipo, imagen : imagen, archivoContrato : archivoContrato};
+        renta : renta, contrato : contrato, afp : afp, isapre : isapre, isapread : isapread, mutual : mutual, 
+        seguroInicio : seguroInicio, descuento : descuento, transportista : transportista,
+        imagen : imagen, archivoContrato : archivoContrato, tipo : tipo};
         var url = urlBase + "/conductor/AddConductor.php";
         var success = function(response)
         {
@@ -130,6 +155,8 @@ function agregarConductor()
             resetFormulario();
             buscarConductor();
             cambiarPropiedad($(".imagen"),"background-image","url('img/usuario-hombre.svg')");
+            enviarCorreoPassword(mail,btoa(password));
+            $(".contenedor_contrato_movil").html("");
         };
         postRequest(url,params,success);
     }
@@ -138,6 +165,7 @@ function agregarConductor()
 function modificarConductor()
 {
     var id = ID_CONDUCTOR;
+    var tipo = $("#tipo").val();
     var rut = $("#rut").val();
     var nombre = $("#nombre").val();
     var papellido = $("#papellido").val();
@@ -155,18 +183,25 @@ function modificarConductor()
     var contrato = $("#tipoContrato").val();
     var afp = $("#afp").val();
     var isapre = $("#isapre").val();
+    var isapread = $("#isapread").val();
     var mutual = $("#mutual").val();
     var seguroInicio = $("#seguroInicio").val();
-    var seguroRenovacion = $("#seguroRenovacion").val();
     var descuento = $("#descuento").val();
-    var anticipo = $("#anticipo").val();
+    var transportista = $("#transportista").val();
+    var imagen = $("#imagenOculta").val();
+    var archivoContrato = $("#contratoOculta").val();
     var array;
     var params = {id : id,nombre : nombre, papellido : papellido, mapellido : mapellido,
         rut : rut, nick : nick, telefono : telefono, celular : celular, 
         direccion : direccion, mail : mail, tipoLicencia : tipoLicencia, nacimiento : nacimiento,
-        renta : renta, contrato : contrato, afp : afp, isapre : isapre, mutual : mutual, 
-        seguroInicio : seguroInicio, seguroRenovacion : seguroRenovacion, descuento : descuento,
-        anticipo : anticipo, imagen : imagen, archivoContrato : archivoContrato};
+        renta : renta, contrato : contrato, afp : afp, isapre : isapre, isapread : isapread, mutual : mutual, 
+        seguroInicio : seguroInicio, descuento : descuento, transportista : transportista,
+        imagen : imagen, archivoContrato : archivoContrato, tipo : tipo};
+    if(ADJUNTANDO)
+    {
+        alertify.error("Espere a que se adjunten los documentos");
+        return;
+    }
     if(password !== '' || password2 !== '')
     {
         if(password !== password2)
@@ -176,18 +211,20 @@ function modificarConductor()
             marcarCampoError(password2);
             return;
         }
-        array = [rut,nombre,papellido,mapellido,celular,direccion,mail,
-        tipoLicencia,nacimiento,renta,contrato,afp,isapre,mutual,seguroInicio,
-        seguroRenovacion,nick,password,password2];
+            
+        array = [tipo,rut,nombre,papellido,mapellido,celular,direccion,mail,nacimiento,tipoLicencia,
+            renta,contrato,afp,isapre,isapread,mutual,seguroInicio,descuento,
+        nick,password,password2];
         params.password = btoa(password);
     }
     else
     {
-        array = [rut,nombre,papellido,mapellido,celular,direccion,mail,
-        tipoLicencia,nacimiento,renta,contrato,afp,isapre,mutual,seguroInicio,
-        seguroRenovacion,nick];   
+        array = [tipo,rut,nombre,papellido,mapellido,celular,direccion,mail,nacimiento,
+        tipoLicencia,renta,contrato,afp,isapre,isapread,mutual,seguroInicio,descuento,
+        nick];   
     }
-    if(!validarCamposOr(array))
+    var exp = obtenerExcepciones();
+    if(!validarCamposOr(array,exp))
     {
         activarPestania(array);
         alertify.error("Ingrese todos los campos necesarios");
@@ -195,8 +232,6 @@ function modificarConductor()
     }
     if(validarTipoDato())
     {
-        var imagen = $("#imagenOculta").val();
-        var archivoContrato = $("#contratoOculta").val();
         var url = urlBase + "/conductor/ModConductor.php";
         var success = function(response)
         {
@@ -206,6 +241,12 @@ function modificarConductor()
             alertify.success("Conductor Modificado");
             resetFormulario();
             buscarConductor();
+            if(password !== '')
+            {
+                $("#password").val("");
+                $("#password2").val("");
+                enviarCorreoPassword(mail,btoa(password));
+            }
         };
         postRequest(url,params,success);
     }
@@ -230,7 +271,6 @@ function buscarConductor()
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].conductor_id;
-            var rut = response[i].conductor_rut;
             var nombre = response[i].conductor_nombre;
             var papellido = response[i].conductor_papellido;
             var mapellido = response[i].conductor_mapellido;
@@ -279,7 +319,7 @@ function abrirModificar(id)
     $("#contenedor_central").load("html/datos_conductor.html", function( response, status, xhr ) {
         iniciarPestanias();
         cambioEjecutado();
-        iniciarFecha(['#nacimiento','#seguroInicio','#seguroRenovacion']);
+        iniciarFecha(['#nacimiento','#seguroInicio']);
         $("#nick").blur(function (){
             if(validarExistencia('nick',$(this).val()))
             {
@@ -288,6 +328,20 @@ function abrirModificar(id)
                 return;
             }
         });
+        $("#tipo").change(function () {
+            TIPO = $(this).val();
+            if(TIPO === '2')
+            {
+                quitarclase($(".check"),"checkbox-oculto");
+            }
+            else
+            {
+                agregarclase($(".check"),"checkbox-oculto");
+            }
+            validarTipo();
+        });
+       
+        
         var conductor;
         for(var i = 0 ; i < CONDUCTORES.length; i++)
         {
@@ -296,6 +350,8 @@ function abrirModificar(id)
                 conductor = CONDUCTORES[i];
             }
         }
+        $("#tipo").val(conductor.conductor_tipo);
+        $("#tipo").prop("readonly",true);
         $("#rut").val(conductor.conductor_rut);
         $("#rut").prop("readonly",true);
         $("#nombre").val(conductor.conductor_nombre);
@@ -312,24 +368,36 @@ function abrirModificar(id)
         $("#tipoContrato").val(conductor.conductor_tipo_contrato);
         $("#afp").val(conductor.conductor_afp);
         $("#isapre").val(conductor.conductor_isapre);
+        $("#isapread").val(conductor.conductor_isapre_ad);
         $("#mutual").val(conductor.conductor_mutual);
         $("#seguroInicio").val(conductor.conductor_seguro_inicio);
-        $("#seguroRenovacion").val(conductor.conductor_seguro_renovacion);
         $("#descuento").val(conductor.conductor_descuento);
-        $("#anticipo").val(conductor.conductor_anticipo);
+        $("#transportista").val(conductor.conductor_transportista);
+        TIPO = conductor.conductor_tipo;
+        if(TIPO === '2')
+        {
+            quitarclase($("input:checkbox"),"checkbox-oculto");
+        }
+        else
+        {
+            agregarclase($("input:checkbox"),"checkbox-oculto");
+        }
+        validarTipo();
+        ID_TRANSPORTISTA = conductor.conductor_transportista;
         var imagen = conductor.conductor_imagen;
         var contrato = conductor.conductor_contrato;
         if(imagen !== '')
         {
             $("#imagenOculta").val(imagen);
-            cambiarPropiedad($(".imagen"),"background-image","url('source/util/img/"+$("#rut").val()+"_"+imagen+"')");
+            cambiarPropiedad($(".imagen"),"background-image","url('source/util/img/"+imagen+"')");
         }
         if(contrato !== '')
         {
             $("#contratoOculta").val(contrato);
-            var enlace = "<a href=\"source/util/pdf/"+$("#rut").val()+"_"+contrato+"\" target=\"_blanck\">Ver</a>";
+            var enlace = "<a href=\"source/util/pdf/"+contrato+"\" target=\"_blanck\">Ver</a>";
             $("#contenedor_contrato").html(enlace);
         }
+        obtenerChecks();
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
         cambiarPropiedad($("#eliminar"),"visibility","visible");
@@ -347,38 +415,12 @@ function eliminarConductor()
         alertify.success("Conductor eliminado");
         cerrarSession(response);
         resetFormularioEliminar(PAGINA);
-        cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
+        cambiarPropiedad($("#loader"),"visibility","hidden");
         resetBotones();
         buscarConductor();
+        $("#transportista").html("<option value=''>Seleccione</option>");
     };
     postRequest(url,params,success);
-}
-
-function succesSubirImagen()
-{
-    var archivo = $("#imagenOculta").val();
-    var ext = archivo.split("\.")[1];
-    if(ext !== 'png'){
-        if(ext !== 'jpg'){
-            alertify.error("Archivo invalido");
-            return;
-        }
-    }
-    cambiarPropiedad($(".imagen"),"background-image","url('source/util/img/"+$("#rut").val()+"_"+archivo+"')");
-}
-function succesSubirContrato()
-{
-    var archivo = $("#contratoOculta").val();
-    var ext = archivo.split("\.")[1];
-    if(ext !== 'pdf'){
-        alertify.error("Archivo invalido");
-        return;
-    }
-    else
-    {
-        var enlace = "<a href=\"source/util/pdf/"+$("#rut").val()+"_"+archivo+"\" target=\"_blanck\">Ver</a>";
-        $("#contenedor_contrato").html(enlace);
-    }
 }
 
 function validarExistencia(tipo,valor)
@@ -411,14 +453,14 @@ function validarTipoDato()
     {
         marcarCampoOk($("#"+CAMPOS[i]));
     }
+    
     var rut = $("#rut");
     var telefono = $("#telefono");
     var celular = $("#celular");
     var mail = $("#mail");
     var renta = $("#renta");
-    var mutual = $("#mutual");
+    var isapread = $("#isapread");
     var descuento = $("#descuento");
-    var anticipo = $("#anticipo");
     if(!validarRut(rut.val()))
     {
         cambiarPestaniaGeneral();
@@ -455,11 +497,11 @@ function validarTipoDato()
         alertify.error('Renta debe ser numerico');
         return false;
     }
-    if(!validarNumero(mutual.val()))
+    if(!validarNumero(isapread.val()))
     {
         cambiarPestaniaContrato();
-        marcarCampoError(mutual);
-        alertify.error('% Mutual debe ser numerico');
+        marcarCampoError(isapread);
+        alertify.error('Isapre adicional debe ser numerico');
         return false;
     }
     if(!validarNumero(descuento.val() === '' ? '0' : descuento.val()))
@@ -468,14 +510,6 @@ function validarTipoDato()
         cambiarPestaniaContrato();
         marcarCampoError(descuento);
         alertify.error('% Descuento debe ser numerico');
-        return false;
-    }
-    if(!validarNumero(anticipo.val() === '' ? '0' : anticipo.val()))
-    {
-        marcarCampoOk(anticipo);
-        cambiarPestaniaContrato();
-        marcarCampoError(anticipo);
-        alertify.error('Anticipo debe ser numerico');
         return false;
     }
     
@@ -504,20 +538,20 @@ function activarPestania(array)
     {
         if(array[i] === '')
         {
-            if(i < 9)
+            if(i < 10)
             {
                 general = true;
             }
-            if(i > 8 && i < 16)
+            if(i > 9 && i < 18)
             {
                 if(!general)
                 {
                     contrato = true;
                 }
             }
-            if(i > 15)
+            if(i > 17)
             {
-                if(!contrato)
+                if(!general && !contrato)
                 {
                     aplicacion = true;
                 }
@@ -543,6 +577,7 @@ function activarPestania(array)
     }
     
 }
+
 function cambiarPestaniaGeneral()
 {
     cambiarPropiedad($("#cont_general"),"display","block");
@@ -580,3 +615,284 @@ function cambiarPestaniaAplicacion()
     agregarclase($("#p_movil"),"dispose");
 }
 
+function validarTipo()
+{
+    var renta = $("#renta");
+    var afp = $("#afp");
+    var isapre = $("#isapre");
+    var isapread = $("#isapread");
+    var mutual = $("#mutual");
+    var descuento = $("#descuento");
+    var transportista = $("#transportista");
+    var tipoContrato = $("#tipoContrato");
+    var noAplica = marcarCampoNoAplicable();
+    if(TIPO === '0' || TIPO === '3')
+    {
+        renta.val(0);
+        afp.val(noAplica);
+        isapre.val(noAplica);
+        isapread.val(0);
+        mutual.val(noAplica);
+        transportista.val(noAplica);
+        descuento.val(20);
+        tipoContrato.val() === noAplica ? tipoContrato.val("") : tipoContrato ;
+        marcarCampoDisabled(renta);
+        renta.attr("disabled",true);
+        marcarCampoDisabled(afp);
+        afp.attr("disabled",true);
+        marcarCampoDisabled(isapre);
+        isapre.attr("disabled",true);
+        marcarCampoDisabled(isapread);
+        isapread.attr("disabled",true);
+        marcarCampoDisabled(mutual);
+        mutual.attr("disabled",true);
+        transportista.attr("disabled",true);
+        descuento.attr("disabled",false);
+        tipoContrato.attr("disabled",false);
+    }
+    else if(TIPO === '1')
+    {
+        cargarTransportistas();
+        tipoContrato.val() === noAplica ? tipoContrato.val("") : tipoContrato ;
+        renta.val() === noAplica ? renta.val("") : renta ;
+        afp.val() === noAplica ? afp.val("") : afp ;
+        isapre.val() === noAplica ? isapre.val("") : isapre ;
+        isapread.val() === noAplica ? isapread.val("") : isapread ;
+        mutual.val() === noAplica ? mutual.val("") : mutual ;
+        descuento.val(0);
+        transportista.val("");
+        marcarCampoDisabled(descuento);
+        descuento.attr("disabled",true);
+        tipoContrato.attr("disabled",false);
+        transportista.attr("disabled",false);
+        renta.attr("disabled",false);
+        afp.attr("disabled",false);
+        isapre.attr("disabled",false);
+        isapread.attr("disabled",false);
+        mutual.attr("disabled",false);
+    }
+    else if(TIPO === '2')
+    {
+        cargarTransportistas();
+        transportista.val("");
+        if(renta.val() === '0' || renta.val() === '')
+        {
+            marcarCampoDisabled(renta);
+            renta.attr("disabled",true);
+        }
+        else
+        {
+            $("#checkRenta").attr("checked",true);
+        }
+        if(afp.val() === '-' || afp.val() === '')
+        {
+            marcarCampoDisabled(afp);
+            afp.attr("disabled",true);
+        }
+        else
+        {
+            $("#checkAfp").attr("checked",true);
+        }
+        if(isapre.val() === '-' || isapre.val() === '')
+        {
+            marcarCampoDisabled(isapre);
+            isapre.attr("disabled",true);
+        }
+        else
+        {
+            $("#checkIsapre").attr("checked",true);
+        }
+        if(isapread.val() === '0' || isapread.val() === '')
+        {
+            marcarCampoDisabled(isapread);
+            isapread.attr("disabled",true);
+        }
+        else
+        {
+            $("#checkIsapreAd").attr("checked",true);
+        }
+        if(mutual.val() === '-' || mutual.val() === '')
+        {
+            marcarCampoDisabled(mutual);
+            mutual.attr("disabled",true);
+        }
+        else
+        {
+            $("#checkMutual").attr("checked",true);
+        }
+        if(descuento.val() === '-' || descuento.val() === '')
+        {
+            marcarCampoDisabled(descuento);
+            descuento.attr("disabled",true);
+        }
+        else
+        {
+            $("#checkDescuento").attr("checked",true);           
+        }
+        if(tipoContrato.val() === '-' || tipoContrato.val() === '')
+        {
+            marcarCampoDisabled(tipoContrato);
+            tipoContrato.attr("disabled",true);
+        }
+        else
+        {
+            $("#checkContrato").attr("checked",true);
+        }
+        transportista.attr("disabled",false);
+    }
+}
+
+function obtenerExcepciones()
+{
+    var exp ='';
+    if(TIPO === "0" || TIPO === "3")
+    {
+        exp += '|11||13||14||15||16||18||';
+    }
+    else if(TIPO === "1")
+    {
+        exp += '|17||';
+    }
+    else if(TIPO === "2")
+    {
+        if(!$("#checkRenta").is(":checked"))
+        {
+            exp += '|10|';
+        }
+        if(!$("#checkContrato").is(":checked"))
+        {
+            exp += '|11|';
+        }
+        if(!$("#checkAfp").is(":checked"))
+        {
+            exp += '|13|';
+        }
+        if(!$("#checkIsapre").is(":checked"))
+        {
+            exp += '|14|';
+        }
+        if(!$("#checkIsapreAd").is(":checked"))
+        {
+            exp += '|15|';
+        }
+        if(!$("#checkMutual").is(":checked"))
+        {
+            exp += '|16|';
+        }
+        if(!$("#checkDescuento").is(":checked"))
+        {
+            exp += '|18|';
+        }
+    }
+    return exp;
+}
+
+function cargarTransportistas()
+{
+    var url = urlBase + "/conductor/GetTransportistas.php";
+    var params = {};
+    var success = function(response)
+    {
+        $("#transportista").html("<option value=''>Seleccione</option>");
+        for(var i = 0 ; i < response.length ; i++)
+        {
+            var id = response[i].conductor_id;
+            var nombre = response[i].conductor_nombre + " " + response[i].conductor_papellido;
+            var sel = "";
+            if(id === ID_TRANSPORTISTA)
+            {
+                sel = " selected";
+            }
+            $("#transportista").append("<option value=\""+id+"\" "+sel+">"+nombre+"</option>");
+        }
+    };
+    postRequest(url,params,success,false);
+}
+
+function obtenerChecks()
+{
+    $("#checkRenta").click(function(){
+        if($(this).is(":checked"))
+        {
+            $("#renta").prop("disabled",false);
+            marcarCampoOk($("#renta"));
+        }
+        else
+        {
+            marcarCampoDisabled($("#renta"));
+            $("#renta").prop("disabled",true);
+        }
+    });
+    $("#checkContrato").click(function(){
+        if($(this).is(":checked"))
+        {
+            $("#tipoContrato").prop("disabled",false);
+            marcarCampoOk($("#tipoContrato"));
+        }
+        else
+        {
+            marcarCampoDisabled($("#tipoContrato"));
+            $("#tipoContrato").prop("disabled",true);
+        }
+    });
+    $("#checkAfp").click(function(){
+        if($(this).is(":checked"))
+        {
+            $("#afp").prop("disabled",false);
+            marcarCampoOk($("#afp"));
+        }
+        else
+        {
+            marcarCampoDisabled($("#afp"));
+            $("#afp").prop("disabled",true);
+        }
+    });
+    $("#checkIsapre").click(function(){
+        if($(this).is(":checked"))
+        {
+            $("#isapre").prop("disabled",false);
+            marcarCampoOk($("#isapre"));
+        }
+        else
+        {
+            marcarCampoDisabled($("#isapre"));
+            $("#isapre").prop("disabled",true);
+        }
+    });
+    $("#checkIsapreAd").click(function(){
+        if($(this).is(":checked"))
+        {
+            $("#isapread").prop("disabled",false);
+            marcarCampoOk($("#isapread"));
+        }
+        else
+        {
+            marcarCampoDisabled($("#isapread"));
+            $("#isapread").prop("disabled",true);
+        }
+    });
+    $("#checkMutual").click(function(){
+        if($(this).is(":checked"))
+        {
+            $("#mutual").prop("disabled",false);
+            marcarCampoOk($("#mutual"));
+        }
+        else
+        {
+            marcarCampoDisabled($("#mutual"));
+            $("#mutual").prop("disabled",true);
+        }
+    });
+    $("#checkDescuento").click(function(){
+        if($(this).is(":checked"))
+        {
+            $("#descuento").prop("disabled",false);
+            marcarCampoOk($("#descuento"));
+        }
+        else
+        {
+            marcarCampoDisabled($("#descuento"));
+            $("#descuento").prop("disabled",true);
+        }
+    });
+}

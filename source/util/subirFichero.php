@@ -1,4 +1,5 @@
 <?php
+$upload_max_size = ini_get('upload_max_filesize');
 $nombre = $_REQUEST['nombre'];
 $archivo = $_REQUEST['archivo'];
 $ext = explode(".", $archivo)[1];
@@ -25,6 +26,10 @@ if($tipo == 'pdf')
 $fichero_subido = $dir_subida . basename($_FILES[$archivo]['name']);
 
 if (move_uploaded_file($_FILES[$archivo]['tmp_name'], $fichero_subido)) {
-    
-} 
+    echo "Successfully uploaded";
+}
+else
+{
+    echo "Not uploaded because of error #".$_FILES[$archivo]["error"];
+}
 print ($_FILES[$archivo]['name']);

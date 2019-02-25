@@ -12,6 +12,10 @@ $anio = filter_input(INPUT_POST, 'anio');
 $color = filter_input(INPUT_POST, 'color');
 $cantidad = filter_input(INPUT_POST, 'cantidad');
 $clase = filter_input(INPUT_POST, 'clase');
+$conductor = filter_input(INPUT_POST, 'conductor');
+$gps = filter_input(INPUT_POST, 'gps');
+$celular = filter_input(INPUT_POST, 'celular');
+$app = filter_input(INPUT_POST, 'app');
 $venPerCir = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_POST, 'venpercir'))->format('Y/m/d');
 $venRevTec = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_POST, 'venrevtec'))->format('Y/m/d');
 $venExt = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_POST, 'venext'))->format('Y/m/d');
@@ -25,6 +29,7 @@ if(filter_input(INPUT_POST, 'vensegob') != '')
     $venSegOb = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_POST, 'vensegob'))->format('Y/m/d');
 }
 $polizaSegOb = filter_input(INPUT_POST, 'polizasegob');
+$valorSegOb = filter_input(INPUT_POST, 'valorsegob');
 $segRcDm = filter_input(INPUT_POST, 'segrcdm');
 $venSegRcDm = '';
 if(filter_input(INPUT_POST, 'vensegrcdm') != '')
@@ -32,7 +37,23 @@ if(filter_input(INPUT_POST, 'vensegrcdm') != '')
     $venSegRcDm = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_POST, 'vensegrcdm'))->format('Y/m/d');
 }
 $polizaSegRcDm = filter_input(INPUT_POST, 'polizasegrcdm');
-$conductores = filter_input(INPUT_POST, 'conductores');
+$valorSegRcDm = filter_input(INPUT_POST, 'valorsegrcdm');
+$segAs = filter_input(INPUT_POST, 'segas');
+$venSegAs = '';
+if(filter_input(INPUT_POST, 'vensegas') != '')
+{
+    $venSegAs = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_POST, 'vensegas'))->format('Y/m/d');
+}
+$polizaSegAs = filter_input(INPUT_POST, 'polizasegas');
+$valorSegAs = filter_input(INPUT_POST, 'valorsegas');
+$adjuntoPerCir = filter_input(INPUT_POST, 'adjuntoPerCir');
+$adjuntoRevTec = filter_input(INPUT_POST, 'adjuntoRevTec');
+$adjuntoNMotor = filter_input(INPUT_POST, 'adjuntoNMotor');
+$adjuntoSeremi = filter_input(INPUT_POST, 'adjuntoSeremi');
+$adjuntoSegOb = filter_input(INPUT_POST, 'adjuntoSegOb');
+$adjuntoSegRcDm = filter_input(INPUT_POST, 'adjuntoSegRcDm');
+$adjuntoSegAs = filter_input(INPUT_POST, 'adjuntoSegAs');
+
 $movil = new Movil();
 $movil->setPatente($patente);
 $movil->setNombre($nombre);
@@ -42,6 +63,10 @@ $movil->setAnio($anio);
 $movil->setColor($color);
 $movil->setCantidad($cantidad);
 $movil->setClase($clase);
+$movil->setConductor($conductor);
+$movil->setGps($gps);
+$movil->setCelular($celular);
+$movil->setApp($app);
 $movil->setVenPerCir($venPerCir);
 $movil->setVenRevTec($venRevTec);
 $movil->setVenExt($venExt);
@@ -51,16 +76,22 @@ $movil->setChasis($chasis);
 $movil->setSegOb($segOb);
 $movil->setVenSegOb($venSegOb);
 $movil->setPolizaSegOb($polizaSegOb);
+$movil->setValorSegOb($valorSegOb);
 $movil->setSegRcDm($segRcDm);
 $movil->setVenSegRcDm($venSegRcDm);
 $movil->setPolizaSegRcDm($polizaSegRcDm);
+$movil->setValorSegRcDm($valorSegRcDm);
+$movil->setSegAs($segAs);
+$movil->setVenSegAs($venSegAs);
+$movil->setPolizaSegAs($polizaSegAs);
+$movil->setValorSegAs($valorSegAs);
+$movil->setAdjuntoPerCir($adjuntoPerCir);
+$movil->setAdjuntoRevTec($adjuntoRevTec);
+$movil->setAdjuntoNMotor($adjuntoNMotor);
+$movil->setAdjuntoSeremi($adjuntoSeremi);
+$movil->setAdjuntoSegOb($adjuntoSegOb);
+$movil->setAdjuntoSegRcDm($adjuntoSegRcDm);
+$movil->setAdjuntoSegAsiento($adjuntoSegAs);
 $movilDao = new MovilDao();
 $movilId = $movilDao->agregarMovil($movil);
-if($movilId > 0)
-{
-    if($conductores !== '')
-    {
-        $movilDao->asociarConductores($movilId,$conductores);
-    }
-}
 echo "{\"movil_id\":\"".$movilId."\"}";
