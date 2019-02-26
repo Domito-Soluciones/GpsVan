@@ -149,7 +149,7 @@ class ServicioDao {
         }
         return $id;
     }
-    
+   
     public function getServicios($id,$empresa,$conductor,$estado,$movil,$desde,$hasta)
     {
         $array = array();
@@ -434,6 +434,36 @@ class ServicioDao {
         return $array;
     }
     
+    public function getServicioEspeciales($conductor)
+    {
+        $array = array();
+        $conn = new Conexion();
+        try {
+            $query = "SELECT * FROM tbl_servicio_especial WHERE servicio_especial_conductor = '$conductor' AND servicio_especial_estado NOT IN (4,5,6) ORDER BY servicio_especial_id desc LIMIT 20";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query); 
+            while($row = mysqli_fetch_array($result)) {
+                $servicio = new ServicioEspecial();            
+                $servicio->setId($row["servicio_especial_id"]);
+                $servicio->setPartida($row["servicio_especial_partida"]);
+                $servicio->setDestino($row["servicio_especial_destino"]);
+                $servicio->setPasajero($row["servicio_especial_pasajero"]);
+                $servicio->setCelular($row["servicio_especial_celular"]);
+                $servicio->setFecha($row["servicio_especial_fecha"]);
+                $servicio->setHora($row["servicio_especial_hora"]);
+                $servicio->setMovil($row["servicio_especial_movil"]);
+                $servicio->setConductor($row["servicio_especial_conductor"]);
+                $servicio->setEstado($row["servicio_especial_estado"]);
+                $servicio->setTarifa($row["servicio_especial_tarifa"]); 
+                $servicio->setObservaciones($row["servicio_especial_observacion"]);
+                array_push($array, $servicio);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $array;
+    }
+    
     public function getServicioProgramado($idServicio,$idConductor)
     {
         $array = array();
@@ -522,6 +552,23 @@ class ServicioDao {
         $conn = new Conexion();
         try {
             $query = "UPDATE tbl_servicio SET servicio_estado = '$estado' WHERE servicio_id = $id"; 
+            $conn->conectar();
+            if (mysqli_query($conn->conn,$query)) {
+                return $id;
+            } else {
+                echo mysqli_error($conn->conn);
+                return 0;
+            }           
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+    
+    public function cambiarEstadoServicioEspecial($id,$estado)
+    {
+        $conn = new Conexion();
+        try {
+            $query = "UPDATE tbl_servicio_especial SET servicio_especial_estado = '$estado' WHERE servicio_especial_id = $id"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 return $id;
