@@ -59,7 +59,7 @@ $(document).ready(function(){
         {
             var conductor = $(this).children("option").filter(":selected").text().split(" / ")[1];
             $("#conductores2").html("Conductor: "+conductor);
-            $("#conductor2").val(conductor);
+            $("#conductor2").val(conductores.get(conductor));
         }
         else
         {
