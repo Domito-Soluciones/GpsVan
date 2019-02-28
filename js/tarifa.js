@@ -249,6 +249,7 @@ function abrirBuscador(id)
 {
     AGREGAR = false;
     ID_TARIFA = id;
+    cambiarPropiedad($("#pie-aniadir"),"display","none");
     $("#lista_busqueda_tarifa_detalle").load("html/datos_tarifa.html", function( response, status, xhr ) {
         cambioEjecutado();
         var tarifa;
@@ -284,6 +285,7 @@ function abrirBuscador(id)
         
         $("#volver").click(function(){
             buscarTarifas(ID_CLIENTE);
+            cambiarPropiedad($("#pie-aniadir"),"display","block");
         });
         
     });

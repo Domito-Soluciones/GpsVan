@@ -354,7 +354,7 @@ function agregarServicioEspecial()
             vaciarFormulario();
             cambiarPropiedad($("#loader"),"visibility","hidden");
             agregarDetalleServicio(response.servicio_id,true);
-            notificarConductor(response.servicio_id,conductor);
+            notificarConductorEspecial(response.servicio_id,conductor);
             notificarServicioFuturo(response.servicio_id,conductor,fecha+" "+hora);
         };
         postRequest(url,params,success);
@@ -443,6 +443,14 @@ function notificarConductor(idServicio,llave)
 {
     var texto = "Nuevo servicio asignado con id: "+idServicio;
     var tipo = 0;
+    var params = {texto  : texto, tipo : tipo, llave : llave};        
+    var url = urlBase + "/notificacion/AddNotificacion.php";
+    postRequest(url,params,null);
+}
+function notificarConductorEspecial(idServicio,llave)
+{
+    var texto = "Nuevo servicio  especial asignado con id: "+idServicio;
+    var tipo = 2;
     var params = {texto  : texto, tipo : tipo, llave : llave};        
     var url = urlBase + "/notificacion/AddNotificacion.php";
     postRequest(url,params,null);

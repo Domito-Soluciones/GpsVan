@@ -1398,10 +1398,10 @@ select
 
 .pie-extenso
 {
-    height: 60px;
+    height: 50px;
 }
 
 .lista_busqueda_extendida
 {
-    height: calc(100% - 0px);
+    height: calc(100% - 50px);
 }
