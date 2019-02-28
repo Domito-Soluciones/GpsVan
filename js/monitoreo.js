@@ -113,7 +113,7 @@ function cargarMovilesMapa(monitor)
             {
                 imgEstado = "<div class=\"img-estado-ok\"></div>";   
             }
-            if(monitor && lat !== '0.0000000' && lon !== '0.0000000')
+            if(monitor && lat !== '0.0000000' && lon !== '0.0000000' && estado !== '0')
             {
                 dibujarMarcador(patente,parseFloat(lat),parseFloat(lon),nombre,servicio);
             }
@@ -139,14 +139,14 @@ function moverMovilesMapa()
                 var lon = response[i].movil_lon;
                 var estado = response[i].movil_estado;
                 var servicio = response[i].movil_servicio;
-                //if(estado !== '0')
-                //{
+                if(estado !== '0')
+                {
                     if(markers[j].get("idMarker") === patente)
                     {
                         var latlng = new google.maps.LatLng(lat, lon);
                         markers[j].setPosition(latlng);
                     }
-                //}
+                }
             }
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
@@ -227,4 +227,3 @@ function dibujarServicio(id,movil)
 
 
 }
-
