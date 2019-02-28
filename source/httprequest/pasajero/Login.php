@@ -6,7 +6,7 @@ include '../../cripto/Cripto.php';
 
 header('Content-Type: application/json');
 $nombre = filter_input(INPUT_POST, 'usuario');
-$password = Cripto::encriptar(filter_input(INPUT_POST, 'password'));
+$password = base64_encode(Cripto::encriptar(filter_input(INPUT_POST, 'password')));
 $pasajeroDao = new PasajeroDao();
 $id = $pasajeroDao->getUsuario($nombre, $password);
 echo "{\"id\":".$id."}";
