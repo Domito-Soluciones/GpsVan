@@ -1354,11 +1354,6 @@ select
     font-size: 17px;
 }
 
-#lista_busqueda_tarifa_detalle
-{
-    display: none;
-}
-
 .pendiente
 {
     cursor: pointer;
@@ -1403,5 +1398,5 @@ select
 
 .lista_busqueda_extendida
 {
-    height: calc(100% - 0px);
+    height: calc(100% - 193px);
 }

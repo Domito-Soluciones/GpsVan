@@ -14,7 +14,7 @@ $(document).ready(function(){
         quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
-        $("#contenedor_central").load("html/datos_tarifa.html", function( response, status, xhr ) {
+        $("#lista_busqueda_tarifa_detalle").load("html/datos_tarifa.html", function( response, status, xhr ) {
             cambioEjecutado();
             cargarClientes();
             $("#clientes").on('input',function(){
@@ -211,7 +211,8 @@ function buscarTarifas(id)
 {
     ID_CLIENTE = id;
     marcarFilaActiva(id);
-    cambiarPropiedad($("#lista_busqueda_tarifa_detalle"),"display","block");
+    $("#lista_busqueda_tarifa_detalle").html("");
+    cambiarPropiedad($("#lista_busqueda_tarifa_detalle"),"height","calc(100% - 50px)");
     cambiarPropiedad($(".mensaje_bienvenida"),"display","none");
     var busqueda = ID_CLIENTE;
     var params = {busqueda : busqueda};
