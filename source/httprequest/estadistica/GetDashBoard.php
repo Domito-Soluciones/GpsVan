@@ -20,7 +20,7 @@ if(isset($vehiculos[1]))
 }
 if(isset($servicios[0]))
 {
-   $serviciosDiarios = $vehiculos[0];
+   $serviciosDiarios = $servicios[0];
 }
 echo "{\"movil_activo\":\"".$activos."\","
     . "\"movil_inactivo\":\"".$inactivos."\","

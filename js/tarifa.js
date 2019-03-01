@@ -11,10 +11,11 @@ $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
     buscarCliente();
     $("#agregar").click(function(){
-        quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
-        cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
-        $("#contenedor_central").load("html/datos_tarifa.html", function( response, status, xhr ) {
+        $("#lista_busqueda_tarifa_detalle").load("html/datos_tarifa.html", function( response, status, xhr ) {
+            quitarclase($("#guardar"),"oculto");
+            cambiarPropiedad($("#agregar"),"visibility","hidden")
+            $("#clientes").val(ID_CLIENTE);
             cambioEjecutado();
             cargarClientes();
             $("#clientes").on('input',function(){
@@ -48,6 +49,16 @@ $(document).ready(function(){
 
                 }
             });
+            
+            $("#volver").click(function(){
+                buscarTarifas(ID_CLIENTE);
+                cambiarPropiedad($("#agregar"),"visibility","visible");
+            });
+            
+            $("#guardar").click(function (){
+                agregarTarifa();
+            });
+            
         });
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
@@ -55,25 +66,9 @@ $(document).ready(function(){
     $("#cancelar").click(function(){
         validarCancelar(PAGINA);
     });
-    $("#guardar").click(function(){
-        if(AGREGAR)
-        {
-            agregarTarifa();
-        }
-        else
-        {
-            modificarTarifa();
-        }
-    });
+
     $("#busqueda").keyup(function(){
         buscarCliente($(this).val());
-    });
-    
-    $("#eliminar").click(function (){
-            confirmar("Eliminar tarifa","Esta seguro que desea eliminar la tarifa "+$("#nombre").val(),
-            function(){
-                eliminarTarifa();
-            },null);
     });
 });
 
@@ -116,7 +111,7 @@ function agregarTarifa()
 function modificarTarifa()
 {
     var id = ID_TARIFA;
-    var cliente = $("#clientes").val();
+    var cliente = $("#clientes").val();;
     var tipo = $("#tipo").val();
     var horario = $("#horario").val();
     var nombre = $("#nombre").val();
@@ -142,7 +137,8 @@ function modificarTarifa()
             cerrarSession(response);
             alertify.success("Tarifa Modificada");
             resetFormulario();
-            buscarTarifa();
+            cambiarFila(ID_CLIENTE);
+            cambiarPropiedad($("#pie-aniadir"),"display","block");
         };
         postRequest(url,params,success);
     }
@@ -210,25 +206,27 @@ function cambiarFila(id)
 function buscarTarifas(id)
 {
     ID_CLIENTE = id;
+    $("#clientes").val(id);
     marcarFilaActiva(id);
-    cambiarPropiedad($("#lista_busqueda_tarifa_detalle"),"display","block");
+    quitarclase($("#agregar"),"oculto");
+    $("#lista_busqueda_tarifa_detalle").html("");
+    cambiarPropiedad($("#lista_busqueda_tarifa_detalle"),"height","calc(100% - 65px)");
     cambiarPropiedad($(".mensaje_bienvenida"),"display","none");
     var busqueda = ID_CLIENTE;
     var params = {busqueda : busqueda};
     var url = urlBase + "/tarifa/GetTarifas.php";
     var success = function(response)
-    {
+    {  
         cambiarPropiedad($("#loaderTarifa"),"display","none");
         cerrarSession(response);
         var tarifas = $("#lista_busqueda_tarifa_detalle");
         tarifas.html("");
         TARIFAS = response;
+        tarifas.append("<div class=\"contenedor_central_titulo_tarifa\"><div>Nombre</div><div>Origen</div><div>Destino</div></div>")
         if(response.length === 0)
         {
-            alertify.error("No hay registros que mostrar");
-            return;
+            tarifas.append("<div class=\"mensaje_bienvenida\">No hay registros que mostrar</div>");
         }
-        tarifas.append("<div class=\"contenedor_central_titulo_tarifa\"><div>Nombre</div><div>Origen</div><div>Destino</div></div>")
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].tarifa_id;
@@ -282,7 +280,15 @@ function abrirBuscador(id)
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
         cambiarPropiedad($("#eliminar"),"visibility","visible");
-        
+        $("#guardar").click(function(){
+            modificarTarifa();
+        });
+        $("#eliminar").click(function (){
+            confirmar("Eliminar tarifa","Esta seguro que desea eliminar la tarifa "+$("#nombre").val(),
+            function(){
+                eliminarTarifa();
+            },null);
+        });
         $("#volver").click(function(){
             buscarTarifas(ID_CLIENTE);
             cambiarPropiedad($("#pie-aniadir"),"display","block");
@@ -300,10 +306,9 @@ function eliminarTarifa()
     {
         alertify.success("Tarifa eliminada");
         cerrarSession(response);
-        resetFormularioEliminar(PAGINA);
-        cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
+        cambiarPropiedad($("#loader"),"visibility","hidden");
         resetBotones();
-        buscarTarifa();
+        cambiarFila(ID_CLIENTE);
     };
     postRequest(url,params,success);
 }
