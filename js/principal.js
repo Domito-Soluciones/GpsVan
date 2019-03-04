@@ -26,6 +26,7 @@ var servicios = new Map();
 var MENU_VISIBLE = false;
 
 $(document).ready(function(){
+    getLocation();
     $("#menu").load("menu.php", function( response, status, xhr ) {
         agregarclase($("#principal"),"menu-activo");
         
@@ -153,4 +154,16 @@ function decodePolyline(encoded) {
                 servicios.set(id,id);                
             }
         });
+    }
+    
+    function getLocation()
+    {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                console.log(position.coords.latitude);
+                POSITION = [position.coords.latitude,position.coords.longitude];
+            }, function (error) {
+                console.log(error);
+            });
+        }
     }

@@ -1256,7 +1256,7 @@ select
     font-size: 17px;
     color:#0099ff;
     float: left;
-    width: 33%;
+    width: 20%;
     text-align: center;
 }
 
@@ -1282,7 +1282,7 @@ select
 .fila_contenedor_tarifa_detalle div
 {
     float: left;
-    width: 33%;
+    width: 20%;
     text-align: center;    
 }
 
@@ -1404,4 +1404,9 @@ select
 .total
 {
     height: calc(100% - 0px);
+}
+
+.tarifa_cont
+{
+    padding-top: 1px !important;
 }

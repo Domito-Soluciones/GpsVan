@@ -3,8 +3,9 @@ var CLIENTES;
 var AGREGAR = true;
 var PAGINA = 'CLIENTES';
 var ID_CLIENTE;
+var NOMBRE_CLIENTE;
 var CENTROS_COSTO = [];
-var CAMPOS = ["rut","razon","tipo","direccion","nombre","telefono","mail","mail2"];
+var CAMPOS = ["rut","razon","tipoCliente","direccion","nombreContacto","telefono","mail","mail2"];
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
     buscarCliente();
@@ -69,10 +70,10 @@ $(document).ready(function(){
 function agregarCliente()
 {
     var razon = $("#razon").val();
-    var tipo = $("#tipo").val();
+    var tipo = $("#tipoCliente").val();
     var rut = $("#rut").val();
     var direccion = $("#direccion").val();
-    var nombre = $("#nombre").val();
+    var nombre = $("#nombreContacto").val();
     var telefono = $("#telefono").val();
     var mail = $("#mail").val();
     var mail2 = $("#mail2").val();
@@ -100,6 +101,7 @@ function agregarCliente()
         var success = function(response)
         {
             ID_CLIENTE = undefined;
+            NOMBRE_CLIENTE = undefined;
             cerrarSession(response);
             alertify.success("Cliente Agregado");
             cambiarPestaniaGeneral();
@@ -118,10 +120,10 @@ function modificarCliente()
 {
     var id = ID_CLIENTE;
     var razon = $("#razon").val();
-    var tipo = $("#tipo").val();
+    var tipo = $("#tipoCliente").val();
     var rut = $("#rut").val();
     var direccion = $("#direccion").val();
-    var nombre = $("#nombre").val();
+    var nombre = $("#nombreContacto").val();
     var telefono = $("#telefono").val();
     var mail = $("#mail").val();
     var mail2 = $("#mail2").val();
@@ -184,18 +186,18 @@ function buscarCliente()
             var titulo = recortar(rut+" / "+nombre);
             if (typeof ID_CLIENTE !== "undefined" && ID_CLIENTE === id)
             {
-                clientes.append("<div class=\"fila_contenedor fila_contenedor_activa\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+titulo+"</div>");
+                clientes.append("<div class=\"fila_contenedor fila_contenedor_activa\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"','"+nombre+"')\">"+titulo+"</div>");
             }
             else
             {
-                clientes.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+titulo+"</div>");
+                clientes.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"','"+nombre+"')\">"+titulo+"</div>");
             }
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
     postRequest(url,params,success);
 }
-function cambiarFila(id)
+function cambiarFila(id,nombre)
 {
     if(MODIFICADO)
     {
@@ -204,7 +206,7 @@ function cambiarFila(id)
         function()
         {
             MODIFICADO = false;
-            abrirModificar(id);
+            abrirModificar(id,nombre);
         },
         function()
         {
@@ -213,15 +215,15 @@ function cambiarFila(id)
     }
     else
     {
-        abrirModificar(id);
+        abrirModificar(id,nombre);
     }
 }
-function abrirModificar(id)
+function abrirModificar(id,nombre)
 {
     AGREGAR = false;
     ID_CLIENTE = id;
-    quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
-    agregarclase($("#"+id),"fila_contenedor_activa");
+    NOMBRE_CLIENTE = nombre;
+    marcarFilaActiva(ID_CLIENTE);
     $("#contenedor_central").load("html/datos_cliente.html", function( response, status, xhr ) {
         iniciarPestanias();
         cambioEjecutado();
@@ -253,8 +255,8 @@ function abrirModificar(id)
         $("#razon").val(cliente.cliente_razon);
         $("#rut").val(cliente.cliente_rut);
         $("#rut").prop("readonly",true);
-        $("#tipo").val(cliente.cliente_tipo);
-        $("#nombre").val(cliente.cliente_nombre_contacto);
+        $("#tipoCliente").val(cliente.cliente_tipo);
+        $("#nombreContacto").val(cliente.cliente_nombre_contacto);
         $("#telefono").val(cliente.cliente_fono_contacto);
         $("#direccion").val(cliente.cliente_direccion);
         $("#mail").val(cliente.cliente_mail_contacto);
@@ -284,6 +286,8 @@ function abrirModificar(id)
         $("#quitar_cc").click(function(){
             quitarCentroCosto();
         });
+        
+        buscarTarifas(ID_CLIENTE, NOMBRE_CLIENTE);
         
     });
 }
@@ -389,22 +393,39 @@ function iniciarPestanias()
     $("#p_ccosto").click(function(){
         cambiarPestaniaCC();
     });
+    $("#p_tarifa").click(function(){
+        cambiarPestaniaTarifa();
+    });
 }
 
 function cambiarPestaniaGeneral()
 {
     cambiarPropiedad($("#cont_general"),"display","block");
     cambiarPropiedad($("#cont_ccosto"),"display","none");
+    cambiarPropiedad($("#cont_tarifa"),"display","none");
     quitarclase($("#p_general"),"dispose");
     agregarclase($("#p_ccosto"),"dispose");
+    agregarclase($("#p_tarifa"),"dispose");
 }
 
 function cambiarPestaniaCC()
 {
     cambiarPropiedad($("#cont_general"),"display","none");
     cambiarPropiedad($("#cont_ccosto"),"display","block");
+    cambiarPropiedad($("#cont_tarifa"),"display","none");
     quitarclase($("#p_ccosto"),"dispose");
     agregarclase($("#p_general"), "dispose");
+     agregarclase($("#p_tarifa"), "dispose");
+}
+function cambiarPestaniaTarifa()
+{
+    cambiarPropiedad($("#cont_general"),"display","none");
+    cambiarPropiedad($("#cont_ccosto"),"display","none");
+    cambiarPropiedad($("#cont_tarifa"),"display","block");
+    quitarclase($("#p_tarifa"),"dispose");
+    agregarclase($("#p_general"), "dispose");
+    agregarclase($("#p_ccosto"), "dispose");
+       
 }
 
 function agregarCentroCosto()

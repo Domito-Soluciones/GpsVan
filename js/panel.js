@@ -42,6 +42,7 @@ $(document).ready(function(){
         }
         cargarPasajeros();
     });
+    
     $("#vehiculos").change(function () {
         if($(this).val() !== "")
         {
@@ -54,6 +55,7 @@ $(document).ready(function(){
             $("#conductores").html("");
         }
     });
+    
     $("#vehiculos2").change(function () {
         if($(this).val() !== "")
         {
@@ -101,6 +103,15 @@ $(document).ready(function(){
     $("#especial").click(function(){
         cambiarServicioEspecial();
     });
+    
+    $("#buscaPartida").click(function(){
+        colocarMarcador($("#partida"));
+    });
+    
+    $("#buscaDestino").click(function(){
+        colocarMarcador($("#destino"));
+    });
+    
 });
 
 function init()
@@ -722,4 +733,32 @@ function validarTipoDatoEspecial()
         return false;
     }
     return true;
+}
+
+function colocarMarcador(obj)
+{
+    var marker = new google.maps.Marker({
+        position: map.getCenter(),
+        map: map
+    });
+
+    map.setZoom(17);
+    map.panTo(marker.position);
+    
+    google.maps.event.addListener(map, "drag", function() {
+        marker.setPosition(this.getCenter());
+        POSITION = [this.getCenter().lat(),this.getCenter().lng()];
+    });
+    
+    google.maps.event.addListener(map, "dragend", function() {
+        var request = {
+            location: {lat:POSITION[0],lng:POSITION[1]},
+            radius: 10
+        };
+        var service = new google.maps.places.PlacesService(map);
+        service.nearbySearch(request, function(results, status){
+            console.log(results[0].name);
+            obj.val(results[0].name);
+        });
+    });
 }
