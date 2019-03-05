@@ -9,6 +9,7 @@ var PAGINA = 'SERVICIOS';
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
     iniciarFecha([$("#desde"),$("#hasta")]);
+    iniciarHora([$("#hdesde"),$("#hhasta")]);
     buscarServicio();
     cargarMoviles();
     $("#exportar").click(function(){
@@ -26,12 +27,14 @@ function buscarServicio()
     var empresa = $("#empresa").val();
     var movil = $("#empresa").val();
     var desde = $("#desde").val();
+    var hdesde = $("#hdesde").val();
     var hasta = $("#hasta").val();
+    var hhasta = $("#hhasta").val();
     var params = {id : id, empresa : empresa, movil : movil,
-        desde : desde, hasta : hasta};
+        desde : desde, hdesde : hdesde, hasta : hasta, hhasta : hhasta};
     var url = urlBase + "/servicio/GetServicios.php";
     var success = function(response)
-    { 
+    {
         cerrarSession(response);
         var servicios = $("#contenedor_central");
         servicios.html("");

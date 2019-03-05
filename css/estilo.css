@@ -315,7 +315,7 @@ select
 .asignacion_buscador
 {
     margin-left: 38% !important;
-    width: calc(0% - 105px) !important;
+    width: calc(70% - 105px) !important;
     height: calc(100% - 1px);
 }
 
@@ -335,6 +335,11 @@ select
     width: 38%;
     height: 100%;
 }
+.buscador-asignacion-cliente
+{
+    width: 25%;
+    height: 100%;
+}
 .buscador-pasajero
 {
     width: 24%;
@@ -344,7 +349,7 @@ select
 }
 .mapa_bajo
 {
-    width : calc(57% - 6px) !important;
+    width : calc(38% - 2px) !important;
 }
 .buscador-asignacion-boton
 {
@@ -437,6 +442,7 @@ select
     border: solid 1px #0099ff;
     cursor:pointer;
     line-height: 25px;
+    display: inline-block;
 }
 .boton:hover
 {
@@ -810,7 +816,8 @@ select
 
 .input-monitoreo
 {
-    display: inline-block;
+    width: 150px;
+    /*display: inline-block;*/
 }
 .input-monitoreo .boton
 {
@@ -855,22 +862,22 @@ select
 }
 .input_asignar
 {
-    width: 130% !important;
+    width: 70% !important;
     height: 25px !important;   
 }
 
 .select_asignar
 {
-    width: 104% !important;
+    width: 70% !important;
     height: 30px !important;
-    background-position: 175px, 0 !important;
+    background-position: 140px, 0 !important;
 }
 
 .textarea_asignar
 {
-    width: 75%;
+    width: 90%;
     min-width: 192px;
-    max-width: 300px;
+    max-width: 90%;
     height: 90px; 
     min-height: 90px; 
     max-height: 90px; 
@@ -898,7 +905,8 @@ select
     position:absolute;
     display: block;
     background-color: white;
-    width: 220px;
+    width: 370px;
+    transform: translate(-55%);
 }
 .datalist-invisible {
     position:absolute;
@@ -1157,9 +1165,10 @@ select
 
 .conductores
 {
-    font-size: 13px;
+    font-size: 14px;
     width: 190px;
-    height: 18px;
+    height: 30px;
+    margin-top: 35px;
 }
 
 .contenedor-dashboard
@@ -1411,4 +1420,28 @@ select
 .tarifa_cont
 {
     padding-top: 1px !important;
+}
+
+.input-panel
+{
+    width: 100%;
+}
+
+.contenedor-panel
+{
+    float: left;
+    width: 50%;
+}
+.contenedor-panel-completo
+{
+    float: left;
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.pasajero_mapa
+{
+    width:100%;
+    height: 450px;
 }

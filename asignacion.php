@@ -51,7 +51,7 @@ if(!isset($_SESSION['agente']))
             <img src="img/menu.svg" id="menu-telefono" class="menu-telefono">
         </div>
         <div id="contenido-central" class="contenido-central">
-            <div class="contenedor-lateral buscador-asignacion">
+            <div class="contenedor-lateral buscador-asignacion-cliente">
                 <div id="servicio-normal" class="buscador barra_asignacion">
                     <div>
                         <div class="input-monitoreo">
@@ -87,6 +87,9 @@ if(!isset($_SESSION['agente']))
                         Solicitar
                     </div>
                 </div>
+            </div>
+            <div class="contenedor-lateral buscador-asignacion-cliente">
+                test
             </div>
         </div>
     </body>

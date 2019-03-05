@@ -38,7 +38,7 @@ $(document).ready(function(){
         });
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
-        
+        mostrarMapa();
     });
     $("#cancelar").click(function(){
         validarCancelar(PAGINA);
@@ -288,7 +288,7 @@ function abrirModificar(id,nombre)
         });
         
         buscarTarifas(ID_CLIENTE, NOMBRE_CLIENTE);
-        
+        mostrarMapa();
     });
 }
 

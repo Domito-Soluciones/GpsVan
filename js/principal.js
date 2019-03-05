@@ -12,6 +12,7 @@ var CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
 var DIRECTIONS_API = "https://maps.googleapis.com/maps/api/directions/json?";
 var PLACES_AUTOCOMPLETE_API = "https://maps.googleapis.com/maps/api/place/autocomplete/json?";
 var PLACES_DETAILS_API = "https://maps.googleapis.com/maps/api/place/details/json?";
+var GEOCODER_API = "https://maps.googleapis.com/maps/api/geocode/json?";
 var PAGINA_ANTERIOR;
 var INTERVAL_SERVICIOS;
 var CREADO = "0";
@@ -72,18 +73,20 @@ $(document).ready(function(){
 });
 
 function initMap() {
-    var latlng = new google.maps.LatLng(POSITION[0], POSITION[1]);
-    var myOptions = {
-        zoom: 11,
-        center: latlng,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        mapTypeControlOptions: {
-            mapTypeIds: [google.maps.MapTypeId.ROADMAP] 
-        }
-    };
-    map = new google.maps.Map(document.getElementById("map"), myOptions);
-    var placesService = new google.maps.places.PlacesService(map);
-    
+    //$.getJSON("js/map/map_style.json", function(json) {
+        var latlng = new google.maps.LatLng(POSITION[0], POSITION[1]);
+        var myOptions = {
+            zoom: 11,
+            center: latlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            mapTypeControlOptions: {
+                mapTypeIds: [google.maps.MapTypeId.ROADMAP] 
+            }
+            //,
+            //styles: json
+        };
+        map = new google.maps.Map(document.getElementById("map"), myOptions);
+    //});
 }
 
 function decodePolyline(encoded) {

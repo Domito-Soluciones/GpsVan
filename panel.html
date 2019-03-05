@@ -14,172 +14,122 @@
             </div>
             <div id="servicio-normal" class="buscador barra_asignacion">
                 <input type="hidden" id="ids" value="">
-                <div>
+                <div class="contenedor-panel">
                     <div class="cont-pre-monitor">
                         Cliente
                     </div>
-                    <div class="input-monitoreo">
+                    <div class="input-panel">
                         <input type="text" class="input_asignar" list="lcliente" id="clientes" placeholder="Ej: Falabella">
                         <datalist id="lcliente"></datalist>
                     </div>
                 </div>
-                <div>
+                <div class="contenedor-panel">
+                    <div class="cont-pre-monitor">
+                        Partida
+                    </div>
+                    <div class="input-panel">
+                        <input type="text" class="input_asignar" id="partida" placeholder="Ej: Av los pinos 123" disabled>
+                        <div class="boton-chico oculto" id="buscaPartida"><img src="img/mapa.svg" width="12" height="12"></div>
+                        <div class="datalist-visible" id="partidal"></div>
+                    </div>
+                </div>
+                <div class="contenedor-panel">
                     <div class="cont-pre-monitor cont-destino1">
                         Ruta
                     </div>
-                    <div class="input-monitoreo" id="destinos">
+                    <div class="input-panel" id="destinos">
                         <input type="text" class="input_asignar" list="lruta" id="ruta" placeholder="Ej: Ruta 1">
                         <datalist id="lruta"></datalist>
                     </div>
                 </div>
-                <div>
-                    <div class="cont-pre-monitor">
-                        Fecha
-                    </div>
-                    <div class="input-monitoreo">
-                         <input type="text" class="input_asignar" id="fechas" placeholder="Ej: 01/01/2020">
-                    </div>
-                </div>
-                <div>
-                    <div class="cont-pre-monitor">
-                        Hora
-                    </div>
-                     <div class="input-monitoreo">
-                        <input type="text" class="input_asignar" id="hora" placeholder="12:23:00">
-                    </div>
-                </div>
-                <div>
-                    <div class="cont-pre-monitor">
-                        Veh&iacute;culo
-                    </div>
-                    <div class="input-monitoreo">
-                        <select id="vehiculos" class="select_asignar">
-                            <option value="">Seleccione</option>
-                        </select>
-                        <div id="conductores" class="conductores">
-                        </div>
-                        <input type="hidden" id="conductorH" >
-                    </div>
-                </div>
-                <div>
-                    <div class="cont-pre-monitor">
-                        Tarifa 1
-                    </div>
-                    <div class="input-monitoreo">
-                        <input type="text" class="input_asignar" list="ltarifa1" id="tarifa1" placeholder="Ej: Tarifa 1">
-                    </div>
-                </div>
-                <div>
-                    <div class="cont-pre-monitor">
-                        Tarifa 2
-                    </div>
-                    <div class="input-monitoreo">
-                        <input type="text" class="input_asignar" id="tarifa2" placeholder="Ej: Tarifa 2">
-                    </div>
-                </div>
-                <div>
-                    <div class="cont-pre-monitor">
-                        Observaciones
-                    </div>
-                    <div class="input-monitoreo">
-                        <textarea maxlength="200" class="textarea_asignar" id="observacion" rows="5" cols="30"></textarea>
-                    </div>
-                </div>
-                <div class="boton" id="solicitar">
-                    <img src="img/guardar.svg" width="12" height="12">
-                    Solicitar
-                </div>
-            </div>
-            <div id="servicio-especial" class="buscador barra_asignacion">
-                <div>
-                    <div class="cont-pre-monitor">
-                        Partida
-                    </div>
-                    <div class="input-monitoreo">
-                        <input type="text" class="input_asignar" id="partida" placeholder="Ej: Av los pinos 123">
-                        <div class="datalist-visible" id="partidal"></div>
-                    </div>
-                </div>
-                <div class="input-monitoreo">
-                    <div class="boton-chico" id="buscaPartida"><img src="img/mapa.svg" width="12" height="12"></div>                        
-                </div>
-                <div>
+                <div class="contenedor-panel">
                     <div class="cont-pre-monitor cont-destino1">
                         Destino
                     </div>
-                    <div class="input-monitoreo" id="destinos">
-                        <input type="text" class="input_asignar destino" id="destino" placeholder="Ej: Av los pinos 723">
+                    <div class="input-panel" id="destinos">
+                        <input type="text" class="input_asignar destino" id="destino" placeholder="Ej: Av los pinos 723" disabled>
+                        <div class="boton-chico oculto" id="buscaDestino"><img src="img/mapa.svg" width="12" height="12"></div>                        
                         <div class="datalist-visible" id="destinol"></div>
                     </div>
                 </div>
-                <div class="input-monitoreo">
-                        <div class="boton-chico" id="buscaDestino"><img src="img/mapa.svg" width="12" height="12"></div>                        
+                <div class="contenedor-panel">
+                    <div class="cont-pre-monitor">
+                        Tarifa 1
+                    </div>
+                    <div class="input-panel">
+                        <input type="text" class="input_asignar" list="ltarifa1" id="tarifa1" placeholder="Ej: Tarifa 1">
+                    </div>
                 </div>
-                <div>
+                <div class="contenedor-panel">
                     <div class="cont-pre-monitor">
                         Pasajero
                     </div>
-                     <div class="input-monitoreo">
-                        <input type="text" class="input_asignar" id="usuarios" placeholder="Ej: Juan Perez"  autocomplete="off">
+                     <div class="input-panel">
+                        <input type="text" class="input_asignar" id="usuarios" placeholder="Ej: Juan Perez"  autocomplete="off" disabled>
                     </div>
                 </div>
-                <div>
+                <div class="contenedor-panel">
+                    <div class="cont-pre-monitor">
+                        Tarifa 2
+                    </div>
+                    <div class="input-panel">
+                        <input type="text" class="input_asignar" id="tarifa2" placeholder="Ej: Tarifa 2">
+                    </div>
+                </div>
+                <div class="contenedor-panel">
                     <div class="cont-pre-monitor">
                         Celular
                     </div>
-                     <div class="input-monitoreo">
-                        <input type="text" class="input_asignar" id="celular" placeholder="Ej: 98754565"  autocomplete="off">
+                     <div class="input-panel">
+                        <input type="text" class="input_asignar" id="celular" placeholder="Ej: 98754565"  autocomplete="off"  disabled>
                     </div>
                 </div>
-                <div>
+                <div class="contenedor-panel">
                     <div class="cont-pre-monitor">
                         Fecha
                     </div>
-                    <div class="input-monitoreo">
-                         <input type="text" class="input_asignar" id="fechas2" placeholder="Ej: 01/01/2020">
+                    <div class="input-panel">
+                         <input type="text" class="input_asignar" id="fechas" placeholder="Ej: 01/01/2020">
                     </div>
                 </div>
-                <div>
+                <div class="contenedor-panel">
                     <div class="cont-pre-monitor">
                         Hora
                     </div>
-                     <div class="input-monitoreo">
-                        <input type="text" class="input_asignar" id="hora2" placeholder="12:23:00">
+                     <div class="input-panel">
+                        <input type="text" class="input_asignar" id="hora" placeholder="12:23:00">
                     </div>
                 </div>
-                <div>
+                <div class="contenedor-panel">
                     <div class="cont-pre-monitor">
                         Veh&iacute;culo
                     </div>
-                    <div class="input-monitoreo">
-                        <select id="vehiculos2" class="select_asignar">
+                    <div class="input-panel">
+                        <select id="vehiculos" class="select_asignar">
                             <option value="">Seleccione</option>
                         </select>
-                        <div id="conductores2" class="conductores">
-                        </div>
-                        <input type="hidden" id="conductor2" >
                     </div>
                 </div>
-                <div>
-                    <div class="cont-pre-monitor">
-                        Tarifa
+                <div class="contenedor-panel">
+                    <div id="conductores" class="conductores">
+                        Conductor:
                     </div>
-                    <div class="input-monitoreo">
-                        <input type="text" class="input_asignar" id="tarifas2" placeholder="Ej: 5000">
-                    </div>
+                    <input type="hidden" id="conductorH" >
                 </div>
-                <div>
+                <div class="contenedor-panel-completo">
                     <div class="cont-pre-monitor">
                         Observaciones
                     </div>
-                    <div class="input-monitoreo">
-                        <textarea maxlength="200" class="textarea_asignar2" id="observacion2" rows="5" cols="30"></textarea>
+                    <div class="input-panel">
+                        <textarea maxlength="200" class="textarea_asignar" id="observacion" rows="5" cols="30"></textarea>
                     </div>
                 </div>
-                <div class="boton" id="solicitar2">
-                    <img src="img/guardar.svg" width="12" height="12">
-                    Solicitar
-                </div>  
+                <div class="contenedor-panel-completo">
+                    <div class="boton" id="solicitar">
+                        <img src="img/guardar.svg" width="12" height="12">
+                        Solicitar
+                    </div>
+                </div>
             </div>
         </div>
         <div class="contenedor-lateral buscador-pasajero">

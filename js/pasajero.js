@@ -6,7 +6,8 @@ var PASAJEROS;
 var AGREGAR = true;
 var PAGINA = 'PASAJEROS';
 var CC;
-var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","punto","empresa","centro","nick"];
+//var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","punto","empresa","centro","nick"];
+var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","punto","empresa","centro"];
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
     buscarPasajero();
@@ -27,14 +28,14 @@ $(document).ready(function(){
                 }
             });
 
-            $("#nick").blur(function (){
-                if(validarExistencia('nick',$(this).val()))
-                {
-                    alertify.error("El nick "+$(this).val()+" no se encuentra disponible");
-                    $("#nick").val("");
-                    return;
-                }
-            });
+//            $("#nick").blur(function (){
+//                if(validarExistencia('nick',$(this).val()))
+//                {
+//                    alertify.error("El nick "+$(this).val()+" no se encuentra disponible");
+//                    $("#nick").val("");
+//                    return;
+//                }
+//            });
             $("#empresa").change(function (){
                 cargarCentroCosto($(this).val(),'');
                 cargarRutas($(this).val(),'');
@@ -46,6 +47,7 @@ $(document).ready(function(){
         });
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
+        mostrarMapa();
     });
     $("#cancelar").click(function(){
         validarCancelar(PAGINA);
@@ -83,31 +85,35 @@ function agregarPasajero()
     var direccion = $("#direccion").val();
     var punto = $("#punto").val();
     var mail = $("#mail").val();
-    var nick = $("#nick").val();
-    var password = $("#password").val();
-    var password2 = $("#password2").val();
+//    var nick = $("#nick").val();
+//    var password = $("#password").val();
+//    var password2 = $("#password2").val();
     var cargo = $("#cargo").val();
     var centro = $("#centro").val();
     var empresa = $("#empresa").val();
     var ruta = $("#ruta").val();
-    var array = [nombre,papellido,mapellido,rut,celular,direccion,punto,empresa,centro,nick,password,password2];
+    //var array = [nombre,papellido,mapellido,rut,celular,direccion,punto,empresa,centro,nick,password,password2];
+    var array = [nombre,papellido,mapellido,rut,celular,direccion,punto,empresa,centro];
     if(!validarCamposOr(array))
     {
         activarPestania(array);
         alertify.error("Ingrese todos los campos necesarios");
         return;
     }
-    if(password !== password2)
-    {
-        marcarCampoError($("#password"));
-        marcarCampoError($("#password2"));
-        alertify.error("La password no coincide");
-        return;
-    }
+//    if(password !== password2)
+//    {
+//        marcarCampoError($("#password"));
+//        marcarCampoError($("#password2"));
+//        alertify.error("La password no coincide");
+//        return;
+//    }
     if(validarTipoDato())
     {
+//        var params = {nombre : nombre, papellido : papellido, mapellido : mapellido,
+//            rut : rut, nick : nick, password : btoa(password), telefono : telefono, celular : celular,
+//            direccion : direccion,punto : punto, mail : mail, cargo : cargo, centro : centro, empresa : empresa, ruta : ruta};
         var params = {nombre : nombre, papellido : papellido, mapellido : mapellido,
-            rut : rut, nick : nick, password : btoa(password), telefono : telefono, celular : celular,
+            rut : rut, telefono : telefono, celular : celular,
             direccion : direccion,punto : punto, mail : mail, cargo : cargo, centro : centro, empresa : empresa, ruta : ruta};
         var url = urlBase + "/pasajero/AddPasajero.php";
         var success = function(response)
@@ -137,34 +143,38 @@ function modificarPasajero()
     var direccion = $("#direccion").val();
     var punto = $("#punto").val();
     var mail = $("#mail").val();
-    var nick = $("#nick").val();
-    var password = $("#password").val();
-    var password2 = $("#password2").val();
+//    var nick = $("#nick").val();
+//    var password = $("#password").val();
+//    var password2 = $("#password2").val();
     var cargo = $("#cargo").val();
     var centro = $("#centro").val();
     var empresa = $("#empresa").val();
     var ruta = $("#ruta").val();
     var array;
     var params = {id : id, nombre : nombre, papellido : papellido, mapellido : mapellido,
-        rut : rut, nick : nick, telefono : telefono, celular : celular,
+        rut : rut, telefono : telefono, celular : celular,
         direccion : direccion, punto : punto, mail : mail, cargo : cargo, centro : centro, empresa : empresa, ruta : ruta};
-    if(password !== '' || password2 !== '')
-    {
-        if(password !== password2)
-        {
-            marcarCampoError($("#password"));
-            marcarCampoError($("#password2"));
-            alertify.error("La password no coincide");
-            return;
-        }
-        array = [rut,nombre,papellido,mapellido,celular,direccion,punto,empresa,centro,
-        nick,password,password2];
-        params.password = btoa(password);
-    }
-    else
-    {
-        array = [rut,nombre,papellido,mapellido,celular,direccion,punto,empresa,centro,nick];   
-    }
+//    var params = {id : id, nombre : nombre, papellido : papellido, mapellido : mapellido,
+//        rut : rut, nick : nick, telefono : telefono, celular : celular,
+//        direccion : direccion, punto : punto, mail : mail, cargo : cargo, centro : centro, empresa : empresa, ruta : ruta};
+//    if(password !== '' || password2 !== '')
+//    {
+//        if(password !== password2)
+//        {
+//            marcarCampoError($("#password"));
+//            marcarCampoError($("#password2"));
+//            alertify.error("La password no coincide");
+//            return;
+//        }
+//        array = [rut,nombre,papellido,mapellido,celular,direccion,punto,empresa,centro,
+//        nick,password,password2];
+//        params.password = btoa(password);
+//    }
+//    else
+//    {
+//        array = [rut,nombre,papellido,mapellido,celular,direccion,punto,empresa,centro,nick];  
+          array = [rut,nombre,papellido,mapellido,celular,direccion,punto,empresa,centro];    
+//    }
     if(!validarCamposOr(array))
     {
         activarPestania(array);
@@ -257,13 +267,13 @@ function abrirModificar(id)
         iniciarPestanias();
         cambioEjecutado();
         cargarClientes();
-        $("#nick").blur(function (){
-            if(validarExistencia('nick',$(this).val()))
-            {
-                $("#nick").val("");
-                return;
-            }
-        });
+//        $("#nick").blur(function (){
+//            if(validarExistencia('nick',$(this).val()))
+//            {
+//                $("#nick").val("");
+//                return;
+//            }
+//        });
         $("#empresa").change(function (){
             cargarCentroCosto($(this).val(),'');
             cargarRutas($(this).val(),'');
@@ -284,7 +294,7 @@ function abrirModificar(id)
         $("#nombre").val(pasajero.pasajero_nombre);
         $("#papellido").val(pasajero.pasajero_papellido);
         $("#mapellido").val(pasajero.pasajero_mapellido);
-        $("#nick").val(pasajero.pasajero_nick);
+//        $("#nick").val(pasajero.pasajero_nick);
         $("#telefono").val(pasajero.pasajero_telefono);
         $("#celular").val(pasajero.pasajero_celular);
         $("#direccion").val(pasajero.pasajero_direccion);
@@ -303,7 +313,7 @@ function abrirModificar(id)
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
         cambiarPropiedad($("#eliminar"),"visibility","visible");
-        
+        mostrarMapa();
     });
 }
 
@@ -335,16 +345,16 @@ function validarExistencia(tipo,valor)
                 return true;
             }
         }
-        if(tipo === 'nick')
-        {
-            if(valor === PASAJEROS[i].pasajero_nick)
-            {
-                alertify.error("El nick "+valor+" no se encuentra disponible");
-                $("#nick").val("");
-                $("#nick").focus();
-                return ;
-            }
-        }
+//        if(tipo === 'nick')
+//        {
+//            if(valor === PASAJEROS[i].pasajero_nick)
+//            {
+//                alertify.error("El nick "+valor+" no se encuentra disponible");
+//                $("#nick").val("");
+//                $("#nick").focus();
+//                return ;
+//            }
+//        }
     }    
 }
 
@@ -402,9 +412,9 @@ function iniciarPestanias()
     $("#p_empresa").click(function(){
         cambiarPestaniaEmpresa();
     });
-    $("#p_app").click(function(){
-        cambiarPestaniaAplicacion();
-    });
+//    $("#p_app").click(function(){
+//        cambiarPestaniaAplicacion();
+//    });
 }
 
 function cargarCentroCosto(empresa,centro)
@@ -431,7 +441,7 @@ function activarPestania(array)
 {
     var general = false;
     var empresa = false;
-    var app = false;
+//    var app = false;
     for(var i = 0 ; i < CAMPOS.length ; i++)
     {
         if(array[i] === '')
@@ -447,13 +457,13 @@ function activarPestania(array)
                     empresa = true;
                 }
             }
-            if(i > 8)
-            {
-                if(!empresa)
-                {
-                    app = true;
-                }
-            }
+//            if(i > 8)
+//            {
+//                if(!empresa)
+//                {
+//                    app = true;
+//                }
+//            }
             marcarCampoError($("#"+CAMPOS[i]));
         }
         else
@@ -470,30 +480,30 @@ function activarPestania(array)
     {
         cambiarPestaniaEmpresa();
     }
-    else if(app)
-    {
-        cambiarPestaniaAplicacion();
-    }
+//    else if(app)
+//    {
+//        cambiarPestaniaAplicacion();
+//    }
 }
 
 function cambiarPestaniaGeneral()
 {
     cambiarPropiedad($("#cont_general"),"display","block");
     cambiarPropiedad($("#cont_empresa"),"display","none");
-    cambiarPropiedad($("#cont_app"),"display","none");
+//    cambiarPropiedad($("#cont_app"),"display","none");
     quitarclase($("#p_general"),"dispose");
     agregarclase($("#p_empresa"), "dispose");
-    agregarclase($("#p_app"),"dispose");
+//    agregarclase($("#p_app"),"dispose");
 }
 
 function cambiarPestaniaEmpresa()
 {
     cambiarPropiedad($("#cont_general"),"display","none");
     cambiarPropiedad($("#cont_empresa"),"display","block");
-    cambiarPropiedad($("#cont_app"),"display","none");
+//    cambiarPropiedad($("#cont_app"),"display","none");
     quitarclase($("#p_empresa"),"dispose");
     agregarclase($("#p_general"), "dispose");
-    agregarclase($("#p_app"), "dispose");
+//    agregarclase($("#p_app"), "dispose");
 }
 
 function cambiarPestaniaAplicacion()

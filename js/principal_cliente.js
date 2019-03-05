@@ -41,12 +41,13 @@ function crearServicio()
         return;
     }
     vaciarFormulario();
-    var params = {cliente : cliente, fecha : fecha, hora : hora, observaciones : observaciones, estado : 0};
+    var params = {cliente : cliente, fecha : fecha, hora : hora, observaciones : observaciones, estado : 0, tarifa1 : 0,tarifa2 : 0};
     var url = urlBase + "/servicio/AddServicio.php";
     var success = function(response)
     {
         cerrarSession(response);
         alertify.success('Servicio agregado con id '+response.servicio_id);
+        enviarCorreoAsignacion("jose.sanchez.6397@gmail,com",response.servicio_id,cliente);
     };
     postRequest(url,params,success);
 
@@ -65,4 +66,16 @@ function activarPestania(array)
             marcarCampoOk($("#"+CAMPOS[i]));
         }
     }
+}
+
+function enviarCorreoAsignacion(mail,id,cliente)
+{
+    var url = urlUtil + "/enviarMail.php";
+    var asunto = "Nueva creacion de servicio";
+    var mensaje = "Estimado, el cliente "+cliente+" a creado un nuevo servicio con el id "+id+", ";
+    var params = {email : mail,asunto : asunto, mensaje : mensaje, extra : ''};
+    var success = function(response)
+    {
+    };
+    postRequest(url,params,success);
 }

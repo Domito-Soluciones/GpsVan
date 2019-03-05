@@ -1,4 +1,4 @@
-/* global POLYLINE, alertify, urlBase, PLACES_AUTOCOMPLETE_API, CORS_PROXY, POSITION, API_KEY, PLACES_DETAILS_API, google, map, DIRECTIONS_API, EN_PROCCESO_DE_ASIGNACION, markers */
+/* global POLYLINE, alertify, urlBase, PLACES_AUTOCOMPLETE_API, CORS_PROXY, POSITION, API_KEY, PLACES_DETAILS_API, google, map, DIRECTIONS_API, EN_PROCCESO_DE_ASIGNACION, markers, GEOCODER_API */
 var CLIENTES = {};
 var moviles = [];
 var clientesArray = [];
@@ -12,6 +12,7 @@ var pasajeros = [];
 var direccion_empresa;
 var NOMBRE_CLIENTE;
 var conductores = new Map();
+var markersPanel = [];
 
 var CAMPOS = ["clientes","ruta","fechas","hora","vehiculos","tarifa1","tarifa2"];
 var CAMPOS_ESPECIAL = ["partida","destino","usuarios","celular","fechas2","hora2","vehiculos2","tarifas2"];
@@ -105,12 +106,12 @@ $(document).ready(function(){
         cambiarServicioEspecial();
     });
     
-    $("#buscaPartida").click(function(){
-        colocarMarcador($("#partida"));
+    $("#partida").focus(function(){
+        colocarMarcadorPlaces();
     });
     
-    $("#buscaDestino").click(function(){
-        colocarMarcador($("#destino"));
+    $("#destino").focus(function(){
+        colocarMarcadorPlaces();
     });
     
 });
@@ -305,7 +306,7 @@ function agregarServicio()
         alertify.error("No hay pasajeros asignados a este servicio");
         return;
     }
-    if(conductor === "No Definido")
+    if(conductor === "")
     {
         alertify.error("El veh&iacute;culo "+movil+" no tiene coductor asociado");
         return;
@@ -334,6 +335,7 @@ function agregarServicio()
             agregarDetalleServicio(response.servicio_id,false);
             notificarConductor(response.servicio_id,conductor);
             notificarServicioFuturo(response.servicio_id,conductor,fecha,hora);
+            eliminarMarkers();
         };
         postRequest(url,params,success);
     }
@@ -572,6 +574,7 @@ function borrarPasajero(obj,nombre,punto,celular)
     {
         if(destinos[i] === punto)
         {
+            eliminarMarker(punto);
             destinos.splice(i, 1);
         }
     }
@@ -605,6 +608,7 @@ function agregarPasajero(obj,nombre,punto,celular)
         var d = destinos.pop();
         console.log("se saca este "+ d);
         destinos.push(punto);
+        colocarMarcador(punto);
         console.log("se agrega este "+ punto);
         destinos.push(direccion_empresa);
         console.log("se saca este al final "+ direccion_empresa);
@@ -614,6 +618,7 @@ function agregarPasajero(obj,nombre,punto,celular)
         pasajeros.push(id);
         $("#contenedor_punto_destino").html("<b>Destino: </b>"+punto);
         destinos.push(punto);
+        colocarMarcador(punto);
     }
     var pasajero = $("#"+obj);
     var texto = "<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" draggable=\"true\" ondragstart=\"drag(event,$(this))\" ondrop=\"drop(event,$(this))\" ondragover=\"allowDrop(event,$(this))\">"
@@ -627,8 +632,22 @@ function agregarPasajero(obj,nombre,punto,celular)
 
 function cambiarServicioNormal()
 {
-    cambiarPropiedad($("#servicio-normal"),"display","block");
-    cambiarPropiedad($("#servicio-especial"),"display","none");
+    $("#clientes").prop("disabled",false);
+    cambiarPropiedad($("#clientes"),"background-color","white");
+    $("#ruta").prop("disabled",false);
+    cambiarPropiedad($("#ruta"),"background-color","white");
+    $("#tarifa2").prop("disabled",false);
+    cambiarPropiedad($("#tarifa2"),"background-color","white");
+    $("#partida").prop("disabled",true);
+    cambiarPropiedad($("#partida"),"background-color","#E3E3E3");
+    $("#destino").prop("disabled",true);
+    cambiarPropiedad($("#destino"),"background-color","#E3E3E3");
+    agregarclase($("#buscaPartida"),"oculto");
+    agregarclase($("#buscaDestino"),"oculto");
+    $("#usuarios").prop("disabled",true);
+    cambiarPropiedad($("#usuarios"),"background-color","#E3E3E3");
+    $("#celular").prop("disabled",true);
+    cambiarPropiedad($("#celular"),"background-color","#E3E3E3");
     vaciarFormulario();
     if(typeof POLYLINE !== "undefined")
     {
@@ -638,12 +657,22 @@ function cambiarServicioNormal()
 
 function cambiarServicioEspecial()
 {
-    cambiarPropiedad($("#servicio-normal"),"display","none");
-    cambiarPropiedad($("#servicio-especial"),"display","block");
-    $("#contenedor_pasajero").html("<div class=\"contenedor-loader\"><div class=\"loader\" id=\"loader_pasajero\">Loading...</div></div>");
-    $("#contenedor_pasajero_no_asignado").html("");
-    cambiarPropiedad($(".buscador-pasajero"),"display","none");
-    quitarclase($("#contenedor_mapa"),"mapa_bajo");
+    $("#clientes").prop("disabled",true);
+    cambiarPropiedad($("#clientes"),"background-color","#E3E3E3");
+    $("#ruta").prop("disabled",true);
+    cambiarPropiedad($("#ruta"),"background-color","#E3E3E3");
+    $("#tarifa2").prop("disabled",true);
+    cambiarPropiedad($("#tarifa2"),"background-color","#E3E3E3");
+    $("#partida").prop("disabled",false);
+    cambiarPropiedad($("#partida"),"background-color","white");
+    $("#destino").prop("disabled",false);
+    cambiarPropiedad($("#destino"),"background-color","white");
+    quitarclase($("#buscaPartida"),"oculto");
+    quitarclase($("#buscaDestino"),"oculto");
+    $("#usuarios").prop("disabled",false);
+    cambiarPropiedad($("#usuarios"),"background-color","white");
+    $("#celular").prop("disabled",false);
+    cambiarPropiedad($("#celular"),"background-color","white");
     vaciarFormulario();
     if(typeof POLYLINE !== "undefined")
     {
@@ -778,12 +807,40 @@ function validarTipoDatoEspecial()
     return true;
 }
 
-function colocarMarcador(obj)
+function colocarMarcador(direccion)
 {
+    var url = CORS_PROXY + GEOCODER_API + "address="+direccion+"&key="+API_KEY;
+    var success = function(response){
+        var location = response.results[0].geometry.location;
+        var marker = new google.maps.Marker({
+            position: location,
+            id : direccion
+        });
+        marker.setMap(map);
+        markersPanel.push(marker);
+    };
+    getRequest(url,success);
+}
+
+function colocarMarcadorPlaces()
+{
+    for(var i = 0 ; i < markersPanel.length;i++)
+    {
+        markersPanel[i].setMap(null);
+    }
+    var icon = {
+        url: "img/marcador.svg",
+        scaledSize: new google.maps.Size(70, 30),
+        origin: new google.maps.Point(0,0),
+        anchor: new google.maps.Point(0, 0)
+    };
     var marker = new google.maps.Marker({
         position: map.getCenter(),
+        icon : icon,
         map: map
     });
+    
+    markersPanel.push(marker);
 
     map.setZoom(17);
     map.panTo(marker.position);
@@ -794,14 +851,50 @@ function colocarMarcador(obj)
     });
     
     google.maps.event.addListener(map, "dragend", function() {
-        var request = {
-            location: {lat:POSITION[0],lng:POSITION[1]},
-            radius: 10
+        var url = CORS_PROXY + GEOCODER_API + "latlng="+POSITION[0]+","+POSITION[1]+"&sensor=true&key="+API_KEY;
+        var success = function(response)
+        {
+            var status = response.status;
+            if (status === "OK") {
+                var results = response.results;
+                var zero = results[0];
+                var address = zero.formatted_address;
+                var partida = $('#partida');
+                var destino = $('#destino');
+                if(partida.val() === '')
+                {
+                    partida.val(address);
+                }
+                else if(partida.val() !== '' && destino.val() === '')
+                {
+                    destino.val(address);
+                }
+                else if(partida.val() !== '' && destino.val() !== '')
+                {
+                    eliminarMarker();
+                    dibujarRuta(partida.val(),[destino.val()]);
+                }
+            }
         };
-        var service = new google.maps.places.PlacesService(map);
-        service.nearbySearch(request, function(results, status){
-            console.log(results[0].name);
-            obj.val(results[0].name);
-        });
+        getRequest(url,success);
     });
+}
+
+function eliminarMarker(direccion)
+{
+    for(var i = 0 ; i < markersPanel.length;i++)
+    {
+        if(markersPanel[i].get("id") === direccion)
+        {
+            markersPanel[i].setMap(null);
+        }
+    }
+}
+
+function eliminarMarkers()
+{
+    for(var i = 0 ; i < markersPanel.length;i++)
+    {
+        markersPanel[i].setMap(null);
+    }
 }

@@ -150,7 +150,7 @@ class ServicioDao {
         return $id;
     }
    
-    public function getServicios($id,$empresa,$conductor,$estado,$movil,$desde,$hasta)
+    public function getServicios($id,$empresa,$conductor,$estado,$movil,$desde,$hdesde,$hasta,$hhasta)
     {
         $array = array();
         $conn = new Conexion();
@@ -161,6 +161,7 @@ class ServicioDao {
             $buscaMovil = '';
             $buscaEstado = '';
             $buscaFecha = '';
+            $buscaHora = '';
             if($id != '')
             {
                 $buscaId = " AND servicio_id LIKE '%$id%' ";
@@ -183,15 +184,15 @@ class ServicioDao {
             }
             if($desde != '' && $hasta == '')
             {
-                $buscaFecha = "AND servicio_fecha > '".$desde."' ";
+                $buscaFecha = "AND servicio_fecha > '".$desde." ".$hdesde."' ";
             }
             if($hasta != '' && $desde == '')
             {
-                $buscaFecha = "AND servicio_fecha < '".$hasta."' ";
+                $buscaFecha = "AND servicio_fecha < '".$hasta." ".$hhasta."' ";
             }
             if($desde != '' && $hasta != '')
             {
-                $buscaFecha = "AND servicio_fecha BETWEEN '".$desde."' AND '".$hasta."'";
+                $buscaFecha = "AND servicio_fecha BETWEEN '".$desde." ".$hdesde."' AND '".$hasta." ".$hdesde."'";
             }
             $query = "SELECT * FROM tbl_servicio WHERE servicio_estado NOT IN (0,6) "
                     .$buscaFecha." ".$buscaId." ".$buscaEmpresa." ".$buscaConductor." ".$buscaMovil." ".$buscaEstado

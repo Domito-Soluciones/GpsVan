@@ -17,6 +17,7 @@ else
 {
     $desde = filter_input(INPUT_POST, 'desde');
 }
+$hdesde = filter_input(INPUT_POST, 'hdesde');
 $hasta = '';
 if(filter_input(INPUT_POST, 'hasta') != '')
 {
@@ -26,8 +27,9 @@ else
 {
     $hasta = filter_input(INPUT_POST, 'hasta');
 }
+$hhasta = filter_input(INPUT_POST, 'hhasta');
 $servicioDao = new ServicioDao();
-$servicios = $servicioDao->getServicios($id,$empresa,$conductor,$estado,$movil,$desde,$hasta);
+$servicios = $servicioDao->getServicios($id,$empresa,$conductor,$estado,$movil,$desde,$hdesde,$hasta,$hhasta);
 echo "[";
 for ($i = 0 ; $i < count($servicios); $i++)
 {

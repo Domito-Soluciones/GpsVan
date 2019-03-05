@@ -57,7 +57,7 @@ function getRequest(url,success,cargar = true)
         success: success,
         async: true,
         cache: false,
-        crossDomain: true,
+//        crossDomain: true,
         beforeSend: function (xhr) {
             if(cargar)
             {
