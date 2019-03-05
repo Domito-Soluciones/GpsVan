@@ -314,8 +314,8 @@ select
 
 .asignacion_buscador
 {
-    margin-left: 19% !important;
-    width: calc(81% - 1px) !important;
+    margin-left: 38% !important;
+    width: calc(0% - 105px) !important;
     height: calc(100% - 1px);
 }
 
@@ -332,7 +332,7 @@ select
 
 .buscador-asignacion
 {
-    width: 19%;
+    width: 38%;
     height: 100%;
 }
 .buscador-pasajero

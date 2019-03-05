@@ -9,6 +9,7 @@ var objAnterior;
 var origen;
 var destinos= [];
 var pasajeros = [];
+var direccion_empresa;
 var NOMBRE_CLIENTE;
 var conductores = new Map();
 
@@ -160,9 +161,12 @@ function cargarPasajeros()
         var contenedorEx = $("#contenedor_pasajero_no_asignado");
         contenedor.html("");
         contenedorEx.html("");
+        direccion_empresa = response[0].pasajero_empresa_direccion;
+        colocarMarcador(direccion_empresa);
         if(ruta.indexOf("-ZP-") !== -1)
         {
             origen = response[0].pasajero_empresa_direccion;
+            colocarMarcador(origen);
         }
         contenedorDir.html("<b>Origen:</b> "+origen);
         pasajeros = [];
@@ -176,6 +180,7 @@ function cargarPasajeros()
             var celular = response[i].pasajero_celular;
             if(ruta === response[i].pasajero_ruta)
             {
+                colocarMarcador(punto);
                 if(ruta.indexOf("-RG-") !== -1 && partidaExiste)
                 {
                     origen = punto;
@@ -205,6 +210,7 @@ function cargarPasajeros()
         if(ruta.indexOf("-RG-") !== -1)
         {
             destinos.push(response[0].pasajero_empresa_direccion);
+            colocarMarcador(response[0].pasajero_empresa_direccion);
             contenedorDes.html("<b>Destino:</b> "+response[0].pasajero_empresa_direccion);
         }
         dibujarRuta(origen,destinos);
@@ -516,10 +522,24 @@ function drop(ev,obj) {
     obj.html(ev.dataTransfer.getData("text"));
     pasajeros = [];
     destinos = [];
+    let ruta = $("#ruta").val();
     $("#contenedor_pasajero .cont-pasajero-gral .hidden" ).each(function(index) {
         pasajeros.push($(this).attr("id").split("_")[1]);
         destinos.push($(this).val());
-        if(index === destinos.length-1)
+        if(ruta.indexOf("RG") !== -1 && index === 0)
+        { 
+            origen = $(this).val();
+            $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+origen);
+        }
+        if(ruta.indexOf("RG") !== -1 && index === destinos.length-1)
+        { 
+            destinos.push(direccion_empresa);
+        }
+        if(ruta.indexOf("ZP") !== -1 && index === 0)
+        {
+            origen = direccion_empresa;
+        }
+        if(ruta.indexOf("ZP") !== -1 && index === destinos.length-1)
         {
             $("#contenedor_punto_destino").html("<b>Destino: </b>"+$(this).val());
         }
@@ -544,7 +564,15 @@ function borrarPasajero(obj,nombre,punto,celular)
             destinos.splice(i, 1);
         }
     }
-    $("#contenedor_punto_destino").html("<b>Destino: </b>"+destinos[destinos.length-1]);
+    var ruta = $("#ruta").val();
+    if(ruta.indexOf("RG") === -1)
+    {
+        $("#contenedor_punto_destino").html("<b>Destino: </b>"+destinos[destinos.length-1]);
+    }
+    if(ruta.indexOf("ZP") === -1)
+    {
+        $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+origen);
+    }
     var pasajero = $("#"+obj);
     var texto = "<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" \">"
                                  +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+punto+"\">"
@@ -558,9 +586,24 @@ function borrarPasajero(obj,nombre,punto,celular)
 function agregarPasajero(obj,nombre,punto,celular)
 {
     var id = obj.split("_")[1];
-    pasajeros.push(id);
-    $("#contenedor_punto_destino").html("<b>Destino: </b>"+punto);
-    destinos.push(punto);
+    var ruta = $('#ruta').val();
+    if(ruta.indexOf("RG") !== -1)
+    {
+        pasajeros.push(id);
+        $("#contenedor_punto_destino").html("<b>Destino: </b>"+direccion_empresa);
+        var d = destinos.pop();
+        console.log("se saca este "+ d);
+        destinos.push(punto);
+        console.log("se agrega este "+ punto);
+        destinos.push(direccion_empresa);
+        console.log("se saca este al final "+ direccion_empresa);
+    }
+    else if(ruta.indexOf("ZP") !== -1)
+    {
+        pasajeros.push(id);
+        $("#contenedor_punto_destino").html("<b>Destino: </b>"+punto);
+        destinos.push(punto);
+    }
     var pasajero = $("#"+obj);
     var texto = "<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" draggable=\"true\" ondragstart=\"drag(event,$(this))\" ondrop=\"drop(event,$(this))\" ondragover=\"allowDrop(event,$(this))\">"
                                  +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+punto+"\">"
@@ -722,4 +765,23 @@ function validarTipoDatoEspecial()
         return false;
     }
     return true;
+}
+
+function colocarMarcador(punto)
+{            
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ 'address': punto }, function (results, status) {
+        if (status === google.maps.GeocoderStatus.OK) {
+            var latitude = results[0].geometry.location.lat();
+            var longitude = results[0].geometry.location.lng();
+            var marker = new google.maps.Marker({
+                map: map,
+                place: {
+                    placeId: punto,
+                    location: {lat: latitude, lng: longitude}
+                }
+            });
+            marker.setMap(map);
+        }
+    });
 }

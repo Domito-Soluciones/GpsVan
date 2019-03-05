@@ -648,7 +648,9 @@ function validarTipo()
         mutual.attr("disabled",true);
         transportista.attr("disabled",true);
         descuento.attr("disabled",false);
+        marcarCampoOk(descuento);
         tipoContrato.attr("disabled",false);
+        marcarCampoOk(tipoContrato);
     }
     else if(TIPO === '1')
     {
@@ -660,16 +662,22 @@ function validarTipo()
         isapread.val() === noAplica ? isapread.val("") : isapread ;
         mutual.val() === noAplica ? mutual.val("") : mutual ;
         descuento.val(0);
-        transportista.val("");
-        marcarCampoDisabled(descuento);
         descuento.attr("disabled",true);
+        marcarCampoDisabled(descuento);
         tipoContrato.attr("disabled",false);
+        marcarCampoOk(tipoContrato);
+        transportista.val("");
         transportista.attr("disabled",false);
         renta.attr("disabled",false);
+        marcarCampoOk(renta);
         afp.attr("disabled",false);
+        marcarCampoOk(afp);
         isapre.attr("disabled",false);
+        marcarCampoOk(isapre);
         isapread.attr("disabled",false);
+        marcarCampoOk(isapread);
         mutual.attr("disabled",false);
+        marcarCampoOk(mutual);
     }
     else if(TIPO === '2')
     {
@@ -679,6 +687,7 @@ function validarTipo()
         {
             marcarCampoDisabled(renta);
             renta.attr("disabled",true);
+            renta.val("0");
         }
         else
         {
@@ -688,6 +697,7 @@ function validarTipo()
         {
             marcarCampoDisabled(afp);
             afp.attr("disabled",true);
+            afp.val("-");
         }
         else
         {
@@ -697,6 +707,7 @@ function validarTipo()
         {
             marcarCampoDisabled(isapre);
             isapre.attr("disabled",true);
+            isapre.val("-");
         }
         else
         {
@@ -706,6 +717,7 @@ function validarTipo()
         {
             marcarCampoDisabled(isapread);
             isapread.attr("disabled",true);
+            isapread.val("0");
         }
         else
         {
@@ -715,15 +727,18 @@ function validarTipo()
         {
             marcarCampoDisabled(mutual);
             mutual.attr("disabled",true);
+            mutual.val("-");
         }
         else
         {
             $("#checkMutual").attr("checked",true);
         }
-        if(descuento.val() === '-' || descuento.val() === '')
+        alert(descuento.val());
+        if(descuento.val() === '0' || descuento.val() === '')
         {
             marcarCampoDisabled(descuento);
             descuento.attr("disabled",true);
+            descuento.val("0");
         }
         else
         {
@@ -733,6 +748,7 @@ function validarTipo()
         {
             marcarCampoDisabled(tipoContrato);
             tipoContrato.attr("disabled",true);
+            tipoContrato.val("-");
         }
         else
         {
@@ -815,84 +831,98 @@ function obtenerChecks()
         if($(this).is(":checked"))
         {
             $("#renta").prop("disabled",false);
+            $("#renta").val("");
             marcarCampoOk($("#renta"));
         }
         else
         {
             marcarCampoDisabled($("#renta"));
             $("#renta").prop("disabled",true);
+            $("#renta").val("0");
         }
     });
     $("#checkContrato").click(function(){
         if($(this).is(":checked"))
         {
             $("#tipoContrato").prop("disabled",false);
+            $("#tipoContrato").val("");
             marcarCampoOk($("#tipoContrato"));
         }
         else
         {
             marcarCampoDisabled($("#tipoContrato"));
             $("#tipoContrato").prop("disabled",true);
+            $("#tipoContrato").val("-");
         }
     });
     $("#checkAfp").click(function(){
         if($(this).is(":checked"))
         {
             $("#afp").prop("disabled",false);
+            $("#afp").val("");
             marcarCampoOk($("#afp"));
         }
         else
         {
             marcarCampoDisabled($("#afp"));
             $("#afp").prop("disabled",true);
+            $("#afp").val("-");
         }
     });
     $("#checkIsapre").click(function(){
         if($(this).is(":checked"))
         {
             $("#isapre").prop("disabled",false);
+            $("#isapre").val("");
             marcarCampoOk($("#isapre"));
         }
         else
         {
             marcarCampoDisabled($("#isapre"));
             $("#isapre").prop("disabled",true);
+            $("#isapre").val("-");
         }
     });
     $("#checkIsapreAd").click(function(){
         if($(this).is(":checked"))
         {
             $("#isapread").prop("disabled",false);
+            $("#isapread").val("");
             marcarCampoOk($("#isapread"));
         }
         else
         {
             marcarCampoDisabled($("#isapread"));
             $("#isapread").prop("disabled",true);
+            $("#isapread").val("0");
         }
     });
     $("#checkMutual").click(function(){
         if($(this).is(":checked"))
         {
             $("#mutual").prop("disabled",false);
+            $("#mutual").val("");
             marcarCampoOk($("#mutual"));
         }
         else
         {
             marcarCampoDisabled($("#mutual"));
             $("#mutual").prop("disabled",true);
+            $("#mutual").val("-");
         }
     });
     $("#checkDescuento").click(function(){
         if($(this).is(":checked"))
         {
             $("#descuento").prop("disabled",false);
+            $("#descuento").val("");
             marcarCampoOk($("#descuento"));
         }
         else
         {
             marcarCampoDisabled($("#descuento"));
             $("#descuento").prop("disabled",true);
+            $("#descuento").val("0");
         }
     });
 }
