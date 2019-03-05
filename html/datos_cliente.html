@@ -8,6 +8,9 @@
     <div class="titulo_pagina_general dispose" id="p_ccosto">
         2. Centros de Costo
     </div>
+    <div class="titulo_pagina_general dispose" id="p_tarifa">
+        3. Rutas
+    </div>
 </div>
 <div class="contenedor-info general" id="cont_general">
     <div class="contenedor-formulario">
@@ -34,7 +37,7 @@
                 Tipo (*)
             </div>
             <div class="contenedor-input">
-                <input type="text" list="ltipo" id="tipo" placeholder="Ej: Convenio">
+                <input type="text" list="ltipo" id="tipoCliente" placeholder="Ej: Convenio">
                 <datalist id="ltipo">
                     <option value="Convenio">Convenio</option>
                     <option value="Servicio especial">Servicio especial</option>
@@ -55,7 +58,7 @@
                 Nombre Contacto (*)
             </div>
             <div class="contenedor-input">
-                <input type="text" id="nombre" placeholder="Ej: Juan perez" maxlength="30">                    
+                <input type="text" id="nombreContacto" placeholder="Ej: Juan perez" maxlength="30">                    
             </div>
         </div>
         <div class="contenedor-fila">
@@ -125,6 +128,13 @@
                     Quitar
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+<div class="contenedor-info tarifa_cont contenedor_oculto" id="cont_tarifa">
+    <div id="lista_busqueda_tarifa_detalle" class="lista_busqueda_extendida">
+        <div class="contenedor-loader">
+            <div class="loader" id="loaderTarifa">Loading...</div>
         </div>
     </div>
 </div>

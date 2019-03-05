@@ -158,7 +158,7 @@ function dibujarMarcador(id,lat,lon,nombre,servicio)
 {
     var myLatLng = {lat: lat, lng: lon};
     var icon = {
-        url: "img/marker.png", // url
+        url: "img/furgon.svg", // url
         scaledSize: new google.maps.Size(70, 30),
         origin: new google.maps.Point(0,0),
         anchor: new google.maps.Point(0, 0)

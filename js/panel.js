@@ -43,6 +43,7 @@ $(document).ready(function(){
         }
         cargarPasajeros();
     });
+    
     $("#vehiculos").change(function () {
         if($(this).val() !== "")
         {
@@ -55,6 +56,7 @@ $(document).ready(function(){
             $("#conductores").html("");
         }
     });
+    
     $("#vehiculos2").change(function () {
         if($(this).val() !== "")
         {
@@ -102,6 +104,15 @@ $(document).ready(function(){
     $("#especial").click(function(){
         cambiarServicioEspecial();
     });
+    
+    $("#buscaPartida").click(function(){
+        colocarMarcador($("#partida"));
+    });
+    
+    $("#buscaDestino").click(function(){
+        colocarMarcador($("#destino"));
+    });
+    
 });
 
 function init()
@@ -767,21 +778,30 @@ function validarTipoDatoEspecial()
     return true;
 }
 
-function colocarMarcador(punto)
-{            
-    var geocoder = new google.maps.Geocoder();
-    geocoder.geocode({ 'address': punto }, function (results, status) {
-        if (status === google.maps.GeocoderStatus.OK) {
-            var latitude = results[0].geometry.location.lat();
-            var longitude = results[0].geometry.location.lng();
-            var marker = new google.maps.Marker({
-                map: map,
-                place: {
-                    placeId: punto,
-                    location: {lat: latitude, lng: longitude}
-                }
-            });
-            marker.setMap(map);
-        }
+function colocarMarcador(obj)
+{
+    var marker = new google.maps.Marker({
+        position: map.getCenter(),
+        map: map
+    });
+
+    map.setZoom(17);
+    map.panTo(marker.position);
+    
+    google.maps.event.addListener(map, "drag", function() {
+        marker.setPosition(this.getCenter());
+        POSITION = [this.getCenter().lat(),this.getCenter().lng()];
+    });
+    
+    google.maps.event.addListener(map, "dragend", function() {
+        var request = {
+            location: {lat:POSITION[0],lng:POSITION[1]},
+            radius: 10
+        };
+        var service = new google.maps.places.PlacesService(map);
+        service.nearbySearch(request, function(results, status){
+            console.log(results[0].name);
+            obj.val(results[0].name);
+        });
     });
 }
