@@ -23,6 +23,7 @@ var EN_PROGRESO = "4";
 var FINALIZADO = "5";
 var CANCELADO = "6";
 var servicios = new Map();
+var markersPanel = [];
 
 var MENU_VISIBLE = false;
 
@@ -170,3 +171,4 @@ function decodePolyline(encoded) {
             });
         }
     }
+

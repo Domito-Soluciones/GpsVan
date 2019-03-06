@@ -18,7 +18,7 @@ function agregarTarifa()
         alertify.error("Ingrese todos los campos necesarios");
         return;
     }
-    if(validarTipoDato())
+    if(validarTipoDatoTarifa())
     {
         var params = {cliente : cliente, tipo : tipo,horario : horario, nombre : nombre, origen : origen,
             destino : destino, valor1 : valor1, valor2 : valor2};
@@ -57,7 +57,7 @@ function modificarTarifa()
         alertify.error("Ingrese todos los campos necesarios");
         return;
     }
-    if(validarTipoDato())
+    if(validarTipoDatoTarifa())
     {
         var params = {id : id,cliente : cliente, tipo : tipo,horario : horario, nombre : nombre, origen : origen,
             destino : destino, valor1 : valor1, valor2 : valor2};
@@ -264,7 +264,7 @@ function validarExistencia(tipo,valor)
     }    
 }
 
-function validarTipoDato()
+function validarTipoDatoTarifa()
 {
     for(var i = 0 ; i < CAMPOS.length ; i++)
     {

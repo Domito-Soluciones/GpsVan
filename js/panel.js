@@ -12,7 +12,6 @@ var pasajeros = [];
 var direccion_empresa;
 var NOMBRE_CLIENTE;
 var conductores = new Map();
-var markersPanel = [];
 
 var CAMPOS = ["clientes","ruta","fechas","hora","vehiculos","tarifa1","tarifa2"];
 var CAMPOS_ESPECIAL = ["partida","destino","usuarios","celular","fechas2","hora2","vehiculos2","tarifas2"];
@@ -642,8 +641,6 @@ function cambiarServicioNormal()
     cambiarPropiedad($("#partida"),"background-color","#E3E3E3");
     $("#destino").prop("disabled",true);
     cambiarPropiedad($("#destino"),"background-color","#E3E3E3");
-    agregarclase($("#buscaPartida"),"oculto");
-    agregarclase($("#buscaDestino"),"oculto");
     $("#usuarios").prop("disabled",true);
     cambiarPropiedad($("#usuarios"),"background-color","#E3E3E3");
     $("#celular").prop("disabled",true);
@@ -667,8 +664,6 @@ function cambiarServicioEspecial()
     cambiarPropiedad($("#partida"),"background-color","white");
     $("#destino").prop("disabled",false);
     cambiarPropiedad($("#destino"),"background-color","white");
-    quitarclase($("#buscaPartida"),"oculto");
-    quitarclase($("#buscaDestino"),"oculto");
     $("#usuarios").prop("disabled",false);
     cambiarPropiedad($("#usuarios"),"background-color","white");
     $("#celular").prop("disabled",false);

@@ -1,4 +1,4 @@
-/* global urlBase, alertify, PLACES_AUTOCOMPLETE_API, CORS_PROXY, POSITION */
+/* global urlBase, alertify, PLACES_AUTOCOMPLETE_API, CORS_PROXY, POSITION, ID_CLIENTE */
 var ID_PASAJERO;
 var ID_EMPRESA;
 var ID_RUTA;
@@ -6,10 +6,12 @@ var PASAJEROS;
 var AGREGAR = true;
 var PAGINA = 'PASAJEROS';
 var CC;
+var mapa_oculto = true;
 //var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","punto","empresa","centro","nick"];
 var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","punto","empresa","centro"];
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
+    buscarClientePasajero();
     buscarPasajero();
     $("#agregar").click(function(){
         quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
@@ -44,10 +46,29 @@ $(document).ready(function(){
             $("#punto").on("input",function(){
                 mostrarDatalist($(this).val(),$("#partida"),'punto');
             });
+            
+            $("#buscaPunto").click(function(){
+                if(mapa_oculto)
+                {
+                    colocarMarcadorPlaces();
+                    quitarclase($("#contenedor_mapa"),"oculto");
+                    mapa_oculto = false;
+                }
+                else
+                {
+                    agregarclase($("#contenedor_mapa"),"oculto");
+                    mapa_oculto = true;
+                }
+            });
+            mostrarMapa();
+        });
+        
+        $("#volver").click(function(){
+            buscarPasajeroCliente(ID_CLIENTE);
+            cambiarPropiedad($("#agregar"),"visibility","visible");
         });
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
-        mostrarMapa();
     });
     $("#cancelar").click(function(){
         validarCancelar(PAGINA);
@@ -205,7 +226,7 @@ function buscarPasajero()
     var success = function(response)
     {
         cerrarSession(response);
-        var pasajeros = $("#lista_busqueda_pasajero");
+        var pasajeros = $("#lista_busqueda_pasajero_detalle");
         pasajeros.html("");
         PASAJEROS = response;
         if(response.length === 0)
@@ -213,22 +234,53 @@ function buscarPasajero()
             alertify.error("No hay registros que mostrar");
             return;
         }
+        pasajeros.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div>Empresa</div></div>")
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].pasajero_id;
             var rut = response[i].pasajero_rut;
             var nombre = response[i].pasajero_nombre;
             var papellido = response[i].pasajero_papellido;
-            var mapellido = response[i].pasajero_mapellido;
-            var titulo = recortar(rut+" / "+nombre+" "+papellido+" "+mapellido);
-            if (typeof ID_PASAJERO !== "undefined" && ID_PASAJERO === id)
-            {
-                pasajeros.append("<div class=\"fila_contenedor fila_contenedor_activa\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+titulo+"</div>");
-            }
-            else
-            {
-                pasajeros.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+titulo+"</div>");
-            }
+            var empresa = response[i].pasajero_empresa;
+            pasajeros.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+
+                    "<div>"+rut+"</div>"+
+                    "<div>"+nombre+"</div>"+
+                    "<div>"+papellido+"</div><div>"+empresa+"</div></div>");
+        }
+        cambiarPropiedad($("#loader"),"visibility","hidden");
+    };
+    postRequest(url,params,success);
+}
+
+function buscarPasajeroCliente(cliente)
+{
+    ID_CLIENTE = cliente;
+    marcarFilaActiva(cliente);
+    var params = {cliente : cliente};
+    var url = urlBase + "/pasajero/GetPasajerosCliente.php";
+    var success = function(response)
+    {
+        cerrarSession(response);
+        var pasajeros = $("#lista_busqueda_pasajero_detalle");
+        pasajeros.html("");
+        PASAJEROS = response;
+        if(response.length === 0)
+        {
+            pasajeros.append("<div class=\"mensaje_bienvenida\">No hay registros que mostrar</div>");
+            return;
+        }
+        pasajeros.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div>Empresa</div></div>")
+        for(var i = 0 ; i < response.length; i++)
+        {
+            var id = response[i].pasajero_id;
+            var rut = response[i].pasajero_rut;
+            var nombre = response[i].pasajero_nombre;
+            var papellido = response[i].pasajero_papellido;
+            var empresa = response[i].pasajero_empresa;
+            pasajeros.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+
+                    "<div>"+rut+"</div>"+
+                    "<div>"+nombre+"</div>"+
+                    "<div>"+papellido+"</div><div>"+empresa+"</div></div>");
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
@@ -260,9 +312,6 @@ function cambiarFila(id)
 function abrirModificar(id)
 {
     AGREGAR = false;
-    ID_PASAJERO = id;
-    quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
-    agregarclase($("#"+id),"fila_contenedor_activa");
     $("#contenedor_central").load("html/datos_pasajero.html", function( response, status, xhr ) {
         iniciarPestanias();
         cambioEjecutado();
@@ -280,6 +329,17 @@ function abrirModificar(id)
         });
         $("#punto").on("input",function(){
             mostrarDatalist($(this).val(),$("#partida"),'punto');
+        });
+        $("#volver").click(function(){
+            if(typeof ID_CLIENTE === 'undefined')
+            {
+                buscarPasajero();
+            }
+            else
+            {
+                buscarPasajeroCliente(ID_CLIENTE);
+            }
+            cambiarPropiedad($("#agregar"),"visibility","visible");
         });
         var pasajero;
         for(var i = 0 ; i < PASAJEROS.length; i++)
@@ -313,6 +373,19 @@ function abrirModificar(id)
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
         cambiarPropiedad($("#eliminar"),"visibility","visible");
+        $("#buscaPunto").click(function(){
+            if(mapa_oculto)
+            {
+                colocarMarcadorPlaces();
+                quitarclase($("#contenedor_mapa"),"oculto");
+                mapa_oculto = false;
+            }
+            else
+            {
+                agregarclase($("#contenedor_mapa"),"oculto");
+                mapa_oculto = true;
+            }
+        });
         mostrarMapa();
     });
 }
@@ -588,4 +661,109 @@ function selecionarPlace(val)
     $("#partida").html("");
 }
 
+function buscarClientePasajero()
+{
+    var busqueda = $("#busqueda").val();
+    var params = {busqueda : busqueda,buscaCC : '0'};
+    var url = urlBase + "/cliente/GetClientes.php";
+    var success = function(response)
+    {
+        cerrarSession(response);
+        var clientes = $("#lista_busqueda_pasajero");
+        clientes.html("");
+        CLIENTES = response;
+        if(response.length === 0)
+        {
+            alertify.error("No hay registros que mostrar");
+            return;
+        }
+        for(var i = 0 ; i < response.length; i++)
+        {
+            var id = response[i].cliente_id;
+            var rut = response[i].cliente_rut;
+            var nombre = response[i].cliente_razon;
+            var titulo = recortar(rut+" / "+nombre);
+            if (typeof ID_CLIENTE !== "undefined" && ID_CLIENTE === id)
+            {
+                clientes.append("<div class=\"fila_contenedor fila_contenedor_activa\" id=\""+id+"\" onClick=\"cambirFilaPasajero('"+id+"')\">"+titulo+"</div>");
+            }
+            else
+            {
+                clientes.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"cambiarFilaPasajero('"+id+"')\">"+titulo+"</div>");
+            }
+        }
+        cambiarPropiedad($("#loader"),"visibility","hidden");
+    };
+    postRequest(url,params,success);
+}
 
+function cambiarFilaPasajero(id)
+{
+    if(MODIFICADO)
+    {
+        confirmar("Cambio de tarifa",
+        "¿Desea cambiar de tarifa sin guardar los cambios?",
+        function()
+        {
+            MODIFICADO = false;
+            buscarPasajeroCliente(id);
+        },
+        function()
+        {
+            MODIFICADO = true;
+        });
+    }
+    else
+    {
+        buscarPasajeroCliente(id);
+    }
+}
+
+function colocarMarcadorPlaces()
+{
+    if(typeof POLYLINE !== "undefined")
+    {
+        POLYLINE.setMap(null);
+    }
+    for(var i = 0 ; i < markersPanel.length;i++)
+    {
+        markersPanel[i].setMap(null);
+    }
+    var icon = {
+        url: "img/marcador.svg",
+        scaledSize: new google.maps.Size(70, 30),
+        origin: new google.maps.Point(0,0),
+        anchor: new google.maps.Point(0, 0)
+    };
+    var marker = new google.maps.Marker({
+        position: map.getCenter(),
+        icon : icon,
+        map: map
+    });
+    
+    markersPanel.push(marker);
+
+    map.setZoom(17);
+    map.panTo(marker.position);
+    
+    google.maps.event.addListener(map, "drag", function() {
+        marker.setPosition(this.getCenter());
+        POSITION = [this.getCenter().lat(),this.getCenter().lng()];
+    });
+    
+    google.maps.event.addListener(map, "dragend", function() {
+        var url = CORS_PROXY + GEOCODER_API + "latlng="+POSITION[0]+","+POSITION[1]+"&sensor=true&key="+API_KEY;
+        var success = function(response)
+        {
+            var status = response.status;
+            if (status === "OK") {
+                var results = response.results;
+                var zero = results[0];
+                var address = zero.formatted_address;
+                var punto = $('#punto');
+                punto.val(address);
+            }
+        };
+        getRequest(url,success);
+    });
+}

@@ -18,6 +18,7 @@ class Conductor {
     private $nacimiento;
     private $renta;
     private $contrato;
+    private $licencia;
     private $afp;
     private $isapre;
     private $isapreAd;
@@ -92,6 +93,10 @@ class Conductor {
 
     function getContrato() {
         return $this->contrato;
+    }
+
+    function getLicencia() {
+        return $this->licencia;
     }
 
     function getAfp() {
@@ -202,6 +207,10 @@ class Conductor {
         $this->contrato = $contrato;
     }
 
+    function setLicencia($licencia) {
+        $this->licencia = $licencia;
+    }
+
     function setAfp($afp) {
         $this->afp = $afp;
     }
@@ -246,7 +255,7 @@ class Conductor {
         $this->movil = $movil;
     }
 
-    public function toString() {
+        public function toString() {
         return "DATOS CONDUCTOR: ID : ".$this->id." NOMBRE : ".$this->nombre.
                 " PAPELLIDO : ".$this->papellido." MAPELLIDO : ".$this->mapellido.
                 " RUT : ".$this->rut." NICK : ".$this->nick." PASSWORD : ".$this->password.

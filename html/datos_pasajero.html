@@ -1,5 +1,5 @@
 <div class="titulo_pagina">
-    Informaci&oacute;n Pasajero
+    <img src="img/atras.svg" class="img_volver" id="volver"> Informaci&oacute;n Pasajero
 </div>
 <div class="contenedor-titulo">
     <div class="titulo_pagina_general" id="p_general">
@@ -19,7 +19,7 @@
                 <div class="contenedor-pre-input">
                     Rut (*)
                 </div>
-                <div class="contenedor-input">
+                <div class="contenedor-input recargado">
                     <input type="text" id="rut" placeholder="Ej: 11111111-1"  autocomplete="off" maxlength="10">
                 </div>
             </div>
@@ -27,7 +27,7 @@
                 <div class="contenedor-pre-input">
                     Nombre (*)
                 </div>
-                <div class="contenedor-input">
+                <div class="contenedor-input recargado">
                     <input type="text" id="nombre" placeholder="Ej: Manuel" maxlength="20">
                 </div>
             </div>
@@ -36,7 +36,7 @@
             <div class="contenedor-pre-input">
                 Apellido Paterno (*)
             </div>
-            <div class="contenedor-input">
+            <div class="contenedor-input recargado">
                 <input type="text" id="papellido" placeholder="Ej: Soto" maxlength="20">
             </div>
         </div>
@@ -44,7 +44,7 @@
             <div class="contenedor-pre-input">
                 Apellido Materno (*)
             </div>
-            <div class="contenedor-input">
+            <div class="contenedor-input recargado">
                 <input type="text" id="mapellido" placeholder="Ej: Vergara" maxlength="20">
             </div>
         </div>
@@ -52,7 +52,7 @@
             <div class="contenedor-pre-input">
                 Tel&eacute;fono 
             </div>
-            <div class="contenedor-input">
+            <div class="contenedor-input recargado">
                 <input type="text" id="telefono" placeholder="Ej: 224337865" maxlength="10">                    
             </div>
         </div>
@@ -60,7 +60,7 @@
             <div class="contenedor-pre-input">
                 Celular (*)
             </div>
-            <div class="contenedor-input">
+            <div class="contenedor-input recargado">
                 <input type="text" id="celular" placeholder="Ej: 985563421" maxlength="20">
             </div>
         </div>
@@ -68,7 +68,7 @@
             <div class="contenedor-pre-input">
                 Direcci&oacute;n (*)
             </div> 
-            <div class="contenedor-input">
+            <div class="contenedor-input recargado">
                 <input type="text"  id="direccion" placeholder="Ej: Av los valles 234" maxlength="50">
             </div>
         </div>
@@ -76,7 +76,7 @@
             <div class="contenedor-pre-input">
                 Punto de Encuentro (*)
             </div>
-            <div class="contenedor-input">
+            <div class="contenedor-input recargado">
                 <input type="text" id="punto" placeholder="Ej: Av los valles 234" maxlength="50">
                 <div class="boton-chico" id="buscaPunto"><img src="img/mapa.svg" width="12" height="12"></div>
                 <div class="datalist-visible" id="partida"></div>
@@ -86,7 +86,7 @@
             <div class="contenedor-pre-input">
                 E-mail
             </div>
-            <div class="contenedor-input">
+            <div class="contenedor-input recargado">
                 <input type="text" id="mail" placeholder="Ej: user@dominio.cl" maxlength="40">
             </div>
         </div>
@@ -94,13 +94,13 @@
             <div class="contenedor-pre-input">
                 Cargo
             </div>
-            <div class="contenedor-input">
+            <div class="contenedor-input recargado">
                 <input type="text" id="cargo" placeholder="Ej: ayudante" maxlength="40">
             </div>
         </div>
     </div>
     <div class="contenedor-formulario">
-        <div class="contenedor_central pasajero_mapa" id="contenedor_mapa"></div>
+        <div class="contenedor_central pasajero_mapa oculto" id="contenedor_mapa"></div>
     </div>
 </div>
 <div class="contenedor-info contenedor_oculto" id="cont_empresa">
@@ -109,7 +109,7 @@
             <div class="contenedor-pre-input">
                 Empresa (*)
             </div>
-            <div class="contenedor-input">
+            <div class="contenedor-input recargado">
                 <select id="empresa">
                     <option value="">Seleccione</option>
                 </select>
@@ -119,7 +119,7 @@
             <div class="contenedor-pre-input">
                 Centro costo (*)
             </div>
-            <div class="contenedor-input">
+            <div class="contenedor-input recargado">
                 <select id="centro">
                     <option value="" selected>Seleccione</option>
                 </select>
@@ -130,7 +130,7 @@
             <div class="contenedor-pre-input">
                 Ruta
             </div>
-            <div class="contenedor-input">
+            <div class="contenedor-input recargado">
                 <select id="ruta">
                     <option value="" selected>Seleccione</option>
                 </select>

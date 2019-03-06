@@ -1,10 +1,12 @@
-/* global urlBase, alertify, obj */
+/* global urlBase, alertify, obj, google, GEOCODER_API, API_KEY, CORS_PROXY, map, markersPanel */
 var CLIENTES;
 var AGREGAR = true;
 var PAGINA = 'CLIENTES';
 var ID_CLIENTE;
 var NOMBRE_CLIENTE;
 var CENTROS_COSTO = [];
+var mapa_oculto = true;
+var clientes_tarifa = [];
 var CAMPOS = ["rut","razon","tipoCliente","direccion","nombreContacto","telefono","mail","mail2"];
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
@@ -35,10 +37,23 @@ $(document).ready(function(){
             $("#direccion").on("input",function(){
                 mostrarDatalist($(this).val(),$("#partida"),'direccion');
             });
+            $("#buscaPunto").click(function(){
+                if(mapa_oculto)
+                {
+                    colocarMarcadorPlaces();
+                    quitarclase($("#contenedor_mapa"),"oculto");
+                    mapa_oculto = false;
+                }
+                else
+                {
+                    agregarclase($("#contenedor_mapa"),"oculto");
+                    mapa_oculto = true;
+                }
+            });
+            mostrarMapa();
         });
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
-        mostrarMapa();
     });
     $("#cancelar").click(function(){
         validarCancelar(PAGINA);
@@ -244,6 +259,19 @@ function abrirModificar(id,nombre)
         $("#direccion").on("input",function(){
             mostrarDatalist($(this).val(),$("#partida"),'direccion');
         });
+        $("#buscaPunto").click(function(){
+                if(mapa_oculto)
+                {
+                    colocarMarcadorPlaces();
+                    quitarclase($("#contenedor_mapa"),"oculto");
+                    mapa_oculto = false;
+                }
+                else
+                {
+                    agregarclase($("#contenedor_mapa"),"oculto");
+                    mapa_oculto = true;
+                }
+            });
         var cliente;
         for(var i = 0 ; i < CLIENTES.length; i++)
         {
@@ -477,4 +505,53 @@ function succesSubirContrato()
         var enlace = "<a href=\"source/util/pdf/"+$("#patente").val()+"_"+archivo+"\" target=\"_blanck\">Ver</a>";
         $("#contenedor_contrato").html(enlace);
     }
+}
+
+function colocarMarcadorPlaces()
+{
+    if(typeof POLYLINE !== "undefined")
+    {
+        POLYLINE.setMap(null);
+    }
+    for(var i = 0 ; i < markersPanel.length;i++)
+    {
+        markersPanel[i].setMap(null);
+    }
+    var icon = {
+        url: "img/marcador.svg",
+        scaledSize: new google.maps.Size(70, 30),
+        origin: new google.maps.Point(0,0),
+        anchor: new google.maps.Point(0, 0)
+    };
+    var marker = new google.maps.Marker({
+        position: map.getCenter(),
+        icon : icon,
+        map: map
+    });
+    
+    markersPanel.push(marker);
+
+    map.setZoom(17);
+    map.panTo(marker.position);
+    
+    google.maps.event.addListener(map, "drag", function() {
+        marker.setPosition(this.getCenter());
+        POSITION = [this.getCenter().lat(),this.getCenter().lng()];
+    });
+    
+    google.maps.event.addListener(map, "dragend", function() {
+        var url = CORS_PROXY + GEOCODER_API + "latlng="+POSITION[0]+","+POSITION[1]+"&sensor=true&key="+API_KEY;
+        var success = function(response)
+        {
+            var status = response.status;
+            if (status === "OK") {
+                var results = response.results;
+                var zero = results[0];
+                var address = zero.formatted_address;
+                var punto = $('#direccion');
+                punto.val(address);
+            }
+        };
+        getRequest(url,success);
+    });
 }

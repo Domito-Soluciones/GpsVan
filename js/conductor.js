@@ -5,7 +5,7 @@ var CONDUCTORES;
 var AGREGAR = true;
 var PAGINA = 'CONDUCTORES';
 var CAMPOS = ["tipo","rut","nombre","papellido","mapellido","celular","direccion","mail","nacimiento","tipoLicencia",
-                "renta","tipoContrato","afp","isapre","isapread","mutual","seguroInicio","descuento",
+                "renta","tipoContrato","vlicencia","afp","isapre","isapread","mutual","seguroInicio","descuento",
                 "nick","password","password2"];
 var TIPO = '';
 
@@ -99,6 +99,7 @@ function agregarConductor()
     var nacimiento = formato_fecha($("#nacimiento").val());
     var renta = $("#renta").val();
     var contrato = $("#tipoContrato").val();
+    var licencia = $("#vlicencia").val();
     var afp = $("#afp").val();
     var isapre = $("#isapre").val();
     var isapread = $("#isapread").val();
@@ -111,10 +112,9 @@ function agregarConductor()
     var password2 = $("#password2").val();
     var tipoLicencia = $("#tipoLicencia").val();
     var array = [tipo,rut,nombre,papellido,mapellido,celular,direccion,mail,nacimiento,tipoLicencia,
-                renta,contrato,afp,isapre,isapread,mutual,seguroInicio,descuento,nick,
+                renta,contrato,licencia,afp,isapre,isapread,mutual,seguroInicio,descuento,nick,
                 password,password2];
     var exp = obtenerExcepciones();
-    alert(exp);
     if(ADJUNTANDO)
     {
             alertify.error("Espere a que se adjunten los documentos");
@@ -140,7 +140,7 @@ function agregarConductor()
         var params = {nombre : nombre, papellido : papellido, mapellido : mapellido,
         rut : rut, nick : nick, password : btoa(password), telefono : telefono, celular : celular, 
         direccion : direccion, mail : mail, tipoLicencia : tipoLicencia, nacimiento : nacimiento,
-        renta : renta, contrato : contrato, afp : afp, isapre : isapre, isapread : isapread, mutual : mutual, 
+        renta : renta, contrato : contrato, licencia : licencia, afp : afp, isapre : isapre, isapread : isapread, mutual : mutual, 
         seguroInicio : seguroInicio, descuento : descuento, transportista : transportista,
         imagen : imagen, archivoContrato : archivoContrato, tipo : tipo};
         var url = urlBase + "/conductor/AddConductor.php";
