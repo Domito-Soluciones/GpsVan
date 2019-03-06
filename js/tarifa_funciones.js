@@ -152,7 +152,7 @@ function buscarTarifas(id,nombre)
         var tarifas = $("#lista_busqueda_tarifa_detalle");
         tarifas.html("");
         TARIFAS = response;
-        tarifas.append("<div class=\"contenedor_central_titulo_tarifa\"><div>Nombre</div><div>Origen</div><div>Destino</div></div>");
+        tarifas.append("<div class=\"contenedor_central_titulo_tarifa\"><div>Nombre</div><div>Origen</div><div>Destino</div><div></div></div>");
         if(response.length === 0)
         {
             tarifas.append("<div class=\"mensaje_bienvenida\">No hay registros que mostrar</div>");

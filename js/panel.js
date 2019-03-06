@@ -113,6 +113,10 @@ $(document).ready(function(){
         colocarMarcadorPlaces();
     });
     
+    $("#busqueda").keyup(function(){
+        cargarPasajerosBusqueda();
+    });
+    
 });
 
 function init()
@@ -153,9 +157,10 @@ function cargarClientes()
 function cargarPasajeros()
 {
     cambiarPropiedad($("#loader_pasajero"),"visibility","visible");
+    var pasajero = $("#busqueda").val();
     var cliente = $('#clientes').val();
     var ruta = $('#ruta').val();
-    var params = {cliente : cliente};
+    var params = {cliente : cliente, pasajero : pasajero, ruta : ''};
     var url = urlBase + "/pasajero/GetPasajerosRuta.php";
     var success = function(response)
     {
@@ -225,6 +230,41 @@ function cargarPasajeros()
             contenedorDes.html("<b>Destino:</b> "+response[0].pasajero_empresa_direccion);
         }
         dibujarRuta(origen,destinos);
+    };
+    postRequest(url,params,success,false);
+}
+
+function cargarPasajerosBusqueda()
+{
+    cambiarPropiedad($("#loader_pasajero"),"visibility","visible");
+    var pasajero = $("#busqueda").val();
+    var cliente = $('#clientes').val();
+    var ruta = $('#ruta').val();
+    var params = {cliente : cliente, pasajero : pasajero, ruta : ruta, pasajeros : pasajeros+""};
+    var url = urlBase + "/pasajero/GetPasajerosRuta.php";
+    var success = function(response)
+    {
+        if(response.length === 0)
+        {
+            cambiarPropiedad($("#loader_pasajero"),"visibility","hidden");
+            alertify.error("No hay pasajeros disponibles para esta ruta");
+            return;
+        }
+        cambiarPropiedad($("#loader_pasajero"),"visibility","hidden");
+        var contenedorEx = $("#contenedor_pasajero_no_asignado");
+        contenedorEx.html("");
+        for(var i = 0 ; i < response.length ; i++)
+        {
+            var id = response[i].pasajero_id;
+            var nombre = response[i].pasajero_nombre + " " + response[i].pasajero_papellido;
+            var punto = response[i].pasajero_punto_encuentro;
+            var celular = response[i].pasajero_celular;
+                contenedorEx.append("<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" \">"
+                                 +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+punto+"\">"
+                                 +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'><div class=\"boton-chico\" onclick=\"agregarPasajero('pasajero_"+id+"','"+nombre+"','"+punto+"','"+celular+"')\"><img src=\"img/flecha-arriba.svg\" width=\"12\" height=\"12\"></div></div>"+
+                        "<div class=\"cont-mini-pasajero\"><div>"+ punto + "</div><div>" + celular+"</div></div>");
+        }
+        console.log(pasajeros+"");
     };
     postRequest(url,params,success,false);
 }

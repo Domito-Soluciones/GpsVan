@@ -13,7 +13,7 @@ $(document).ready(function(){
         AGREGAR = true;
         $("#lista_busqueda_tarifa_detalle").load("html/datos_tarifa.html", function( response, status, xhr ) {
             quitarclase($("#guardar"),"oculto");
-            cambiarPropiedad($("#agregar"),"visibility","hidden")
+            cambiarPropiedad($("#agregar"),"visibility","hidden");
             $("#clientes").val(NOMBRE_CLIENTE);
             cambioEjecutado();
             cargarClientes();

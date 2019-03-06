@@ -5,8 +5,11 @@ include '../../query/PasajeroDao.php';
 
 header('Content-Type: application/json');
 $cliente = filter_input(INPUT_POST, 'cliente');
+$pasajero = filter_input(INPUT_POST, 'pasajero');
+$pasajerosR = filter_input(INPUT_POST, 'pasajeros');
+$ruta = filter_input(INPUT_POST, 'ruta');
 $pasajeroDao = new PasajeroDao();
-$pasajeros = $pasajeroDao->getPasajerosRuta($cliente);
+$pasajeros = $pasajeroDao->getPasajerosRuta($cliente,$ruta,$pasajero,$pasajerosR);
 echo "[";
 for ($i = 0 ; $i < count($pasajeros); $i++)
 {

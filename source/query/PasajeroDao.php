@@ -177,12 +177,17 @@ class PasajeroDao {
         return $array;
     }
     
-    function getPasajerosRuta($cliente)
+    function getPasajerosRuta($cliente,$ruta,$pas,$pasajeros)
     {
         $array = array();
         $conn = new Conexion();
         try {
-            $query = "SELECT * FROM tbl_pasajero JOIN tbl_cliente ON pasajero_empresa = cliente_razon_social WHERE pasajero_empresa = '".$cliente."' ORDER BY pasajero_ruta_orden";
+            $buscaRuta = '';
+            if($ruta != '')
+            {
+                $buscaRuta = " AND pasajero_ruta != '$ruta' AND pasajero_id NOT IN (".$pasajeros.") ";
+            }
+            $query = "SELECT * FROM tbl_pasajero JOIN tbl_cliente ON pasajero_empresa = cliente_razon_social WHERE pasajero_empresa = '".$cliente."' ".$buscaRuta." AND (pasajero_nombre LIKE '%$pas%' OR pasajero_papellido LIKE '%$pas%' OR pasajero_mapellido LIKE '%$pas%') ORDER BY pasajero_ruta_orden";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
             while($row = mysqli_fetch_array($result)) {

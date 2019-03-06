@@ -15,10 +15,10 @@ class Conductor {
     private $direccion;
     private $mail;
     private $tipoLicencia;
+    private $vencLicencia;
     private $nacimiento;
     private $renta;
     private $contrato;
-    private $licencia;
     private $afp;
     private $isapre;
     private $isapreAd;
@@ -30,6 +30,7 @@ class Conductor {
     private $contratoAdjunto;
     private $transportista;
     private $movil;
+    private $grupo;
     
     function getId() {
         return $this->id;
@@ -83,6 +84,10 @@ class Conductor {
         return $this->tipoLicencia;
     }
 
+    function getVencLicencia() {
+        return $this->vencLicencia;
+    }
+
     function getNacimiento() {
         return $this->nacimiento;
     }
@@ -93,10 +98,6 @@ class Conductor {
 
     function getContrato() {
         return $this->contrato;
-    }
-
-    function getLicencia() {
-        return $this->licencia;
     }
 
     function getAfp() {
@@ -141,6 +142,10 @@ class Conductor {
 
     function getMovil() {
         return $this->movil;
+    }
+
+    function getGrupo() {
+        return $this->grupo;
     }
 
     function setId($id) {
@@ -195,6 +200,10 @@ class Conductor {
         $this->tipoLicencia = $tipoLicencia;
     }
 
+    function setVencLicencia($vencLicencia) {
+        $this->vencLicencia = $vencLicencia;
+    }
+
     function setNacimiento($nacimiento) {
         $this->nacimiento = $nacimiento;
     }
@@ -205,10 +214,6 @@ class Conductor {
 
     function setContrato($contrato) {
         $this->contrato = $contrato;
-    }
-
-    function setLicencia($licencia) {
-        $this->licencia = $licencia;
     }
 
     function setAfp($afp) {
@@ -255,6 +260,11 @@ class Conductor {
         $this->movil = $movil;
     }
 
+    function setGrupo($grupo) {
+        $this->grupo = $grupo;
+    }
+
+        
         public function toString() {
         return "DATOS CONDUCTOR: ID : ".$this->id." NOMBRE : ".$this->nombre.
                 " PAPELLIDO : ".$this->papellido." MAPELLIDO : ".$this->mapellido.

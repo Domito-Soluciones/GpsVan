@@ -1,4 +1,4 @@
-/* global alertify, urlBase */
+/* global alertify, urlBase, urlUtil */
 
 var CAMPOS = ["clientes","fechas","hora"];
 var clientesArray = [];
@@ -76,6 +76,41 @@ function enviarCorreoAsignacion(mail,id,cliente)
     var params = {email : mail,asunto : asunto, mensaje : mensaje, extra : ''};
     var success = function(response)
     {
+    };
+    postRequest(url,params,success);
+}
+
+function buscarPasajeroCliente(cliente)
+{
+    ID_CLIENTE = cliente;
+    marcarFilaActiva(cliente);
+    var params = {cliente : cliente};
+    var url = urlBase + "/pasajero/GetPasajerosCliente.php";
+    var success = function(response)
+    {
+        cerrarSession(response);
+        var pasajeros = $("#lista_busqueda_pasajero_detalle");
+        pasajeros.html("");
+        PASAJEROS = response;
+        if(response.length === 0)
+        {
+            pasajeros.append("<div class=\"mensaje_bienvenida\">No hay registros que mostrar</div>");
+            return;
+        }
+        pasajeros.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div>Empresa</div></div>")
+        for(var i = 0 ; i < response.length; i++)
+        {
+            var id = response[i].pasajero_id;
+            var rut = response[i].pasajero_rut;
+            var nombre = response[i].pasajero_nombre;
+            var papellido = response[i].pasajero_papellido;
+            var empresa = response[i].pasajero_empresa;
+            pasajeros.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+
+                    "<div>"+rut+"</div>"+
+                    "<div>"+nombre+"</div>"+
+                    "<div>"+papellido+"</div><div>"+empresa+"</div></div>");
+        }
+        cambiarPropiedad($("#loader"),"visibility","hidden");
     };
     postRequest(url,params,success);
 }

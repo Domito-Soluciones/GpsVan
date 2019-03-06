@@ -22,10 +22,10 @@ class ConductorDao {
         $nick = $conductor->getNick();
         $password = $conductor->getPassword();
         $tipoLicencia = $conductor->getTipoLicencia();
+        $vencLicencia = $conductor->getVencLicencia();
         $nacimiento = $conductor->getNacimiento();
         $renta = $conductor->getRenta();
         $contrato = $conductor->getContrato();
-        $licencia = $conductor->getLicencia();
         $afp =$conductor->getAfp();
         $isapre = $conductor->getIsapre();
         $isapreAd = $conductor->getIsapreAd();
@@ -39,11 +39,11 @@ class ConductorDao {
         try {
             $query = "INSERT INTO tbl_conductor (conductor_nombre,conductor_papellido,conductor_mapellido,"
                     . "conductor_tipo,conductor_rut,conductor_nick,conductor_clave,conductor_telefono,"
-                    . "conductor_celular,conductor_direccion,conductor_mail,conductor_tipo_licencia,"
-                    . "conductor_nacimiento,conductor_renta,conductor_tipo_contrato,conductor_venc_licencia , conductor_prevision ,conductor_isapre,conductor_isapre_ad,conductor_mutual,"
+                    . "conductor_celular,conductor_direccion,conductor_mail,conductor_tipo_licencia,conductor_venc_licencia,"
+                    . "conductor_nacimiento,conductor_renta,conductor_tipo_contrato , conductor_prevision ,conductor_isapre,conductor_isapre_ad,conductor_mutual,"
                     . "conductor_seguro_inicio,conductor_descuento,conductor_transportista,conductor_imagen,conductor_contrato) VALUES "
-                    . "('$nombre','$papellido','$mapellido',$tipo,'$rut','$nick','$password','$telefono','$celular','$direccion','$mail','$tipoLicencia',"
-                    . "'$nacimiento',$renta,'$contrato','$licencia','$afp','$isapre','$isapreAd','$mutual','$seguroInicio','$descuento','$transportista','$imagen','$archivoContrato')"; 
+                    . "('$nombre','$papellido','$mapellido',$tipo,'$rut','$nick','$password','$telefono','$celular','$direccion','$mail','$tipoLicencia','$vencLicencia',"
+                    . "'$nacimiento',$renta,'$contrato','$afp','$isapre','$isapreAd','$mutual','$seguroInicio','$descuento','$transportista','$imagen','$archivoContrato')"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -71,6 +71,7 @@ class ConductorDao {
         $direccion = $conductor->getDireccion();
         $mail = $conductor->getMail();
         $tipoLicencia = $conductor->getTipoLicencia();
+        $vencLicencia = $conductor->getVencLicencia();
         $nacimiento = $conductor->getNacimiento();
         $renta = $conductor->getRenta();
         $contrato = $conductor->getContrato();
@@ -92,9 +93,9 @@ class ConductorDao {
                     . "conductor_nick = '$nick',";
                     if($conductor->getPassword() != '')
                     {
-                    $query .= "conductor_clave = '$password',";
+                        $query .= "conductor_clave = '$password',";
                     }
-                    $query .= "conductor_tipo_licencia = '$tipoLicencia',conductor_nacimiento = '$nacimiento',"
+                    $query .= "conductor_tipo_licencia = '$tipoLicencia',conductor_venc_licencia = '$vencLicencia',conductor_nacimiento = '$nacimiento',"
                     . "conductor_renta = '$renta',conductor_tipo_contrato = '$contrato',"
                     . "conductor_prevision = '$afp',conductor_isapre = '$isapre',conductor_isapre_ad = '$isapreAd',conductor_mutual = '$mutual',"
                     . "conductor_seguro_inicio = '$seguroInicio',"
@@ -139,6 +140,7 @@ class ConductorDao {
                 $conductor->setDireccion($row["conductor_direccion"]);
                 $conductor->setMail($row["conductor_mail"]);
                 $conductor->setTipoLicencia($row["conductor_tipo_licencia"]);
+                $conductor->setVencLicencia($row["conductor_venc_licencia"]);
                 $conductor->setNacimiento($row["conductor_nacimiento"]);
                 $conductor->setRenta($row["conductor_renta"]);
                 $conductor->setContrato($row["conductor_tipo_contrato"]);

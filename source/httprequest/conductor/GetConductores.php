@@ -22,6 +22,7 @@ for ($i = 0 ; $i < count($conductores); $i++)
     $direccion = $conductores[$i]->getDireccion();
     $mail = $conductores[$i]->getMail();
     $tipoLicencia = $conductores[$i]->getTipoLicencia();
+    $vencLicencia = $conductores[$i]->getVencLicencia();
     $nacimiento = date("d/m/Y", strtotime($conductores[$i]->getNacimiento()));
     $renta = $conductores[$i]->getRenta();
     $tipoContrato = $conductores[$i]->getContrato();
@@ -34,6 +35,7 @@ for ($i = 0 ; $i < count($conductores); $i++)
     $imagen = $conductores[$i]->getImagenAdjunta();
     $contrato = $conductores[$i]->getContratoAdjunto();
     $transportista = $conductores[$i]->getTransportista();
+    $grupo = $conductores[$i]->getGrupo();
     $movil = $conductores[$i]->getMovil();
     echo "{\"conductor_id\":\"".$cId."\","
         . "\"conductor_nombre\":\"".$nombre."\","
@@ -47,6 +49,7 @@ for ($i = 0 ; $i < count($conductores); $i++)
         . "\"conductor_direccion\":\"".$direccion."\","
         . "\"conductor_mail\":\"".$mail."\","
         . "\"conductor_tipoLicencia\":\"".$tipoLicencia."\","
+        . "\"conductor_vencLicencia\":\"".$vencLicencia."\","
         . "\"conductor_nacimiento\":\"".$nacimiento."\","
         . "\"conductor_renta\":\"".$renta."\","
         . "\"conductor_tipo_contrato\":\"".$tipoContrato."\","
@@ -59,7 +62,8 @@ for ($i = 0 ; $i < count($conductores); $i++)
         . "\"conductor_imagen\":\"".$imagen."\","
         . "\"conductor_contrato\":\"".$contrato."\","
         . "\"conductor_transportista\":\"".$transportista."\","
-        . "\"conductor_movil\":\"".$movil."\""
+        . "\"conductor_movil\":\"".$movil."\","
+        . "\"conductor_grupo\":\"".$grupo."\""
         . "}";
     if (($i+1) != count($conductores))
     {

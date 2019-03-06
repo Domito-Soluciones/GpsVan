@@ -17,7 +17,7 @@ $(document).ready(function(){
         quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
-        $("#contenedor_central").load("html/datos_pasajero.html", function( response, status, xhr ) {
+        $("#lista_busqueda_pasajero_detalle").load("html/datos_pasajero.html", function( response, status, xhr ) {
             cargarClientes();
             iniciarPestanias();
             cambioEjecutado();
@@ -242,10 +242,12 @@ function buscarPasajero()
             var nombre = response[i].pasajero_nombre;
             var papellido = response[i].pasajero_papellido;
             var empresa = response[i].pasajero_empresa;
-            pasajeros.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+
-                    "<div>"+rut+"</div>"+
-                    "<div>"+nombre+"</div>"+
-                    "<div>"+papellido+"</div><div>"+empresa+"</div></div>");
+            pasajeros.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\">"+
+                    "<div onClick=\"cambiarFila('"+id+"')\">"+rut+"</div>"+
+                    "<div onClick=\"cambiarFila('"+id+"')\">"+nombre+"</div>"+
+                    "<div onClick=\"cambiarFila('"+id+"')\">"+papellido+"</div><div>"+empresa+"</div>"+
+                    "<div><img onclick=\"preEliminarPasajero('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
+                    "</div>");
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
@@ -312,7 +314,7 @@ function cambiarFila(id)
 function abrirModificar(id)
 {
     AGREGAR = false;
-    $("#contenedor_central").load("html/datos_pasajero.html", function( response, status, xhr ) {
+    $("#lista_busqueda_pasajero_detalle").load("html/datos_pasajero.html", function( response, status, xhr ) {
         iniciarPestanias();
         cambioEjecutado();
         cargarClientes();
@@ -402,7 +404,14 @@ function eliminarPasajero()
         resetFormularioEliminar(PAGINA);
         cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
         resetBotones();
-        buscarPasajero();
+        if(typeof ID_CLIENTE === 'undefined')
+        {
+            buscarPasajero();
+        }
+        else
+        {
+            buscarPasajeroCliente(ID_CLIENTE);
+        }
     };
     postRequest(url,params,success);
 }
@@ -766,4 +775,29 @@ function colocarMarcadorPlaces()
         };
         getRequest(url,success);
     });
+}
+
+function preEliminarPasajero(id)
+{
+    confirmar("Eliminar pasajero","Esta seguro que desea eliminar al pasajero "+id,
+            function(){
+                var params = {rut : id};
+                var url = urlBase + "/pasajero/DelPasajero.php";
+                var success = function(response)
+                {
+                    alertify.success("Pasajero eliminado");
+                    cerrarSession(response);
+                    cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
+                    resetBotones();
+                    if(typeof ID_CLIENTE === 'undefined')
+                    {
+                        buscarPasajero();
+                    }
+                    else
+                    {
+                        buscarPasajeroCliente(ID_CLIENTE);
+                    }
+                };
+                postRequest(url,params,success);
+            });
 }

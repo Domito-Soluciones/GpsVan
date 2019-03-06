@@ -5,7 +5,7 @@ var CONDUCTORES;
 var AGREGAR = true;
 var PAGINA = 'CONDUCTORES';
 var CAMPOS = ["tipo","rut","nombre","papellido","mapellido","celular","direccion","mail","nacimiento","tipoLicencia",
-                "renta","tipoContrato","vlicencia","afp","isapre","isapread","mutual","seguroInicio","descuento",
+                "vlicencia","renta","tipoContrato","afp","isapre","isapread","mutual","seguroInicio","descuento",
                 "nick","password","password2"];
 var TIPO = '';
 
@@ -16,10 +16,10 @@ $(document).ready(function(){
         quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
-        $("#contenedor_central").load("html/datos_conductor.html", function( response, status, xhr ) {
+        $("#lista_busqueda_conductor_detalle").load("html/datos_conductor.html", function( response, status, xhr ) {
             iniciarPestanias();
             cambioEjecutado();
-            iniciarFecha(['#nacimiento','#seguroInicio']);
+            iniciarFecha(['#nacimiento','#seguroInicio','#vlicencia']);
             $("#rut").blur(function (){
                 if(validarExistencia('rut',$(this).val()))
                 {
@@ -51,7 +51,10 @@ $(document).ready(function(){
             });
             
             obtenerChecks();
-            
+            $("#volver").click(function(){
+                buscarConductor();
+                cambiarPropiedad($("#agregar"),"visibility","visible");
+            });
         });
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
@@ -99,7 +102,6 @@ function agregarConductor()
     var nacimiento = formato_fecha($("#nacimiento").val());
     var renta = $("#renta").val();
     var contrato = $("#tipoContrato").val();
-    var licencia = $("#vlicencia").val();
     var afp = $("#afp").val();
     var isapre = $("#isapre").val();
     var isapread = $("#isapread").val();
@@ -111,8 +113,9 @@ function agregarConductor()
     var password = $("#password").val();
     var password2 = $("#password2").val();
     var tipoLicencia = $("#tipoLicencia").val();
+    var vlicencia = $("#vlicencia").val();
     var array = [tipo,rut,nombre,papellido,mapellido,celular,direccion,mail,nacimiento,tipoLicencia,
-                renta,contrato,licencia,afp,isapre,isapread,mutual,seguroInicio,descuento,nick,
+                renta,contrato,vlicencia,afp,isapre,isapread,mutual,seguroInicio,descuento,nick,
                 password,password2];
     var exp = obtenerExcepciones();
     if(ADJUNTANDO)
@@ -140,7 +143,7 @@ function agregarConductor()
         var params = {nombre : nombre, papellido : papellido, mapellido : mapellido,
         rut : rut, nick : nick, password : btoa(password), telefono : telefono, celular : celular, 
         direccion : direccion, mail : mail, tipoLicencia : tipoLicencia, nacimiento : nacimiento,
-        renta : renta, contrato : contrato, licencia : licencia, afp : afp, isapre : isapre, isapread : isapread, mutual : mutual, 
+        renta : renta, contrato : contrato, vlicencia : vlicencia, afp : afp, isapre : isapre, isapread : isapread, mutual : mutual, 
         seguroInicio : seguroInicio, descuento : descuento, transportista : transportista,
         imagen : imagen, archivoContrato : archivoContrato, tipo : tipo};
         var url = urlBase + "/conductor/AddConductor.php";
@@ -178,6 +181,7 @@ function modificarConductor()
     var password = $("#password").val();
     var password2 = $("#password2").val();
     var tipoLicencia = $("#tipoLicencia").val();
+    var vlicencia = $("#vlicencia").val();
     var nacimiento = $("#nacimiento").val();
     var renta = $("#renta").val();
     var contrato = $("#tipoContrato").val();
@@ -193,7 +197,7 @@ function modificarConductor()
     var array;
     var params = {id : id,nombre : nombre, papellido : papellido, mapellido : mapellido,
         rut : rut, nick : nick, telefono : telefono, celular : celular, 
-        direccion : direccion, mail : mail, tipoLicencia : tipoLicencia, nacimiento : nacimiento,
+        direccion : direccion, mail : mail, tipoLicencia : tipoLicencia, vlicencia : vlicencia, nacimiento : nacimiento,
         renta : renta, contrato : contrato, afp : afp, isapre : isapre, isapread : isapread, mutual : mutual, 
         seguroInicio : seguroInicio, descuento : descuento, transportista : transportista,
         imagen : imagen, archivoContrato : archivoContrato, tipo : tipo};
@@ -212,7 +216,7 @@ function modificarConductor()
             return;
         }
             
-        array = [tipo,rut,nombre,papellido,mapellido,celular,direccion,mail,nacimiento,tipoLicencia,
+        array = [tipo,rut,nombre,papellido,mapellido,celular,direccion,mail,nacimiento,tipoLicencia,vlicencia,
             renta,contrato,afp,isapre,isapread,mutual,seguroInicio,descuento,
         nick,password,password2];
         params.password = btoa(password);
@@ -220,7 +224,7 @@ function modificarConductor()
     else
     {
         array = [tipo,rut,nombre,papellido,mapellido,celular,direccion,mail,nacimiento,
-        tipoLicencia,renta,contrato,afp,isapre,isapread,mutual,seguroInicio,descuento,
+        tipoLicencia,vlicencia,renta,contrato,afp,isapre,isapread,mutual,seguroInicio,descuento,
         nick];   
     }
     var exp = obtenerExcepciones();
@@ -260,29 +264,37 @@ function buscarConductor()
     var success = function(response)
     {
         cerrarSession(response);
-        var conductores = $("#lista_busqueda_conductor");
+        var grupos = $("#lista_busqueda_conductor");
+        var conductores = $("#lista_busqueda_conductor_detalle");
         conductores.html("");
         CONDUCTORES = response;
         if(response.length === 0)
         {
-            alertify.error("No hay registros que mostrar");
+            conductores.append("<div class=\"mensaje_bienvenida\">No hay registros que mostrar</div>");
             return;
         }
+        conductores.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div>Grupo</div></div>")
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].conductor_id;
+            var rut = response[i].conductor_rut;
             var nombre = response[i].conductor_nombre;
             var papellido = response[i].conductor_papellido;
             var mapellido = response[i].conductor_mapellido;
-            var titulo = recortar(id+" / "+nombre+" "+papellido+" "+ mapellido);            
+            var grupo = response[i].conductor_grupo;
+            var titulo = recortar(grupo);            
             if (typeof ID_CONDUCTOR !== "undefined" && ID_CONDUCTOR === id)
             {
-                conductores.append("<div class=\"fila_contenedor fila_contenedor_activa\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+titulo+"</div>");
+                grupos.append("<div class=\"fila_contenedor fila_contenedor_activa\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+titulo+"</div>");
             }
             else
             {
-            conductores.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+ titulo +"</div>");
+                grupos.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+ titulo +"</div>");
             }
+            conductores.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+
+                    "<div>"+rut+"</div>"+
+                    "<div>"+nombre+"</div>"+
+                    "<div>"+papellido+"</div><div>"+grupo+"</div></div>");
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
@@ -316,10 +328,10 @@ function abrirModificar(id)
     AGREGAR = false;
     quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
     agregarclase($("#"+id),"fila_contenedor_activa");
-    $("#contenedor_central").load("html/datos_conductor.html", function( response, status, xhr ) {
+    $("#lista_busqueda_conductor_detalle").load("html/datos_conductor.html", function( response, status, xhr ) {
         iniciarPestanias();
         cambioEjecutado();
-        iniciarFecha(['#nacimiento','#seguroInicio']);
+        iniciarFecha(['#nacimiento','#seguroInicio','#vlicencia']);
         $("#nick").blur(function (){
             if(validarExistencia('nick',$(this).val()))
             {
@@ -363,6 +375,7 @@ function abrirModificar(id)
         $("#direccion").val(conductor.conductor_direccion);
         $("#mail").val(conductor.conductor_mail);
         $("#tipoLicencia").val(conductor.conductor_tipoLicencia);
+        $("#vlicencia").val(conductor.conductor_vencLicencia);
         $("#nacimiento").val(conductor.conductor_nacimiento);
         $("#renta").val(conductor.conductor_renta);
         $("#tipoContrato").val(conductor.conductor_tipo_contrato);
@@ -538,18 +551,18 @@ function activarPestania(array)
     {
         if(array[i] === '')
         {
-            if(i < 10)
+            if(i < 11)
             {
                 general = true;
             }
-            if(i > 9 && i < 18)
+            if(i > 10 && i < 19)
             {
                 if(!general)
                 {
                     contrato = true;
                 }
             }
-            if(i > 17)
+            if(i > 18)
             {
                 if(!general && !contrato)
                 {
