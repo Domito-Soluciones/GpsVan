@@ -100,6 +100,9 @@ function agregarConductor()
     var direccion = $("#direccion").val();
     var mail = $("#mail").val();
     var nacimiento = formato_fecha($("#nacimiento").val());
+    var tipoLicencia = $("#tipoLicencia").val();
+    var vlicencia = $("#vlicencia").val();
+    var grupo = $("#grupo").val() === '' ? 'Indefinido' : $("#grupo").val() ;
     var renta = $("#renta").val();
     var contrato = $("#tipoContrato").val();
     var afp = $("#afp").val();
@@ -112,8 +115,6 @@ function agregarConductor()
     var nick = $("#nick").val();
     var password = $("#password").val();
     var password2 = $("#password2").val();
-    var tipoLicencia = $("#tipoLicencia").val();
-    var vlicencia = $("#vlicencia").val();
     var array = [tipo,rut,nombre,papellido,mapellido,celular,direccion,mail,nacimiento,tipoLicencia,
                 renta,contrato,vlicencia,afp,isapre,isapread,mutual,seguroInicio,descuento,nick,
                 password,password2];
@@ -142,9 +143,10 @@ function agregarConductor()
         var archivoContrato = $("#contratoOculta").val();
         var params = {nombre : nombre, papellido : papellido, mapellido : mapellido,
         rut : rut, nick : nick, password : btoa(password), telefono : telefono, celular : celular, 
-        direccion : direccion, mail : mail, tipoLicencia : tipoLicencia, nacimiento : nacimiento,
-        renta : renta, contrato : contrato, vlicencia : vlicencia, afp : afp, isapre : isapre, isapread : isapread, mutual : mutual, 
-        seguroInicio : seguroInicio, descuento : descuento, transportista : transportista,
+        direccion : direccion, mail : mail, tipoLicencia : tipoLicencia, vlicencia : vlicencia, 
+        grupo : grupo , nacimiento : nacimiento, renta : renta, contrato : contrato, afp : afp,
+        isapre : isapre, isapread : isapread, mutual : mutual, seguroInicio : seguroInicio,
+        descuento : descuento, transportista : transportista,
         imagen : imagen, archivoContrato : archivoContrato, tipo : tipo};
         var url = urlBase + "/conductor/AddConductor.php";
         var success = function(response)
@@ -182,6 +184,7 @@ function modificarConductor()
     var password2 = $("#password2").val();
     var tipoLicencia = $("#tipoLicencia").val();
     var vlicencia = $("#vlicencia").val();
+    var grupo = $("#grupo").val() === '' ? 'Indefinido' : $("#grupo").val() ;
     var nacimiento = $("#nacimiento").val();
     var renta = $("#renta").val();
     var contrato = $("#tipoContrato").val();
@@ -195,9 +198,8 @@ function modificarConductor()
     var imagen = $("#imagenOculta").val();
     var archivoContrato = $("#contratoOculta").val();
     var array;
-    var params = {id : id,nombre : nombre, papellido : papellido, mapellido : mapellido,
-        rut : rut, nick : nick, telefono : telefono, celular : celular, 
-        direccion : direccion, mail : mail, tipoLicencia : tipoLicencia, vlicencia : vlicencia, nacimiento : nacimiento,
+    var params = {id : id,nombre : nombre, papellido : papellido, mapellido : mapellido, direccion : direccion, telefono : telefono, celular : celular, 
+        mail : mail, tipoLicencia : tipoLicencia, vlicencia : vlicencia, grupo : grupo, nacimiento : nacimiento,
         renta : renta, contrato : contrato, afp : afp, isapre : isapre, isapread : isapread, mutual : mutual, 
         seguroInicio : seguroInicio, descuento : descuento, transportista : transportista,
         imagen : imagen, archivoContrato : archivoContrato, tipo : tipo};
@@ -282,7 +284,7 @@ function buscarConductor()
             var papellido = response[i].conductor_papellido;
             var mapellido = response[i].conductor_mapellido;
             var grupo = response[i].conductor_grupo;
-            var titulo = recortar(grupo);            
+            var titulo = grupo === '' ? 'Indefinido' : grupo;
             if (typeof ID_CONDUCTOR !== "undefined" && ID_CONDUCTOR === id)
             {
                 grupos.append("<div class=\"fila_contenedor fila_contenedor_activa\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+titulo+"</div>");
@@ -376,6 +378,7 @@ function abrirModificar(id)
         $("#mail").val(conductor.conductor_mail);
         $("#tipoLicencia").val(conductor.conductor_tipoLicencia);
         $("#vlicencia").val(conductor.conductor_vencLicencia);
+        $("#grupo").val(conductor.conductor_grupo);
         $("#nacimiento").val(conductor.conductor_nacimiento);
         $("#renta").val(conductor.conductor_renta);
         $("#tipoContrato").val(conductor.conductor_tipo_contrato);
