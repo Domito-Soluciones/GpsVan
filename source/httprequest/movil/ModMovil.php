@@ -47,6 +47,14 @@ if(filter_input(INPUT_POST, 'vensegas') != '')
 }
 $polizaSegAs = filter_input(INPUT_POST, 'polizasegas');
 $valorSegAs = filter_input(INPUT_POST, 'valorsegas');
+$segRcExtenso = filter_input(INPUT_POST, 'segrcextenso');
+$venSegRcExtenso = '';
+if(filter_input(INPUT_POST, 'vensegrcextenso') != '')
+{
+    $venSegRcExtenso = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_POST, 'vensegrcextenso'))->format('Y/m/d');
+}
+$polizaSegRcExtenso = filter_input(INPUT_POST, 'polizasegrcextenso');
+$valorSegRcExtenso = filter_input(INPUT_POST, 'valorsegrcextenso');
 $adjuntoPerCir = filter_input(INPUT_POST, 'adjuntoPerCir');
 $adjuntoRevTec = filter_input(INPUT_POST, 'adjuntoRevTec');
 $adjuntoNMotor = filter_input(INPUT_POST, 'adjuntoNMotor');
@@ -54,6 +62,7 @@ $adjuntoSeremi = filter_input(INPUT_POST, 'adjuntoSeremi');
 $adjuntoSegOb = filter_input(INPUT_POST, 'adjuntoSegOb');
 $adjuntoSegRcDm = filter_input(INPUT_POST, 'adjuntoSegRcDm');
 $adjuntoSegAs = filter_input(INPUT_POST, 'adjuntoSegAs');
+$adjuntoSegExtenso = filter_input(INPUT_POST, 'adjuntoSegExtenso');
 
 $movil = new Movil();
 $movil->setId($movilId);
@@ -94,6 +103,7 @@ $movil->setAdjuntoSeremi($adjuntoSeremi);
 $movil->setAdjuntoSegOb($adjuntoSegOb);
 $movil->setAdjuntoSegRcDm($adjuntoSegRcDm);
 $movil->setAdjuntoSegAsiento($adjuntoSegAs);
+$movil->setAdjuntoSegExtenso($adjuntoSegExtenso);
 $movilDao = new MovilDao();
 $movilDao->modificarMovil($movil);
 echo "{\"movil_id\":\"".$movil->getId()."\"}";

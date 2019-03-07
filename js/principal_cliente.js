@@ -16,7 +16,8 @@ $(document).ready(function(){
     
     iniciarFecha(['#fechas']);
     iniciarHora(['#hora']);
-
+    
+    buscarPasajeroCliente($("#clientes").val());
 });
 
 function crearServicio()
@@ -71,9 +72,9 @@ function activarPestania(array)
 function enviarCorreoAsignacion(mail,id,cliente)
 {
     var url = urlUtil + "/enviarMail.php";
-    var asunto = "Nueva creacion de servicio";
-    var mensaje = "Estimado, el cliente "+cliente+" a creado un nuevo servicio con el id "+id+", ";
-    var params = {email : mail,asunto : asunto, mensaje : mensaje, extra : ''};
+    var asunto = "Notificación Dómito";
+    var mensaje = "Estimado(a), se informan los siguientes cambios:<br> El cliente "+cliente+" a creado un nuevo servicio con el id "+id+", ";
+    var params = {email : "jose.sanchez.6397@gmail.com",asunto : asunto, mensaje : mensaje, extra : ''};
     var success = function(response)
     {
     };
@@ -82,14 +83,12 @@ function enviarCorreoAsignacion(mail,id,cliente)
 
 function buscarPasajeroCliente(cliente)
 {
-    ID_CLIENTE = cliente;
-    marcarFilaActiva(cliente);
     var params = {cliente : cliente};
     var url = urlBase + "/pasajero/GetPasajerosCliente.php";
     var success = function(response)
     {
         cerrarSession(response);
-        var pasajeros = $("#lista_busqueda_pasajero_detalle");
+        var pasajeros = $("#contenedor-pasajero");
         pasajeros.html("");
         PASAJEROS = response;
         if(response.length === 0)
@@ -97,18 +96,19 @@ function buscarPasajeroCliente(cliente)
             pasajeros.append("<div class=\"mensaje_bienvenida\">No hay registros que mostrar</div>");
             return;
         }
-        pasajeros.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div>Empresa</div></div>")
+        pasajeros.append("<div class=\"contenedor_central_titulo\"><div><input type=\"checkbox\" id=\"check\" checked></div><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div>Centro Costo</div></div>")
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].pasajero_id;
             var rut = response[i].pasajero_rut;
             var nombre = response[i].pasajero_nombre;
             var papellido = response[i].pasajero_papellido;
-            var empresa = response[i].pasajero_empresa;
-            pasajeros.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+
+            var cc = response[i].pasajero_centro_costo;
+            pasajeros.append("<div class=\"fila_contenedor fila_contenedor_servicio\">"+
+                    "<div><input type=\"checkbox\" id=\"check"+i+"\" checked></div>"+
                     "<div>"+rut+"</div>"+
                     "<div>"+nombre+"</div>"+
-                    "<div>"+papellido+"</div><div>"+empresa+"</div></div>");
+                    "<div>"+papellido+"</div><div>"+cc+"</div></div>");
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };

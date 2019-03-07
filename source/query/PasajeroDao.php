@@ -148,7 +148,7 @@ class PasajeroDao {
         $array = array();
         $conn = new Conexion();
         try {
-            $query = "SELECT * FROM tbl_pasajero WHERE pasajero_empresa = (SELECT cliente_razon_social FROM tbl_cliente WHERE cliente_id = $cliente)";
+            $query = "SELECT * FROM tbl_pasajero WHERE pasajero_empresa = '$cliente'";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
             while($row = mysqli_fetch_array($result)) {

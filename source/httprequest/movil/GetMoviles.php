@@ -40,6 +40,10 @@ for ($i = 0 ; $i < count($moviles); $i++)
     $movilVenSegAs = date("d/m/Y", strtotime($moviles[$i]->getVenSegAs()));
     $movilPolizaSegAs = $moviles[$i]->getPolizaSegAs();
     $movilValorSegAs = $moviles[$i]->getValorSegAs();
+    $movilSegRcExtenso = $moviles[$i]->getSegRcExtenso();
+    $movilVenSegRcExtenso = date("d/m/Y", strtotime($moviles[$i]->getVenSegRcExtenso()));
+    $movilPolizaSegRcExtenso = $moviles[$i]->getPolizaSegRcExtenso();
+    $movilValorSegRcExtenso = $moviles[$i]->getValorSegRcExtenso();
     $movilTransportista = $moviles[$i]->getTransportista();
     $movilEstado = $moviles[$i]->getEstado();
     $movilLat = $moviles[$i]->getLat();
@@ -55,6 +59,7 @@ for ($i = 0 ; $i < count($moviles); $i++)
     $adjuntoSegOb = $moviles[$i]->getAdjuntoSegOb();
     $adjuntoSegRcDm = $moviles[$i]->getAdjuntoSegRcDm();
     $adjuntoSegAs = $moviles[$i]->getAdjuntoSegAsiento();
+    $adjuntoSegExtenso = $moviles[$i]->getAdjuntoSegExtenso();
     echo "{\"movil_id\":\"".$movilId."\","
         . "\"movil_nombre\":\"".$movilNombre."\","
         . "\"movil_patente\":\"".$movilPatente."\","
@@ -81,6 +86,10 @@ for ($i = 0 ; $i < count($moviles); $i++)
         . "\"movil_ven_seg_rcdm\":\"".$movilVenSegRcDm."\","
         . "\"movil_pol_seg_rcdm\":\"".$movilPolizaSegRcDm."\","
         . "\"movil_seg_rcdm_valor\":\"".$movilValorSegRcDm."\","
+        . "\"movil_seg_rcextenso\":\"".$movilSegRcExtenso."\","
+        . "\"movil_ven_seg_rcextenso\":\"".$movilVenSegRcExtenso."\","
+        . "\"movil_pol_seg_rcextenso\":\"".$movilPolizaSegRcExtenso."\","
+        . "\"movil_seg_rcextenso_valor\":\"".$movilValorSegRcExtenso."\","
         . "\"movil_seg_as\":\"".$movilSegAs."\","
         . "\"movil_ven_seg_as\":\"".$movilVenSegAs."\","
         . "\"movil_pol_seg_as\":\"".$movilPolizaSegAs."\","
@@ -92,6 +101,7 @@ for ($i = 0 ; $i < count($moviles); $i++)
         . "\"movil_adj_seg_ob\":\"".$adjuntoSegOb."\","
         . "\"movil_adj_seg_rcdm\":\"".$adjuntoSegRcDm."\","
         . "\"movil_adj_seg_as\":\"".$adjuntoSegAs."\","
+        . "\"movil_adj_seg_extenso\":\"".$adjuntoSegExtenso."\","
         . "\"movil_transportista\":\"".$movilTransportista."\","
         . "\"movil_estado\":\"".$movilEstado."\","
         . "\"movil_lat\":\"".$movilLat."\","

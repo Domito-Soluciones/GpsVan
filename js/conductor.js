@@ -8,7 +8,8 @@ var CAMPOS = ["tipo","rut","nombre","papellido","mapellido","celular","direccion
                 "vlicencia","renta","tipoContrato","afp","isapre","isapread","mutual","seguroInicio","descuento",
                 "nick","password","password2"];
 var TIPO = '';
-
+var grupos = new Map();
+var ID_GRUPO;
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
     buscarConductor();
@@ -52,8 +53,17 @@ $(document).ready(function(){
             
             obtenerChecks();
             $("#volver").click(function(){
-                buscarConductor();
+                 if(typeof ID_GRUPO === 'undefided')
+                { 
+                    buscarConductor();
+                }
+                else
+                {
+                    buscarConductorGrupo(ID_GRUPO);
+                }
                 cambiarPropiedad($("#agregar"),"visibility","visible");
+                cambiarPropiedad($("#guardar"),"visibility","hidden");
+                cambiarPropiedad($("#eliminar"),"visibility","hidden");
             });
         });
         cambiarPropiedad($("#guardar"),"visibility","visible");
@@ -82,9 +92,6 @@ $(document).ready(function(){
         function(){
                 eliminarConductor();
             },null);
-    });
-    $("#opcionVolver").click(function(){
-        opcionVolver();
     });
 });
 
@@ -152,6 +159,7 @@ function agregarConductor()
         var success = function(response)
         {
             ID_CONDUCTOR = undefined;
+            ID_GRUPO = undefined;
             cerrarSession(response);
             alertify.success("Conductor Agregado");
             cambiarPestaniaGeneral();
@@ -184,7 +192,6 @@ function modificarConductor()
     var password2 = $("#password2").val();
     var tipoLicencia = $("#tipoLicencia").val();
     var vlicencia = $("#vlicencia").val();
-    var grupo = $("#grupo").val() === '' ? 'Indefinido' : $("#grupo").val() ;
     var nacimiento = $("#nacimiento").val();
     var renta = $("#renta").val();
     var contrato = $("#tipoContrato").val();
@@ -195,13 +202,14 @@ function modificarConductor()
     var seguroInicio = $("#seguroInicio").val();
     var descuento = $("#descuento").val();
     var transportista = $("#transportista").val();
+    var grupo = $("#grupo").val() === '' ? 'Indefinido' : $("#grupo").val() ;
     var imagen = $("#imagenOculta").val();
     var archivoContrato = $("#contratoOculta").val();
     var array;
-    var params = {id : id,nombre : nombre, papellido : papellido, mapellido : mapellido, direccion : direccion, telefono : telefono, celular : celular, 
-        mail : mail, tipoLicencia : tipoLicencia, vlicencia : vlicencia, grupo : grupo, nacimiento : nacimiento,
+    var params = {id : id, rut : rut, nombre : nombre, papellido : papellido, mapellido : mapellido, direccion : direccion, telefono : telefono, celular : celular, 
+        mail : mail, tipoLicencia : tipoLicencia, vlicencia : vlicencia, nacimiento : nacimiento,
         renta : renta, contrato : contrato, afp : afp, isapre : isapre, isapread : isapread, mutual : mutual, 
-        seguroInicio : seguroInicio, descuento : descuento, transportista : transportista,
+        seguroInicio : seguroInicio, descuento : descuento, transportista : transportista, grupo : grupo,
         imagen : imagen, archivoContrato : archivoContrato, tipo : tipo};
     if(ADJUNTANDO)
     {
@@ -260,15 +268,63 @@ function modificarConductor()
 
 function buscarConductor()
 {
+    grupos.clear();
     var busqueda = $("#busqueda").val();
     var params = {busqueda : busqueda};
     var url = urlBase + "/conductor/GetConductores.php";
     var success = function(response)
     {
         cerrarSession(response);
-        var grupos = $("#lista_busqueda_conductor");
+        var contGrupos = $("#lista_busqueda_conductor");
         var conductores = $("#lista_busqueda_conductor_detalle");
         conductores.html("");
+        contGrupos.html("");
+        CONDUCTORES = response;
+        if(response.length === 0)
+        {
+            conductores.append("<div class=\"mensaje_bienvenida\">No hay registros que mostrar</div>");
+            return;
+        }
+        conductores.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div>Grupo</div><div></div></div>")
+        for(var i = 0 ; i < response.length; i++)
+        {
+            var id = response[i].conductor_id;
+            var rut = response[i].conductor_rut;
+            var nombre = response[i].conductor_nombre;
+            var papellido = response[i].conductor_papellido;
+            var grupo = response[i].conductor_grupo === '' ? 'Indefinido' : response[i].conductor_grupo;
+            if(typeof grupos.get(grupo) === 'undefined')
+            {
+                contGrupos.append("<div class=\"fila_contenedor\" id=\""+grupo+"\" onClick=\"cambiarFila('"+grupo+"')\">"+ grupo +"</div>");
+                grupos.set(grupo,grupo);
+            }
+            conductores.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\">"+
+                    "<div onClick=\"abrirModificar('"+id+"')\">"+rut+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"')\">"+nombre+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"')\">"+papellido+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"')\">"+grupo+"</div>"+
+                    "<div><img onclick=\"preEliminarConductor('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
+                    "</div>");
+        }
+        cambiarPropiedad($("#loader"),"visibility","hidden");
+    };
+    postRequest(url,params,success);
+}
+
+function buscarConductorGrupo(grupo)
+{
+//    grupos.clear();
+    ID_GRUPO = grupo;
+    marcarFilaActiva(ID_GRUPO);
+    var params = {grupo : grupo};
+    var url = urlBase + "/conductor/GetConductoresGrupo.php";
+    var success = function(response)
+    {
+        cerrarSession(response);
+        var contGrupos = $("#lista_busqueda_conductor");
+        var conductores = $("#lista_busqueda_conductor_detalle");
+        conductores.html("");
+//        contGrupos.html("");
         CONDUCTORES = response;
         if(response.length === 0)
         {
@@ -281,22 +337,20 @@ function buscarConductor()
             var id = response[i].conductor_id;
             var rut = response[i].conductor_rut;
             var nombre = response[i].conductor_nombre;
-            var papellido = response[i].conductor_papellido;
-            var mapellido = response[i].conductor_mapellido;
-            var grupo = response[i].conductor_grupo;
-            var titulo = grupo === '' ? 'Indefinido' : grupo;
-            if (typeof ID_CONDUCTOR !== "undefined" && ID_CONDUCTOR === id)
-            {
-                grupos.append("<div class=\"fila_contenedor fila_contenedor_activa\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+titulo+"</div>");
-            }
-            else
-            {
-                grupos.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+ titulo +"</div>");
-            }
-            conductores.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+
-                    "<div>"+rut+"</div>"+
-                    "<div>"+nombre+"</div>"+
-                    "<div>"+papellido+"</div><div>"+grupo+"</div></div>");
+            var papellido = response[i].conductor_papellido;            
+            var grupo = response[i].conductor_grupo === '' ? 'Indefinido' : response[i].conductor_grupo;
+//            if(typeof grupos.get(grupo) === 'undefined')
+//            {
+//                contGrupos.append("<div class=\"fila_contenedor\" id=\""+grupo+"\" onClick=\"cambiarFila('"+grupo+"')\">"+ grupo +"</div>");
+//                grupos.set(grupo,grupo);
+//            }
+            conductores.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\">"+
+                    "<div onClick=\"abrirModificar('"+id+"')\">"+rut+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"')\">"+nombre+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"')\">"+papellido+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"')\">"+grupo+"</div>"+
+                    "<div><img onclick=\"preEliminarConductor('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
+                    "</div>");
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
@@ -311,7 +365,8 @@ function cambiarFila(id)
         function()
         {
             MODIFICADO = false;
-            abrirModificar(id);
+            //abrirModificar(id);
+            buscarConductorGrupo(id);
         },
         function()
         {
@@ -320,7 +375,8 @@ function cambiarFila(id)
     }
     else
     {
-        abrirModificar(id);
+        //abrirModificar(id);
+        buscarConductorGrupo(id);
     }
 }
 
@@ -328,8 +384,6 @@ function abrirModificar(id)
 {
     ID_CONDUCTOR = id;
     AGREGAR = false;
-    quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
-    agregarclase($("#"+id),"fila_contenedor_activa");
     $("#lista_busqueda_conductor_detalle").load("html/datos_conductor.html", function( response, status, xhr ) {
         iniciarPestanias();
         cambioEjecutado();
@@ -353,6 +407,20 @@ function abrirModificar(id)
                 agregarclase($(".check"),"checkbox-oculto");
             }
             validarTipo();
+        });
+        
+        $("#volver").click(function(){
+            if(typeof ID_GRUPO === 'undefided')
+            { 
+                buscarConductor();
+            }
+            else
+            {
+                buscarConductorGrupo(ID_GRUPO);
+            }
+            cambiarPropiedad($("#agregar"),"visibility","visible");
+            cambiarPropiedad($("#guardar"),"visibility","hidden");
+            cambiarPropiedad($("#eliminar"),"visibility","hidden");
         });
        
         
@@ -430,7 +498,7 @@ function eliminarConductor()
     {
         alertify.success("Conductor eliminado");
         cerrarSession(response);
-        resetFormularioEliminar(PAGINA);
+//        resetFormularioEliminar(PAGINA);
         cambiarPropiedad($("#loader"),"visibility","hidden");
         resetBotones();
         buscarConductor();
@@ -941,4 +1009,29 @@ function obtenerChecks()
             $("#descuento").val("0");
         }
     });
+}
+
+function preEliminarConductor(id)
+{
+    confirmar("Eliminar connductor","Esta seguro que desea eliminar al conductor "+id,
+            function(){
+                var params = {rut : id};
+                var url = urlBase + "/conductor/DelConductor.php";
+                var success = function(response)
+                {
+                    alertify.success("Conductor eliminado");
+                    cerrarSession(response);
+                    cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
+                    resetBotones();
+                    if(typeof ID_GRUPO === 'undefined')
+                    {
+                        buscarConductor();
+                    }
+                    else
+                    {
+                        buscarConductorGrupo(ID_GRUPO);
+                    }
+                };
+                postRequest(url,params,success);
+            });
 }

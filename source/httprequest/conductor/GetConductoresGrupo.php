@@ -4,9 +4,9 @@ include '../../util/validarSession.php';
 include '../../query/ConductorDao.php';
 
 header('Content-Type: application/json');
-$busqueda = filter_input(INPUT_POST, 'busqueda');
+$grupo = filter_input(INPUT_POST, 'grupo');
 $conductorDao = new ConductorDao();
-$conductores = $conductorDao->getConductores($busqueda);
+$conductores = $conductorDao->getConductoresGrupo($grupo);
 echo "[";
 for ($i = 0 ; $i < count($conductores); $i++)
 {

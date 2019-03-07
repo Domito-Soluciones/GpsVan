@@ -37,6 +37,10 @@ class Movil {
     private $venSegRcDm;
     private $polizaSegRcDm;
     private $valorSegRcDm;
+    private $segRcExtenso;
+    private $venSegRcExtenso;
+    private $polizaSegRcExtenso;
+    private $valorSegRcExtenso;
     private $segAs;
     private $venSegAs;
     private $polizaSegAs;
@@ -48,6 +52,7 @@ class Movil {
     private $adjuntoSegOb;
     private $adjuntoSegRcDm;
     private $adjuntoSegAsiento;
+    private $adjuntoSegRcExtenso;
     
     function getId() {
         return $this->id;
@@ -189,6 +194,22 @@ class Movil {
         return $this->valorSegRcDm;
     }
 
+    function getSegRcExtenso() {
+        return $this->segRcExtenso;
+    }
+
+    function getVenSegRcExtenso() {
+        return $this->venSegRcExtenso;
+    }
+
+    function getPolizaSegRcExtenso() {
+        return $this->polizaSegRcExtenso;
+    }
+
+    function getValorSegRcExtenso() {
+        return $this->valorSegRcExtenso;
+    }
+
     function getSegAs() {
         return $this->segAs;
     }
@@ -231,6 +252,10 @@ class Movil {
 
     function getAdjuntoSegAsiento() {
         return $this->adjuntoSegAsiento;
+    }
+
+    function getAdjuntoSegRcExtenso() {
+        return $this->adjuntoSegRcExtenso;
     }
 
     function setId($id) {
@@ -373,6 +398,22 @@ class Movil {
         $this->valorSegRcDm = $valorSegRcDm;
     }
 
+    function setSegRcExtenso($segRcExtenso) {
+        $this->segRcExtenso = $segRcExtenso;
+    }
+
+    function setVenSegRcExtenso($venSegRcExtenso) {
+        $this->venSegRcExtenso = $venSegRcExtenso;
+    }
+
+    function setPolizaSegRcExtenso($polizaSegRcExtenso) {
+        $this->polizaSegRcExtenso = $polizaSegRcExtenso;
+    }
+
+    function setValorSegRcExtenso($valorSegRcExtenso) {
+        $this->valorSegRcExtenso = $valorSegRcExtenso;
+    }
+
     function setSegAs($segAs) {
         $this->segAs = $segAs;
     }
@@ -417,8 +458,11 @@ class Movil {
         $this->adjuntoSegAsiento = $adjuntoSegAsiento;
     }
 
-    
-            
+    function setAdjuntoSegRcExtenso($adjuntoSegRcExtenso) {
+        $this->adjuntoSegRcExtenso = $adjuntoSegRcExtenso;
+    }
+
+                
     public function toString() {
         return "DATOS MOVIL: ID : ".$this->id." PATENTE : ".$this->patente.
             " MARCA : ".$this->marca." MODELO : ".$this->modelo.

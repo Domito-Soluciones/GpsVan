@@ -60,6 +60,22 @@ if(!isset($_SESSION['agente']))
                     </div>
                     <div>
                         <div class="cont-pre-monitor">
+                            Origen
+                        </div>
+                        <div class="input-monitoreo">
+                             <input type="text" class="input_asignar" id="origen" placeholder="Ej: Av los olmos 123">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="cont-pre-monitor">
+                            Destino
+                        </div>
+                        <div class="input-monitoreo">
+                             <input type="text" class="input_asignar" id="destino" placeholder="Ej: Av los olmos 123">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="cont-pre-monitor">
                             Fecha
                         </div>
                         <div class="input-monitoreo">
@@ -88,8 +104,8 @@ if(!isset($_SESSION['agente']))
                     </div>
                 </div>
             </div>
-            <div class="contenedor-lateral buscador-asignacion-cliente">
-                test
+            <div id="contenedor-pasajero" class="contenedor-lateral buscador-asignacion-cliente-pasajero">
+                
             </div>
         </div>
     </body>

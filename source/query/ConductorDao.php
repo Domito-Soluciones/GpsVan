@@ -33,6 +33,7 @@ class ConductorDao {
         $seguroInicio = $conductor->getSeguroInicio();
         $descuento = $conductor->getDescuento();
         $transportista = $conductor->getTransportista();
+        $grupo = $conductor->getGrupo();
         $imagen = $conductor->getImagenAdjunta();
         $archivoContrato = $conductor->getContratoAdjunto();
         $conn = new Conexion();
@@ -41,9 +42,9 @@ class ConductorDao {
                     . "conductor_tipo,conductor_rut,conductor_nick,conductor_clave,conductor_telefono,"
                     . "conductor_celular,conductor_direccion,conductor_mail,conductor_tipo_licencia,conductor_venc_licencia,"
                     . "conductor_nacimiento,conductor_renta,conductor_tipo_contrato , conductor_prevision ,conductor_isapre,conductor_isapre_ad,conductor_mutual,"
-                    . "conductor_seguro_inicio,conductor_descuento,conductor_transportista,conductor_imagen,conductor_contrato) VALUES "
+                    . "conductor_seguro_inicio,conductor_descuento,conductor_transportista,conductor_grupo,conductor_imagen,conductor_contrato) VALUES "
                     . "('$nombre','$papellido','$mapellido',$tipo,'$rut','$nick','$password','$telefono','$celular','$direccion','$mail','$tipoLicencia','$vencLicencia',"
-                    . "'$nacimiento',$renta,'$contrato','$afp','$isapre','$isapreAd','$mutual','$seguroInicio','$descuento','$transportista','$imagen','$archivoContrato')"; 
+                    . "'$nacimiento',$renta,'$contrato','$afp','$isapre','$isapreAd','$mutual','$seguroInicio','$descuento','$transportista','$grupo','$imagen','$archivoContrato')"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -82,6 +83,7 @@ class ConductorDao {
         $seguroInicio = $conductor->getSeguroInicio();
         $descuento = $conductor->getDescuento();
         $transportista = $conductor->getTransportista();
+        $grupo = $conductor->getGrupo();
         $imagen = $conductor->getImagenAdjunta();
         $archivoContrato = $conductor->getContratoAdjunto();
         $conn = new Conexion();
@@ -99,7 +101,7 @@ class ConductorDao {
                     . "conductor_renta = '$renta',conductor_tipo_contrato = '$contrato',"
                     . "conductor_prevision = '$afp',conductor_isapre = '$isapre',conductor_isapre_ad = '$isapreAd',conductor_mutual = '$mutual',"
                     . "conductor_seguro_inicio = '$seguroInicio',"
-                    . "conductor_descuento = '$descuento',conductor_transportista = '$transportista',conductor_imagen = '$imagen',"
+                    . "conductor_descuento = '$descuento',conductor_transportista = '$transportista',conductor_grupo = '$grupo',conductor_imagen = '$imagen',"
                     . "conductor_contrato = '$archivoContrato' WHERE conductor_rut = '$rut'";    
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
@@ -153,6 +155,51 @@ class ConductorDao {
                 $conductor->setImagenAdjunta($row["conductor_imagen"]);
                 $conductor->setContratoAdjunto($row["conductor_contrato"]);
                 $conductor->setTransportista($row["conductor_transportista"]);
+                $conductor->setGrupo($row["conductor_grupo"]);
+                array_push($array, $conductor);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $array;
+    }
+    
+    function getConductoresGrupo($grupo)
+    {
+        $array = array();
+        $conn = new Conexion();
+        try {
+            $query = "SELECT * FROM tbl_conductor WHERE conductor_grupo = '".$grupo."'";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            while($row = mysqli_fetch_array($result)) {
+                $conductor = new Conductor();
+                $conductor->setId($row["conductor_id"]);
+                $conductor->setNombre($row["conductor_nombre"]);
+                $conductor->setPapellido($row["conductor_papellido"]);
+                $conductor->setMapellido($row["conductor_mapellido"]);
+                $conductor->setTipo($row["conductor_tipo"]);
+                $conductor->setRut($row["conductor_rut"]);
+                $conductor->setNick($row["conductor_nick"]);
+                $conductor->setTelefono($row["conductor_telefono"]);
+                $conductor->setCelular($row["conductor_celular"]);
+                $conductor->setDireccion($row["conductor_direccion"]);
+                $conductor->setMail($row["conductor_mail"]);
+                $conductor->setTipoLicencia($row["conductor_tipo_licencia"]);
+                $conductor->setVencLicencia($row["conductor_venc_licencia"]);
+                $conductor->setNacimiento($row["conductor_nacimiento"]);
+                $conductor->setRenta($row["conductor_renta"]);
+                $conductor->setContrato($row["conductor_tipo_contrato"]);
+                $conductor->setAfp($row["conductor_prevision"]);
+                $conductor->setIsapre($row["conductor_isapre"]);
+                $conductor->setIsapreAd($row["conductor_isapre_ad"]);
+                $conductor->setMutual($row["conductor_mutual"]);
+                $conductor->setSeguroInicio($row["conductor_seguro_inicio"]);
+                $conductor->setDescuento($row["conductor_descuento"]);
+                $conductor->setImagenAdjunta($row["conductor_imagen"]);
+                $conductor->setContratoAdjunto($row["conductor_contrato"]);
+                $conductor->setTransportista($row["conductor_transportista"]);
+                $conductor->setGrupo($row["conductor_grupo"]);
                 array_push($array, $conductor);
             }
         } catch (Exception $exc) {

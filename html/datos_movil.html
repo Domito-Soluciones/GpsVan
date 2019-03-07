@@ -299,6 +299,40 @@
                 <input type="text" id="valorSegAs" placeholder="Ej: 30" disabled>
             </div>
         </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                Seguro de RC Exceso (*)
+            </div>
+            <div class="contenedor-input">
+                <input type="radio" id="SegRcExcesoSi" name="SegExcesoDm" value="SI"> SI
+                <input type="radio" id="SegRcExcesoNo" name="SegExcesoDm" value="NO" checked> NO
+                <input type="radio" id="SegRcExcesoEx" name="SegExcesoDm" value="EXT"> EXT
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                 V. Seg. de RC Exceso (*)
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="venSegRcExceso" placeholder="Ej: 01/01/2018" disabled>
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                N° de Poliza (*)
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="polizaSegRcExceso" placeholder="Ej: 111234" disabled>
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+               Valor (UF)
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="valorSegRcExceso" placeholder="Ej: 30" disabled>
+            </div>
+        </div>
     </div>
 </div>
 <div class="contenedor-info contenedor_oculto" id="cont_documento">
@@ -428,6 +462,24 @@
                 </div>
             </div>
             <div class="contenedor_contrato_movil" id="contenedor_contrato7"></div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                Seguro de RC Extenso
+                <div class="loader-mini" id="loader8">Loading...</div>
+            </div>
+            <div class="contenedor-input">
+                <input type="hidden" id="contratoOculta8">
+                <form id="formContrato8" enctype="multipart/form-data" method="POST" 
+                      onsubmit="subirFicheroPDF(event,$('#formContrato8'),$('#patente'),$('#contratoOculta8'),'8')">
+                    <input name="contrato" type="file" class="file" id="contratoConductor8" accept="application/pdf" onchange="enviarFormFile($('#contratoConductor8').val(),$('#patente').val(),$('#contratoOculta8'),$('#formContrato8'))">         
+                </form>
+                <div class="boton" id="adjuntarContrato8" onclick="abrirFile(event,$('#contratoConductor8:hidden'))">
+                    <img src="img/adjuntar.svg" width="12" height="12">
+                    Adjuntar
+                </div>
+            </div>
+            <div class="contenedor_contrato_movil" id="contenedor_contrato8"></div>
         </div>
     </div>
 </div>
