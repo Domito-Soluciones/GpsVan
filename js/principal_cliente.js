@@ -1,9 +1,13 @@
-/* global alertify, urlBase, urlUtil */
+/* global alertify, urlBase, urlUtil, POLYLINE_LAT, POLYLINE_LNG */
 
 var CAMPOS = ["clientes","fechas","hora"];
 var clientesArray = [];
 
 $(document).ready(function(){
+    $("#menu").load("menu.php", function( response, status, xhr ) {
+        agregarclase($("#principal"),"menu-activo");
+    
+    });   
     getUsuario();
     getfecha();
     setInterval(function(){getfecha();},5000);
@@ -16,7 +20,6 @@ $(document).ready(function(){
     
     iniciarFecha(['#fechas']);
     iniciarHora(['#hora']);
-    
     buscarPasajeroCliente($("#clientes").val());
 });
 
@@ -48,6 +51,7 @@ function crearServicio()
     {
         cerrarSession(response);
         alertify.success('Servicio agregado con id '+response.servicio_id);
+        agregarDetalleServicio(response.servicio_id);
         enviarCorreoAsignacion("jose.sanchez.6397@gmail,com",response.servicio_id,cliente);
     };
     postRequest(url,params,success);
@@ -96,7 +100,7 @@ function buscarPasajeroCliente(cliente)
             pasajeros.append("<div class=\"mensaje_bienvenida\">No hay registros que mostrar</div>");
             return;
         }
-        pasajeros.append("<div class=\"contenedor_central_titulo\"><div><input type=\"checkbox\" id=\"check\" checked></div><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div>Centro Costo</div></div>")
+        pasajeros.append("<div class=\"contenedor_central_titulo_pasajero\"><div><input type=\"checkbox\" id=\"check\" checked></div><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div>Centro Costo</div><div>Dirección</div></div>")
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].pasajero_id;
@@ -104,13 +108,26 @@ function buscarPasajeroCliente(cliente)
             var nombre = response[i].pasajero_nombre;
             var papellido = response[i].pasajero_papellido;
             var cc = response[i].pasajero_centro_costo;
-            pasajeros.append("<div class=\"fila_contenedor fila_contenedor_servicio\">"+
-                    "<div><input type=\"checkbox\" id=\"check"+i+"\" checked></div>"+
+            var punto = response[i].pasajero_punto_encuentro;
+            pasajeros.append("<div class=\"fila_contenedor fila_contenedor_pasajero\">"+
+                    "<div><input type=\"checkbox\" class=\"checkPasajero\" id=\"check"+id+"\" checked></div>"+
                     "<div>"+rut+"</div>"+
                     "<div>"+nombre+"</div>"+
-                    "<div>"+papellido+"</div><div>"+cc+"</div></div>");
+                    "<div>"+papellido+"</div><div>"+cc+"</div><div>"+punto+"</div></div>");
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
     postRequest(url,params,success);
+}
+
+function agregarDetalleServicio(idServicio)
+{
+    var pasajeros = "";
+    $(".checkPasajero:checked").each(function(index){
+        pasajeros += $( this ).prop("id").split("check")[1] + "%";
+    });
+    console.log(pasajeros);
+    params = { lat : null, lon : null, pasajeros : pasajeros ,destinos : null, id : idServicio, };
+    var url = urlBase + "/servicio/AddServicioDetalle.php";
+    postRequest(url,params,null);
 }

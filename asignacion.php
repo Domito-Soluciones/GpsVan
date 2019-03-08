@@ -50,6 +50,9 @@ if(!isset($_SESSION['agente']))
             </div>
             <img src="img/menu.svg" id="menu-telefono" class="menu-telefono">
         </div>
+        <div id="menu" class="menu">
+           
+        </div>
         <div id="contenido-central" class="contenido-central">
             <div class="contenedor-lateral buscador-asignacion-cliente">
                 <div id="servicio-normal" class="buscador barra_asignacion">
