@@ -217,6 +217,41 @@ class PasajeroDao {
         return $array;
     }
     
+    function getPasajerosEspecial($idServicio)
+    {
+        $array = array();
+        $conn = new Conexion();
+        try {
+            $query = "SELECT * FROM tbl_servicio_pasajero JOIN tbl_pasajero ON pasajero_id = servicio_pasajero_id_pasajero JOIN tbl_cliente ON pasajero_empresa = cliente_razon_social WHERE servicio_pasajero_id_servicio = $idServicio";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            while($row = mysqli_fetch_array($result)) {
+                $pasajero = new Pasajero();
+                $pasajero->setId($row["pasajero_id"]);
+                $pasajero->setNombre($row["pasajero_nombre"]);
+                $pasajero->setPapellido($row["pasajero_papellido"]);
+                $pasajero->setMapellido($row["pasajero_mapellido"]);
+                $pasajero->setRut($row["pasajero_rut"]);
+                $pasajero->setNick($row["pasajero_nick"]);
+                $pasajero->setTelefono($row["pasajero_telefono"]);
+                $pasajero->setCelular($row["pasajero_celular"]);
+                $pasajero->setDireccion($row["pasajero_direccion"]);
+                $pasajero->setPunto($row["pasajero_punto_encuentro"]);
+                $pasajero->setMail($row["pasajero_mail"]);
+                $pasajero->setCargo($row["pasajero_cargo"]);
+                $pasajero->setNivel($row["pasajero_nivel"]);
+                $pasajero->setEmpresa($row["pasajero_empresa"]);
+                $pasajero->setEmpresaDireccion($row["cliente_direccion"]);
+                $pasajero->setCentroCosto($row["pasajero_centro_costo"]);
+                $pasajero->setRuta($row["pasajero_ruta"]);
+                array_push($array, $pasajero);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $array;
+    }
+    
     function getPasajero($nick)
     {
         $pasajero = new Pasajero();

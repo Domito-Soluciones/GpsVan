@@ -25,11 +25,12 @@ class ServicioDao {
         $observaciones = $servicio->getObservaciones();
         $agente = $servicio->getAgente();
         $estado = $servicio->getEstado();
+        $tipo = $servicio->getTipo();
         $conn = new Conexion();
         try {
             $query = "INSERT INTO tbl_servicio (servicio_cliente,servicio_ruta,servicio_fecha,"
-                    . "servicio_hora,servicio_movil,servicio_conductor,servicio_tarifa1,servicio_tarifa2,servicio_observacion,servicio_agente,servicio_estado)"
-                    . " VALUES ('$cliente','$ruta','$fecha','$hora','$movil','$conductor','$tarifa1','$tarifa2','$observaciones',$agente,$estado)";
+                    . "servicio_hora,servicio_movil,servicio_conductor,servicio_tarifa1,servicio_tarifa2,servicio_observacion,servicio_agente,servicio_estado,servicio_tipo)"
+                    . " VALUES ('$cliente','$ruta','$fecha','$hora','$movil','$conductor','$tarifa1','$tarifa2','$observaciones',$agente,$estado,$tipo)";
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -85,7 +86,7 @@ class ServicioDao {
                     . " VALUES ($idServicio,'$lat','$lon');";
             for($i = 0 ; $i < count($pasajeros) ; $i++)
             {
-                if($destinos[$i]!="")
+                if($destinos[$i] != "")
                 {
                     $query .= "INSERT INTO tbl_servicio_pasajero (servicio_pasajero_id_servicio,servicio_pasajero_id_pasajero,servicio_pasajero_destino) VALUES ($idServicio,$pasajeros[$i],'$destinos[$i]');"; 
                 }
@@ -161,7 +162,6 @@ class ServicioDao {
             $buscaMovil = '';
             $buscaEstado = '';
             $buscaFecha = '';
-            $buscaHora = '';
             if($id != '')
             {
                 $buscaId = " AND servicio_id LIKE '%$id%' ";
@@ -192,7 +192,7 @@ class ServicioDao {
             }
             if($desde != '' && $hasta != '')
             {
-                $buscaFecha = "AND servicio_fecha BETWEEN '".$desde." ".$hdesde."' AND '".$hasta." ".$hdesde."'";
+                $buscaFecha = "AND servicio_fecha BETWEEN '".$desde." ".$hdesde."' AND '".$hasta." ".$hhasta."'";
             }
             $query = "SELECT * FROM tbl_servicio WHERE servicio_estado NOT IN (0,6) "
                     .$buscaFecha." ".$buscaId." ".$buscaEmpresa." ".$buscaConductor." ".$buscaMovil." ".$buscaEstado
@@ -370,13 +370,14 @@ class ServicioDao {
         $array = array();
         $conn = new Conexion();
         try {
-            $query = "SELECT * FROM tbl_servicio WHERE servicio_estado = 0 ORDER BY servicio_fecha";
+            $query = "SELECT * FROM tbl_servicio WHERE servicio_estado = 0 AND servicio_tipo = 1 ORDER BY servicio_id";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query); 
             while($row = mysqli_fetch_array($result)) {
                 $servicio = new Servicio();            
                 $servicio->setId($row["servicio_id"]);
                 $servicio->setCliente($row["servicio_cliente"]);
+                $servicio->setRuta($row["servicio_ruta"]);
                 $date = new DateTime($row["servicio_fecha"]);
                 $servicio->setFecha(date_format($date, 'd/m/Y'));
                 $servicio->setHora($row["servicio_hora"]);

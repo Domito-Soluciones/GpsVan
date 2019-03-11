@@ -5,6 +5,7 @@ var KEY = "DGFSGHJRTJTHWGWEJNGWI9EFN";
 var urlBase= "source/httprequest";
 var urlUtil= "source/util";
 var ADJUNTANDO = false;
+var markersPanel = [];
 
 function darFoco(elemento)
 {
@@ -96,6 +97,7 @@ function validarCamposOr(array,exepciones = null)
         {
             if(array[i] === undefined || array[i] === '')
             {
+                console.log("este es el cacho "+i);
                 return false;
             }
         }
@@ -130,6 +132,7 @@ function quitarclase(div,clase)
 }
 
 function cambiarModulo(pagina,params = null){
+    eliminarMarkers();
     if(MODIFICADO)
     {
         confirmar("Cambiar de modulo","¿Desea cambiar de modulo sin guardar los cambios?",
@@ -154,9 +157,11 @@ function cambiarModulo(pagina,params = null){
                         {
                             $("#ids").val(params.ids);
                             $("#clientes").val(params.clientes);
+                            $("#ruta").val(params.ruta);
                             $("#fechas").val(params.fechas);
                             $("#hora").val(params.hora);
                             $("#observacion").val(params.observacion);
+                            TIPO_SERVICIO = 1;
                         }
                         mostrarMapa();
                     }
@@ -187,9 +192,11 @@ function cambiarModulo(pagina,params = null){
                 {
                     $("#ids").val(params.ids);
                     $("#clientes").val(params.clientes);
+                    $("#ruta").val(params.ruta);
                     $("#fechas").val(params.fechas);
                     $("#hora").val(params.hora);
                     $("#observacion").val(params.observacion);
+                    TIPO_SERVICIO = 1;
                 }
                 mostrarMapa();
             }
@@ -245,7 +252,7 @@ function cerrarSession(response)
 
 function vaciarFormulario()
 {
-    $("input").each(function() {
+    $(":input:not([type=hidden])").each(function() {
         $(this).val("");
         marcarCampoOk($(this));
     });
@@ -290,10 +297,7 @@ function getUsuario()
 
 function mensajeBienvenida(mensaje)
 {
-    $("#contenedor_central").html("<div class=\"contenedor-loaderCentral\">\n\
-                                    <div class=\"loaderCentral\" id=\"loader\"\n\
-                                    style=\"visibility=\"hidden\"\">Loading...</div>\n\
-                                    </div><div class=\"mensaje_bienvenida\">\n\
+    $("#contenedor_central").html("<div class=\"mensaje_bienvenida\">\n\
                                     SELECCIONE OPCIONES PARA AGREGAR EDITAR Y/O MODIFICAR "+mensaje+"</div>");
 }
 
@@ -743,4 +747,12 @@ function abrirTooltip(tooltip)
 function cerrarTooltip(tooltip)
 {
     cambiarPropiedad($("#"+tooltip),"display","none");
+}
+
+function eliminarMarkers()
+{
+    for(var i = 0 ; i < markersPanel.length;i++)
+    {
+        markersPanel[i].setMap(null);
+    }
 }

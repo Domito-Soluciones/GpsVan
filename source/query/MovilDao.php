@@ -40,10 +40,10 @@ class MovilDao {
         $venSegAs = $movil->getVenSegAs();
         $polizaSegAs = $movil->getPolizaSegAs();
         $valorSegAs = $movil->getValorSegAs();
-        $segRcExtenso = $movil->getSegRcExtenso();
-        $venSegRcExtenso = $movil->getVenSegRcExtenso();
-        $polizaSegRcExtenso = $movil->getPolizaSegRcExtenso();
-        $valorSegRcExtenso = $movil->getValorSegRcExtenso();
+        $segRcExceso = $movil->getSegRcExceso();
+        $venSegRcExceso = $movil->getVenSegRcExceso();
+        $polizaSegRcExceso = $movil->getPolizaSegRcExceso();
+        $valorSegRcExceso = $movil->getValorSegRcExceso();
         $adjuntoPerCir = $movil->getAdjuntoPerCir();
         $adjuntoRevTec = $movil->getAdjuntoRevTec();
         $adjuntoNMotor = $movil->getAdjuntoNMotor();
@@ -51,18 +51,18 @@ class MovilDao {
         $adjuntoSegOb = $movil->getAdjuntoSegOb();
         $adjuntoSegRcDm = $movil->getAdjuntoSegRcDm();
         $adjuntoSegAs = $movil->getAdjuntoSegAsiento();
-        $adjuntoSegExtenso = $movil->getAdjuntoSegExtenso();
+        $adjuntoSegExceso = $movil->getAdjuntoSegRcExceso();
         $conn = new Conexion();
         try {
             $query = "INSERT INTO tbl_movil (movil_patente,movil_nombre,movil_marca,movil_modelo,movil_anio,movil_color,movil_cantidad,movil_clase,movil_conductor,movil_gps,movil_celular,movil_app,"
                     . "movil_per_circ,movil_venc_rev_tecnica,movil_venc_ext,movil_kilometraje,movil_motor,movil_chasis,"
-                    . "movil_seg_ob,movil_venc_seg_ob,movil_pol_seg_ob,movil_seg_ob_valor,movil_seg_rcdm,movil_venc_seg_rcdm,movil_pol_seg_rcdm,movil_seg_rcdm_valor,movil_seg_as,movil_venc_seg_as,movil_pol_seg_as,movil_seg_as_valor,movil_seg_rcextenso,movil_venc_seg_rcextenso,movil_pol_seg_rcextenso,movil_seg_rcextenso_valor,"
-                    . "movil_per_cir_adjunto,movil_rev_tec_adjunto,movil_motor_adjunto,movil_seremi_adjunto,movil_seg_ob_adjunto,movil_seg_rc_dm_adjunto,movil_seg_as_adjunto,movil_seg_extenso_adjunto,"
+                    . "movil_seg_ob,movil_venc_seg_ob,movil_pol_seg_ob,movil_seg_ob_valor,movil_seg_rcdm,movil_venc_seg_rcdm,movil_pol_seg_rcdm,movil_seg_rcdm_valor,movil_seg_as,movil_venc_seg_as,movil_pol_seg_as,movil_seg_as_valor,movil_seg_rcexceso,movil_venc_seg_rcexceso,movil_pol_seg_rcexceso,movil_seg_rcexceso_valor,"
+                    . "movil_per_cir_adjunto,movil_rev_tec_adjunto,movil_motor_adjunto,movil_seremi_adjunto,movil_seg_ob_adjunto,movil_seg_rc_dm_adjunto,movil_seg_as_adjunto,movil_seg_exceso_adjunto,"
                     . "movil_transportista,movil_estado,movil_lat,movil_lon,movil_last_lat,movil_last_lon,movil_ultima_asignacion,movil_servicio)"
                     . " VALUES ('$patente','$nombre','$marca','$modelo',$anio,'$color',$cantidad,'$clase','$conductor','$gps','$celular','$app',"
                     . "'$venPerCir','$venRevTec','$venExt',$kilo,$motor,$chasis,"
-                    . "'$segOb','$venSegOb','$polizaSegOb','$valorSegOb','$segRcDm','$venSegRcDm','$polizaSegRcDm','$valorSegRcDm','$segAs','$venSegAs','$polizaSegAs','$valorSegAs','$segRcExtenso','$venSegRcExtenso','$polizaSegRcExtenso','$valorSegRcExtenso'"
-                    . "'$adjuntoPerCir','$adjuntoRevTec','$adjuntoNMotor','$adjuntoSeremi','$adjuntoSegOb','$adjuntoSegRcDm','$adjuntoSegAs',$adjuntoSegExtenso,"
+                    . "'$segOb','$venSegOb','$polizaSegOb','$valorSegOb','$segRcDm','$venSegRcDm','$polizaSegRcDm','$valorSegRcDm','$segAs','$venSegAs','$polizaSegAs','$valorSegAs','$segRcExceso','$venSegRcExceso','$polizaSegRcExceso','$valorSegRcExceso',"
+                    . "'$adjuntoPerCir','$adjuntoRevTec','$adjuntoNMotor','$adjuntoSeremi','$adjuntoSegOb','$adjuntoSegRcDm','$adjuntoSegAs','$adjuntoSegExceso',"
                     . "0,0,0,0,0,0,CURRENT_TIMESTAMP,0"
                     . ")";
             $conn->conectar();
@@ -106,10 +106,10 @@ class MovilDao {
         $venSegRcDm = $movil->getVenSegRcDm();
         $polizaSegRcDm = $movil->getPolizaSegRcDm();
         $valorSegRcDm = $movil->getValorSegRcDm();
-        $segRcExtenso = $movil->getSegRcExtenso();
-        $venSegRcExtenso = $movil->getVenSegRcExtenso();
-        $polizaSegRcExtenso = $movil->getPolizaSegRcExtenso();
-        $valorSegRcExtenso = $movil->getValorSegRcExtenso();
+        $segRcExceso = $movil->getSegRcExceso();
+        $venSegRcExceso = $movil->getVenSegRcExceso();
+        $polizaSegRcExceso = $movil->getPolizaSegRcExceso();
+        $valorSegRcExceso = $movil->getValorSegRcExceso();
         $segAs = $movil->getSegAs();
         $venSegAs = $movil->getVenSegAs();
         $polizaSegAs = $movil->getPolizaSegAs();
@@ -121,7 +121,7 @@ class MovilDao {
         $adjuntoSegOb = $movil->getAdjuntoSegOb();
         $adjuntoSegRcDm = $movil->getAdjuntoSegRcDm();
         $adjuntoSegAs = $movil->getAdjuntoSegAsiento();
-        $adjuntoSegExtenso = $movil->getAdjuntoSegExtenso();
+        $adjuntoSegExceso = $movil->getAdjuntoSegRcExceso();
         $conn = new Conexion();
         try {
             $query = "UPDATE tbl_movil SET movil_marca = '$marca',movil_nombre = '$nombre',movil_modelo = '$modelo',"
@@ -129,9 +129,9 @@ class MovilDao {
                     . "movil_per_circ = '$venPerCir',movil_venc_rev_tecnica = '$venRevTec', movil_venc_ext = '$venExt',"
                     . "movil_kilometraje = $kilo, movil_motor = $motor, movil_chasis = $chasis,"
                     . "movil_seg_ob = '$segOb',movil_venc_seg_ob = '$venSegOb',movil_pol_seg_ob = '$polizaSegOb',movil_seg_ob_valor = '$valorSegOb',"
-                    . "movil_seg_rcdm = '$segRcDm', movil_venc_seg_rcdm = '$venSegRcDm', movil_pol_seg_rcdm = '$polizaSegRcDm',movil_seg_rcdm_valor = '$valorSegRcDm',movil_seg_rcextenso = '$segRcExtenso', movil_venc_seg_rcextenso = '$venSegRcExtenso', movil_pol_seg_rcextenso = '$polizaSegRcExtenso',movil_seg_rcextenso_valor = '$valorSegRcExtenso',movil_seg_as = '$segAs',movil_venc_seg_as = '$venSegAs',movil_pol_seg_as = '$polizaSegAs',movil_seg_as_valor = '$valorSegAs',"
+                    . "movil_seg_rcdm = '$segRcDm', movil_venc_seg_rcdm = '$venSegRcDm', movil_pol_seg_rcdm = '$polizaSegRcDm',movil_seg_rcdm_valor = '$valorSegRcDm',movil_seg_rcexceso = '$segRcExceso', movil_venc_seg_rcexceso = '$venSegRcExceso', movil_pol_seg_rcexceso = '$polizaSegRcExceso',movil_seg_rcexceso_valor = '$valorSegRcExceso',movil_seg_as = '$segAs',movil_venc_seg_as = '$venSegAs',movil_pol_seg_as = '$polizaSegAs',movil_seg_as_valor = '$valorSegAs',"
                     . "movil_per_cir_adjunto = '$adjuntoPerCir',movil_rev_tec_adjunto = '$adjuntoRevTec',movil_motor_adjunto = '$adjuntoNMotor',"
-                    . "movil_seremi_adjunto = '$adjuntoSeremi',movil_seg_ob_adjunto = '$adjuntoSegOb',movil_seg_rc_dm_adjunto = '$adjuntoSegRcDm',movil_seg_as_adjunto = '$adjuntoSegAs',movil_seg_rc_extenso_adjunto = '$adjuntoSegExtenso'"
+                    . "movil_seremi_adjunto = '$adjuntoSeremi',movil_seg_ob_adjunto = '$adjuntoSegOb',movil_seg_rc_dm_adjunto = '$adjuntoSegRcDm',movil_seg_as_adjunto = '$adjuntoSegAs',movil_seg_exceso_adjunto = '$adjuntoSegExceso'"
                     . " WHERE movil_patente = '$patente'";           
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
@@ -192,10 +192,10 @@ class MovilDao {
                 $movil->setVenSegAs($row["movil_venc_seg_as"]);                
                 $movil->setPolizaSegAs($row["movil_pol_seg_as"]); 
                 $movil->setValorSegAs($row["movil_seg_as_valor"]);
-                $movil->setSegRcExtenso($row["movil_seg_rcextenso"]);
-                $movil->setVenSegRcExtenso($row["movil_venc_seg_rcextenso"]);                
-                $movil->setPolizaSegRcExtenso($row["movil_pol_seg_rcextenso"]); 
-                $movil->setValorSegRcExtenso($row["movil_seg_rcextenso_valor"]);
+                $movil->setSegRcExceso($row["movil_seg_rcexceso"]);
+                $movil->setVenSegRcExceso($row["movil_venc_seg_rcexceso"]);                
+                $movil->setPolizaSegRcExceso($row["movil_pol_seg_rcexceso"]); 
+                $movil->setValorSegRcExceso($row["movil_seg_rcexceso_valor"]);
                 $movil->setAdjuntoPerCir($row["movil_per_cir_adjunto"]);  
                 $movil->setAdjuntoRevTec($row["movil_rev_tec_adjunto"]);  
                 $movil->setAdjuntoNMotor($row["movil_motor_adjunto"]);  
@@ -203,7 +203,7 @@ class MovilDao {
                 $movil->setAdjuntoSegOb($row["movil_seg_ob_adjunto"]);  
                 $movil->setAdjuntoSegRcDm($row["movil_seg_rc_dm_adjunto"]);  
                 $movil->setAdjuntoSegAsiento($row["movil_seg_as_adjunto"]);  
-                $movil->setAdjuntoSegRcExtenso($row["movil_seg_extenso_adjunto"]); 
+                $movil->setAdjuntoSegRcExceso($row["movil_seg_exceso_adjunto"]); 
                 $movil->setTransportista($row["movil_transportista"]);
                 $movil->setEstado($row['movil_estado']);
                 $movil->setLat($row['movil_lat']);

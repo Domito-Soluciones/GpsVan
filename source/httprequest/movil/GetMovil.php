@@ -28,10 +28,10 @@ $movilPolizaSegOb = $movil->getPolizaSegOb();
 $movilSegRcDm = $movil->getSegRcDm();
 $movilVenSegRcDm = date("d/m/Y", strtotime($movil->getVenSegRcDm()));
 $movilPolizaSegRcDm = $movil->setPolizaSegRcDm();
-$movilSegRcExtenso = $moviles[$i]->getSegRcExtenso();
-$movilVenSegRcExtenso = date("d/m/Y", strtotime($moviles[$i]->getVenSegRcExtenso()));
-$movilPolizaSegRcExtenso = $moviles[$i]->getPolizaSegRcExtenso();
-$movilValorSegRcExtenso = $moviles[$i]->getValorSegRcExtenso();
+$movilSegRcExceso = $moviles[$i]->getSegRcExceso();
+$movilVenSegRcExceso = date("d/m/Y", strtotime($moviles[$i]->getVenSegRcExceso()));
+$movilPolizaSegRcExceso = $moviles[$i]->getPolizaSegRcExceso();
+$movilValorSegRcExceso = $moviles[$i]->getValorSegRcExceso();
 $movilTransportista = $movil->getTransportista();
 $movilEstado = $movil->getEstado();
 $movilLat = $movil->getLat();
@@ -58,10 +58,10 @@ echo "{\"movil_id\":\"".$movilId."\","
     . "\"movil_seg_rcdm\":\"".$movilSegRcDm."\","
     . "\"movil_ven_seg_rcdm\":\"".$movilVenSegRcDm."\","
     . "\"movil_pol_seg_rcdm\":\"".$movilPolizaSegRcDm."\","
-    . "\"movil_seg_rcextenso\":\"".$movilSegRcExtenso."\","
-    . "\"movil_ven_seg_rcextenso\":\"".$movilVenSegRcExtenso."\","
-    . "\"movil_pol_seg_rcextenso\":\"".$movilPolizaSegRcExtenso."\","
-    . "\"movil_seg_rcextenso_valor\":\"".$movilValorSegRcExtenso."\","
+    . "\"movil_seg_rcexceso\":\"".$movilSegRcExceso."\","
+    . "\"movil_ven_seg_rcexceso\":\"".$movilVenSegRcExceso."\","
+    . "\"movil_pol_seg_rcexceso\":\"".$movilPolizaSegRcExceso."\","
+    . "\"movil_seg_rcexceso_valor\":\"".$movilValorSegRcExceso."\","
     . "\"movil_transportista\":\"".$movilTransportista."\","
     . "\"movil_estado\":\"".$movilEstado."\","
     . "\"movil_lat\":\"".$movilLat."\","

@@ -13,11 +13,13 @@ for ($i = 0 ; $i < count($servicios); $i++)
     $servicio = $servicios[$i];
     $servicioId = $servicio->getId();
     $servicioCliente = $servicio->getCliente();
+    $servicioRuta = $servicio->getRuta();
     $servicioFecha = $servicio->getFecha();
     $servicioHora = $servicio->getHora();
     $servicioOb = $servicio->getObservaciones();
     echo "{\"servicio_id\":\"".$servicioId."\","
         . "\"servicio_cliente\":\"".$servicioCliente."\","
+        . "\"servicio_ruta\":\"".$servicioRuta."\","
         . "\"servicio_fecha\":\"".$servicioFecha."\","
         . "\"servicio_hora\":\"".$servicioHora."\","
         . "\"servicio_observacion\":\"".$servicioOb."\""

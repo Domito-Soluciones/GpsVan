@@ -23,7 +23,7 @@ var EN_PROGRESO = "4";
 var FINALIZADO = "5";
 var CANCELADO = "6";
 var servicios = new Map();
-var markersPanel = [];
+var TIPO_SERVICIO = 0;
 
 var MENU_VISIBLE = false;
 
@@ -147,6 +147,7 @@ function decodePolyline(encoded) {
             {
                 var id = response[i].servicio_id;
                 var cliente = response[i].servicio_cliente;
+                var ruta = response[i].servicio_ruta;
                 var fecha = response[i].servicio_fecha;
                 var hora = response[i].servicio_hora;
                 var observacion = response[i].servicio_observacion;
@@ -154,7 +155,7 @@ function decodePolyline(encoded) {
                 {
                     alertify.success("nuevo servicio para asignar: "+id);
                 }
-                cont.append("<div class=\"pendiente\" onclick=\"abrirServicio('"+id+"','"+cliente+"','"+fecha+"','"+hora+"','"+observacion+"')\" >"+id+" - "+cliente+"</div>");
+                cont.append("<div class=\"pendiente\" onclick=\"abrirServicio('"+id+"','"+cliente+"','"+ruta+"','"+fecha+"','"+hora+"','"+observacion+"')\" >"+id+" - "+cliente+"</div>");
                 servicios.set(id,id);                
             }
         });

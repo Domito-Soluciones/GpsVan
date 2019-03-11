@@ -19,6 +19,7 @@ class Servicio {
     private $observaciones;
     private $pasajero;
     private $destino;
+    private $tipo;
     
     function getId() {
         return $this->id;
@@ -86,6 +87,10 @@ class Servicio {
 
     function getDestino() {
         return $this->destino;
+    }
+
+    function getTipo() {
+        return $this->tipo;
     }
 
     function setId($id) {
@@ -156,6 +161,9 @@ class Servicio {
         $this->destino = $destino;
     }
 
+    function setTipo($tipo) {
+        $this->tipo = $tipo;
+    }
 
 
 }

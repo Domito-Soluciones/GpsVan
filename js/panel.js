@@ -1,4 +1,4 @@
-/* global POLYLINE, alertify, urlBase, PLACES_AUTOCOMPLETE_API, CORS_PROXY, POSITION, API_KEY, PLACES_DETAILS_API, google, map, DIRECTIONS_API, EN_PROCCESO_DE_ASIGNACION, markers, GEOCODER_API */
+/* global POLYLINE, alertify, urlBase, PLACES_AUTOCOMPLETE_API, CORS_PROXY, POSITION, API_KEY, PLACES_DETAILS_API, google, map, DIRECTIONS_API, EN_PROCCESO_DE_ASIGNACION, markers, GEOCODER_API, TIPO_SERVICIO, markersPanel */
 var CLIENTES = {};
 var moviles = [];
 var clientesArray = [];
@@ -14,7 +14,7 @@ var NOMBRE_CLIENTE;
 var conductores = new Map();
 
 var CAMPOS = ["clientes","ruta","fechas","hora","vehiculos","tarifa1","tarifa2"];
-var CAMPOS_ESPECIAL = ["partida","destino","usuarios","celular","fechas2","hora2","vehiculos2","tarifas2"];
+//var CAMPOS_ESPECIAL = ["partida","destino","usuarios","celular","fechas2","hora2","vehiculos2","tarifas2"];
 
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
@@ -22,6 +22,14 @@ $(document).ready(function(){
     if($("#ids").val() !== "")
     {
         cargarRutas();
+    }
+    if(TIPO_SERVICIO === 1)
+    {
+        $("#ruta").prop("disabled",true);
+        $("#tarifa2").prop("disabled",true);
+        cambiarPropiedad($(".buscador-pasajero"),"display","initial");
+        agregarclase($("#contenedor_mapa"),"mapa_bajo");
+        cargarPasajeros();
     }
     $("#clientes").keyup(function () {
         cargarClientes();
@@ -87,9 +95,9 @@ $(document).ready(function(){
     $("#solicitar").click(function () {
         agregarServicio();
     });
-    $("#solicitar2").click(function () {
-        agregarServicioEspecial();
-    });
+//    $("#solicitar2").click(function () {
+//        agregarServicioEspecial();
+//    });
     
     $("#partida").on("input",function(){
         mostrarDatalist($(this).val(),'partidal','partida');
@@ -98,12 +106,12 @@ $(document).ready(function(){
          mostrarDatalist($(this).val(),'destinol','destino');
     });
     
-    $("#normal").click(function(){
-        cambiarServicioNormal();
-    });
-    $("#especial").click(function(){
-        cambiarServicioEspecial();
-    });
+//    $("#normal").click(function(){
+//        cambiarServicioNormal();
+//    });
+//    $("#especial").click(function(){
+//        cambiarServicioEspecial();
+//    });
     
     $("#partida").focus(function(){
         colocarMarcadorPlaces();
@@ -157,11 +165,17 @@ function cargarClientes()
 function cargarPasajeros()
 {
     cambiarPropiedad($("#loader_pasajero"),"visibility","visible");
+    var id = $("#ids").val();
     var pasajero = $("#busqueda").val();
     var cliente = $('#clientes').val();
     var ruta = $('#ruta').val();
     var params = {cliente : cliente, pasajero : pasajero, ruta : ''};
     var url = urlBase + "/pasajero/GetPasajerosRuta.php";
+    if(TIPO_SERVICIO === 1)
+    {
+        params = {id : id};
+        url =  urlBase + "/pasajero/GetPasajerosEspecial.php";
+    }
     var success = function(response)
     {
         if(response.length === 0)
@@ -195,6 +209,27 @@ function cargarPasajeros()
             var punto = response[i].pasajero_punto_encuentro;
             var celular = response[i].pasajero_celular;
             if(ruta === response[i].pasajero_ruta)
+            {
+                colocarMarcador(punto);
+                if(ruta.indexOf("-RG-") !== -1 && partidaExiste)
+                {
+                    origen = punto;
+                    contenedorDir.html("<b>Origen:</b> "+origen);
+                    partidaExiste = false;
+                }
+                
+                if(ruta.indexOf("-ZP-") !== -1 && i === response.length-1)
+                {
+                    contenedorDes.html("<b>Destino:</b> "+punto);                    
+                }
+                destinos.push(punto);
+                contenedor.append("<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" draggable=\"true\" ondragstart=\"drag(event,$(this))\" ondrop=\"drop(event,$(this))\" ondragover=\"allowDrop(event,$(this))\">"
+                                 +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+punto+"\">"
+                                 +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'><div class=\"boton-chico\" onclick=\"borrarPasajero('pasajero_"+id+"','"+nombre+"','"+punto+"','"+celular+"')\"><img src=\"img/cancelar.svg\" width=\"12\" height=\"12\"></div></div>"+
+                        "<div class=\"cont-mini-pasajero\"><div>"+ punto + "</div><div>" + celular+"</div></div>");
+                pasajeros.push(id);
+            }
+            else if(ruta.indexOf("-ESP") !== -1)
             {
                 colocarMarcador(punto);
                 if(ruta.indexOf("-RG-") !== -1 && partidaExiste)
@@ -326,7 +361,8 @@ function agregarServicio()
     var tarifa2 = $("#tarifa2").val();
     var observaciones = $("#observacion").val();
     var array = [cliente,ruta,fecha,hora,movil,tarifa1,tarifa2];
-    if(!validarCamposOr(array))
+    var exp = obtenerExcepciones();
+    if(!validarCamposOr(array,exp))
     {
         activarPestania(array);
         alertify.error("Ingrese todos los campos necesarios");
@@ -353,10 +389,11 @@ function agregarServicio()
     if(validarTipoDato())
     {
         vaciarFormulario();
+        $("#conductores").html("Conductor: ");
         var params = {cliente : cliente, ruta : ruta,fecha : fecha, hora : hora,movil : movil,
-            conductor: conductor ,tarifa1 : tarifa1, tarifa2 : tarifa2, observaciones : observaciones, estado : 1};
+            conductor: conductor ,tarifa1 : tarifa1, tarifa2 : tarifa2, observaciones : observaciones, estado : 1, tipo : 0};
         var url = urlBase + "/servicio/AddServicio.php";
-        if(id !== "")
+        if(TIPO_SERVICIO === 1)
         {
             params.id = id;
             url = urlBase + "/servicio/ModServicio.php";
@@ -369,51 +406,15 @@ function agregarServicio()
             cambiarPropiedad($("#loader"),"visibility","hidden");
             $("#contenedor_pasajero").html("<div class=\"contenedor-loader\"><div class=\"loader\" id=\"loader_pasajero\">Loading...</div></div>");
             $("#contenedor_pasajero_no_asignado").html("");
+            $("#ruta").prop("disabled",false);
+            $("#tarifa2").prop("disabled",false);
             cambiarPropiedad($(".buscador-pasajero"),"display","none");
             quitarclase($("#contenedor_mapa"),"mapa_bajo");
             agregarDetalleServicio(response.servicio_id,false);
             notificarConductor(response.servicio_id,conductor);
             notificarServicioFuturo(response.servicio_id,conductor,fecha,hora);
             eliminarMarkers();
-        };
-        postRequest(url,params,success);
-    }
-}
-
-function agregarServicioEspecial()
-{
-    var partida = $("#partida").val();
-    var destino = $("#destino").val();
-    var pasajero = $("#usuarios").val();
-    var celular = $("#celular").val();
-    var fecha = $("#fechas2").val();
-    var hora = $("#hora2").val();
-    var movil = $("#vehiculos2").val();
-    var conductor = $("#conductor2").val();
-    var tarifa = $("#tarifas2").val();
-    var observaciones = $("#observacion2").val();
-    var array = [partida,destino,pasajero,celular,fecha,hora,movil,tarifa];
-    if(!validarCamposOr(array))
-    {
-        activarPestaniaEspecial(array);
-        alertify.error("Ingrese todos los campos necesarios");
-        return;
-    }
-    if(validarTipoDatoEspecial())
-    {
-        var params = {partida : partida, destino : destino,pasajero : pasajero, celular : celular, fecha: fecha,
-            hora : hora,movil : movil, conductor: conductor ,tarifa : tarifa, observaciones : observaciones, estado : 1};
-        var url = urlBase + "/servicio/AddServicioEspecial.php";
-        var success = function(response)
-        {
-            cerrarSession(response);
-            POLYLINE.setMap(null);
-            alertify.success('Servicio agregado con id '+response.servicio_id);
-            vaciarFormulario();
-            cambiarPropiedad($("#loader"),"visibility","hidden");
-            agregarDetalleServicio(response.servicio_id,true);
-            notificarConductorEspecial(response.servicio_id,conductor);
-            notificarServicioFuturo(response.servicio_id,conductor,fecha+" "+hora);
+            TIPO_SERVICIO = 0;
         };
         postRequest(url,params,success);
     }
@@ -501,14 +502,6 @@ function notificarConductor(idServicio,llave)
 {
     var texto = "Nuevo servicio asignado con id: "+idServicio;
     var tipo = 0;
-    var params = {texto  : texto, tipo : tipo, llave : llave};        
-    var url = urlBase + "/notificacion/AddNotificacion.php";
-    postRequest(url,params,null);
-}
-function notificarConductorEspecial(idServicio,llave)
-{
-    var texto = "Nuevo servicio  especial asignado con id: "+idServicio;
-    var tipo = 2;
     var params = {texto  : texto, tipo : tipo, llave : llave};        
     var url = urlBase + "/notificacion/AddNotificacion.php";
     postRequest(url,params,null);
@@ -691,29 +684,6 @@ function cambiarServicioNormal()
         POLYLINE.setMap(null);
     }
 }
-
-function cambiarServicioEspecial()
-{
-    $("#clientes").prop("disabled",true);
-    cambiarPropiedad($("#clientes"),"background-color","#E3E3E3");
-    $("#ruta").prop("disabled",true);
-    cambiarPropiedad($("#ruta"),"background-color","#E3E3E3");
-    $("#tarifa2").prop("disabled",true);
-    cambiarPropiedad($("#tarifa2"),"background-color","#E3E3E3");
-    $("#partida").prop("disabled",false);
-    cambiarPropiedad($("#partida"),"background-color","white");
-    $("#destino").prop("disabled",false);
-    cambiarPropiedad($("#destino"),"background-color","white");
-    $("#usuarios").prop("disabled",false);
-    cambiarPropiedad($("#usuarios"),"background-color","white");
-    $("#celular").prop("disabled",false);
-    cambiarPropiedad($("#celular"),"background-color","white");
-    vaciarFormulario();
-    if(typeof POLYLINE !== "undefined")
-    {
-        POLYLINE.setMap(null);
-    }
-}
 function mostrarDatalist(val,datalist,campo)
 {
     if(val === "") return;
@@ -781,20 +751,20 @@ function activarPestania(array)
         }
     }
 }
-function activarPestaniaEspecial(array)
-{
-    for(var i = 0 ; i < CAMPOS_ESPECIAL.length ; i++)
-    {
-        if(array[i] === '')
-        {
-            marcarCampoError($("#"+CAMPOS_ESPECIAL[i]));
-        }
-        else
-        {
-            marcarCampoOk($("#"+CAMPOS_ESPECIAL[i]));
-        }
-    }
-}
+//function activarPestaniaEspecial(array)
+//{
+//    for(var i = 0 ; i < CAMPOS_ESPECIAL.length ; i++)
+//    {
+//        if(array[i] === '')
+//        {
+//            marcarCampoError($("#"+CAMPOS_ESPECIAL[i]));
+//        }
+//        else
+//        {
+//            marcarCampoOk($("#"+CAMPOS_ESPECIAL[i]));
+//        }
+//    }
+//}
 
 function validarTipoDato()
 {
@@ -819,28 +789,28 @@ function validarTipoDato()
     return true;
 }
 
-function validarTipoDatoEspecial()
-{
-    for(var i = 0 ; i < CAMPOS_ESPECIAL.length ; i++)
-    {
-        marcarCampoOk($("#"+CAMPOS_ESPECIAL[i]));
-    }
-    var celular = $("#celular");
-    var tarifa = $("#tarifas2");
-    if(!validarNumero(celular.val()))
-    {
-        marcarCampoError(celular);
-        alertify.error('Celular debe ser numerico');
-        return false;
-    }
-    if(!validarNumero(tarifa.val()))
-    {
-        marcarCampoError(tarifa);
-        alertify.error('Tarifa debe ser numerico');
-        return false;
-    }
-    return true;
-}
+//function validarTipoDatoEspecial()
+//{
+//    for(var i = 0 ; i < CAMPOS_ESPECIAL.length ; i++)
+//    {
+//        marcarCampoOk($("#"+CAMPOS_ESPECIAL[i]));
+//    }
+//    var celular = $("#celular");
+//    var tarifa = $("#tarifas2");
+//    if(!validarNumero(celular.val()))
+//    {
+//        marcarCampoError(celular);
+//        alertify.error('Celular debe ser numerico');
+//        return false;
+//    }
+//    if(!validarNumero(tarifa.val()))
+//    {
+//        marcarCampoError(tarifa);
+//        alertify.error('Tarifa debe ser numerico');
+//        return false;
+//    }
+//    return true;
+//}
 
 function colocarMarcador(direccion)
 {
@@ -926,10 +896,12 @@ function eliminarMarker(direccion)
     }
 }
 
-function eliminarMarkers()
+function obtenerExcepciones()
 {
-    for(var i = 0 ; i < markersPanel.length;i++)
+    var exp = "";
+    if(TIPO_SERVICIO === 1)
     {
-        markersPanel[i].setMap(null);
+        exp += '||1||6||';
     }
+    return exp;
 }

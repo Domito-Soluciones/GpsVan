@@ -8,7 +8,7 @@ var PAGINA = 'VEHÍCULOS';
 var CAMPOS = ["patente","marca","nombre","modelo","anio","color","cantidad","clase","gps","celular","app",
     "venPerCir","venRevTec","venExt","motor","chasis",
     "segOb","venSegOb","polizaSegOb","valorSegOb","segRcDm","venSegRcDm","polizaSegRcDm","valorSegRcDm",
-    "segAs","venSegAs","polizaSegAs","valorSegAs","segRcExtenso","venSegRcExtenso","polizaSegRcExtenso","valorSegRcExtenso"];
+    "segAs","venSegAs","polizaSegAs","valorSegAs","segRcExceso","venSegRcExceso","polizaSegRcExceso","valorSegRcExceso"];
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
     buscarMovil();
@@ -22,7 +22,7 @@ $(document).ready(function(){
             iniciarPestanias();
             cambioEjecutado();
             buscarConductores();
-            iniciarFecha(['#venPerCir','#venRevTec','#venExt','#venSegOb','#venSegRcDm','#venSegAs']);
+            iniciarFecha(['#venPerCir','#venRevTec','#venExt','#venSegOb','#venSegRcDm','#venSegAs','#venSegRcExceso']);
             $("#patente").blur(function (){
                 if(validarExistencia('patente',$(this).val()))
                 {
@@ -131,26 +131,26 @@ function agregarMovil()
     var venSegAs = $("#venSegAs").val();
     var polizaSegAs = $("#polizaSegAs").val();
     var valorSegAs =  $("#valorSegAs").val();
-    var segRcExtenso;
-    if($("#SegRcExtensoSi").is(':checked'))
+    var segRcExceso;
+    if($("#SegRcExcesoSi").is(':checked'))
     {
-        segRcExtenso = 'SI';
+        segRcExceso = 'SI';
     }
-    else if($("#SegRcExtensoNo").is(':checked'))
+    else if($("#SegRcExcesoNo").is(':checked'))
     {
-        segRcExtenso = 'NO';
+        segRcExceso = 'NO';
     }
     else
     {
-        segRcExtenso = 'EXT';
+        segRcExceso = 'EXT';
     }
-    var venSegRcExtenso = $("#venSegRcExtenso").val();
-    var polizaSegRcExtenso = $("#polizaSegRcExtenso").val();
-    var valorSegRcExtenso =  $("#valorSegRcExtenso").val();
+    var venSegRcExceso = $("#venSegRcExceso").val();
+    var polizaSegRcExceso = $("#polizaSegRcExceso").val();
+    var valorSegRcExceso =  $("#valorSegRcExceso").val();
     var array = [patente,marca,nombre,modelo,anio,color,cantidad,clase,gps,celular,app,
         venPerCir,venRevTec,venExt,motor,chasis,
         segOb,venSegOb,polizaSegOb,valorSegOb,segRcDm,venSegRcDm,polizaSegRcDm,valorSegRcDm,
-        segAs,venSegAs,polizaSegAs,valorSegAs,segRcExtenso,venSegRcExtenso,polizaSegRcExtenso,valorSegRcExtenso];
+        segAs,venSegAs,polizaSegAs,valorSegAs,segRcExceso,venSegRcExceso,polizaSegRcExceso,valorSegRcExceso];
     var exp = obtenerExcepciones();
     if(!validarCamposOr(array,exp))
     {
@@ -172,6 +172,7 @@ function agregarMovil()
         var archivoContrato5 = $("#contratoOculta5").val();
         var archivoContrato6 = $("#contratoOculta6").val();
         var archivoContrato7 = $("#contratoOculta7").val();
+        var archivoContrato8 = $("#contratoOculta8").val();
 
         var params = {patente : patente, marca : marca, nombre : nombre, modelo : modelo, anio : anio,
                     color : color, cantidad : cantidad , clase : clase, conductor : conductor,  gps : gps,
@@ -179,11 +180,11 @@ function agregarMovil()
                     venrevtec : venRevTec, venext : venExt, kilo : kilo, motor : motor, chasis : chasis,
                     segob : segOb, vensegob : venSegOb, polizasegob : polizaSegOb, valorsegob : valorSegOb, segrcdm : segRcDm,
                     vensegrcdm : venSegRcDm, polizasegrcdm : polizaSegRcDm, valorsegrcdm : valorSegRcDm,segas : segAs,
-                    vensegas : venSegAs, polizasegas : polizaSegAs, valorsegas : valorSegAs,segrcextenso : segRcExtenso,
-                    vensegrcextenso : venSegRcExtenso, polizasegrcextenso : polizaSegRcExtenso, valorsegrcextenso : valorSegRcExtenso,
+                    vensegas : venSegAs, polizasegas : polizaSegAs, valorsegas : valorSegAs,segrcexceso : segRcExceso,
+                    vensegrcexceso : venSegRcExceso, polizasegrcexceso : polizaSegRcExceso, valorsegrcexceso : valorSegRcExceso,
                     adjuntoPerCir : archivoContrato1, adjuntoRevTec : archivoContrato2, adjuntoNMotor : archivoContrato3,
                     adjuntoSeremi : archivoContrato4, adjuntoSegOb : archivoContrato5, adjuntoSegRcDm : archivoContrato6,
-                    adjuntoSegAs : archivoContrato7}; 
+                    adjuntoSegAs : archivoContrato7, adjuntoSegExceso : archivoContrato8};
         var url = urlBase + "/movil/AddMovil.php";
     };
     var success = function(response)
@@ -271,26 +272,26 @@ function modificarMovil()
     var venSegAs = $("#venSegAs").val();
     var polizaSegAs = $("#polizaSegAs").val();
     var valorSegAs = $("#valorSegAs").val();
-    var segRcExtenso;
-    if($("#SegRcExtensoSi").is(':checked'))
+    var segRcExceso;
+    if($("#SegRcExcesoSi").is(':checked'))
     {
-        segRcExtenso = 'SI';
+        segRcExceso = 'SI';
     }
-    else if($("#SegRcExtensoNo").is(':checked'))
+    else if($("#SegRcExcesoNo").is(':checked'))
     {
-        segRcExtenso = 'NO';
+        segRcExceso = 'NO';
     }
     else
     {
-        segRcExtenso = 'EXT';
+        segRcExceso = 'EXT';
     }
-    var venSegRcExtenso = $("#venSegRcExtenso").val();
-    var polizaSegRcExtenso = $("#polizaSegRcExtenso").val();
-    var valorSegRcExtenso =  $("#valorSegRcExtenso").val();
+    var venSegRcExceso = $("#venSegRcExceso").val();
+    var polizaSegRcExceso = $("#polizaSegRcExceso").val();
+    var valorSegRcExceso =  $("#valorSegRcExceso").val();
     var array = [patente,marca,nombre,modelo,anio,color,cantidad,clase,gps,celular,app,
         venPerCir,venRevTec,venExt,motor,chasis,
         segOb,venSegOb,polizaSegOb,valorSegOb,segRcDm,venSegRcDm,polizaSegRcDm,valorSegRcDm,
-        segAs,venSegAs,polizaSegAs,valorSegAs,segRcExtenso,venSegRcExtenso,polizaSegRcExtenso,valorSegRcExtenso];
+        segAs,venSegAs,polizaSegAs,valorSegAs,segRcExceso,venSegRcExceso,polizaSegRcExceso,valorSegRcExceso];
     var exp = obtenerExcepciones();
     if(!validarCamposOr(array,exp))
     {
@@ -312,17 +313,18 @@ function modificarMovil()
         var archivoContrato5 = $("#contratoOculta5").val();
         var archivoContrato6 = $("#contratoOculta6").val();
         var archivoContrato7 = $("#contratoOculta7").val();
+        var archivoContrato8 = $("#contratoOculta8").val();
         var params = {patente : patente, marca : marca, nombre : nombre, modelo : modelo, anio : anio,
                     color : color, cantidad : cantidad , clase : clase, conductor : conductor,  gps : gps,
                     celular : celular, app : app,venpercir : venPerCir, 
                     venrevtec : venRevTec, venext : venExt, kilo : kilo, motor : motor, chasis : chasis,
                     segob : segOb, vensegob : venSegOb, polizasegob : polizaSegOb, valorsegob : valorSegOb, segrcdm : segRcDm,
                     vensegrcdm : venSegRcDm, polizasegrcdm : polizaSegRcDm, valorsegrcdm : valorSegRcDm,segas : segAs,
-                    vensegas : venSegAs, polizasegas : polizaSegAs, valorsegas : valorSegAs,segrcextenso : segRcExtenso,
-                    vensegrcextenso : venSegRcExtenso, polizasegrcextenso : polizaSegRcExtenso, valorsegrcextenso : valorSegRcExtenso,
+                    vensegas : venSegAs, polizasegas : polizaSegAs, valorsegas : valorSegAs,segrcexceso : segRcExceso,
+                    vensegrcexceso : venSegRcExceso, polizasegrcexceso : polizaSegRcExceso, valorsegrcexceso : valorSegRcExceso,
                     adjuntoPerCir : archivoContrato1, adjuntoRevTec : archivoContrato2, adjuntoNMotor : archivoContrato3,
                     adjuntoSeremi : archivoContrato4, adjuntoSegOb : archivoContrato5, adjuntoSegRcDm : archivoContrato6,
-                    adjuntoSegAs : archivoContrato7}; 
+                    adjuntoSegAs : archivoContrato7,adjuntoSegExceso : archivoContrato8}; 
         var url = urlBase + "/movil/ModMovil.php";
         var success = function(response)
         {
@@ -409,7 +411,7 @@ function abrirModificar(id)
     $("#contenedor_central").load("html/datos_movil.html", function( response, status, xhr ) {
         iniciarPestanias();
         cambioEjecutado();
-        iniciarFecha(['#venPerCir','#venRevTec','#venExt','#venSegOb','#venSegRcDm','#venSegAs']);
+        iniciarFecha(['#venPerCir','#venRevTec','#venExt','#venSegOb','#venSegRcDm','#venSegAs','#venSegRcExceso']);
         var movil;
         for(var i = 0 ; i < MOVILES.length; i++)
         {
@@ -487,23 +489,23 @@ function abrirModificar(id)
         $("#venSegAs").val(movil.movil_ven_seg_as);
         $("#polizaSegAs").val(movil.movil_pol_seg_as); 
         $("#valorSegAs").val(movil.movil_seg_as_valor); 
-        if(movil.movil_seg_rcextenso !== 'NO')
+        if(movil.movil_seg_rcexceso !== 'NO')
         {
-            if(movil.movil_seg_rcextenso === 'SI')
+            if(movil.movil_seg_rcexceso === 'SI')
             {
-                $("#SegRcExtensoSi").prop("checked",true);
+                $("#SegRcExcesoSi").prop("checked",true);
             }
-            if(movil.movil_seg_rcextenso === 'EXT')
+            if(movil.movil_seg_rcexceso === 'EXT')
             {
-                $("#SegRcExtensoEx").prop("checked",true);
+                $("#SegRcExcesoEx").prop("checked",true);
             }
-            $("#venSegRcExtenso").prop("disabled",false);
-            $("#polizaSegRcExtenso").prop("disabled",false);
-            $("#valorSegRcExtenso").prop("disabled",false);
+            $("#venSegRcExceso").prop("disabled",false);
+            $("#polizaSegRcExceso").prop("disabled",false);
+            $("#valorSegRcExceso").prop("disabled",false);
         }
-        $("#venSegRcExtenso").val(movil.movil_ven_seg_rcextenso);
-        $("#polizaSegRcExtenso").val(movil.movil_pol_seg_rcextenso); 
-        $("#valorSegRcExtenso").val(movil.movil_seg_rcextenso_valor); 
+        $("#venSegRcExceso").val(movil.movil_ven_seg_rcexceso);
+        $("#polizaSegRcExceso").val(movil.movil_pol_seg_rcexceso); 
+        $("#valorSegRcExceso").val(movil.movil_seg_rcexceso_valor); 
         $("#conductor").val(movil.movil_conductor);
         ID_CONDUCTOR = movil.movil_conductor;
         buscarConductores();
@@ -514,6 +516,7 @@ function abrirModificar(id)
         var segOb = movil.movil_adj_seg_ob;
         var segRcDm = movil.movil_adj_seg_rcdm;
         var segAs = movil.movil_adj_seg_as;
+        var segRcExceso = movil.movil_adj_seg_exceso;
         verAdjunto(percir,1);
         verAdjunto(revtec,2),
         verAdjunto(nmotor,3);
@@ -521,6 +524,7 @@ function abrirModificar(id)
         verAdjunto(segOb,5);
         verAdjunto(segRcDm,6);
         verAdjunto(segAs,7);
+        verAdjunto(segRcExceso,8);
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
         cambiarPropiedad($("#eliminar"),"visibility","visible");
@@ -540,7 +544,7 @@ function eliminarMovil()
         alertify.success("Veh&iacute;culo eliminado");
         cerrarSession(response);
         resetFormularioEliminar(PAGINA);
-        cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
+        cambiarPropiedad($("#loader"),"visibility","hidden");
         resetBotones();
         buscarMovil();
         buscarConductores();
@@ -576,11 +580,11 @@ function validarTipoDato()
     var polizaSegOb = $("#polizaSegOb");
     var polizaSegRcDm = $("#polizaSegRcDm");
     var polizaSegAs = $("#polizaSegAs");
-    var polizaSegRcExtenso = $("#polizaSegRcExtenso");
+    var polizaSegRcExceso = $("#polizaSegRcExceso");
     var valorSegOb = $("#valorSegOb");
     var valorSegRcDm = $("#valorSegRcDm");
     var valorSegAs = $("#valorSegAs");
-    var valorSegRcExtenso = $("#valorSegRcExtenso");
+    var valorSegRcExceso = $("#valorSegRcExceso");
     var gps = $("#gps");
     var celular = $("#celular");
     var app = $("#app");
@@ -716,16 +720,16 @@ function validarTipoDato()
     {
         marcarCampoOk(polizaSegAs);
     }
-    if(!validarNumero(polizaSegRcExtenso.val()))
+    if(!validarNumero(polizaSegRcExceso.val()))
     {
         cambiarPestaniaSeguro();
-        marcarCampoError(polizaSegRcExtenso);
-        alertify.error('N° Poliza Seguro RC Extenso debe ser numerico');
+        marcarCampoError(polizaSegRcExceso);
+        alertify.error('N° Poliza Seguro RC Exceso debe ser numerico');
         return false;
     }
     else
     {
-        marcarCampoOk(polizaSegRcExtenso);
+        marcarCampoOk(polizaSegRcExceso);
     }
     if(!validarNumero(valorSegOb.val()))
     {
@@ -749,16 +753,16 @@ function validarTipoDato()
     {
         marcarCampoOk(valorSegRcDm);
     }
-    if(!validarNumero(valorSegRcExtenso.val()))
+    if(!validarNumero(valorSegRcExceso.val()))
     {
         cambiarPestaniaSeguro();
-        marcarCampoError(valorSegRcExtenso);
-        alertify.error('Valor Seguro RC Extenso debe ser numerico');
+        marcarCampoError(valorSegRcExceso);
+        alertify.error('Valor Seguro RC Exceso debe ser numerico');
         return false;
     }
     else
     {
-        marcarCampoOk(valorSegRcExtenso);
+        marcarCampoOk(valorSegRcExceso);
     }
     if(!validarNumero(valorSegAs.val()))
     {
@@ -929,9 +933,9 @@ function obtenerExcepciones()
     {
         exp += '||25||26||27||';
     }
-    if($("#SegRcExtensoNo").is(':checked'))
+    if($("#SegRcExcesoNo").is(':checked'))
     {
-        exp += '||28||29||30||';
+        exp += '||29||30||31||';
     }
     return exp;
 }
@@ -1008,22 +1012,22 @@ function iniciarEventosCheck()
         $("#polizaSegAs").prop("disabled",false);
         $("#valorSegAs").prop("disabled",false);
     });
-    $("#SegRcExtensoSi").click(function(){
-        $("#venSegRcExtenso").prop("disabled",false);
-        $("#polizaSegRcExtenso").prop("disabled",false);
-        $("#valorSegRcExtenso").prop("disabled",false);
+    $("#SegRcExcesoSi").click(function(){
+        $("#venSegRcExceso").prop("disabled",false);
+        $("#polizaSegRcExceso").prop("disabled",false);
+        $("#valorSegRcExceso").prop("disabled",false);
     });
-    $("#SegRcExtensoNo").click(function(){
-        $("#venSegRcExtenso").prop("disabled",true);
-        $("#polizaSegRcExtenso").prop("disabled",true);
-        $("#valorSegRcExtenso").prop("disabled",true);
-        $("#venSegRcExtenso").val("");
-        $("#polizaSegRcExtenso").val("");
-        $("#valorSegRcExtenso").val("");
+    $("#SegRcExcesoNo").click(function(){
+        $("#venSegRcExceso").prop("disabled",true);
+        $("#polizaSegRcExceso").prop("disabled",true);
+        $("#valorSegRcExceso").prop("disabled",true);
+        $("#venSegRcExceso").val("");
+        $("#polizaSegRcExceso").val("");
+        $("#valorSegRcExceso").val("");
     });
-    $("#SegRcExtensoEx").click(function(){
-        $("#venSegRcExtenso").prop("disabled",false);
-        $("#polizaSegRcExtenso").prop("disabled",false);
-        $("#valorSegRcExtenso").prop("disabled",false);
+    $("#SegRcExcesoEx").click(function(){
+        $("#venSegRcExceso").prop("disabled",false);
+        $("#polizaSegExceso").prop("disabled",false);
+        $("#valorSegRcExceso").prop("disabled",false);
     });
 }

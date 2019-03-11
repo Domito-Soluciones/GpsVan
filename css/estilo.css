@@ -289,7 +289,6 @@ select
     margin-left: 25%;
     width: 74%;
     height: calc(100% - 50px);
-    overflow: auto;
 }
 .contenedor_central_servicio
 {
@@ -314,8 +313,8 @@ select
 
 .asignacion_buscador
 {
-    margin-left: 38% !important;
-    width: calc(70% - 105px) !important;
+    margin-left: calc(36% - 11px) !important;
+    width: calc(70% - 67px) !important;
     height: calc(100% - 1px);
 }
 
@@ -332,17 +331,17 @@ select
 
 .buscador-asignacion
 {
-    width: 38%;
+    width: 35%;
     height: 100%;
 }
 .buscador-asignacion-cliente
 {
-    width: 25%;
+    width: 20%;
     height: 100%;
 }
 .buscador-asignacion-cliente-pasajero
 {
-    width: calc(75% - 2px);
+    width: calc(80% - 2px);
     height: 100%;
 }
 .buscador-pasajero
@@ -354,7 +353,8 @@ select
 }
 .mapa_bajo
 {
-    width : calc(38% - 2px) !important;
+    width : calc(41% - 3px) !important;
+    margin-left: calc(60% - 10px) !important;
 }
 .buscador-asignacion-boton
 {
@@ -874,12 +874,23 @@ select
     width: 70% !important;
     height: 25px !important;   
 }
+.input_cliente
+{
+    width: 130% !important;
+    height: 25px !important;   
+}
 
 .select_asignar
 {
     width: 70% !important;
     height: 30px !important;
     background-position: 140px, 0 !important;
+}
+.select_asignar_cliente
+{
+    width: 130% !important;
+    height: 30px !important;
+    background-position: 170px, 0 !important;
 }
 
 .textarea_asignar
@@ -961,6 +972,7 @@ select
 {
     width: 300px;
     height: calc(100% - 60px);
+    overflow-y: scroll;
     text-align: center;
     background-color: #FFFFFF;
     position: absolute;
@@ -1306,7 +1318,11 @@ select
     padding: 0 !important;
     width: 100% !important;
 }
-
+.fila_contenedor_pasajero
+{
+    padding: 0 !important;
+    width: 100% !important;
+}
 .fila_contenedor_servicio div
 {
     float: left;
@@ -1486,4 +1502,17 @@ select
 {
     margin-left: 0 !important;
     width: 214px !important;
+}
+
+.check_pasajero
+{
+    width: 5% !important;
+}
+.dato_pasajero
+{
+    width: 12% !important;
+}
+.dir_pasajero
+{
+    width: 47% !important;
 }

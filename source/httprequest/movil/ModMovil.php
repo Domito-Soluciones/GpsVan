@@ -47,14 +47,14 @@ if(filter_input(INPUT_POST, 'vensegas') != '')
 }
 $polizaSegAs = filter_input(INPUT_POST, 'polizasegas');
 $valorSegAs = filter_input(INPUT_POST, 'valorsegas');
-$segRcExtenso = filter_input(INPUT_POST, 'segrcextenso');
-$venSegRcExtenso = '';
-if(filter_input(INPUT_POST, 'vensegrcextenso') != '')
+$segRcExceso = filter_input(INPUT_POST, 'segrcexceso');
+$venSegRcExceso = '';
+if(filter_input(INPUT_POST, 'vensegrcexceso') != '')
 {
-    $venSegRcExtenso = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_POST, 'vensegrcextenso'))->format('Y/m/d');
+    $venSegRcExceso = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_POST, 'vensegrcexceso'))->format('Y/m/d');
 }
-$polizaSegRcExtenso = filter_input(INPUT_POST, 'polizasegrcextenso');
-$valorSegRcExtenso = filter_input(INPUT_POST, 'valorsegrcextenso');
+$polizaSegRcExceso = filter_input(INPUT_POST, 'polizasegrcexceso');
+$valorSegRcExceso = filter_input(INPUT_POST, 'valorsegrcexceso');
 $adjuntoPerCir = filter_input(INPUT_POST, 'adjuntoPerCir');
 $adjuntoRevTec = filter_input(INPUT_POST, 'adjuntoRevTec');
 $adjuntoNMotor = filter_input(INPUT_POST, 'adjuntoNMotor');
@@ -62,7 +62,7 @@ $adjuntoSeremi = filter_input(INPUT_POST, 'adjuntoSeremi');
 $adjuntoSegOb = filter_input(INPUT_POST, 'adjuntoSegOb');
 $adjuntoSegRcDm = filter_input(INPUT_POST, 'adjuntoSegRcDm');
 $adjuntoSegAs = filter_input(INPUT_POST, 'adjuntoSegAs');
-$adjuntoSegExtenso = filter_input(INPUT_POST, 'adjuntoSegExtenso');
+$adjuntoSegExceso = filter_input(INPUT_POST, 'adjuntoSegExceso');
 
 $movil = new Movil();
 $movil->setId($movilId);
@@ -96,6 +96,10 @@ $movil->setSegAs($segAs);
 $movil->setVenSegAs($venSegAs);
 $movil->setPolizaSegAs($polizaSegAs);
 $movil->setValorSegAs($valorSegAs);
+$movil->setSegRcExceso($segRcExceso);
+$movil->setVenSegRcExceso($venSegRcExceso);
+$movil->setPolizaSegRcExceso($polizaSegRcExceso);
+$movil->setValorSegRcExceso($valorSegRcExceso);
 $movil->setAdjuntoPerCir($adjuntoPerCir);
 $movil->setAdjuntoRevTec($adjuntoRevTec);
 $movil->setAdjuntoNMotor($adjuntoNMotor);
@@ -103,8 +107,7 @@ $movil->setAdjuntoSeremi($adjuntoSeremi);
 $movil->setAdjuntoSegOb($adjuntoSegOb);
 $movil->setAdjuntoSegRcDm($adjuntoSegRcDm);
 $movil->setAdjuntoSegAsiento($adjuntoSegAs);
-$movil->setAdjuntoSegExtenso($adjuntoSegExtenso);
+$movil->setAdjuntoSegRcExceso($adjuntoSegExceso);
 $movilDao = new MovilDao();
 $movilDao->modificarMovil($movil);
 echo "{\"movil_id\":\"".$movil->getId()."\"}";
-

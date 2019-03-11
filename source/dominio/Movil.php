@@ -37,10 +37,10 @@ class Movil {
     private $venSegRcDm;
     private $polizaSegRcDm;
     private $valorSegRcDm;
-    private $segRcExtenso;
-    private $venSegRcExtenso;
-    private $polizaSegRcExtenso;
-    private $valorSegRcExtenso;
+    private $segRcExceso;
+    private $venSegRcExceso;
+    private $polizaSegRcExceso;
+    private $valorSegRcExceso;
     private $segAs;
     private $venSegAs;
     private $polizaSegAs;
@@ -52,7 +52,7 @@ class Movil {
     private $adjuntoSegOb;
     private $adjuntoSegRcDm;
     private $adjuntoSegAsiento;
-    private $adjuntoSegRcExtenso;
+    private $adjuntoSegRcExceso;
     
     function getId() {
         return $this->id;
@@ -194,20 +194,20 @@ class Movil {
         return $this->valorSegRcDm;
     }
 
-    function getSegRcExtenso() {
-        return $this->segRcExtenso;
+    function getSegRcExceso() {
+        return $this->segRcExceso;
     }
 
-    function getVenSegRcExtenso() {
-        return $this->venSegRcExtenso;
+    function getVenSegRcExceso() {
+        return $this->venSegRcExceso;
     }
 
-    function getPolizaSegRcExtenso() {
-        return $this->polizaSegRcExtenso;
+    function getPolizaSegRcExceso() {
+        return $this->polizaSegRcExceso;
     }
 
-    function getValorSegRcExtenso() {
-        return $this->valorSegRcExtenso;
+    function getValorSegRcExceso() {
+        return $this->valorSegRcExceso;
     }
 
     function getSegAs() {
@@ -254,8 +254,8 @@ class Movil {
         return $this->adjuntoSegAsiento;
     }
 
-    function getAdjuntoSegRcExtenso() {
-        return $this->adjuntoSegRcExtenso;
+    function getAdjuntoSegRcExceso() {
+        return $this->adjuntoSegRcExceso;
     }
 
     function setId($id) {
@@ -398,20 +398,20 @@ class Movil {
         $this->valorSegRcDm = $valorSegRcDm;
     }
 
-    function setSegRcExtenso($segRcExtenso) {
-        $this->segRcExtenso = $segRcExtenso;
+    function setSegRcExceso($segRcExceso) {
+        $this->segRcExceso = $segRcExceso;
     }
 
-    function setVenSegRcExtenso($venSegRcExtenso) {
-        $this->venSegRcExtenso = $venSegRcExtenso;
+    function setVenSegRcExceso($venSegRcExceso) {
+        $this->venSegRcExceso = $venSegRcExceso;
     }
 
-    function setPolizaSegRcExtenso($polizaSegRcExtenso) {
-        $this->polizaSegRcExtenso = $polizaSegRcExtenso;
+    function setPolizaSegRcExceso($polizaSegRcExceso) {
+        $this->polizaSegRcExceso = $polizaSegRcExceso;
     }
 
-    function setValorSegRcExtenso($valorSegRcExtenso) {
-        $this->valorSegRcExtenso = $valorSegRcExtenso;
+    function setValorSegRcExceso($valorSegRcExceso) {
+        $this->valorSegRcExceso = $valorSegRcExceso;
     }
 
     function setSegAs($segAs) {
@@ -458,8 +458,8 @@ class Movil {
         $this->adjuntoSegAsiento = $adjuntoSegAsiento;
     }
 
-    function setAdjuntoSegRcExtenso($adjuntoSegRcExtenso) {
-        $this->adjuntoSegRcExtenso = $adjuntoSegRcExtenso;
+    function setAdjuntoSegRcExceso($adjuntoSegRcExceso) {
+        $this->adjuntoSegRcExceso = $adjuntoSegRcExceso;
     }
 
                 

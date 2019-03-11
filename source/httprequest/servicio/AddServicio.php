@@ -14,6 +14,7 @@ $tarifa1 = filter_input(INPUT_POST, 'tarifa1');
 $tarifa2 = filter_input(INPUT_POST, 'tarifa2');   
 $observaciones = filter_input(INPUT_POST, 'observaciones');   
 $estado = filter_input(INPUT_POST, 'estado'); 
+$tipo = filter_input(INPUT_POST, 'tipo'); 
 $agente = 0;
 if(filter_input(INPUT_POST, 'app') == '')
 {
@@ -32,6 +33,7 @@ $servicio->setTarifa2($tarifa2);
 $servicio->setAgente($agente);
 $servicio->setEstado($estado);
 $servicio->setObservaciones($observaciones);
+$servicio->setTipo($tipo);
 $servicioDao = new ServicioDao();
 $idServicio = $servicioDao->addServicio($servicio);
 echo "{\"servicio_id\":\"".$idServicio."\"}";

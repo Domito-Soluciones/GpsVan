@@ -63,18 +63,14 @@ if(!isset($_SESSION['agente']))
                     </div>
                     <div>
                         <div class="cont-pre-monitor">
-                            Origen
+                            Tipo
                         </div>
-                        <div class="input-monitoreo">
-                             <input type="text" class="input_asignar" id="origen" placeholder="Ej: Av los olmos 123">
-                        </div>
-                    </div>
-                    <div>
-                        <div class="cont-pre-monitor">
-                            Destino
-                        </div>
-                        <div class="input-monitoreo">
-                             <input type="text" class="input_asignar" id="destino" placeholder="Ej: Av los olmos 123">
+                         <div class="input-monitoreo">
+                             <select id="ruta" class="select_asignar_cliente">
+                                 <option value="">Seleccione</option>
+                                 <option value="<?php echo $_SESSION['empresa']?>-ZP-ESP">Zarpe</option>
+                                 <option value="<?php echo $_SESSION['empresa']?>-RG-ESP">Recogida</option>
+                            </select>
                         </div>
                     </div>
                     <div>
@@ -82,7 +78,7 @@ if(!isset($_SESSION['agente']))
                             Fecha
                         </div>
                         <div class="input-monitoreo">
-                             <input type="text" class="input_asignar" id="fechas" placeholder="Ej: 01/01/2020">
+                             <input type="text" class="input_cliente" id="fechas" placeholder="Ej: 01/01/2020">
                         </div>
                     </div>
                     <div>
@@ -90,7 +86,7 @@ if(!isset($_SESSION['agente']))
                             Hora
                         </div>
                          <div class="input-monitoreo">
-                            <input type="text" class="input_asignar" id="hora" placeholder="12:23:00">
+                            <input type="text" class="input_cliente" id="hora" placeholder="Ej: 12:23:00">
                         </div>
                     </div>
                     <div>
