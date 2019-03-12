@@ -81,9 +81,13 @@ class ServicioDao {
         $id = 0;
         $conn = new Conexion();
         try {
-            $query = "INSERT INTO tbl_servicio_detalle "
-                    . "(servicio_detalle_servicio,servicio_detalle_lat,servicio_detalle_lon)"
-                    . " VALUES ($idServicio,'$lat','$lon');";
+            $query = "";
+            if($lat != "" && $lon != "")
+            {
+                $query = "INSERT INTO tbl_servicio_detalle "
+                        . "(servicio_detalle_servicio,servicio_detalle_lat,servicio_detalle_lon)"
+                        . " VALUES ($idServicio,'$lat','$lon');";
+            }
             for($i = 0 ; $i < count($pasajeros) ; $i++)
             {
                 if($destinos[$i] != "")

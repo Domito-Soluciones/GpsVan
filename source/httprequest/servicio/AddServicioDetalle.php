@@ -12,4 +12,3 @@ $id = filter_input(INPUT_POST, 'id');
 $servicioDao = new ServicioDao();
 $servicioDao->addServicioDetalle($lat, $lon,$pasajeros,$destinos, $id);
 echo "{\"servicio_id\":\"".$id."\"}";
-

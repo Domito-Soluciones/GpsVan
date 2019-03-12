@@ -26,7 +26,6 @@ $(document).ready(function(){
     if(TIPO_SERVICIO === 1)
     {
         $("#ruta").prop("disabled",true);
-        $("#tarifa2").prop("disabled",true);
         cambiarPropiedad($(".buscador-pasajero"),"display","initial");
         agregarclase($("#contenedor_mapa"),"mapa_bajo");
         cargarPasajeros();
@@ -407,10 +406,9 @@ function agregarServicio()
             $("#contenedor_pasajero").html("<div class=\"contenedor-loader\"><div class=\"loader\" id=\"loader_pasajero\">Loading...</div></div>");
             $("#contenedor_pasajero_no_asignado").html("");
             $("#ruta").prop("disabled",false);
-            $("#tarifa2").prop("disabled",false);
             cambiarPropiedad($(".buscador-pasajero"),"display","none");
             quitarclase($("#contenedor_mapa"),"mapa_bajo");
-            agregarDetalleServicio(response.servicio_id,false);
+            agregarDetalleServicio(response.servicio_id);
             notificarConductor(response.servicio_id,conductor);
             notificarServicioFuturo(response.servicio_id,conductor,fecha,hora);
             eliminarMarkers();
@@ -476,7 +474,7 @@ function dibujarRuta(origen,destinos)
     };
     getRequest(encodeURI(url),success);
 }
-function agregarDetalleServicio(idServicio,especial)
+function agregarDetalleServicio(idServicio)
 {
     var params = {};
     var destinoFinal = "";
@@ -486,13 +484,13 @@ function agregarDetalleServicio(idServicio,especial)
         destinoFinal += destinos[i] + "%";
         pasajeroFinal += pasajeros[i] + "%";
     }
-    if(especial)
+    if(TIPO_SERVICIO === 1)
     {
-        params = { lat : POLYLINE_LAT, lon : POLYLINE_LNG, pasajeros : "" ,destinos : destinoFinal, id : idServicio, especial : especial };
+        params = { lat : POLYLINE_LAT, lon : POLYLINE_LNG, pasajeros : "" ,destinos : destinoFinal, id : idServicio };
     }
     else
     {
-        params = { lat : POLYLINE_LAT, lon : POLYLINE_LNG, pasajeros : pasajeroFinal ,destinos : destinoFinal, id : idServicio, especial : especial };        
+        params = { lat : POLYLINE_LAT, lon : POLYLINE_LNG, pasajeros : pasajeroFinal ,destinos : destinoFinal, id : idServicio};        
     }
     var url = urlBase + "/servicio/AddServicioDetalle.php";
     postRequest(url,params,null);
@@ -661,29 +659,29 @@ function agregarPasajero(obj,nombre,punto,celular)
     pasajero.remove();
     dibujarRuta(origen,destinos);
 }
-
-function cambiarServicioNormal()
-{
-    $("#clientes").prop("disabled",false);
-    cambiarPropiedad($("#clientes"),"background-color","white");
-    $("#ruta").prop("disabled",false);
-    cambiarPropiedad($("#ruta"),"background-color","white");
-    $("#tarifa2").prop("disabled",false);
-    cambiarPropiedad($("#tarifa2"),"background-color","white");
-    $("#partida").prop("disabled",true);
-    cambiarPropiedad($("#partida"),"background-color","#E3E3E3");
-    $("#destino").prop("disabled",true);
-    cambiarPropiedad($("#destino"),"background-color","#E3E3E3");
-    $("#usuarios").prop("disabled",true);
-    cambiarPropiedad($("#usuarios"),"background-color","#E3E3E3");
-    $("#celular").prop("disabled",true);
-    cambiarPropiedad($("#celular"),"background-color","#E3E3E3");
-    vaciarFormulario();
-    if(typeof POLYLINE !== "undefined")
-    {
-        POLYLINE.setMap(null);
-    }
-}
+//
+//function cambiarServicioNormal()
+//{
+//    $("#clientes").prop("disabled",false);
+//    cambiarPropiedad($("#clientes"),"background-color","white");
+//    $("#ruta").prop("disabled",false);
+//    cambiarPropiedad($("#ruta"),"background-color","white");
+//    $("#tarifa2").prop("disabled",false);
+//    cambiarPropiedad($("#tarifa2"),"background-color","white");
+//    $("#partida").prop("disabled",true);
+//    cambiarPropiedad($("#partida"),"background-color","#E3E3E3");
+//    $("#destino").prop("disabled",true);
+//    cambiarPropiedad($("#destino"),"background-color","#E3E3E3");
+//    $("#usuarios").prop("disabled",true);
+//    cambiarPropiedad($("#usuarios"),"background-color","#E3E3E3");
+//    $("#celular").prop("disabled",true);
+//    cambiarPropiedad($("#celular"),"background-color","#E3E3E3");
+//    vaciarFormulario();
+//    if(typeof POLYLINE !== "undefined")
+//    {
+//        POLYLINE.setMap(null);
+//    }
+//}
 function mostrarDatalist(val,datalist,campo)
 {
     if(val === "") return;
@@ -901,7 +899,7 @@ function obtenerExcepciones()
     var exp = "";
     if(TIPO_SERVICIO === 1)
     {
-        exp += '||1||6||';
+        exp += '||1||';
     }
     return exp;
 }

@@ -150,7 +150,6 @@ function agregarDetalleServicio(idServicio)
     var params = {pasajeros : pasajeros ,destinos : destino, id : idServicio };
     var url = urlBase + "/servicio/AddServicioDetalle.php";
     postRequest(url,params,null);
-    destinos.clear();
 }
 
 function seleccionarTodo()
