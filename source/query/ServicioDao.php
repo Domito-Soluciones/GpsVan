@@ -658,12 +658,12 @@ class ServicioDao {
         return $idServicio;
     }
     
-    public function modificarEstadoServicioPasajero($idServicio,$idPasajero)
+    public function modificarEstadoServicioPasajero($idServicio,$idPasajero,$estado)
     {
         $id = 0;
         $conn = new Conexion();
         try {
-            $query = "UPDATE tbl_servicio_pasajero SET servicio_pasajero_estado = 1,servicio_pasajero_hora_destino = CURRENT_TIME() WHERE servicio_pasajero_id_servicio = $idServicio AND servicio_pasajero_id_pasajero  = $idPasajero";
+            $query = "UPDATE tbl_servicio_pasajero SET servicio_pasajero_estado = $estado,servicio_pasajero_hora_destino = CURRENT_TIME() WHERE servicio_pasajero_id_servicio = $idServicio AND servicio_pasajero_id_pasajero  = $idPasajero";
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
