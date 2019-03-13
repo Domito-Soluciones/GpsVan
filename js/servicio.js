@@ -345,10 +345,22 @@ function obtenerPasajeros()
         {
             var pasajero = response[i].servicio_pasajero;
             var horaDestino = response[i].servicio_hora_destino === '00:00:00'?"-":response[i].servicio_hora_destino;
-            var estado = response[i].servicio_estado==='0'?"En Ruta":"Entregado";
+            var estado = '';
+            if(response[i].servicio_estado === '0')
+            {
+                estado = "En Ruta";
+            }
+            else if (response[i].servicio_estado === '1')
+            {
+                estado = "Entregado";
+            }
+            else if (response[i].servicio_estado === '2')
+            {
+                estado = "Cancelado";
+            }
             var destino = response[i].servicio_destino;
-            $("#pasajeros_contenido").append("<div>"+pasajero+"</div>"+
-            "<div>"+destino+"</div><div>"+horaDestino+"</div><div>"+estado+"</div>");
+            $("#pasajeros_contenido").append("<div class=\"nombre_pasajero\">"+pasajero+"</div>"+
+            "<div class=\"dir_pasajero\">"+destino+"</div><div class=\"dato_pasajero\">"+horaDestino+"</div><div class=\"dato_pasajero\">"+estado+"</div>");
         }
     };
     postRequest(url,params,success);

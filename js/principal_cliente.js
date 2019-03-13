@@ -116,7 +116,7 @@ function buscarPasajeroCliente(cliente)
                 "<div class=\"check_pasajero\"><input type=\"checkbox\" id=\"check\" checked onclick=\"seleccionarTodo()\"></div>"+
                 "<div></div><div class=\"dato_pasajero\">Rut</div><div class=\"dato_pasajero\">Nombre</div>"+
                 "<div class=\"dato_pasajero\">Apellido</div><div class=\"dato_pasajero\">Centro Costo</div>"+
-                "<div class=\"dir_pasajero\">Dirección</div></div>")
+                "<div class=\"dir_pasajero\">Dirección</div></div>");
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].pasajero_id;
