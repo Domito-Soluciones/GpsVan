@@ -279,10 +279,15 @@ function buscarConductor()
         var conductores = $("#lista_busqueda_conductor_detalle");
         conductores.html("");
         contGrupos.html("");
+        contGrupos.append("<div class=\"fila_contenedor\" id=\"col_0\" onClick=\"cambiarFila('col_0')\">Transportista</div>");
+        contGrupos.append("<div class=\"fila_contenedor\" id=\"col_1\" onClick=\"cambiarFila('col_1')\">Conductor Interno</div>");
+        contGrupos.append("<div class=\"fila_contenedor\" id=\"col_2\" onClick=\"cambiarFila('col_2')\">Conductor Externo</div>");
+        contGrupos.append("<div class=\"fila_contenedor\" id=\"col_3\" onClick=\"cambiarFila('col_3')\">Transportista / Conductor</div>");
         CONDUCTORES = response;
         if(response.length === 0)
         {
             conductores.append("<div class=\"mensaje_bienvenida\">No hay registros que mostrar</div>");
+            alertify.error("No hay registros que mostrar");
             return;
         }
         conductores.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div>Grupo</div><div></div></div>")
@@ -293,11 +298,6 @@ function buscarConductor()
             var nombre = response[i].conductor_nombre;
             var papellido = response[i].conductor_papellido;
             var grupo = response[i].conductor_grupo === '' ? 'Indefinido' : response[i].conductor_grupo;
-            if(typeof grupos.get(grupo) === 'undefined')
-            {
-                contGrupos.append("<div class=\"fila_contenedor\" id=\""+grupo+"\" onClick=\"cambiarFila('"+grupo+"')\">"+ grupo +"</div>");
-                grupos.set(grupo,grupo);
-            }
             conductores.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\">"+
                     "<div onClick=\"abrirModificar('"+id+"')\">"+rut+"</div>"+
                     "<div onClick=\"abrirModificar('"+id+"')\">"+nombre+"</div>"+
@@ -313,22 +313,20 @@ function buscarConductor()
 
 function buscarConductorGrupo(grupo)
 {
-//    grupos.clear();
-    ID_GRUPO = grupo;
-    marcarFilaActiva(ID_GRUPO);
-    var params = {grupo : grupo};
+    ID_GRUPO = grupo.split("_")[1];
+    marcarFilaActiva(grupo);
+    var params = {grupo : ID_GRUPO};
     var url = urlBase + "/conductor/GetConductoresGrupo.php";
     var success = function(response)
     {
         cerrarSession(response);
-        var contGrupos = $("#lista_busqueda_conductor");
         var conductores = $("#lista_busqueda_conductor_detalle");
         conductores.html("");
-//        contGrupos.html("");
         CONDUCTORES = response;
         if(response.length === 0)
         {
             conductores.append("<div class=\"mensaje_bienvenida\">No hay registros que mostrar</div>");
+            alertify.error("No hay registros que mostrar");
             return;
         }
         conductores.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div>Grupo</div></div>")
@@ -339,11 +337,6 @@ function buscarConductorGrupo(grupo)
             var nombre = response[i].conductor_nombre;
             var papellido = response[i].conductor_papellido;            
             var grupo = response[i].conductor_grupo === '' ? 'Indefinido' : response[i].conductor_grupo;
-//            if(typeof grupos.get(grupo) === 'undefined')
-//            {
-//                contGrupos.append("<div class=\"fila_contenedor\" id=\""+grupo+"\" onClick=\"cambiarFila('"+grupo+"')\">"+ grupo +"</div>");
-//                grupos.set(grupo,grupo);
-//            }
             conductores.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\">"+
                     "<div onClick=\"abrirModificar('"+id+"')\">"+rut+"</div>"+
                     "<div onClick=\"abrirModificar('"+id+"')\">"+nombre+"</div>"+
@@ -359,7 +352,7 @@ function buscarConductorGrupo(grupo)
 function cambiarFila(id)
 {
     if(MODIFICADO)
-    {
+    {  
         confirmar("Cambio de conductor",
         "¿Desea cambiar de conductor sin guardar los cambios?",
         function()

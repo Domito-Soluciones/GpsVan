@@ -689,9 +689,8 @@ function buscarClientePasajero()
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].cliente_id;
-            var rut = response[i].cliente_rut;
             var nombre = response[i].cliente_razon;
-            var titulo = recortar(rut+" / "+nombre);
+            var titulo = recortar(nombre);
             if (typeof ID_CLIENTE !== "undefined" && ID_CLIENTE === id)
             {
                 clientes.append("<div class=\"fila_contenedor fila_contenedor_activa\" id=\""+id+"\" onClick=\"cambirFilaPasajero('"+id+"')\">"+titulo+"</div>");

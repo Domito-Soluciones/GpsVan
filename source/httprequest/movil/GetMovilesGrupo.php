@@ -4,9 +4,9 @@ include '../../util/validarSession.php';
 include '../../query/MovilDao.php';
 
 header('Content-Type: application/json');
-$busqueda = filter_input(INPUT_POST, 'busqueda');
+$grupo = filter_input(INPUT_POST, 'grupo');
 $movilDao = new MovilDao();
-$moviles = $movilDao->getMoviles($busqueda);
+$moviles = $movilDao->getMovilesGrupo($grupo);
 echo "[";
 for ($i = 0 ; $i < count($moviles); $i++)
 {

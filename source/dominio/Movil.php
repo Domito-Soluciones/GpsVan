@@ -17,6 +17,7 @@ class Movil {
     private $gps;
     private $celular;
     private $app;
+    private $tipo;
     private $venPerCir;
     private $venRevTec;
     private $venExt;
@@ -112,6 +113,10 @@ class Movil {
 
     function getApp() {
         return $this->app;
+    }
+
+    function getTipo() {
+        return $this->tipo;
     }
 
     function getVenPerCir() {
@@ -318,6 +323,10 @@ class Movil {
         $this->app = $app;
     }
 
+    function setTipo($tipo) {
+        $this->tipo = $tipo;
+    }
+
     function setVenPerCir($venPerCir) {
         $this->venPerCir = $venPerCir;
     }
@@ -462,6 +471,7 @@ class Movil {
         $this->adjuntoSegRcExceso = $adjuntoSegRcExceso;
     }
 
+    
                 
     public function toString() {
         return "DATOS MOVIL: ID : ".$this->id." PATENTE : ".$this->patente.

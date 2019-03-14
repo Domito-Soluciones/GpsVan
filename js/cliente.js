@@ -185,8 +185,14 @@ function buscarCliente()
     var success = function(response)
     {
         cerrarSession(response);
-        var clientes = $("#lista_busqueda_cliente");
+        var grupos = $("#lista_busqueda_cliente");
+        var clientes = $("#lista_busqueda_movil_detalle");
+        grupos.html("");
+        grupos.append("<div class=\"fila_contenedor\" id=\"col_0\" onClick=\"cambiarFila('0')\">Cliente grande</div>");
+        grupos.append("<div class=\"fila_contenedor\" id=\"col_1\" onClick=\"cambiarFila('1')\">Cliente Mediano</div>");
+        grupos.append("<div class=\"fila_contenedor\" id=\"col_2\" onClick=\"cambiarFila('2')\">Cliente Pequeño</div>");
         clientes.html("");
+        clientes.append("<div class=\"contenedor_central_titulo\"><div></div><div>rut</div><div>Razon social</div><div>Tipo</div><div>Grupo</div><div></div></div>");
         CLIENTES = response;
         if(response.length === 0)
         {
@@ -197,16 +203,28 @@ function buscarCliente()
         {
             var id = response[i].cliente_id;
             var rut = response[i].cliente_rut;
-            var nombre = response[i].cliente_razon;
-            var titulo = recortar(rut+" / "+nombre);
-            if (typeof ID_CLIENTE !== "undefined" && ID_CLIENTE === id)
+            var nombre = response[i].cliente_nombre;
+            var tipo = response[i].cliente_tipo;
+            var grupo = '';
+            if(response[i].cliente_grupo === '0')
             {
-                clientes.append("<div class=\"fila_contenedor fila_contenedor_activa\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"','"+nombre+"')\">"+titulo+"</div>");
+                grupo = 'Cliente Grande';
             }
-            else
+            else if(response[i].cliente_grupo === '1')
             {
-                clientes.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"','"+nombre+"')\">"+titulo+"</div>");
+                grupo = 'Cliente Mediano';
             }
+            else if(response[i].cliente_grupo === '2')
+            {
+                grupo = 'Cliente Pequeño';
+            }
+            clientes.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\">"+
+                    "<div onClick=\"abrirModificar('"+id+"')\">"+rut+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"')\">"+nombre+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"')\">"+tipo+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"')\">"+grupo+"</div>"+
+                    "<div><img onclick=\"preEliminarCliente('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
+                    "</div>");
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
@@ -221,7 +239,9 @@ function cambiarFila(id,nombre)
         function()
         {
             MODIFICADO = false;
-            abrirModificar(id,nombre);
+            //abrirModificar(id,nombre);
+            buscarClienteTipo(id);
+            
         },
         function()
         {
@@ -230,8 +250,59 @@ function cambiarFila(id,nombre)
     }
     else
     {
-        abrirModificar(id,nombre);
+        //abrirModificar(id,nombre);
+        buscarClienteTipo(id);
     }
+}
+function buscarClienteTipo(tipo)
+{
+    TIPO_GRUPO = tipo;
+    marcarFilaActiva("col_"+tipo);
+    var params = {grupo : tipo};
+    var url = urlBase + "/movil/GetClientesGrupo.php";
+    var success = function(response)
+    {
+        cerrarSession(response);
+        var clientes = $("#lista_busqueda_cliente_detalle");
+        clientes.html("");
+        CONDUCTORES = response;
+        if(response.length === 0)
+        {
+            clientes.append("<div class=\"mensaje_bienvenida\">No hay registros que mostrar</div>");
+            alertify.error("No hay registros que mostrar");
+            return;
+        }
+        clientes.append("<div class=\"contenedor_central_titulo\"><div></div><div>rut</div><div>Razon social</div><div>Tipo</div><div>Grupo</div><div></div></div>");
+        for(var i = 0 ; i < response.length; i++)
+        {
+            var id = response[i].cliente_id;
+            var rut = response[i].cliente_rut;
+            var nombre = response[i].cliente_nombre;
+            var tipo = response[i].cliente_tipo;
+            var grupo = '';
+            if(response[i].cliente_grupo === '0')
+            {
+                grupo = 'Cliente Grande';
+            }
+            else if(response[i].cliente_grupo === '1')
+            {
+                grupo = 'Cliente Mediano';
+            }
+            else if(response[i].cliente_grupo === '2')
+            {
+                grupo = 'Cliente Pequeño';
+            }
+            clientes.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\">"+
+                    "<div onClick=\"abrirModificar('"+id+"')\">"+rut+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"')\">"+nombre+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"')\">"+tipo+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"')\">"+grupo+"</div>"+
+                    "<div><img onclick=\"preEliminarCliente('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
+                    "</div>");
+        }
+        cambiarPropiedad($("#loader"),"visibility","hidden");
+    };
+    postRequest(url,params,success);
 }
 function abrirModificar(id,nombre)
 {
@@ -554,4 +625,29 @@ function colocarMarcadorPlaces()
         };
         getRequest(url,success);
     });
+}
+
+function preEliminarCliente(id)
+{
+    confirmar("Eliminar cliente","Esta seguro que desea eliminar al cliente "+id,
+            function(){
+                var params = {patente : id};
+                var url = urlBase + "/movil/DelCliente.php";
+                var success = function(response)
+                {
+                    alertify.success("Cliente eliminado");
+                    cerrarSession(response);
+                    cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
+                    resetBotones();
+                    if(typeof TIPO_GRUPO === 'undefined')
+                    {
+                        buscarCliente();
+                    }
+                    else
+                    {
+                        buscarClienteTipo(TIPO_GRUPO);
+                    }
+                };
+                postRequest(url,params,success);
+            });
 }

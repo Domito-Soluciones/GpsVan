@@ -16,6 +16,7 @@ $conductor = filter_input(INPUT_POST, 'conductor');
 $gps = filter_input(INPUT_POST, 'gps');
 $celular = filter_input(INPUT_POST, 'celular');
 $app = filter_input(INPUT_POST, 'app');
+$tipo = filter_input(INPUT_POST, 'tipo');
 $venPerCir = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_POST, 'venpercir'))->format('Y/m/d');
 $venRevTec = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_POST, 'venrevtec'))->format('Y/m/d');
 $venExt = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_POST, 'venext'))->format('Y/m/d');
@@ -28,32 +29,48 @@ if(filter_input(INPUT_POST, 'vensegob') != '')
 {
     $venSegOb = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_POST, 'vensegob'))->format('Y/m/d');
 }
-$polizaSegOb = filter_input(INPUT_POST, 'polizasegob');
-$valorSegOb = filter_input(INPUT_POST, 'valorsegob');
+else
+{
+    $venSegOb = '2000-01-01';
+}
+$polizaSegOb = filter_input(INPUT_POST, 'polizasegob') != '' ? filter_input(INPUT_POST, 'polizasegob') : '0';
+$valorSegOb = filter_input(INPUT_POST, 'valorsegob') != '' ? filter_input(INPUT_POST, 'valorsegob') : '0';
 $segRcDm = filter_input(INPUT_POST, 'segrcdm');
 $venSegRcDm = '';
 if(filter_input(INPUT_POST, 'vensegrcdm') != '')
 {
     $venSegRcDm = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_POST, 'vensegrcdm'))->format('Y/m/d');
 }
-$polizaSegRcDm = filter_input(INPUT_POST, 'polizasegrcdm');
-$valorSegRcDm = filter_input(INPUT_POST, 'valorsegrcdm');
+else
+{
+    $venSegRcDm = '2000-01-01';
+}
+$polizaSegRcDm = filter_input(INPUT_POST, 'polizasegrcdm') != '' ? filter_input(INPUT_POST, 'polizasegrcdm') : '0';
+$valorSegRcDm = filter_input(INPUT_POST, 'valorsegrcdm') != '' ? filter_input(INPUT_POST, 'valorsegrcdm') : '0';
 $segAs = filter_input(INPUT_POST, 'segas');
 $venSegAs = '';
 if(filter_input(INPUT_POST, 'vensegas') != '')
 {
     $venSegAs = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_POST, 'vensegas'))->format('Y/m/d');
 }
-$polizaSegAs = filter_input(INPUT_POST, 'polizasegas');
-$valorSegAs = filter_input(INPUT_POST, 'valorsegas');
+else
+{
+    $venSegAs = '2000-01-01';
+}
+$polizaSegAs = filter_input(INPUT_POST, 'polizasegas') != '' ? filter_input(INPUT_POST, 'polizasegas') : '0';
+$valorSegAs = filter_input(INPUT_POST, 'valorsegas') != '' ? filter_input(INPUT_POST, 'valorsegas') : '0';
 $segRcExceso = filter_input(INPUT_POST, 'segrcexceso');
 $venSegRcExceso = '';
 if(filter_input(INPUT_POST, 'vensegrcexceso') != '')
 {
     $venSegRcExceso = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_POST, 'vensegrcexceso'))->format('Y/m/d');
 }
-$polizaSegRcExceso = filter_input(INPUT_POST, 'polizasegrcexceso');
-$valorSegRcExceso = filter_input(INPUT_POST, 'valorsegrcexceso');
+else
+{
+    $venSegRcExceso = '2000-01-01';
+}
+$polizaSegRcExceso = filter_input(INPUT_POST, 'polizasegrcexceso') != '' ? filter_input(INPUT_POST, 'polizasegrcexceso') : '0';
+$valorSegRcExceso = filter_input(INPUT_POST, 'valorsegrcexceso') != '' ? filter_input(INPUT_POST, 'valorsegrcexceso') : '0';
 $adjuntoPerCir = filter_input(INPUT_POST, 'adjuntoPerCir');
 $adjuntoRevTec = filter_input(INPUT_POST, 'adjuntoRevTec');
 $adjuntoNMotor = filter_input(INPUT_POST, 'adjuntoNMotor');
@@ -76,6 +93,7 @@ $movil->setConductor($conductor);
 $movil->setGps($gps);
 $movil->setCelular($celular);
 $movil->setApp($app);
+$movil->setTipo($tipo);
 $movil->setVenPerCir($venPerCir);
 $movil->setVenRevTec($venRevTec);
 $movil->setVenExt($venExt);

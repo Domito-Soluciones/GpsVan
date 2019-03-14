@@ -12,6 +12,7 @@ class Cliente {
     private $mailContacto;
     private $mailFacturacion; 
     private $contrato;
+    private $grupo;
     
     function getId() {
         return $this->id;
@@ -51,6 +52,10 @@ class Cliente {
 
     function getContrato() {
         return $this->contrato;
+    }
+
+    function getGrupo() {
+        return $this->grupo;
     }
 
     function setId($id) {
@@ -93,7 +98,11 @@ class Cliente {
         $this->contrato = $contrato;
     }
 
-        
+    function setGrupo($grupo) {
+        $this->grupo = $grupo;
+    }
+
+            
     public function toString() {
         return "DATOS CLIENTE: ID : ".$this->id." RAZON : ".$this->razon.
                 " TIPO : ".$this->tipo." RUT : ".$this->rut.

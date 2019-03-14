@@ -169,7 +169,7 @@ class ConductorDao {
         $array = array();
         $conn = new Conexion();
         try {
-            $query = "SELECT * FROM tbl_conductor WHERE conductor_grupo = '".$grupo."'";
+            $query = "SELECT * FROM tbl_conductor WHERE conductor_tipo = '".$grupo."'";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
             while($row = mysqli_fetch_array($result)) {
