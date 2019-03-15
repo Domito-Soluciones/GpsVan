@@ -4,10 +4,10 @@ include '../../util/validarSession.php';
 include '../../query/ClienteDao.php';
 
 header('Content-Type: application/json');
-$busqueda = filter_input(INPUT_POST, 'busqueda');
+$grupo = filter_input(INPUT_POST, 'grupo');
 $buscaCC = filter_input(INPUT_POST, 'buscaCC');
 $clienteDao = new ClienteDao();
-$clientes = $clienteDao->getClientes($busqueda);
+$clientes = $clienteDao->getClientesGrupo($grupo);
 echo "[";
 for ($i = 0 ; $i < count($clientes); $i++)
 {
@@ -16,6 +16,7 @@ for ($i = 0 ; $i < count($clientes); $i++)
     $clientetipo = $clientes[$i]->getTipo();
     $clienteRut = $clientes[$i]->getRut();
     $clienteDireccion = $clientes[$i]->getDireccion();
+    $clienteGrupo = $clientes[$i]->getGrupo();
     $clienteNombreContacto = $clientes[$i]->getNombreContacto();
     $clienteFonoContacto = $clientes[$i]->getFonoContacto();
     $clienteMailContacto = $clientes[$i]->getMailContacto();
@@ -27,6 +28,7 @@ for ($i = 0 ; $i < count($clientes); $i++)
         . "\"cliente_tipo\":\"".$clientetipo."\","
         . "\"cliente_rut\":\"".$clienteRut."\","
         . "\"cliente_direccion\":\"".$clienteDireccion."\","
+        . "\"cliente_grupo\":\"".$clienteGrupo."\","
         . "\"cliente_nombre_contacto\":\"".$clienteNombreContacto."\","
         . "\"cliente_fono_contacto\":\"".$clienteFonoContacto."\","
         . "\"cliente_mail_contacto\":\"".$clienteMailContacto."\","

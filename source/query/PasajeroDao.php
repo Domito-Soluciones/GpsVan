@@ -2,7 +2,6 @@
 include '../../util/validarPeticion.php';
 include '../../conexion/Conexion.php';
 include '../../dominio/Pasajero.php';
-//include './LogQuery.php';
 
 class PasajeroDao {
 

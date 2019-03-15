@@ -7,7 +7,6 @@ include '../../dominio/ServicioDetalle.php';
 include '../../dominio/ServicioPasajero.php';
 include '../../dominio/Movil.php';
 include '../../dominio/Pasajero.php';
-//include './LogQuery.php';
 
 class ServicioDao {
     

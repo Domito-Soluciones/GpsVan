@@ -4,6 +4,7 @@ var AGREGAR = true;
 var PAGINA = 'CLIENTES';
 var ID_CLIENTE;
 var NOMBRE_CLIENTE;
+var TIPO_GRUPO;
 var CENTROS_COSTO = [];
 var mapa_oculto = true;
 var clientes_tarifa = [];
@@ -15,7 +16,7 @@ $(document).ready(function(){
         quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
-        $("#contenedor_central").load("html/datos_cliente.html", function( response, status, xhr ) {
+        $("#lista_busqueda_cliente_detalle").load("html/datos_cliente.html", function( response, status, xhr ) {
             iniciarPestanias();
             cambioEjecutado();
             $("#rut").blur(function (){
@@ -49,6 +50,19 @@ $(document).ready(function(){
                     agregarclase($("#contenedor_mapa"),"oculto");
                     mapa_oculto = true;
                 }
+            });
+            $("#volver").click(function(){
+                if(typeof TIPO_GRUPO === 'undefided')
+                {
+                    buscarCliente();
+                }
+                else
+                {
+                    buscarClienteTipo(TIPO_GRUPO);
+                }
+                cambiarPropiedad($("#agregar"),"visibility","visible");
+                cambiarPropiedad($("#guardar"),"visibility","hidden");
+                cambiarPropiedad($("#eliminar"),"visibility","hidden");
             });
             mostrarMapa();
         });
@@ -92,6 +106,7 @@ function agregarCliente()
     var telefono = $("#telefono").val();
     var mail = $("#mail").val();
     var mail2 = $("#mail2").val();
+    var grupo = $("#grupo").val();
     var contrato = $("#contratoOculta").val();
     var cc = $(".centro_costo");
     cc.each(
@@ -111,7 +126,7 @@ function agregarCliente()
     if(validarTipoDato())
     {
         var params = { razon : razon, tipo : tipo, rut : rut, direccion : direccion, nombre : nombre,
-                telefono : telefono, mail : mail, mail2 : mail2 , contrato : contrato, centros : CENTROS_COSTO + ""};
+                telefono : telefono, mail : mail, mail2 : mail2 , contrato : contrato, grupo : grupo, centros : CENTROS_COSTO + ""};
         var url = urlBase+"/cliente/AddCliente.php";
         var success = function(response)
         {
@@ -142,6 +157,7 @@ function modificarCliente()
     var telefono = $("#telefono").val();
     var mail = $("#mail").val();
     var mail2 = $("#mail2").val();
+    var grupo = $("#grupo").val();
     var contrato = $("#contratoOculta").val();
     var cc = $(".centro_costo");
     cc.each(
@@ -161,7 +177,7 @@ function modificarCliente()
     if(validarTipoDato())
     {
         var params = { id : id, razon : razon, tipo : tipo, rut : rut, direccion : direccion, nombre : nombre,
-            telefono : telefono, mail : mail, mail2 : mail2, contrato : contrato , centros : CENTROS_COSTO+""};
+            telefono : telefono, mail : mail, mail2 : mail2, contrato : contrato ,grupo : grupo, centros : CENTROS_COSTO+""};
         var url = urlBase + "/cliente/ModCliente.php";
         var success = function(response)
         {
@@ -186,13 +202,13 @@ function buscarCliente()
     {
         cerrarSession(response);
         var grupos = $("#lista_busqueda_cliente");
-        var clientes = $("#lista_busqueda_movil_detalle");
+        var clientes = $("#lista_busqueda_cliente_detalle");
         grupos.html("");
         grupos.append("<div class=\"fila_contenedor\" id=\"col_0\" onClick=\"cambiarFila('0')\">Cliente grande</div>");
         grupos.append("<div class=\"fila_contenedor\" id=\"col_1\" onClick=\"cambiarFila('1')\">Cliente Mediano</div>");
         grupos.append("<div class=\"fila_contenedor\" id=\"col_2\" onClick=\"cambiarFila('2')\">Cliente Pequeño</div>");
         clientes.html("");
-        clientes.append("<div class=\"contenedor_central_titulo\"><div></div><div>rut</div><div>Razon social</div><div>Tipo</div><div>Grupo</div><div></div></div>");
+        clientes.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Razon social</div><div>Tipo</div><div>Grupo</div><div></div></div>");
         CLIENTES = response;
         if(response.length === 0)
         {
@@ -203,7 +219,7 @@ function buscarCliente()
         {
             var id = response[i].cliente_id;
             var rut = response[i].cliente_rut;
-            var nombre = response[i].cliente_nombre;
+            var nombre = response[i].cliente_razon;
             var tipo = response[i].cliente_tipo;
             var grupo = '';
             if(response[i].cliente_grupo === '0')
@@ -230,7 +246,7 @@ function buscarCliente()
     };
     postRequest(url,params,success);
 }
-function cambiarFila(id,nombre)
+function cambiarFila(id)
 {
     if(MODIFICADO)
     {
@@ -258,8 +274,8 @@ function buscarClienteTipo(tipo)
 {
     TIPO_GRUPO = tipo;
     marcarFilaActiva("col_"+tipo);
-    var params = {grupo : tipo};
-    var url = urlBase + "/movil/GetClientesGrupo.php";
+    var params = {grupo : tipo,buscaCC : '1'};
+    var url = urlBase + "/cliente/GetClientesGrupo.php";
     var success = function(response)
     {
         cerrarSession(response);
@@ -272,12 +288,12 @@ function buscarClienteTipo(tipo)
             alertify.error("No hay registros que mostrar");
             return;
         }
-        clientes.append("<div class=\"contenedor_central_titulo\"><div></div><div>rut</div><div>Razon social</div><div>Tipo</div><div>Grupo</div><div></div></div>");
+        clientes.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Razon social</div><div>Tipo</div><div>Grupo</div><div></div></div>");
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].cliente_id;
             var rut = response[i].cliente_rut;
-            var nombre = response[i].cliente_nombre;
+            var nombre = response[i].cliente_razon;
             var tipo = response[i].cliente_tipo;
             var grupo = '';
             if(response[i].cliente_grupo === '0')
@@ -310,7 +326,7 @@ function abrirModificar(id,nombre)
     ID_CLIENTE = id;
     NOMBRE_CLIENTE = nombre;
     marcarFilaActiva(ID_CLIENTE);
-    $("#contenedor_central").load("html/datos_cliente.html", function( response, status, xhr ) {
+    $("#lista_busqueda_cliente_detalle").load("html/datos_cliente.html", function( response, status, xhr ) {
         iniciarPestanias();
         cambioEjecutado();
         $("#nick").blur(function (){
@@ -326,7 +342,20 @@ function abrirModificar(id,nombre)
                 $("#razon").val("");
                 return;
             }
-        });     
+        });    
+        $("#volver").click(function(){
+            if(typeof TIPO_GRUPO === 'undefided')
+            {
+                buscarCliente();
+            }
+            else
+            {
+                buscarClienteTipo(TIPO_GRUPO);
+            }
+            cambiarPropiedad($("#agregar"),"visibility","visible");
+            cambiarPropiedad($("#guardar"),"visibility","hidden");
+            cambiarPropiedad($("#eliminar"),"visibility","hidden");
+        });
         $("#direccion").on("input",function(){
             mostrarDatalist($(this).val(),$("#partida"),'direccion');
         });
@@ -360,6 +389,7 @@ function abrirModificar(id,nombre)
         $("#direccion").val(cliente.cliente_direccion);
         $("#mail").val(cliente.cliente_mail_contacto);
         $("#mail2").val(cliente.cliente_mail_facturacion);
+        $("#grupo").val(cliente.cliente_grupo);
         verAdjunto(cliente.cliente_contrato,'');
         var j = 0;
         Object.keys(cliente.cliente_centro_costo).forEach(function(key){
@@ -631,8 +661,8 @@ function preEliminarCliente(id)
 {
     confirmar("Eliminar cliente","Esta seguro que desea eliminar al cliente "+id,
             function(){
-                var params = {patente : id};
-                var url = urlBase + "/movil/DelCliente.php";
+                var params = {rut : id};
+                var url = urlBase + "/cliente/DelCliente.php";
                 var success = function(response)
                 {
                     alertify.success("Cliente eliminado");

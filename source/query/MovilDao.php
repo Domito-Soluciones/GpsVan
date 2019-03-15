@@ -3,7 +3,6 @@ include '../../util/validarPeticion.php';
 include '../../conexion/Conexion.php';
 include '../../dominio/Movil.php';
 include '../../dominio/Conductor.php';
-//include './LogQuery.php';
 
 class MovilDao {
     

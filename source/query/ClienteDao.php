@@ -2,7 +2,6 @@
 include '../../util/validarPeticion.php';
 include '../../conexion/Conexion.php';
 include '../../dominio/Cliente.php';
-//include './LogQuery.php';
 
 class ClienteDao {
     public function getClientes($busqueda)
@@ -25,6 +24,7 @@ class ClienteDao {
                 $cliente->setTipo($row["cliente_tipo"]);
                 $cliente->setRut($row["cliente_rut"]);
                 $cliente->setDireccion($row["cliente_direccion"]);
+                $cliente->setGrupo($row["cliente_grupo"]);
                 $cliente->setNombreContacto($row["cliente_nombre_contacto"]);
                 $cliente->setFonoContacto($row["cliente_fono_contacto"]);
                 $cliente->setMailContacto($row["cliente_mail_contacto"]);
@@ -43,7 +43,7 @@ class ClienteDao {
         $array = array();
         $conn = new Conexion();
         try {
-            $query = "SELECT * FROM tbl_cliente WHERE cliente_grupo = '%".$grupo."%'";
+            $query = "SELECT * FROM tbl_cliente WHERE cliente_grupo = '".$grupo."'";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
             while($row = mysqli_fetch_array($result)) {
@@ -53,6 +53,7 @@ class ClienteDao {
                 $cliente->setTipo($row["cliente_tipo"]);
                 $cliente->setRut($row["cliente_rut"]);
                 $cliente->setDireccion($row["cliente_direccion"]);
+                $cliente->setGrupo($row["cliente_grupo"]);
                 $cliente->setNombreContacto($row["cliente_nombre_contacto"]);
                 $cliente->setFonoContacto($row["cliente_fono_contacto"]);
                 $cliente->setMailContacto($row["cliente_mail_contacto"]);
@@ -92,6 +93,7 @@ class ClienteDao {
         $tipo = $cliente->getTipo();
         $rut = $cliente->getRut();
         $direccion = $cliente->getDireccion();
+        $grupo = $cliente->getGrupo();
         $nombre = $cliente->getNombreContacto();
         $telefono = $cliente->getFonoContacto();
         $mail = $cliente->getMailContacto();
@@ -101,8 +103,8 @@ class ClienteDao {
         try {
             $query = "INSERT INTO tbl_cliente (cliente_razon_social,cliente_tipo,cliente_rut,"
                     . "cliente_direccion,cliente_nombre_contacto,cliente_fono_contacto,"
-                    . "cliente_mail_contacto,cliente_mail_facturacion,cliente_contrato"
-                    . ") VALUES ('$razon','$tipo','$rut','$direccion','$nombre','$telefono','$mail','$mail2','$contrato')"; 
+                    . "cliente_mail_contacto,cliente_mail_facturacion,cliente_contrato,cliente_grupo"
+                    . ") VALUES ('$razon','$tipo','$rut','$direccion','$nombre','$telefono','$mail','$mail2','$contrato','$grupo')"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -122,6 +124,7 @@ class ClienteDao {
         $tipo = $cliente->getTipo();
         $rut = $cliente->getRut();
         $direccion = $cliente->getDireccion();
+        $grupo = $cliente->getGrupo();
         $nombre = $cliente->getNombreContacto();
         $telefono = $cliente->getFonoContacto();
         $mail = $cliente->getMailContacto();
@@ -131,7 +134,7 @@ class ClienteDao {
         try {
             $query = "UPDATE tbl_cliente SET cliente_razon_social = '$razon',"
                     . "cliente_tipo = '$tipo',"
-                    . "cliente_direccion = '$direccion', cliente_nombre_contacto = '$nombre',"
+                    . "cliente_direccion = '$direccion',cliente_grupo = '$grupo', cliente_nombre_contacto = '$nombre',"
                     . "cliente_fono_contacto = '$telefono',cliente_mail_contacto = '$mail',"
                     . "cliente_mail_facturacion = '$mail2', cliente_contrato = '$contrato'"
                     ." WHERE cliente_rut = '$rut'";
