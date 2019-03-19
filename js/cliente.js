@@ -1,4 +1,4 @@
-/* global urlBase, alertify, obj, google, GEOCODER_API, API_KEY, CORS_PROXY, map, markersPanel */
+/* global urlBase, alertify, obj, google, API_KEY, map, markersPanel, directionsDisplay, markers, geocoder */
 var CLIENTES;
 var AGREGAR = true;
 var PAGINA = 'CLIENTES';
@@ -11,12 +11,21 @@ var clientes_tarifa = [];
 var CAMPOS = ["rut","razon","tipoCliente","direccion","nombreContacto","telefono","mail","mail2"];
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
+    if (directionsDisplay !== null) {
+        directionsDisplay.setMap(null);
+        directionsDisplay = null;
+    }
+    for(var i = 0; i < markers.length;i++)
+    {
+        markers[i].setMap(null);
+    }
     buscarCliente();
     $("#agregar").click(function(){
         quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
         $("#lista_busqueda_cliente_detalle").load("html/datos_cliente.html", function( response, status, xhr ) {
+            initPlacesAutoComplete();
             iniciarPestanias();
             cambioEjecutado();
             $("#rut").blur(function (){
@@ -35,9 +44,6 @@ $(document).ready(function(){
                 quitarCentroCosto();
             });
             
-            $("#direccion").on("input",function(){
-                mostrarDatalist($(this).val(),$("#partida"),'direccion');
-            });
             $("#buscaPunto").click(function(){
                 if(mapa_oculto)
                 {
@@ -204,9 +210,9 @@ function buscarCliente()
         var grupos = $("#lista_busqueda_cliente");
         var clientes = $("#lista_busqueda_cliente_detalle");
         grupos.html("");
-        grupos.append("<div class=\"fila_contenedor\" id=\"col_0\" onClick=\"cambiarFila('0')\">Cliente grande</div>");
-        grupos.append("<div class=\"fila_contenedor\" id=\"col_1\" onClick=\"cambiarFila('1')\">Cliente Mediano</div>");
-        grupos.append("<div class=\"fila_contenedor\" id=\"col_2\" onClick=\"cambiarFila('2')\">Cliente Pequeño</div>");
+        grupos.append("<div class=\"fila_contenedor\" id=\"col_0\" onClick=\"cambiarFila('0')\">Grandes Clientes</div>");
+        grupos.append("<div class=\"fila_contenedor\" id=\"col_1\" onClick=\"cambiarFila('1')\">Medianos Clientes</div>");
+        grupos.append("<div class=\"fila_contenedor\" id=\"col_2\" onClick=\"cambiarFila('2')\">PequeñoClientes</div>");
         clientes.html("");
         clientes.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Razon social</div><div>Tipo</div><div>Grupo</div><div></div></div>");
         CLIENTES = response;
@@ -224,15 +230,15 @@ function buscarCliente()
             var grupo = '';
             if(response[i].cliente_grupo === '0')
             {
-                grupo = 'Cliente Grande';
+                grupo = 'Grandes Clientes';
             }
             else if(response[i].cliente_grupo === '1')
             {
-                grupo = 'Cliente Mediano';
+                grupo = 'Medianos Clientes';
             }
             else if(response[i].cliente_grupo === '2')
             {
-                grupo = 'Cliente Pequeño';
+                grupo = 'Pequeños Clientes';
             }
             clientes.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\">"+
                     "<div onClick=\"abrirModificar('"+id+"')\">"+rut+"</div>"+
@@ -274,51 +280,47 @@ function buscarClienteTipo(tipo)
 {
     TIPO_GRUPO = tipo;
     marcarFilaActiva("col_"+tipo);
-    var params = {grupo : tipo,buscaCC : '1'};
-    var url = urlBase + "/cliente/GetClientesGrupo.php";
-    var success = function(response)
+    var clientes = $("#lista_busqueda_cliente_detalle");
+    clientes.html("");
+    clientes.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Razon social</div><div>Tipo</div><div>Grupo</div><div></div></div>");
+    var noHayRegistros = true;
+    for(var i = 0 ; i < CLIENTES.length; i++)
     {
-        cerrarSession(response);
-        var clientes = $("#lista_busqueda_cliente_detalle");
-        clientes.html("");
-        CONDUCTORES = response;
-        if(response.length === 0)
+        if(CLIENTES[i].cliente_grupo === TIPO_GRUPO)
         {
-            clientes.append("<div class=\"mensaje_bienvenida\">No hay registros que mostrar</div>");
-            alertify.error("No hay registros que mostrar");
-            return;
-        }
-        clientes.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Razon social</div><div>Tipo</div><div>Grupo</div><div></div></div>");
-        for(var i = 0 ; i < response.length; i++)
-        {
-            var id = response[i].cliente_id;
-            var rut = response[i].cliente_rut;
-            var nombre = response[i].cliente_razon;
-            var tipo = response[i].cliente_tipo;
+            noHayRegistros = false;
+            var id = CLIENTES[i].cliente_id;
+            var rut = CLIENTES[i].cliente_rut;
+            var nombre = CLIENTES[i].cliente_razon;
+            var tipoG = CLIENTES[i].cliente_tipo;
             var grupo = '';
-            if(response[i].cliente_grupo === '0')
+            if(CLIENTES[i].cliente_grupo === '0')
             {
-                grupo = 'Cliente Grande';
+                grupo = 'Grandes clientes';
             }
-            else if(response[i].cliente_grupo === '1')
+            else if(CLIENTES[i].cliente_grupo === '1')
             {
-                grupo = 'Cliente Mediano';
+                grupo = 'Medianos clientes';
             }
-            else if(response[i].cliente_grupo === '2')
+            else if(CLIENTES[i].cliente_grupo === '2')
             {
-                grupo = 'Cliente Pequeño';
+                grupo = 'Pequeños clientes';
             }
             clientes.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\">"+
                     "<div onClick=\"abrirModificar('"+id+"')\">"+rut+"</div>"+
                     "<div onClick=\"abrirModificar('"+id+"')\">"+nombre+"</div>"+
-                    "<div onClick=\"abrirModificar('"+id+"')\">"+tipo+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"')\">"+tipoG+"</div>"+
                     "<div onClick=\"abrirModificar('"+id+"')\">"+grupo+"</div>"+
                     "<div><img onclick=\"preEliminarCliente('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
                     "</div>");
         }
-        cambiarPropiedad($("#loader"),"visibility","hidden");
-    };
-    postRequest(url,params,success);
+    }
+    if(noHayRegistros)
+    {
+        clientes.append("<div class=\"mensaje_bienvenida\">No hay registros que mostrar</div>");
+        alertify.error("No hay registros que mostrar");
+        return;
+    }
 }
 function abrirModificar(id,nombre)
 {
@@ -327,6 +329,7 @@ function abrirModificar(id,nombre)
     NOMBRE_CLIENTE = nombre;
     marcarFilaActiva(ID_CLIENTE);
     $("#lista_busqueda_cliente_detalle").load("html/datos_cliente.html", function( response, status, xhr ) {
+        initPlacesAutoComplete();
         iniciarPestanias();
         cambioEjecutado();
         $("#nick").blur(function (){
@@ -356,9 +359,7 @@ function abrirModificar(id,nombre)
             cambiarPropiedad($("#guardar"),"visibility","hidden");
             cambiarPropiedad($("#eliminar"),"visibility","hidden");
         });
-        $("#direccion").on("input",function(){
-            mostrarDatalist($(this).val(),$("#partida"),'direccion');
-        });
+        
         $("#buscaPunto").click(function(){
                 if(mapa_oculto)
                 {
@@ -610,10 +611,6 @@ function succesSubirContrato()
 
 function colocarMarcadorPlaces()
 {
-    if(typeof POLYLINE !== "undefined")
-    {
-        POLYLINE.setMap(null);
-    }
     for(var i = 0 ; i < markersPanel.length;i++)
     {
         markersPanel[i].setMap(null);
@@ -641,19 +638,19 @@ function colocarMarcadorPlaces()
     });
     
     google.maps.event.addListener(map, "dragend", function() {
-        var url = CORS_PROXY + GEOCODER_API + "latlng="+POSITION[0]+","+POSITION[1]+"&sensor=true&key="+API_KEY;
-        var success = function(response)
-        {
-            var status = response.status;
-            if (status === "OK") {
-                var results = response.results;
+        var latlng = new google.maps.LatLng(POSITION[0], POSITION[1]);
+        geocoder.geocode({'location': latlng}, function(results, status) {
+            if (status === 'OK') {
                 var zero = results[0];
                 var address = zero.formatted_address;
                 var punto = $('#direccion');
-                punto.val(address);
+                punto.val(address);                
             }
-        };
-        getRequest(url,success);
+            else
+            {
+                window.alert('Geocoder failed due to: ' + status);
+            }
+        });
     });
 }
 
@@ -681,3 +678,19 @@ function preEliminarCliente(id)
                 postRequest(url,params,success);
             });
 }
+
+    function initPlacesAutoComplete() {
+        autocomplete = new google.maps.places.Autocomplete(document.getElementById('direccion'),
+        {componentRestrictions:{'country': 'cl'}});
+        places = new google.maps.places.PlacesService(map);
+        autocomplete.addListener('place_changed', onPlaceChanged);
+    }
+    
+    function onPlaceChanged()
+    {
+        var place = autocomplete.getPlace();
+        if (place.geometry) {
+            map.panTo(place.geometry.location);
+            map.setZoom(15);
+        }
+    }

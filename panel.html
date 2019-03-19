@@ -8,10 +8,10 @@
             <div class="buscador_titulo">
                 Nuevo Servicio
             </div>
-<!--            <div>
+            <div>
                 <input type="radio" class="radio-asignar" name="tipo" id="normal" checked>Normal
                 <input type="radio" class="radio-asignar" name="tipo" id="especial">Especial
-            </div>-->
+            </div>
             <div id="servicio-normal" class="buscador barra_asignacion">
                 <input type="hidden" id="ids" value="">
                 <div class="contenedor-panel">
@@ -142,6 +142,9 @@
             </div>
             <div class="buscador_titulo">
                 Pasajeros Asignados
+                <div class="boton-chico boton_en_linea" id="addPasajero">
+                    <img src="img/anadir.svg" width="12" height="12">
+                </div>
             </div>
             <div id="contenedor_pasajero">
                 <div class="contenedor-loader">
@@ -156,6 +159,37 @@
             </div>
             <div id="contenedor_pasajero_no_asignado">
                 
+            </div>
+        </div>
+        <div class="contenedor_editar">
+            <div>
+                Editar:
+                <input type="text" id="input_editar" class="input_asignar_editar">
+                <div class="boton-chico" id="boton_place">
+                    <img src="img/guardar.svg" width="12" height="12">
+                </div>
+            </div>
+        </div>
+        <div class="contenedor_agregar">
+            <div>
+                Nombre :
+                <input type="text" class="input_asignar_agregar" id="agregaNombre" placeholder="Ej: Juan Perez">
+                Celular:
+                <input type="text" class="input_asignar_agregar" id="agregaCelular" placeholder="Ej: 987654345">
+            </div>
+            <div>
+                Dirección:
+                <input type="text" class="input_asignar_agregar_grande" id="agregaDireccion">
+            </div>
+            <div>
+                <div class="boton" id="agregarPasajero">
+                    <img src="img/anadir.svg" width="12" height="12">
+                    Agregar
+                </div>
+                <div class="boton" id="cerrarAgregar">
+                    <img src="img/cancelar.svg" width="11" height="11">
+                    Cerrar
+                </div>
             </div>
         </div>
         <div class="contenedor_central asignacion_buscador" id="contenedor_mapa">

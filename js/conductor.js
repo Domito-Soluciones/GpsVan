@@ -290,19 +290,35 @@ function buscarConductor()
             alertify.error("No hay registros que mostrar");
             return;
         }
-        conductores.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div>Grupo</div><div></div></div>")
+        conductores.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div>Tipo</div><div></div></div>")
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].conductor_id;
             var rut = response[i].conductor_rut;
             var nombre = response[i].conductor_nombre;
             var papellido = response[i].conductor_papellido;
-            var grupo = response[i].conductor_grupo === '' ? 'Indefinido' : response[i].conductor_grupo;
+            var tipo = '';
+            if(response[i].conductor_tipo === '0')
+            {
+                tipo = 'Transportista';
+            }
+            else if(response[i].conductor_tipo === '1')
+            {
+                tipo = 'Conductor interno';
+            }
+            else if(response[i].conductor_tipo === '2')
+            {
+                tipo = 'Conductor externo';
+            }
+            else if(response[i].conductor_tipo === '3')
+            {
+                tipo = 'Transportista / Conductor';
+            }
             conductores.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\">"+
                     "<div onClick=\"abrirModificar('"+id+"')\">"+rut+"</div>"+
                     "<div onClick=\"abrirModificar('"+id+"')\">"+nombre+"</div>"+
                     "<div onClick=\"abrirModificar('"+id+"')\">"+papellido+"</div>"+
-                    "<div onClick=\"abrirModificar('"+id+"')\">"+grupo+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"')\">"+tipo+"</div>"+
                     "<div><img onclick=\"preEliminarConductor('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
                     "</div>");
         }
@@ -315,39 +331,51 @@ function buscarConductorGrupo(grupo)
 {
     ID_GRUPO = grupo.split("_")[1];
     marcarFilaActiva(grupo);
-    var params = {grupo : ID_GRUPO};
-    var url = urlBase + "/conductor/GetConductoresGrupo.php";
-    var success = function(response)
+    var conductores = $("#lista_busqueda_conductor_detalle");
+    conductores.html("");
+    conductores.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div>Grupo</div></div>")
+    var noHayRegistros = true;
+    for(var i = 0 ; i < CONDUCTORES.length; i++)
     {
-        cerrarSession(response);
-        var conductores = $("#lista_busqueda_conductor_detalle");
-        conductores.html("");
-        CONDUCTORES = response;
-        if(response.length === 0)
+        if(CONDUCTORES[i].conductor_tipo === ID_GRUPO)
         {
-            conductores.append("<div class=\"mensaje_bienvenida\">No hay registros que mostrar</div>");
-            alertify.error("No hay registros que mostrar");
-            return;
-        }
-        conductores.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div>Grupo</div></div>")
-        for(var i = 0 ; i < response.length; i++)
-        {
-            var id = response[i].conductor_id;
-            var rut = response[i].conductor_rut;
-            var nombre = response[i].conductor_nombre;
-            var papellido = response[i].conductor_papellido;            
-            var grupo = response[i].conductor_grupo === '' ? 'Indefinido' : response[i].conductor_grupo;
+            noHayRegistros = false;
+            var id = CONDUCTORES[i].conductor_id;
+            var rut = CONDUCTORES[i].conductor_rut;
+            var nombre = CONDUCTORES[i].conductor_nombre;
+            var papellido = CONDUCTORES[i].conductor_papellido;            
+            var tipo = '';
+            if(CONDUCTORES[i].conductor_tipo === '0')
+            {
+                tipo = 'Transportista';
+            }
+            else if(CONDUCTORES[i].conductor_tipo === '1')
+            {
+                tipo = 'Conductor interno';
+            }
+            else if(CONDUCTORES[i].conductor_tipo === '2')
+            {
+                tipo = 'Conductor externo';
+            }
+            else if(CONDUCTORES[i].conductor_tipo === '3')
+            {
+                tipo = 'Transportista / Conductor';
+            }
             conductores.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\">"+
                     "<div onClick=\"abrirModificar('"+id+"')\">"+rut+"</div>"+
                     "<div onClick=\"abrirModificar('"+id+"')\">"+nombre+"</div>"+
                     "<div onClick=\"abrirModificar('"+id+"')\">"+papellido+"</div>"+
-                    "<div onClick=\"abrirModificar('"+id+"')\">"+grupo+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"')\">"+tipo+"</div>"+
                     "<div><img onclick=\"preEliminarConductor('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
                     "</div>");
         }
-        cambiarPropiedad($("#loader"),"visibility","hidden");
-    };
-    postRequest(url,params,success);
+    }
+    if(noHayRegistros)
+    {
+        conductores.append("<div class=\"mensaje_bienvenida\">No hay registros que mostrar</div>");
+        alertify.error("No hay registros que mostrar");
+        return;
+    }
 }
 function cambiarFila(id)
 {

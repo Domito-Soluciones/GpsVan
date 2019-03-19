@@ -1,5 +1,5 @@
 
-/* global MODIFICADO, alertify, PAGINA_ANTERIOR, INTERVAL_SERVICIOS, MENU_OCULTO, PLACES_AUTOCOMPLETE_API, CORS_PROXY, POSITION, API_KEY */
+/* global MODIFICADO, alertify, PAGINA_ANTERIOR, INTERVAL_SERVICIOS, MENU_OCULTO, PLACES_AUTOCOMPLETE_API, POSITION, API_KEY */
 var MODIFICADO = false;
 var KEY = "DGFSGHJRTJTHWGWEJNGWI9EFN";
 var urlBase= "source/httprequest";
@@ -58,7 +58,7 @@ function getRequest(url,success,cargar = true)
         success: success,
         async: true,
         cache: false,
-//        crossDomain: true,
+        crossDomain: true,
         beforeSend: function (xhr) {
             if(cargar)
             {
@@ -661,15 +661,20 @@ function abrirMenu()
         cambiarPropiedad($("#contenido-central"),"width","96%");
         cambiarPropiedad($(".contenido-menu"),"width","calc(30% - 10px)");
         cambiarPropiedad($(".contenido-menu"),"display","none");
+        cambiarPropiedad($(".asignacion_buscador"),"margin-left","calc(37% - 24px)");
+        cambiarPropiedad($(".asignacion_buscador"),"width","calc(70% - 66px)");
         MENU_VISIBLE = false;
     }
     else
     {
         $("#btn_menu_img").attr("src","img/cancelar.svg");
         cambiarPropiedad($("#menu"),"width","calc(15% - 1px)");
+        cambiarPropiedad($("#menu"),"max-width","200px");
         cambiarPropiedad($("#contenido-central"),"width","calc(89% - 60px)");
         cambiarPropiedad($(".contenido-menu"),"width","calc(90% - 10px)");
         cambiarPropiedad($(".contenido-menu"),"display","block");
+        cambiarPropiedad($(".asignacion_buscador"),"margin-left","calc(37% - 21px)");
+        cambiarPropiedad($(".asignacion_buscador"),"width","calc(70% - 51px)");
         MENU_VISIBLE = true;
 
     }
@@ -688,32 +693,6 @@ function cerrarTooltip(tooltip)
 function marcarCampoNoAplicable()
 {
     return "-";
-}
-
-function mostrarDatalist(val,datalist,campo)
-{
-    if(val === "") return;
-    var url = CORS_PROXY + PLACES_AUTOCOMPLETE_API + "input="+val+
-            "&location="+POSITION[0]+","+POSITION[1]+"&sensor=true&radius=500&key="+API_KEY;
-    var success = function(response)
-    {
-        datalist.html("");
-        var places =  response.predictions;
-        for(var i = 0 ; i < places.length;i++)
-        {
-            var descripcion = places[i].description;
-            var encodeDescripcion = descripcion.replace(/'/g,'');
-            datalist.append(
-                    "<div class=\"option-datalist\" onclick=\"selecionarPlace('"+encodeDescripcion+"')\"><img src=\"img/ubicacion.svg\" width=\"12\" heifgt=\"12\">"+descripcion+"</div>");
-        }
-    };
-    getRequest(url,success);
-}
-
-function selecionarPlace(val,obj)
-{
-    $("#punto").val(decodeURI(val));
-    $("#partida").html("");
 }
 
 function enviarCorreoPassword(mail,password)

@@ -109,5 +109,26 @@
     {
         width: 400px;
     }
+    #btn_menu
+    {
+        display: none;
+    }
+    .contenedor-servicios
+    {
+        display: none;
+    }
+    #servicios_pendientes_link
+    {
+        display: block;
+    }
+    .servicios_pendientes{
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    #botonCancelar
+    {
+        display: initial;
+    }
     
 }

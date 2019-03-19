@@ -123,6 +123,7 @@ select
 {
     color: white;
     width: calc(4% - 1px);
+    max-width: 55px;
     height: calc(100% - 60px);
     float: left;
     display: inline;
@@ -316,8 +317,8 @@ select
 
 .asignacion_buscador
 {
-    margin-left: calc(36% - 11px) !important;
-    width: calc(70% - 67px) !important;
+    margin-left: calc(37% - 24px);
+    width: calc(70% - 66px);
     height: calc(100% - 1px);
 }
 
@@ -358,8 +359,8 @@ select
 }
 .mapa_bajo
 {
-    width : calc(41% - 3px) !important;
-    margin-left: calc(60% - 10px) !important;
+    width: calc(42% - 6px) !important;
+    margin-left: calc(60% - 9px) !important;
 }
 .buscador-asignacion-boton
 {
@@ -440,12 +441,16 @@ select
     cursor:pointer;
     line-height: 30px;
 }
+.btn-grande
+{
+    width: auto;
+}
 .boton-chico
 {
     color: white;
     background-color: #a7b9bd;
     text-align: center;
-    margin-right: 20px;
+    margin-right: 5px;
     width: 30px;
     height: 25px;
     vertical-align: middle;
@@ -453,6 +458,11 @@ select
     cursor:pointer;
     line-height: 25px;
     display: inline-block;
+}
+.boton_en_linea
+{
+    margin-top: 5px;
+    float: right;
 }
 .boton:hover
 {
@@ -879,6 +889,24 @@ select
     width: 70% !important;
     height: 25px !important;   
 }
+.input_asignar_editar
+{
+    position: relative;
+    width: 330px;
+    height: 25px;   
+}
+.input_asignar_agregar
+{
+    position: relative;
+    width: 135px;
+    height: 20px;   
+}
+.input_asignar_agregar_grande
+{
+    position: relative;
+    width: 335px;
+    height: 20px;   
+}
 .input_cliente
 {
     width: 130% !important;
@@ -889,7 +917,7 @@ select
 {
     width: 70% !important;
     height: 30px !important;
-    background-position: 140px, 0 !important;
+    background-position: 125px, 0 !important;
 }
 .select_asignar_cliente
 {
@@ -1278,6 +1306,7 @@ select
     height: 40px;
     line-height: 40px;
     background: white;
+    margin-left: 1px;
 }
 .contenedor_central_titulo_pasajero
 {
@@ -1322,6 +1351,7 @@ select
 {
     padding: 0 !important;
     width: 100% !important;
+    margin-left: 1px;
 }
 .fila_contenedor_pasajero
 {
@@ -1450,7 +1480,7 @@ select
 {
     background-color: white;
     padding: 2%;
-    width: 32%;
+    width: 36%;
     border: solid 1px silver;
 }
 
@@ -1525,4 +1555,43 @@ select
 .nombre_pasajero
 {
     width: 24% !important;
+}
+.contenedor_editar
+{
+    padding-top: 20px;
+    padding-left: 40px;
+    display: none;
+    width: 38%;
+    margin-left: 59%;
+    height: 50px;
+    background-color: #ecf0f1;
+    border-bottom: solid 1px silver;
+}
+.contenedor_agregar
+{
+    padding-top: 20px;
+    padding-left: 40px;
+    display: none;
+    width: 38%;
+    margin-left: 59%;
+    height: 120px;
+    background-color: #ecf0f1;
+    border-bottom: solid 1px silver;
+}
+.contenedor_agregar div
+{
+    margin-top: 5px;
+}
+
+.mapa_editar
+{
+    height: calc(100% - 71px);
+}
+.mapa_agregar
+{
+    height: calc(100% - 141px);
+}
+#servicios_pendientes_link
+{
+    display: none;
 }

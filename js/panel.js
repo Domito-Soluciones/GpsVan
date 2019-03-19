@@ -1,4 +1,4 @@
-/* global POLYLINE, alertify, urlBase, PLACES_AUTOCOMPLETE_API, CORS_PROXY, POSITION, API_KEY, PLACES_DETAILS_API, google, map, DIRECTIONS_API, EN_PROCCESO_DE_ASIGNACION, markers, GEOCODER_API, TIPO_SERVICIO, markersPanel */
+/* global POLYLINE, alertify, urlBase, PLACES_AUTOCOMPLETE_API, POSITION, API_KEY, PLACES_DETAILS_API, google, map, DIRECTIONS_API, EN_PROCCESO_DE_ASIGNACION, markers, TIPO_SERVICIO, markersPanel, directionsService, directionsDisplay, geocoder, MENU_VISIBLE */
 var CLIENTES = {};
 var moviles = [];
 var clientesArray = [];
@@ -12,9 +12,9 @@ var pasajeros = [];
 var direccion_empresa;
 var NOMBRE_CLIENTE;
 var conductores = new Map();
+var TIPO = 'NORMAL';
 
 var CAMPOS = ["clientes","ruta","fechas","hora","vehiculos","tarifa1","tarifa2"];
-//var CAMPOS_ESPECIAL = ["partida","destino","usuarios","celular","fechas2","hora2","vehiculos2","tarifas2"];
 
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
@@ -78,12 +78,22 @@ $(document).ready(function(){
     });
     
     $("#clientes").on('blur',function () {
-        var noExiste = validarInexistencia($("#clientes").val(),clientesArray);
-        if(noExiste)
+        if(TIPO !== 'ESPECIAL')
         {
-            alertify.error("Cliente inexistente");
-            $("#clientes").val("");
-            
+            var noExiste = validarInexistencia($("#clientes").val(),clientesArray);
+            if(noExiste)
+            {
+                alertify.error("Cliente inexistente");
+                $("#clientes").val("");
+
+            }
+        }
+        else
+        {
+            $("#ruta").val($("#clientes").val()+"-XX-ESP");
+            cambiarPropiedad($(".buscador-pasajero"),"display","initial");
+            agregarclase($("#contenedor_mapa"),"mapa_bajo");
+            cargarPasajerosEspecial();
         }
     });
 
@@ -94,45 +104,64 @@ $(document).ready(function(){
     $("#solicitar").click(function () {
         agregarServicio();
     });
-//    $("#solicitar2").click(function () {
-//        agregarServicioEspecial();
-//    });
-    
-    $("#partida").on("input",function(){
-        mostrarDatalist($(this).val(),'partidal','partida');
-    });
-    $("#destino").on("input",function(){
-         mostrarDatalist($(this).val(),'destinol','destino');
+    $("#solicitar2").click(function () {
+        agregarServicioEspecial();
     });
     
-//    $("#normal").click(function(){
-//        cambiarServicioNormal();
-//    });
-//    $("#especial").click(function(){
-//        cambiarServicioEspecial();
-//    });
-    
-    $("#partida").focus(function(){
-        colocarMarcadorPlaces();
+    $("#normal").click(function(){
+        cambiarServicioNormal();
     });
-    
-    $("#destino").focus(function(){
-        colocarMarcadorPlaces();
+    $("#especial").click(function(){
+        cambiarServicioEspecial();
     });
     
     $("#busqueda").keyup(function(){
         cargarPasajerosBusqueda();
     });
     
+    $("#addPasajero").click(function(){
+        abrirAddPasajero();
+    });
+    $("#agregarPasajero").click(function(){
+        var nombre = $("#agregaNombre").val();
+        var direccion = $("#agregaDireccion").val();
+        var celular = $("#agregaCelular").val();
+        if(nombre !== '' && direccion !== '' && celular !== '')
+        {
+            agregarPasajero('0',nombre,direccion,celular);
+            $("#agregaNombre").val("");
+            $("#agregaDireccion").val("");
+            $("#agregaCelular").val("");
+        }
+        else
+        {
+            alertify.error("Ingrese todos los campos necesarios");
+        }
+    });
+    $("#cerrarAgregar").click(function(){
+        cerrarAddPasajero();
+    });
+    
 });
 
 function init()
 {
+    if(MENU_VISIBLE)
+    {
+        cambiarPropiedad($(".asignacion_buscador"),"margin-left","calc(37% - 21px)");
+        cambiarPropiedad($(".asignacion_buscador"),"width","calc(70% - 51px)"); 
+    }
+    else
+    {
+        cambiarPropiedad($(".asignacion_buscador"),"margin-left","calc(37% - 24px)");
+        cambiarPropiedad($(".asignacion_buscador"),"width","calc(70% - 66px)");
+    }
     cargarClientes();
     cargarMoviles();
-    if(typeof POLYLINE !== "undefined")
+    if(directionsDisplay === null)
     {
-        POLYLINE.setMap(null);
+        directionsDisplay = new google.maps.DirectionsRenderer();
+        directionsDisplay.setMap(map);
     }
     for(var i = 0; i < markers.length;i++)
     {
@@ -191,11 +220,9 @@ function cargarPasajeros()
         contenedor.html("");
         contenedorEx.html("");
         direccion_empresa = response[0].pasajero_empresa_direccion;
-        colocarMarcador(direccion_empresa);
         if(ruta.indexOf("-ZP-") !== -1)
         {
             origen = response[0].pasajero_empresa_direccion;
-            colocarMarcador(origen);
         }
         contenedorDir.html("<b>Origen:</b> "+origen);
         pasajeros = [];
@@ -209,7 +236,6 @@ function cargarPasajeros()
             var celular = response[i].pasajero_celular;
             if(ruta === response[i].pasajero_ruta)
             {
-                colocarMarcador(punto);
                 if(ruta.indexOf("-RG-") !== -1 && partidaExiste)
                 {
                     origen = punto;
@@ -221,16 +247,20 @@ function cargarPasajeros()
                 {
                     contenedorDes.html("<b>Destino:</b> "+punto);                    
                 }
-                destinos.push(punto);
-                contenedor.append("<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" draggable=\"true\" ondragstart=\"drag(event,$(this))\" ondrop=\"drop(event,$(this))\" ondragover=\"allowDrop(event,$(this))\">"
+                if(i > 0)
+                {
+                    destinos.push(punto);
+                }
+                contenedor.append("<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" draggable=\"true\" ondragstart=\"drag(event,$(this))\" ondrop=\"drop(event,$(this))\" ondragover=\"allowDrop(event)\">"
                                  +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+punto+"\">"
-                                 +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'><div class=\"boton-chico\" onclick=\"borrarPasajero('pasajero_"+id+"','"+nombre+"','"+punto+"','"+celular+"')\"><img src=\"img/cancelar.svg\" width=\"12\" height=\"12\"></div></div>"+
-                        "<div class=\"cont-mini-pasajero\"><input type=\"text\" value=\""+ punto + "><div>" + celular+"</div></div>");
+                                 +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'>"
+                                 +"<div class=\"boton-chico\" onclick=\"editarPasajero('"+punto+"','punto_"+id+"','hidden_"+id+"')\"><img src=\"img/editar.svg\" width=\"12\" height=\"12\"></div>"
+                                 +"<div class=\"boton-chico\" onclick=\"borrarPasajero('pasajero_"+id+"','"+nombre+"','"+punto+"','"+celular+"')\"><img src=\"img/cancelar.svg\" width=\"12\" height=\"12\"></div></div>"+
+                        "<div class=\"cont-mini-pasajero\"><div id=\"punto_"+id+"\">"+ punto + "</div><div>" + celular+"</div></div>");
                 pasajeros.push(id);
             }
             else if(ruta.indexOf("-ESP") !== -1)
             {
-                colocarMarcador(punto);
                 if(ruta.indexOf("-RG-") !== -1 && partidaExiste)
                 {
                     origen = punto;
@@ -242,11 +272,12 @@ function cargarPasajeros()
                 {
                     contenedorDes.html("<b>Destino:</b> "+punto);                    
                 }
-                destinos.push(punto);
-                contenedor.append("<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" draggable=\"true\" ondragstart=\"drag(event,$(this))\" ondrop=\"drop(event,$(this))\" ondragover=\"allowDrop(event,$(this))\">"
+                contenedor.append("<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" draggable=\"true\" ondragstart=\"drag(event,$(this))\" ondrop=\"drop(event,$(this))\" ondragover=\"allowDrop(event)\">"
                                  +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+punto+"\">"
-                                 +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'><div class=\"boton-chico\" onclick=\"borrarPasajero('pasajero_"+id+"','"+nombre+"','"+punto+"','"+celular+"')\"><img src=\"img/cancelar.svg\" width=\"12\" height=\"12\"></div></div>"+
-                        "<div class=\"cont-mini-pasajero\"><div>"+ punto + "</div><div>" + celular+"</div></div>");
+                                 +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'>"
+                                 +"<div class=\"boton-chico\" onclick=\"editarPasajero('"+punto+"','punto_"+id+"','hidden_"+id+"')\"><img src=\"img/editar.svg\" width=\"12\" height=\"12\"></div>"
+                                 +"<div class=\"boton-chico\" onclick=\"borrarPasajero('pasajero_"+id+"','"+nombre+"','"+punto+"','"+celular+"')\"><img src=\"img/cancelar.svg\" width=\"12\" height=\"12\"></div></div>"+
+                        "<div class=\"cont-mini-pasajero\"><div id=\"punto_"+id+"\">"+ punto + "</div><div>" + celular+"</div></div>");
                 pasajeros.push(id);
             }
             else
@@ -260,10 +291,51 @@ function cargarPasajeros()
         if(ruta.indexOf("-RG-") !== -1)
         {
             destinos.push(response[0].pasajero_empresa_direccion);
-            colocarMarcador(response[0].pasajero_empresa_direccion);
             contenedorDes.html("<b>Destino:</b> "+response[0].pasajero_empresa_direccion);
         }
         dibujarRuta(origen,destinos);
+    };
+    postRequest(url,params,success,false);
+}
+
+function cargarPasajerosEspecial()
+{
+    cambiarPropiedad($("#loader_pasajero"),"visibility","visible");
+    var pasajero = $("#busqueda").val();
+    var cliente = $('#clientes').val();
+    var params = {cliente : cliente, pasajero : pasajero, ruta : ''};
+    var url = urlBase + "/pasajero/GetPasajerosCliente.php";
+    var success = function(response)
+    {
+        if(response.length === 0)
+        {
+            cambiarPropiedad($("#loader_pasajero"),"visibility","hidden");
+            alertify.error("No hay pasajeros disponibles para esta ruta");
+            return;
+        }
+        cambiarPropiedad($("#loader_pasajero"),"visibility","hidden");
+        var contenedorDir = $("#contenedor_punto_encuentro");
+        var contenedorDes = $("#contenedor_punto_destino");
+        var contenedor = $("#contenedor_pasajero");
+        var contenedorEx = $("#contenedor_pasajero_no_asignado");
+        contenedor.html("");
+        contenedorEx.html("");
+        contenedorDir.html("<b>Origen:</b> "+origen);
+        pasajeros = [];
+        destinos = [];
+        for(var i = 0 ; i < response.length ; i++)
+        {
+            var id = response[i].pasajero_id;
+            var nombre = response[i].pasajero_nombre + " " + response[i].pasajero_papellido;
+            var punto = response[i].pasajero_punto_encuentro;
+            var celular = response[i].pasajero_celular;
+            contenedorDir.html("<b>Origen:</b> ");
+            contenedorDes.html("<b>Destino:</b> ");                    
+            contenedorEx.append("<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" \">"
+                                 +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+punto+"\">"
+                                 +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'><div class=\"boton-chico\" onclick=\"agregarPasajero('pasajero_"+id+"','"+nombre+"','"+punto+"','"+celular+"')\"><img src=\"img/flecha-arriba.svg\" width=\"12\" height=\"12\"></div></div>"+
+                        "<div class=\"cont-mini-pasajero\"><div>"+ punto + "</div><div>" + celular+"</div></div>");
+        }
     };
     postRequest(url,params,success,false);
 }
@@ -359,6 +431,7 @@ function agregarServicio()
     var tarifa1 = $("#tarifa1").val();
     var tarifa2 = $("#tarifa2").val();
     var observaciones = $("#observacion").val();
+    var tipo = TIPO === 'NORMAL' ? 0 : 2;
     var array = [cliente,ruta,fecha,hora,movil,tarifa1,tarifa2];
     var exp = obtenerExcepciones();
     if(!validarCamposOr(array,exp))
@@ -390,17 +463,22 @@ function agregarServicio()
         vaciarFormulario();
         $("#conductores").html("Conductor: ");
         var params = {cliente : cliente, ruta : ruta,fecha : fecha, hora : hora,movil : movil,
-            conductor: conductor ,tarifa1 : tarifa1, tarifa2 : tarifa2, observaciones : observaciones, estado : 1, tipo : 0};
+            conductor: conductor ,tarifa1 : tarifa1, tarifa2 : tarifa2, observaciones : observaciones, estado : 1, tipo : tipo};
         var url = urlBase + "/servicio/AddServicio.php";
         if(TIPO_SERVICIO === 1)
         {
             params.id = id;
+            params.tipo = 1;
             url = urlBase + "/servicio/ModServicio.php";
         }
         var success = function(response)
         {
             cerrarSession(response);
-            POLYLINE.setMap(null);
+            borrarDirections();
+            cambiarPropiedad($(".contenedor_agregar"),"display","none");
+            cambiarPropiedad($(".contenedor_editar"),"display","none");
+            quitarclase($("#contenedor_mapa"),"mapa_agregar");
+            quitarclase($("#contenedor_mapa"),"mapa_editar");
             alertify.success('Servicio agregado con id '+response.servicio_id);
             cambiarPropiedad($("#loader"),"visibility","hidden");
             $("#contenedor_pasajero").html("<div class=\"contenedor-loader\"><div class=\"loader\" id=\"loader_pasajero\">Loading...</div></div>");
@@ -411,7 +489,6 @@ function agregarServicio()
             agregarDetalleServicio(response.servicio_id);
             notificarConductor(response.servicio_id,conductor);
             notificarServicioFuturo(response.servicio_id,conductor,fecha,hora);
-            eliminarMarkers();
             TIPO_SERVICIO = 0;
         };
         postRequest(url,params,success);
@@ -420,59 +497,59 @@ function agregarServicio()
 
 function dibujarRuta(origen,destinos)
 {
+    for(var i = 0 ; i < markersPanel.length;i++)
+    {
+        markersPanel[i].setMap(null);
+    }
     var largo = destinos.length;
+    if(largo === 0)
+    {
+        return;
+    }
+    console.log("este es el largo: "+largo);
     var destinoFinal = destinos[largo-1];
-    var waypoints = "";
+    console.log("est es el destino final: "+destinoFinal);
+    var waypoints = [];
     if(largo > 1)
     {
-        waypoints = "&waypoints=";
         for(var i = 0 ; i < largo ; i++)
         {
-            if(i === largo)
+            if(i === largo-1)
             {
-                continue;
+                break;
             }
-            waypoints += destinos[i] + "|";
+            waypoints.push({
+                location: destinos[i],
+                stopover: true
+            });
+            console.log("estos son los waypoints: "+destinos[i] + " y est el indice " + i);
         }
-        waypoints = waypoints.substring(0,waypoints.length-1);
     }
-    var url = CORS_PROXY + DIRECTIONS_API + "origin="+origen+"&destination="+destinoFinal+waypoints+"&key="+API_KEY;
-    var success = function(response)
-    {
-        if(typeof POLYLINE !== "undefined")
-        {
-            POLYLINE.setMap(null);
-        }
-        var status = response.status;
+    setDirections();
+    directionsService.route({
+        origin: origen,
+        waypoints: waypoints,
+        optimizeWaypoints: true,
+        destination: destinoFinal,
+        travelMode: 'DRIVING'
+    },  function(response, status){
         if(status === 'OK')
         {
-            var points = response.routes[0].overview_polyline.points;
+            directionsDisplay.setDirections(response);
+            var points = response.routes[0].overview_polyline;
             var polyline = decodePolyline(points);
-            var flightPath = new google.maps.Polyline({
-                path: polyline,
-                geodesic: true,
-                strokeColor: '#7394e7',
-                strokeOpacity: 1.0,
-                strokeWeight: 3
-            });
-            POLYLINE = flightPath;
-            flightPath.setMap(map);
-            var bounds = new google.maps.LatLngBounds();
             POLYLINE_LAT = '';
             POLYLINE_LNG = '';
-            polyline.forEach(function(LatLng) {
-                bounds.extend(LatLng);
-                POLYLINE_LAT+= LatLng.lat + ",";
-                POLYLINE_LNG += LatLng.lng + ",";
+            polyline.forEach(function(latLng) {
+                POLYLINE_LAT+= latLng.lat + ",";
+                POLYLINE_LNG += latLng.lng + ",";
             });
-            map.fitBounds(bounds);
         }
         else if(status === 'NOT_FOUND')
         {
             alertify.error("Ruta no encontrada");
         }
-    };
-    getRequest(encodeURI(url),success);
+    });
 }
 function agregarDetalleServicio(idServicio)
 {
@@ -550,7 +627,7 @@ function quitarDestino()
     }
 }
 
-function allowDrop(ev,obj) {
+function allowDrop(ev) {
     ev.preventDefault();
 }
 
@@ -562,36 +639,70 @@ function drag(ev,obj) {
 function drop(ev,obj) {
     ev.preventDefault();
     $("#"+objAnterior).html(obj.html());
+    var idAnt = $("#"+objAnterior).attr("id");
     obj.html(ev.dataTransfer.getData("text"));
+    var id = obj.attr("id");
+    $("#"+objAnterior).attr("id",id);
+    obj.attr("id",idAnt);
     pasajeros = [];
     destinos = [];
     let ruta = $("#ruta").val();
+    var total = $("#contenedor_pasajero .cont-pasajero-gral .hidden" ).length;
     $("#contenedor_pasajero .cont-pasajero-gral .hidden" ).each(function(index) {
         pasajeros.push($(this).attr("id").split("_")[1]);
-        destinos.push($(this).val());
-        if(ruta.indexOf("RG") !== -1 && index === 0)
-        { 
-            origen = $(this).val();
-            $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+origen);
-        }
-        if(ruta.indexOf("RG") !== -1 && index === destinos.length-1)
-        { 
-            destinos.push(direccion_empresa);
-        }
-        if(ruta.indexOf("ZP") !== -1 && index === 0)
+        if(ruta.indexOf("RG") !== -1)
         {
-            origen = direccion_empresa;
+            if(index === 0)
+            {
+                origen = $(this).val();
+                $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+origen);
+            }
+            else if( index > 0 )
+            {
+                destinos.push($(this).val());
+            }
         }
-        if(ruta.indexOf("ZP") !== -1 && index === destinos.length-1)
+        else if(ruta.indexOf("ZP") !== -1)
         {
-            $("#contenedor_punto_destino").html("<b>Destino: </b>"+$(this).val());
+            if(index === 0)
+            {
+                origen = direccion_empresa;
+                $("#contenedor_punto_destino").html("<b>Origen: </b>"+origen);
+            }
+            if(index > 0)
+            {
+                destinos.push($(this).val());
+            }
+        }
+        else if(TIPO === 'ESPECIAL')
+        {
+            if(index === 0)
+            {
+                origen = $(this).val();
+                $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+origen);
+            }
+            else if(index > 0)
+            {
+                destinos.push($(this).val());
+            }
+            if(index === total - 1)
+            {
+                $("#contenedor_punto_destino").html("<b>Destino: </b>"+$(this).val());
+            }
+            
         }
     });
+    if(ruta.indexOf("RG") !== -1)
+    {
+        destinos.push(direccion_empresa);
+    }
     dibujarRuta(origen,destinos);
 }
 
 function borrarPasajero(obj,nombre,punto,celular)
 {
+    cambiarPropiedad($(".contenedor_editar"),"display","none");
+    quitarclase($("#contenedor_mapa"),"mapa_editar");
     var id = obj.split("_")[1];
     for(var i = 0; i < pasajeros.length; i++)
     {
@@ -604,7 +715,6 @@ function borrarPasajero(obj,nombre,punto,celular)
     {
         if(destinos[i] === punto)
         {
-            eliminarMarker(punto);
             destinos.splice(i, 1);
         }
     }
@@ -638,7 +748,6 @@ function agregarPasajero(obj,nombre,punto,celular)
         var d = destinos.pop();
         console.log("se saca este "+ d);
         destinos.push(punto);
-        colocarMarcador(punto);
         console.log("se agrega este "+ punto);
         destinos.push(direccion_empresa);
         console.log("se saca este al final "+ direccion_empresa);
@@ -648,91 +757,53 @@ function agregarPasajero(obj,nombre,punto,celular)
         pasajeros.push(id);
         $("#contenedor_punto_destino").html("<b>Destino: </b>"+punto);
         destinos.push(punto);
-        colocarMarcador(punto);
+    }
+    else if(ruta.indexOf("XX-ESP") !== -1)
+    {
+        if(typeof origen === "undefined")
+        {
+            $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+punto);
+            origen = punto; 
+        }
+        else
+        {
+            $("#contenedor_punto_destino").html("<b>Destino: </b>"+punto);
+            destinos.push(punto);
+        }
+        pasajeros.push(id);
     }
     var pasajero = $("#"+obj);
-    var texto = "<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" draggable=\"true\" ondragstart=\"drag(event,$(this))\" ondrop=\"drop(event,$(this))\" ondragover=\"allowDrop(event,$(this))\">"
+    var texto = "<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" draggable=\"true\" ondragstart=\"drag(event,$(this))\" ondrop=\"drop(event,$(this))\" ondragover=\"allowDrop(event)\">"
                                  +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+punto+"\">"
-                                 +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'><div class=\"boton-chico\" onclick=\"borrarPasajero('pasajero_"+id+"','"+nombre+"','"+punto+"','"+celular+"')\"><img src=\"img/cancelar.svg\" width=\"12\" height=\"12\"></div></div>"+
-                        "<div class=\"cont-mini-pasajero\"><div>"+ punto + "</div><div>" + celular+"</div></div>";
+                                 +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'>"
+                                 +"<div class=\"boton-chico\" onclick=\"editarPasajero('"+punto+"','punto_"+id+"','hidden_"+id+"')\"><img src=\"img/editar.svg\" width=\"12\" height=\"12\"></div>"
+                                 +"<div class=\"boton-chico\" onclick=\"borrarPasajero('pasajero_"+id+"','"+nombre+"','"+punto+"','"+celular+"')\"><img src=\"img/cancelar.svg\" width=\"12\" height=\"12\"></div></div>"
+                                 +"<div class=\"cont-mini-pasajero\"><div id=\"punto_"+id+"\">"+ punto + "</div><div>" + celular+"</div></div>";
     $("#contenedor_pasajero").append(texto);
     pasajero.remove();
     dibujarRuta(origen,destinos);
 }
-//
-//function cambiarServicioNormal()
-//{
-//    $("#clientes").prop("disabled",false);
-//    cambiarPropiedad($("#clientes"),"background-color","white");
-//    $("#ruta").prop("disabled",false);
-//    cambiarPropiedad($("#ruta"),"background-color","white");
-//    $("#tarifa2").prop("disabled",false);
-//    cambiarPropiedad($("#tarifa2"),"background-color","white");
-//    $("#partida").prop("disabled",true);
-//    cambiarPropiedad($("#partida"),"background-color","#E3E3E3");
-//    $("#destino").prop("disabled",true);
-//    cambiarPropiedad($("#destino"),"background-color","#E3E3E3");
-//    $("#usuarios").prop("disabled",true);
-//    cambiarPropiedad($("#usuarios"),"background-color","#E3E3E3");
-//    $("#celular").prop("disabled",true);
-//    cambiarPropiedad($("#celular"),"background-color","#E3E3E3");
-//    vaciarFormulario();
-//    if(typeof POLYLINE !== "undefined")
-//    {
-//        POLYLINE.setMap(null);
-//    }
-//}
-function mostrarDatalist(val,datalist,campo)
-{
-    if(val === "") return;
-    var url = CORS_PROXY + PLACES_AUTOCOMPLETE_API + "input="+val+
-            "&location="+POSITION[0]+","+POSITION[1]+"&sensor=true&radius=500&key="+API_KEY;
-    var success = function(response)
-    {
-        $("#"+datalist).html("");
-        var places =  response.predictions;
-        for(var i = 0 ; i < places.length;i++)
-        {
-            var descripcion = places[i].description;
-            var placeId = places[i].place_id;
-            var encodeDescripcion = descripcion.replace(/'/g,'');
-            $("#"+datalist).append(
-                    "<div class=\"option-datalist\" onclick=\"selecionarPlace('"+encodeDescripcion+"','"+datalist+"','"+campo+"')\"><img src=\"img/ubicacion.svg\" width=\"12\" heifgt=\"12\">"+descripcion+"</div>");
-        }
-    };
-    getRequest(url,success);
-}
 
-function selecionarPlace(val,datalist,obj)
+function cambiarServicioNormal()
 {
-    $("#"+obj).val(decodeURI(val));
-    $("#"+datalist).html("");
-//    var url = CORS_PROXY + PLACES_DETAILS_API + "placeid="+placeId+"&key="+API_KEY;
-//    var success = function(response)
-//    {
-//        var status = response.status;
-//        
-//        if(status === 'OK')
-//        {
-//            var marker = new google.maps.Marker({
-//                map: map,
-//                place: {
-//                    placeId: placeId,
-//                    location: response.result.geometry.location
-//                }
-//            });
-//            map.setZoom(15);
-            //map.panTo(marker.getPosition());
-            var origen = $("#partida").val();
-            var destino = $("#destino").val();
-            if(destino !== "")
-            {
-                dibujarRuta(origen,[destino]);
-            }
-//        }
-//    };
-//    getRequest(url,success);
-    
+    TIPO = 'NORMAL';
+    $("#ruta").prop("readonly",false);
+    vaciarFormulario();
+    borrarDirections();
+    cambiarPropiedad($(".buscador-pasajero"),"display","none");
+    quitarclase($("#contenedor_mapa"),"mapa_bajo");
+}
+function cambiarServicioEspecial()
+{
+    TIPO = 'ESPECIAL';
+    destinos = [];
+    pasajeros = [];
+    origen = undefined;
+    $("#ruta").prop("readonly",true);
+    vaciarFormulario();
+    borrarDirections();
+    cambiarPropiedad($(".buscador-pasajero"),"display","none");
+    quitarclase($("#contenedor_mapa"),"mapa_bajo");
 }
 
 function activarPestania(array)
@@ -749,20 +820,6 @@ function activarPestania(array)
         }
     }
 }
-//function activarPestaniaEspecial(array)
-//{
-//    for(var i = 0 ; i < CAMPOS_ESPECIAL.length ; i++)
-//    {
-//        if(array[i] === '')
-//        {
-//            marcarCampoError($("#"+CAMPOS_ESPECIAL[i]));
-//        }
-//        else
-//        {
-//            marcarCampoOk($("#"+CAMPOS_ESPECIAL[i]));
-//        }
-//    }
-//}
 
 function validarTipoDato()
 {
@@ -787,45 +844,74 @@ function validarTipoDato()
     return true;
 }
 
-//function validarTipoDatoEspecial()
-//{
-//    for(var i = 0 ; i < CAMPOS_ESPECIAL.length ; i++)
-//    {
-//        marcarCampoOk($("#"+CAMPOS_ESPECIAL[i]));
-//    }
-//    var celular = $("#celular");
-//    var tarifa = $("#tarifas2");
-//    if(!validarNumero(celular.val()))
-//    {
-//        marcarCampoError(celular);
-//        alertify.error('Celular debe ser numerico');
-//        return false;
-//    }
-//    if(!validarNumero(tarifa.val()))
-//    {
-//        marcarCampoError(tarifa);
-//        alertify.error('Tarifa debe ser numerico');
-//        return false;
-//    }
-//    return true;
-//}
-
-function colocarMarcador(direccion)
+function obtenerExcepciones()
 {
-    var url = CORS_PROXY + GEOCODER_API + "address="+direccion+"&key="+API_KEY;
-    var success = function(response){
-        var location = response.results[0].geometry.location;
-        var marker = new google.maps.Marker({
-            position: location,
-            id : direccion
-        });
-        marker.setMap(map);
-        markersPanel.push(marker);
-    };
-    getRequest(url,success);
+    var exp = "";
+    if(TIPO_SERVICIO === 1)
+    {
+        exp += '||1||';
+    }
+    return exp;
 }
 
-function colocarMarcadorPlaces()
+function editarPasajero(valor,obj,hidden)
+{
+    borrarDirections();
+    initPlacesAutoComplete(document.getElementById('input_editar'));
+    cambiarPropiedad($(".contenedor_editar"),"display","block");
+    cambiarPropiedad($(".contenedor_agregar"),"display","none");
+    agregarclase($("#contenedor_mapa"),"mapa_editar");
+    quitarclase($("#contenedor_mapa"),"mapa_agregar");
+    $("#input_editar").val(valor);
+    $("#input_editar").select();
+    $("#boton_place").off('click');
+    $("#boton_place").click(function(){
+        cambiarPropiedad($(".contenedor_editar"),"display","none");
+        quitarclase($("#contenedor_mapa"),"mapa_editar");
+        $("#"+obj).html($("#input_editar").val());
+        var existe = false;
+        for(var i = 0; i < destinos.length; i++)
+        { 
+            if(destinos[i] === valor)
+            {
+                console.log("funco "+destinos[i]);
+                existe = true;
+                $("#"+hidden).val($("#input_editar").val());
+                destinos[i] = $("#input_editar").val();
+                break;
+            }
+        }
+        if(!existe)
+        {
+            origen = $("#input_editar").val();
+            console.log("no funco "+origen);
+            $("#"+hidden).val($("#input_editar").val());
+            $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+origen);
+        }
+        if(directionsDisplay === null)
+        {
+            directionsDisplay = new google.maps.DirectionsRenderer();
+            directionsDisplay.setMap(map);
+        }
+        dibujarRuta(origen,destinos);
+    });
+}
+
+function initPlacesAutoComplete(input) {
+    autocomplete = new google.maps.places.Autocomplete(input,
+    {componentRestrictions:{'country': 'cl'}});
+    places = new google.maps.places.PlacesService(map);
+    autocomplete.addListener('place_changed', function(){
+        var place = autocomplete.getPlace();
+        if (place.geometry) {
+            map.panTo(place.geometry.location);
+            map.setZoom(15);
+            colocarMarcadorPlaces(input);
+        }
+    });
+}
+
+function colocarMarcadorPlaces(input)
 {
     for(var i = 0 ; i < markersPanel.length;i++)
     {
@@ -854,52 +940,50 @@ function colocarMarcadorPlaces()
     });
     
     google.maps.event.addListener(map, "dragend", function() {
-        var url = CORS_PROXY + GEOCODER_API + "latlng="+POSITION[0]+","+POSITION[1]+"&sensor=true&key="+API_KEY;
-        var success = function(response)
-        {
-            var status = response.status;
-            if (status === "OK") {
-                var results = response.results;
+        var latlng = new google.maps.LatLng(POSITION[0], POSITION[1]);
+        geocoder.geocode({'location': latlng}, function(results, status) {
+            if (status === 'OK') {
                 var zero = results[0];
                 var address = zero.formatted_address;
-                var partida = $('#partida');
-                var destino = $('#destino');
-                if(partida.val() === '')
-                {
-                    partida.val(address);
-                }
-                else if(partida.val() !== '' && destino.val() === '')
-                {
-                    destino.val(address);
-                }
-                else if(partida.val() !== '' && destino.val() !== '')
-                {
-                    eliminarMarker();
-                    dibujarRuta(partida.val(),[destino.val()]);
-                }
+                var punto = input;
+                punto.value =address;                
             }
-        };
-        getRequest(url,success);
+            else
+            {
+                alertify.error('Geocoder failed due to: ' + status);
+            }
+        });
     });
 }
 
-function eliminarMarker(direccion)
+function borrarDirections()
 {
-    for(var i = 0 ; i < markersPanel.length;i++)
-    {
-        if(markersPanel[i].get("id") === direccion)
-        {
-            markersPanel[i].setMap(null);
-        }
+    if (directionsDisplay !== null) {
+        directionsDisplay.setMap(null);
+        directionsDisplay = null;
     }
 }
 
-function obtenerExcepciones()
+function abrirAddPasajero()
 {
-    var exp = "";
-    if(TIPO_SERVICIO === 1)
+    initPlacesAutoComplete(document.getElementById('agregaDireccion'));
+    cambiarPropiedad($(".contenedor_editar"),"display","none");
+    cambiarPropiedad($(".contenedor_agregar"),"display","block");
+    quitarclase($("#contenedor_mapa"),"mapa_editar");
+    agregarclase($("#contenedor_mapa"),"mapa_agregar");
+}
+
+function cerrarAddPasajero()
+{
+    cambiarPropiedad($(".contenedor_agregar"),"display","none");
+    quitarclase($("#contenedor_mapa"),"mapa_agregar");   
+}
+
+function setDirections()
+{
+    if(directionsDisplay === null)
     {
-        exp += '||1||';
+        directionsDisplay = new google.maps.DirectionsRenderer();
+        directionsDisplay.setMap(map);
     }
-    return exp;
 }

@@ -5,16 +5,16 @@ var pasajeros_diarios = [];
 var PAGINA = "MONITOREO";
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
-    if(typeof POLYLINE !== "undefined")
-    {
-        POLYLINE.setMap(null);
+    if (directionsDisplay !== null) {
+        directionsDisplay.setMap(null);
+        directionsDisplay = null;
     }
     for(var i = 0; i < markers.length;i++)
     {
         markers[i].setMap(null);
     }
     cargarMovilesMapa(true);
-    setInterval('moverMovilesMapa()',5000);
+    setInterval('moverMovilesMapa()',1000);
     
     $("#busqueda").keyup(function(e){
         cargarMovilesMapa(false);

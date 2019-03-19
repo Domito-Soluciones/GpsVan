@@ -6,6 +6,10 @@ $(document).ready(function(){
     validarServicios();
     getDashBoard();
     
+    $("#servicios_pendientes_link").click(function(){
+        mostrarServiciosPendientes();
+    });
+    
 });
 
 function generarGraficoDona(canvas,data,options)
@@ -52,6 +56,15 @@ function getDashBoard()
 {
     graficoServiciosDiarios();
     graficoVehiculosConectados();
+}
+
+function mostrarServiciosPendientes()
+{
+    cambiarPropiedad($(".contenedor-servicios"),"display","initial");
+}
+function ocultarServiciosPendientes()
+{
+    cambiarPropiedad($(".contenedor-servicios"),"display","none");
 }
 
 

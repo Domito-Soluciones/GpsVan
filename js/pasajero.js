@@ -1,4 +1,4 @@
-/* global urlBase, alertify, PLACES_AUTOCOMPLETE_API, CORS_PROXY, POSITION, ID_CLIENTE */
+/* global urlBase, alertify, PLACES_AUTOCOMPLETE_API, POSITION, ID_CLIENTE, directionsDisplay, markers, google, geocoder, map, markersPanel */
 var ID_PASAJERO;
 var ID_EMPRESA;
 var ID_RUTA;
@@ -11,6 +11,14 @@ var mapa_oculto = true;
 var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","punto","empresa","centro"];
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
+    if (directionsDisplay !== null) {
+        directionsDisplay.setMap(null);
+        directionsDisplay = null;
+    }
+    for(var i = 0; i < markers.length;i++)
+    {
+        markers[i].setMap(null);
+    }
     buscarClientePasajero();
     buscarPasajero();
     $("#agregar").click(function(){
@@ -18,6 +26,7 @@ $(document).ready(function(){
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
         $("#lista_busqueda_pasajero_detalle").load("html/datos_pasajero.html", function( response, status, xhr ) {
+            initPlacesAutoComplete();
             cargarClientes();
             iniciarPestanias();
             cambioEjecutado();
@@ -41,10 +50,6 @@ $(document).ready(function(){
             $("#empresa").change(function (){
                 cargarCentroCosto($(this).val(),'');
                 cargarRutas($(this).val(),'');
-            });
-            
-            $("#punto").on("input",function(){
-                mostrarDatalist($(this).val(),$("#partida"),'punto');
             });
             
             $("#buscaPunto").click(function(){
@@ -258,35 +263,33 @@ function buscarPasajeroCliente(cliente)
 {
     ID_CLIENTE = cliente;
     marcarFilaActiva(cliente);
-    var params = {cliente : cliente};
-    var url = urlBase + "/pasajero/GetPasajerosCliente.php";
-    var success = function(response)
+    var pasajeros = $("#lista_busqueda_pasajero_detalle");
+    pasajeros.html("");
+    pasajeros.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div>Empresa</div></div>")
+    var noHayRegistros = true;
+    for(var i = 0 ; i < PASAJEROS.length; i++)
     {
-        cerrarSession(response);
-        var pasajeros = $("#lista_busqueda_pasajero_detalle");
-        pasajeros.html("");
-        PASAJEROS = response;
-        if(response.length === 0)
+        if(PASAJEROS[i].pasajero_empresa === cliente)
         {
-            pasajeros.append("<div class=\"mensaje_bienvenida\">No hay registros que mostrar</div>");
-            return;
-        }
-        pasajeros.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div>Empresa</div></div>")
-        for(var i = 0 ; i < response.length; i++)
-        {
-            var id = response[i].pasajero_id;
-            var rut = response[i].pasajero_rut;
-            var nombre = response[i].pasajero_nombre;
-            var papellido = response[i].pasajero_papellido;
-            var empresa = response[i].pasajero_empresa;
+            noHayRegistros = false;
+            var id = PASAJEROS[i].pasajero_id;
+            var rut = PASAJEROS[i].pasajero_rut;
+            var nombre = PASAJEROS[i].pasajero_nombre;
+            var papellido = PASAJEROS[i].pasajero_papellido;
+            var empresa = PASAJEROS[i].pasajero_empresa;
             pasajeros.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+
                     "<div>"+rut+"</div>"+
                     "<div>"+nombre+"</div>"+
-                    "<div>"+papellido+"</div><div>"+empresa+"</div></div>");
+                    "<div>"+papellido+"</div><div>"+empresa+"</div>"+
+                    "<div><img onclick=\"preEliminarPasajero('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>");
         }
-        cambiarPropiedad($("#loader"),"visibility","hidden");
-    };
-    postRequest(url,params,success);
+    }
+    if(noHayRegistros)
+    {
+        pasajeros.append("<div class=\"mensaje_bienvenida\">No hay registros que mostrar</div>");
+        alertify.error("No hay registros que mostrar");
+        return;
+    }
 }
 
 function cambiarFila(id)
@@ -315,6 +318,7 @@ function abrirModificar(id)
 {
     AGREGAR = false;
     $("#lista_busqueda_pasajero_detalle").load("html/datos_pasajero.html", function( response, status, xhr ) {
+        initPlacesAutoComplete();
         iniciarPestanias();
         cambioEjecutado();
         cargarClientes();
@@ -329,9 +333,7 @@ function abrirModificar(id)
             cargarCentroCosto($(this).val(),'');
             cargarRutas($(this).val(),'');
         });
-        $("#punto").on("input",function(){
-            mostrarDatalist($(this).val(),$("#partida"),'punto');
-        });
+
         $("#volver").click(function(){
             if(typeof ID_CLIENTE === 'undefined')
             {
@@ -643,33 +645,6 @@ function cargarRutas(empresa,ruta)
     postRequest(url,params,success,false);
 }
 
-function mostrarDatalist(val,datalist)
-{
-    if(val === "") return;
-    var url = CORS_PROXY + PLACES_AUTOCOMPLETE_API + "input="+val+
-            "&location="+POSITION[0]+","+POSITION[1]+"&sensor=true&radius=500&key="+API_KEY;
-    var success = function(response)
-    {
-        datalist.html("");
-        var places =  response.predictions;
-        for(var i = 0 ; i < places.length;i++)
-        {
-            var descripcion = places[i].description;
-            var placeId = places[i].place_id;
-            var encodeDescripcion = descripcion.replace(/'/g,'');
-            datalist.append(
-                    "<div class=\"option-datalist\" onclick=\"selecionarPlace('"+encodeDescripcion+"')\"><img src=\"img/ubicacion.svg\" width=\"12\" heifgt=\"12\">"+descripcion+"</div>");
-        }
-    };
-    getRequest(url,success);
-}
-
-function selecionarPlace(val)
-{
-    $("#punto").val(decodeURI(val));
-    $("#partida").html("");
-}
-
 function buscarClientePasajero()
 {
     var busqueda = $("#busqueda").val();
@@ -693,11 +668,11 @@ function buscarClientePasajero()
             var titulo = recortar(nombre);
             if (typeof ID_CLIENTE !== "undefined" && ID_CLIENTE === id)
             {
-                clientes.append("<div class=\"fila_contenedor fila_contenedor_activa\" id=\""+id+"\" onClick=\"cambirFilaPasajero('"+id+"')\">"+titulo+"</div>");
+                clientes.append("<div class=\"fila_contenedor fila_contenedor_activa\" id=\""+nombre+"\" onClick=\"cambirFilaPasajero('"+id+"')\">"+titulo+"</div>");
             }
             else
             {
-                clientes.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"cambiarFilaPasajero('"+id+"')\">"+titulo+"</div>");
+                clientes.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"cambiarFilaPasajero('"+nombre+"')\">"+titulo+"</div>");
             }
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
@@ -760,19 +735,19 @@ function colocarMarcadorPlaces()
     });
     
     google.maps.event.addListener(map, "dragend", function() {
-        var url = CORS_PROXY + GEOCODER_API + "latlng="+POSITION[0]+","+POSITION[1]+"&sensor=true&key="+API_KEY;
-        var success = function(response)
-        {
-            var status = response.status;
-            if (status === "OK") {
-                var results = response.results;
+        var latlng = new google.maps.LatLng(POSITION[0], POSITION[1]);
+        geocoder.geocode({'location': latlng}, function(results, status) {
+            if (status === 'OK') {
                 var zero = results[0];
                 var address = zero.formatted_address;
                 var punto = $('#punto');
-                punto.val(address);
+                punto.val(address);                
             }
-        };
-        getRequest(url,success);
+            else
+            {
+                window.alert('Geocoder failed due to: ' + status);
+            }
+        });
     });
 }
 
@@ -800,3 +775,19 @@ function preEliminarPasajero(id)
                 postRequest(url,params,success);
             });
 }
+
+    function initPlacesAutoComplete() {
+        autocomplete = new google.maps.places.Autocomplete(document.getElementById('punto'),
+        {componentRestrictions:{'country': 'cl'}});
+        places = new google.maps.places.PlacesService(map);
+        autocomplete.addListener('place_changed', onPlaceChanged);
+    }
+    
+    function onPlaceChanged()
+    {
+        var place = autocomplete.getPlace();
+        if (place.geometry) {
+            map.panTo(place.geometry.location);
+            map.setZoom(15);
+        }
+    }

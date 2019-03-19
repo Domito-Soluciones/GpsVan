@@ -1,4 +1,4 @@
-/* global urlBase, alertify, CREADO, EN_PROCCESO_DE_ASIGNACION, ASIGNADO, ACEPTADO, EN_PROGRESO, FINALIZADO, google, map, markers */
+/* global urlBase, alertify, CREADO, EN_PROCCESO_DE_ASIGNACION, ASIGNADO, ACEPTADO, EN_PROGRESO, FINALIZADO, google, map, markers, directionsDisplay */
 var SERVICIOS;
 var ESTADO_SERVICIO;
 var RUTA;
@@ -8,6 +8,14 @@ var MOVILES = {};
 var PAGINA = 'SERVICIOS';
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
+    if (directionsDisplay !== null) {
+        directionsDisplay.setMap(null);
+        directionsDisplay = null;
+    }
+    for(var i = 0; i < markers.length;i++)
+    {
+        markers[i].setMap(null);
+    }
     iniciarFecha([$("#desde"),$("#hasta")]);
     iniciarHora([$("#hdesde"),$("#hhasta")]);
     buscarServicio();

@@ -7,12 +7,12 @@ var POLYLINE_LAT = '';
 var POLYLINE_LNG = '';
 var POSITION = [-33.440616, -70.6514212];
 var API_KEY = "AIzaSyDcQylEsZAzuEw3EHBdWbsDAynXvU2Ljzs";
+var directionsService;
+var directionsDisplay = null;
+var geocoder;
+var autocomplete;
+var places;
 var GOOGLE_MAPS_API = "https://maps.googleapis.com/maps/api/js?";
-var CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
-var DIRECTIONS_API = "https://maps.googleapis.com/maps/api/directions/json?";
-var PLACES_AUTOCOMPLETE_API = "https://maps.googleapis.com/maps/api/place/autocomplete/json?";
-var PLACES_DETAILS_API = "https://maps.googleapis.com/maps/api/place/details/json?";
-var GEOCODER_API = "https://maps.googleapis.com/maps/api/geocode/json?";
 var PAGINA_ANTERIOR;
 var INTERVAL_SERVICIOS;
 var CREADO = "0";
@@ -75,11 +75,14 @@ $(document).ready(function(){
 
 function initMap() {
     //$.getJSON("js/map/map_style.json", function(json) {
+        directionsService = new google.maps.DirectionsService();
+        geocoder = new google.maps.Geocoder();
         var latlng = new google.maps.LatLng(POSITION[0], POSITION[1]);
         var myOptions = {
             zoom: 11,
             center: latlng,
             mapTypeId: google.maps.MapTypeId.ROADMAP,
+            streetViewControl: false,
             mapTypeControlOptions: {
                 mapTypeIds: [google.maps.MapTypeId.ROADMAP] 
             }

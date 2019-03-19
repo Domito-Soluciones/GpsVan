@@ -434,33 +434,25 @@ function buscarMovilTipo(tipo)
 {
     TIPO_GRUPO = tipo;
     marcarFilaActiva("col_"+tipo);
-    var params = {grupo : tipo};
-    var url = urlBase + "/movil/GetMovilesGrupo.php";
-    var success = function(response)
+    var moviles = $("#lista_busqueda_movil_detalle");
+    moviles.html("");
+    moviles.append("<div class=\"contenedor_central_titulo\"><div></div><div>Patente</div><div>Nombre</div><div>Marca</div><div>Tipo</div><div></div></div>");
+    var noHayRegistros = true;
+    for(var i = 0 ; i < MOVILES.length; i++)
     {
-        cerrarSession(response);
-        var moviles = $("#lista_busqueda_movil_detalle");
-        moviles.html("");
-        CONDUCTORES = response;
-        if(response.length === 0)
+        if(MOVILES[i].movil_tipo === tipo)
         {
-            moviles.append("<div class=\"mensaje_bienvenida\">No hay registros que mostrar</div>");
-            alertify.error("No hay registros que mostrar");
-            return;
-        }
-        moviles.append("<div class=\"contenedor_central_titulo\"><div></div><div>Patente</div><div>Nombre</div><div>Marca</div><div>Tipo</div><div></div></div>");
-        for(var i = 0 ; i < response.length; i++)
-        {
-            var id = response[i].movil_id;
-            var patente = response[i].movil_patente;
-            var nombre = response[i].movil_nombre;
-            var marca = response[i].movil_marca;
+            noHayRegistros = false;
+            var id = MOVILES[i].movil_id;
+            var patente = MOVILES[i].movil_patente;
+            var nombre = MOVILES[i].movil_nombre;
+            var marca = MOVILES[i].movil_marca;
             var grupo = '';
-            if(response[i].movil_tipo === '0')
+            if(MOVILES[i].movil_tipo === '0')
             {
                 grupo = 'Interno';
             }
-            else if(response[i].movil_tipo === '1')
+            else if(MOVILES[i].movil_tipo === '1')
             {
                 grupo = 'Externo';
             }
@@ -472,9 +464,13 @@ function buscarMovilTipo(tipo)
                     "<div><img onclick=\"preEliminarMovil('"+patente+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
                     "</div>");
         }
-        cambiarPropiedad($("#loader"),"visibility","hidden");
-    };
-    postRequest(url,params,success);
+    }
+    if(noHayRegistros)
+    {
+        moviles.append("<div class=\"mensaje_bienvenida\">No hay registros que mostrar</div>");
+        alertify.error("No hay registros que mostrar");
+        return;
+    }
 }
 function abrirModificar(id)
 {

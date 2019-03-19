@@ -411,6 +411,24 @@ class MovilDao {
         return $id;
     }
     
+    public function modificarServicio($conductor,$servicio)
+    {
+        $id = 0;
+        $conn = new Conexion();
+        try {
+            $query = "UPDATE tbl_movil SET movil_servicio = $servicio WHERE movil_conductor = ".$conductor; 
+            $conn->conectar();
+            if (mysqli_query($conn->conn,$query)) {
+                $id = mysqli_insert_id($conn->conn);
+            } else {
+                echo mysqli_error($conn->conn);
+            }           
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $id;
+    }
+    
     function eliminarMovil($patente)
     {
         $id = 0;
