@@ -359,7 +359,7 @@ select
 }
 .mapa_bajo
 {
-    width: calc(42% - 6px) !important;
+    width: calc(42% - 16px) !important;
     margin-left: calc(60% - 9px) !important;
 }
 .buscador-asignacion-boton

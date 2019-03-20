@@ -37,6 +37,8 @@ $(document).ready(function(){
         cargarRutas();
     });
     $("#ruta").on('input',function () {
+        origen = undefined;
+        destinos = [];
         cambiarPropiedad($(".buscador-pasajero"),"display","initial");
         agregarclase($("#contenedor_mapa"),"mapa_bajo");
         for(var i = 0; i < TARIFAS.length; i++)
@@ -158,6 +160,7 @@ function init()
     }
     cargarClientes();
     cargarMoviles();
+    directionsService = new google.maps.DirectionsService();
     if(directionsDisplay === null)
     {
         directionsDisplay = new google.maps.DirectionsRenderer();
@@ -247,10 +250,10 @@ function cargarPasajeros()
                 {
                     contenedorDes.html("<b>Destino:</b> "+punto);                    
                 }
-                if(i > 0)
-                {
+                //if(i > 0)
+                //{
                     destinos.push(punto);
-                }
+                //}
                 contenedor.append("<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" draggable=\"true\" ondragstart=\"drag(event,$(this))\" ondrop=\"drop(event,$(this))\" ondragover=\"allowDrop(event)\">"
                                  +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+punto+"\">"
                                  +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'>"
@@ -293,7 +296,9 @@ function cargarPasajeros()
             destinos.push(response[0].pasajero_empresa_direccion);
             contenedorDes.html("<b>Destino:</b> "+response[0].pasajero_empresa_direccion);
         }
+        
         dibujarRuta(origen,destinos);
+        console.log(destinos+"");
     };
     postRequest(url,params,success,false);
 }
@@ -370,7 +375,7 @@ function cargarPasajerosBusqueda()
                                  +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'><div class=\"boton-chico\" onclick=\"agregarPasajero('pasajero_"+id+"','"+nombre+"','"+punto+"','"+celular+"')\"><img src=\"img/flecha-arriba.svg\" width=\"12\" height=\"12\"></div></div>"+
                         "<div class=\"cont-mini-pasajero\"><div>"+ punto + "</div><div>" + celular+"</div></div>");
         }
-        console.log(pasajeros+"");
+        
     };
     postRequest(url,params,success,false);
 }
@@ -473,6 +478,7 @@ function agregarServicio()
         }
         var success = function(response)
         {
+            origen = undefined;
             cerrarSession(response);
             borrarDirections();
             cambiarPropiedad($(".contenedor_agregar"),"display","none");
@@ -506,9 +512,7 @@ function dibujarRuta(origen,destinos)
     {
         return;
     }
-    console.log("este es el largo: "+largo);
     var destinoFinal = destinos[largo-1];
-    console.log("est es el destino final: "+destinoFinal);
     var waypoints = [];
     if(largo > 1)
     {
@@ -522,7 +526,6 @@ function dibujarRuta(origen,destinos)
                 location: destinos[i],
                 stopover: true
             });
-            console.log("estos son los waypoints: "+destinos[i] + " y est el indice " + i);
         }
     }
     setDirections();
@@ -556,6 +559,10 @@ function agregarDetalleServicio(idServicio)
     var params = {};
     var destinoFinal = "";
     var pasajeroFinal = "";
+    if($("#ruta").val().indexOf("-RG-") !== -1)
+    {
+        destinoFinal += origen + "%";
+    }
     for(var i = 0; i < destinos.length;i++)
     {
         destinoFinal += destinos[i] + "%";
@@ -746,11 +753,8 @@ function agregarPasajero(obj,nombre,punto,celular)
         pasajeros.push(id);
         $("#contenedor_punto_destino").html("<b>Destino: </b>"+direccion_empresa);
         var d = destinos.pop();
-        console.log("se saca este "+ d);
         destinos.push(punto);
-        console.log("se agrega este "+ punto);
         destinos.push(direccion_empresa);
-        console.log("se saca este al final "+ direccion_empresa);
     }
     else if(ruta.indexOf("ZP") !== -1)
     {
@@ -874,7 +878,6 @@ function editarPasajero(valor,obj,hidden)
         { 
             if(destinos[i] === valor)
             {
-                console.log("funco "+destinos[i]);
                 existe = true;
                 $("#"+hidden).val($("#input_editar").val());
                 destinos[i] = $("#input_editar").val();
@@ -884,7 +887,6 @@ function editarPasajero(valor,obj,hidden)
         if(!existe)
         {
             origen = $("#input_editar").val();
-            console.log("no funco "+origen);
             $("#"+hidden).val($("#input_editar").val());
             $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+origen);
         }

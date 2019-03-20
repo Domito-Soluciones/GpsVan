@@ -7,9 +7,9 @@ var POLYLINE_LAT = '';
 var POLYLINE_LNG = '';
 var POSITION = [-33.440616, -70.6514212];
 var API_KEY = "AIzaSyDcQylEsZAzuEw3EHBdWbsDAynXvU2Ljzs";
-var directionsService;
+var directionsService = null;
 var directionsDisplay = null;
-var geocoder;
+var geocoder = null;
 var autocomplete;
 var places;
 var GOOGLE_MAPS_API = "https://maps.googleapis.com/maps/api/js?";
@@ -75,8 +75,6 @@ $(document).ready(function(){
 
 function initMap() {
     //$.getJSON("js/map/map_style.json", function(json) {
-        directionsService = new google.maps.DirectionsService();
-        geocoder = new google.maps.Geocoder();
         var latlng = new google.maps.LatLng(POSITION[0], POSITION[1]);
         var myOptions = {
             zoom: 11,
@@ -168,7 +166,6 @@ function decodePolyline(encoded) {
     {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (position) {
-                console.log(position.coords.latitude);
                 POSITION = [position.coords.latitude,position.coords.longitude];
             }, function (error) {
                 console.log(error);

@@ -10,6 +10,10 @@ var mapa_oculto = true;
 //var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","punto","empresa","centro","nick"];
 var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","punto","empresa","centro"];
 $(document).ready(function(){
+    if(geocoder === null)
+    {
+        geocoder = new google.maps.Geocoder();
+    }
     PAGINA_ANTERIOR = PAGINA;
     if (directionsDisplay !== null) {
         directionsDisplay.setMap(null);

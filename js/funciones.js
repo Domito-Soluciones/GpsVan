@@ -97,7 +97,6 @@ function validarCamposOr(array,exepciones = null)
         {
             if(array[i] === undefined || array[i] === '')
             {
-                console.log("este es el cacho "+i);
                 return false;
             }
         }

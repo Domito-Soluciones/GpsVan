@@ -10,6 +10,10 @@ var mapa_oculto = true;
 var clientes_tarifa = [];
 var CAMPOS = ["rut","razon","tipoCliente","direccion","nombreContacto","telefono","mail","mail2"];
 $(document).ready(function(){
+    if(geocoder === null)
+    {
+        geocoder = new google.maps.Geocoder();
+    }
     PAGINA_ANTERIOR = PAGINA;
     if (directionsDisplay !== null) {
         directionsDisplay.setMap(null);
