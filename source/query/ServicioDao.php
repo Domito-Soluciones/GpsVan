@@ -89,7 +89,7 @@ class ServicioDao {
             }
             for($i = 0 ; $i < count($pasajeros) ; $i++)
             {
-                if($destinos[$i] != "")
+                if($pasajeros[$i] != "undefined")
                 {
                     $query .= "INSERT INTO tbl_servicio_pasajero (servicio_pasajero_id_servicio,servicio_pasajero_id_pasajero,servicio_pasajero_destino) VALUES ($idServicio,$pasajeros[$i],'$destinos[$i]');"; 
                 }

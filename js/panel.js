@@ -465,7 +465,6 @@ function agregarServicio()
     }
     if(validarTipoDato())
     {
-        vaciarFormulario();
         $("#conductores").html("Conductor: ");
         var params = {cliente : cliente, ruta : ruta,fecha : fecha, hora : hora,movil : movil,
             conductor: conductor ,tarifa1 : tarifa1, tarifa2 : tarifa2, observaciones : observaciones, estado : 1, tipo : tipo};
@@ -478,6 +477,8 @@ function agregarServicio()
         }
         var success = function(response)
         {
+            agregarDetalleServicio(response.servicio_id);
+            vaciarFormulario();
             origen = undefined;
             cerrarSession(response);
             borrarDirections();
@@ -492,7 +493,6 @@ function agregarServicio()
             $("#ruta").prop("disabled",false);
             cambiarPropiedad($(".buscador-pasajero"),"display","none");
             quitarclase($("#contenedor_mapa"),"mapa_bajo");
-            agregarDetalleServicio(response.servicio_id);
             notificarConductor(response.servicio_id,conductor);
             notificarServicioFuturo(response.servicio_id,conductor,fecha,hora);
             TIPO_SERVICIO = 0;
@@ -559,10 +559,10 @@ function agregarDetalleServicio(idServicio)
     var params = {};
     var destinoFinal = "";
     var pasajeroFinal = "";
-    if($("#ruta").val().indexOf("-RG-") !== -1)
-    {
-        destinoFinal += origen + "%";
-    }
+//    if($("#ruta").val().indexOf("-RG-") !== -1)
+//    {
+//        destinoFinal += origen + "%";
+//    }
     for(var i = 0; i < destinos.length;i++)
     {
         destinoFinal += destinos[i] + "%";

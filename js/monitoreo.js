@@ -145,6 +145,7 @@ function moverMovilesMapa()
                     {
                         var latlng = new google.maps.LatLng(lat, lon);
                         markers[j].setPosition(latlng);
+                        marker.setB
                     }
                 }
             }
