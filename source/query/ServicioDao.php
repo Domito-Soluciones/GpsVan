@@ -408,7 +408,7 @@ class ServicioDao {
                     . "JOIN tbl_movil ON servicio_movil = movil_nombre "
                     . "JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id "
                     . "JOIN tbl_cliente ON servicio_cliente = cliente_razon_social "
-                    . "WHERE servicio_conductor = '$conductor' AND servicio_estado NOT IN (4,5,6) "
+                    . "WHERE servicio_conductor = '$conductor' AND servicio_estado NOT IN (5,6) "
                     . "ORDER BY servicio_id desc LIMIT 20";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query); 
