@@ -34,7 +34,7 @@ $(document).ready(function(){
             });
             iniciarEventosCheck();
             $("#volver").click(function(){
-                if(typeof TIPO_GRUPO === 'undefided')
+                if(typeof TIPO_GRUPO === 'undefined')
                 { 
                     buscarMovil();
                 }
@@ -483,7 +483,7 @@ function abrirModificar(id)
         cambioEjecutado();
         iniciarFecha(['#venPerCir','#venRevTec','#venExt','#venSegOb','#venSegRcDm','#venSegAs','#venSegRcExceso']);
         $("#volver").click(function(){
-            if(typeof TIPO_GRUPO === 'undefided')
+            if(typeof TIPO_GRUPO === 'undefined')
             {
                 buscarMovil();
             }

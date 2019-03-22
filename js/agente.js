@@ -58,7 +58,7 @@ $(document).ready(function(){
             });
         });
         cambiarPropiedad($("#guardar"),"visibility","visible");
-        cambiarPropiedad($("#cancelar"),"visibility","visible");
+        cambiarPropiedad($("#elimianr"),"visibility","hidden");
     });
     $("#cancelar").click(function(){
         validarCancelar(PAGINA);
@@ -303,6 +303,7 @@ function abrirModificar(id)
             $("#clientes").val("-");   
         }
         $("#clientes").val(agente.agente_empresa);
+        cambiarPropiedad($("#agregar"),"visibility","visible");
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
         if(agente.agente_nick !== NICK_GLOBAL)

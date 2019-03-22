@@ -51,6 +51,19 @@ $(document).ready(function(){
 //                    return;
 //                }
 //            });
+            $("#volver").click(function(){
+                if(typeof ID_CLIENTE === 'undefined')
+                {
+                    buscarPasajero();
+                }
+                else
+                {
+                    buscarPasajeroCliente(ID_CLIENTE);
+                }
+                cambiarPropiedad($("#agregar"),"visibility","visible");
+                cambiarPropiedad($("#guardar"),"visibility","hidden");
+                cambiarPropiedad($("#eliminar"),"visibility","hidden");
+            });
             $("#empresa").change(function (){
                 cargarCentroCosto($(this).val(),'');
                 cargarRutas($(this).val(),'');
@@ -70,11 +83,7 @@ $(document).ready(function(){
                 }
             });
             mostrarMapa();
-        });
-        
-        $("#volver").click(function(){
-            buscarPasajeroCliente(ID_CLIENTE);
-            cambiarPropiedad($("#agregar"),"visibility","visible");
+                    
         });
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
@@ -378,8 +387,8 @@ function abrirModificar(id)
             cargarCentroCosto(ID_EMPRESA,pasajero.pasajero_centro_costo);
             cargarRutas(ID_EMPRESA,pasajero.pasajero_ruta);
         }
+        cambiarPropiedad($("#agregar"),"visibility","visible");
         cambiarPropiedad($("#guardar"),"visibility","visible");
-        cambiarPropiedad($("#cancelar"),"visibility","visible");
         cambiarPropiedad($("#eliminar"),"visibility","visible");
         $("#buscaPunto").click(function(){
             if(mapa_oculto)

@@ -139,7 +139,7 @@ function cambiarModulo(pagina,params = null){
                 MODIFICADO = false;
                 quitarclase($(".opcion-menu"),"menu-activo");
                 agregarclase($("#"+pagina),"menu-activo");
-                if(pagina !== 'panel' || pagina !== 'monitoreo' || pagina !== 'servicio')
+                if(pagina !== 'panel' || pagina !== 'monitoreo' || pagina !== 'servicio' || pagina !== 'pasajero' || pagina !== 'cliente')
                 {
                     if(pagina !== 'panel')
                     {
@@ -174,7 +174,7 @@ function cambiarModulo(pagina,params = null){
     {
         quitarclase($(".opcion-menu"),"menu-activo");
         agregarclase($("#"+pagina),"menu-activo");
-        if(pagina !== 'panel' || pagina !== 'monitoreo' || pagina !== 'servicio')
+        if(pagina !== 'panel' || pagina !== 'monitoreo' || pagina !== 'servicio' || pagina !== 'pasajero' || pagina !== 'cliente')
         {
             if(pagina !== 'panel')
             {
@@ -296,14 +296,14 @@ function getUsuario()
 
 function mensajeBienvenida(mensaje)
 {
-    $("#contenedor_central").html("<div class=\"mensaje_bienvenida\">\n\
+    $("#lista_busqueda_pasajero_detalle").html("<div class=\"mensaje_bienvenida\">\n\
                                     SELECCIONE OPCIONES PARA AGREGAR EDITAR Y/O MODIFICAR "+mensaje+"</div>");
 }
 
 function resetFormulario() 
 {
     MODIFICADO = false;
-    
+    cambiarPropiedad($("#agregar"),"visibility","visible");
 }
 
 
@@ -311,7 +311,7 @@ function resetFormulario()
 function resetFormularioEliminar(pagina) 
 {
     MODIFICADO = false;
-    $("#contenedor_central").html("");
+    $("#lista_busqueda_pasajero_detalle").html("");
     mensajeBienvenida(pagina);
 }
 

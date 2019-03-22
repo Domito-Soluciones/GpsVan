@@ -62,7 +62,7 @@ $(document).ready(function(){
                 }
             });
             $("#volver").click(function(){
-                if(typeof TIPO_GRUPO === 'undefided')
+                if(typeof TIPO_GRUPO === 'undefined')
                 {
                     buscarCliente();
                 }
@@ -77,7 +77,7 @@ $(document).ready(function(){
             mostrarMapa();
         });
         cambiarPropiedad($("#guardar"),"visibility","visible");
-        cambiarPropiedad($("#cancelar"),"visibility","visible");
+        cambiarPropiedad($("#elimianr"),"visibility","hidden");
     });
     $("#cancelar").click(function(){
         validarCancelar(PAGINA);
@@ -351,7 +351,7 @@ function abrirModificar(id,nombre)
             }
         });    
         $("#volver").click(function(){
-            if(typeof TIPO_GRUPO === 'undefided')
+            if(typeof TIPO_GRUPO === 'undefined')
             {
                 buscarCliente();
             }

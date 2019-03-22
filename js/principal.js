@@ -28,49 +28,49 @@ var TIPO_SERVICIO = 0;
 var MENU_VISIBLE = false;
 
 $(document).ready(function(){
-    getLocation();
-    $("#menu").load("menu.php", function( response, status, xhr ) {
-        agregarclase($("#principal"),"menu-activo");
-        
-        $(".opcion-menu").mouseover(function (){
-            if(!MENU_VISIBLE)
+    $.getScript(GOOGLE_MAPS_API+"key="+API_KEY+"&callback=initMap&libraries=places",function(){
+        getLocation();
+        $("#menu").load("menu.php", function( response, status, xhr ) {
+            agregarclase($("#principal"),"menu-activo");
+
+            $(".opcion-menu").mouseover(function (){
+                if(!MENU_VISIBLE)
+                {
+                    abrirTooltip("tooltip_"+$(this).attr("id"));
+                }
+            });
+
+            $(".opcion-menu").mouseout(function (){
+                cerrarTooltip("tooltip_"+$(this).attr("id"));
+            });
+
+        });    
+        $("#contenido-central").load("home.html");
+        getUsuario();
+        getfecha();
+        setInterval(function(){getfecha();},5000);
+
+        $("#menu-telefono").click(function(){
+            if($("#menu-telefono").attr('src') === 'img/menu.svg')
             {
-                abrirTooltip("tooltip_"+$(this).attr("id"));
+                cambiarPropiedad($("#menu"),"display","block");
+                $("#menu-telefono").attr("src","img/cancelar.svg");
+            }
+            else
+            {
+                cambiarPropiedad($("#menu"),"display","none");
+                $("#menu-telefono").attr("src","img/menu.svg");
             }
         });
-        
-        $(".opcion-menu").mouseout(function (){
-            cerrarTooltip("tooltip_"+$(this).attr("id"));
+
+        $("#btn_menu").click(function () {
+            abrirMenu();
         });
-    
-    });    
-    $("#contenido-central").load("home.html");
-    getUsuario();
-    getfecha();
-    setInterval(function(){getfecha();},5000);
-    $.getScript(GOOGLE_MAPS_API+"key="+API_KEY+"&callback=initMap&libraries=places",null);
-    
-    $("#menu-telefono").click(function(){
-        if($("#menu-telefono").attr('src') === 'img/menu.svg')
-        {
-            cambiarPropiedad($("#menu"),"display","block");
-            $("#menu-telefono").attr("src","img/cancelar.svg");
-        }
-        else
-        {
-            cambiarPropiedad($("#menu"),"display","none");
-            $("#menu-telefono").attr("src","img/menu.svg");
-        }
+
+        $("#enlace-salir").click(function() {
+            salir();
+        }); 
     });
-    
-    $("#btn_menu").click(function () {
-        abrirMenu();
-    });
-    
-    $("#enlace-salir").click(function() {
-        salir();
-    });
-    
 });
 
 function initMap() {

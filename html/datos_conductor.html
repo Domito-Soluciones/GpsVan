@@ -127,10 +127,39 @@
         </div>
         <div class="contenedor-fila">
             <div class="contenedor-pre-input-conductor">
-                Grupo
+                Banco (*)
             </div>
             <div class="contenedor-input">
-                <input type="text" id="grupo" placeholder="Ej: Grupo 1" maxlength="20" value="Indefinido">
+                <input type="text" id="banco" list="lbanco" placeholder="Ej: Banco Estado" maxlength="20">
+                <datalist id="lbanco" >
+                    <option value="Banco Estado">Banco Estado</option>
+                    <option value="Banco De Chile">Banco De Chile</option>
+                    <option value="Banco Santander">Banco Santander</option>
+                    <option value="Banco BCI">Banco BCI</option>
+                    <option value="Banco BBWA">Banco BBWA</option>
+                    <option value="Banco Scotiabank">Banco Scotiabank</option>
+                </datalist>
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input-conductor">
+                N° Cuenta (*)
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="ncuenta" placeholder="Ej: 453768765656565" maxlength="20">
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input-conductor">
+                Tipo Cuenta (*)
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="tcuenta" list="ltcuenta" placeholder="Ej: Cuenta Corriente" maxlength="20">
+                <datalist id="ltcuenta" >
+                    <option value="Cuenta Corriente">Cuenta Corriente</option>
+                    <option value="Cuenta Vista">Cuenta Vista</option>
+                    <option value="Cuenta Ahorro">Cuenta Ahorro</option>
+                </datalist>
             </div>
         </div>
     </div>

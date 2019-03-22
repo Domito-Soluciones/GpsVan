@@ -16,8 +16,8 @@
             <div class="contenedor-input">
                 <select id="tipo">
                     <option value="">Seleccione</option>
-                    <option value="ZP">Zarpe</option>
-                    <option value="RG">Regreso</option>
+                    <option value="ZP">Reparto</option>
+                    <option value="RG">Recogida</option>
                 </select>
             </div>
         </div>
@@ -39,7 +39,15 @@
                 Nombre (*)
             </div>
             <div class="contenedor-input">
-                <input type="text" id="nombre" placeholder="Ej: Tarifa 1" maxlength="20" readonly>
+                <input type="text" id="descripcion" placeholder="Ej: Ruta 1" maxlength="20">
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                Descripción (*)
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="nombre" placeholder="Ej: Entel-RG-MAN" maxlength="20" readonly>
             </div>
         </div>
         <div class="contenedor-fila">
@@ -73,20 +81,6 @@
             <div class="contenedor-input">
                 <input type="text" id="valor2" placeholder="Ej: 1200" maxlength="20">
             </div>
-        </div>
-    </div>
-</div>
-<div class="pie pie-extenso">
-    <div class="pie-left">
-        <div class="boton oculto" id="guardar">
-            <img src="img/guardar.svg" width="12" height="12">
-            Guardar
-        </div>
-    </div>
-    <div class="pie-right">
-        <div class="boton oculto" id="eliminar">
-            <img src="img/eliminar.svg" width="12" height="12">
-            Eliminar
         </div>
     </div>
 </div>

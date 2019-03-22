@@ -1,4 +1,4 @@
-/* global POLYLINE, alertify, urlBase, PLACES_AUTOCOMPLETE_API, POSITION, API_KEY, PLACES_DETAILS_API, google, map, DIRECTIONS_API, EN_PROCCESO_DE_ASIGNACION, markers, TIPO_SERVICIO, markersPanel, directionsService, directionsDisplay, geocoder, MENU_VISIBLE */
+/* global POLYLINE, alertify, urlBase, PLACES_AUTOCOMPLETE_API, POSITION, API_KEY, PLACES_DETAILS_API, google, map, DIRECTIONS_API, EN_PROCCESO_DE_ASIGNACION, markers, TIPO_SERVICIO, markersPanel, directionsService, directionsDisplay, geocoder, MENU_VISIBLE, GOOGLE_MAPS_API */
 var CLIENTES = {};
 var moviles = [];
 var clientesArray = [];

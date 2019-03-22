@@ -15,6 +15,9 @@ class Conductor {
     private $direccion;
     private $mail;
     private $tipoLicencia;
+    private $banco;
+    private $numeroCuenta;
+    private $tipoCuenta;
     private $vencLicencia;
     private $nacimiento;
     private $renta;
@@ -30,7 +33,6 @@ class Conductor {
     private $contratoAdjunto;
     private $transportista;
     private $movil;
-    private $grupo;
     
     function getId() {
         return $this->id;
@@ -82,6 +84,18 @@ class Conductor {
 
     function getTipoLicencia() {
         return $this->tipoLicencia;
+    }
+
+    function getBanco() {
+        return $this->banco;
+    }
+
+    function getNumeroCuenta() {
+        return $this->numeroCuenta;
+    }
+
+    function getTipoCuenta() {
+        return $this->tipoCuenta;
     }
 
     function getVencLicencia() {
@@ -144,10 +158,6 @@ class Conductor {
         return $this->movil;
     }
 
-    function getGrupo() {
-        return $this->grupo;
-    }
-
     function setId($id) {
         $this->id = $id;
     }
@@ -198,6 +208,18 @@ class Conductor {
 
     function setTipoLicencia($tipoLicencia) {
         $this->tipoLicencia = $tipoLicencia;
+    }
+
+    function setBanco($banco) {
+        $this->banco = $banco;
+    }
+
+    function setNumeroCuenta($numeroCuenta) {
+        $this->numeroCuenta = $numeroCuenta;
+    }
+
+    function setTipoCuenta($tipoCuenta) {
+        $this->tipoCuenta = $tipoCuenta;
     }
 
     function setVencLicencia($vencLicencia) {
@@ -260,11 +282,7 @@ class Conductor {
         $this->movil = $movil;
     }
 
-    function setGrupo($grupo) {
-        $this->grupo = $grupo;
-    }
-
-        
+            
         public function toString() {
         return "DATOS CONDUCTOR: ID : ".$this->id." NOMBRE : ".$this->nombre.
                 " PAPELLIDO : ".$this->papellido." MAPELLIDO : ".$this->mapellido.

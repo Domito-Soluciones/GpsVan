@@ -8,7 +8,6 @@ var CAMPOS = ["tipo","rut","nombre","papellido","mapellido","celular","direccion
                 "vlicencia","renta","tipoContrato","afp","isapre","isapread","mutual","seguroInicio","descuento",
                 "nick","password","password2"];
 var TIPO = '';
-var grupos = new Map();
 var ID_GRUPO;
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
@@ -53,7 +52,7 @@ $(document).ready(function(){
             
             obtenerChecks();
             $("#volver").click(function(){
-                 if(typeof ID_GRUPO === 'undefided')
+                if(typeof ID_GRUPO === 'undefined')
                 { 
                     buscarConductor();
                 }
@@ -67,7 +66,7 @@ $(document).ready(function(){
             });
         });
         cambiarPropiedad($("#guardar"),"visibility","visible");
-        cambiarPropiedad($("#cancelar"),"visibility","visible");
+        cambiarPropiedad($("#elimianr"),"visibility","hidden");
     });
     
     $("#cancelar").click(function(){
@@ -109,7 +108,9 @@ function agregarConductor()
     var nacimiento = formato_fecha($("#nacimiento").val());
     var tipoLicencia = $("#tipoLicencia").val();
     var vlicencia = $("#vlicencia").val();
-    var grupo = $("#grupo").val() === '' ? 'Indefinido' : $("#grupo").val() ;
+    var banco = $("#banco").val();
+    var ncuenta = $("#ncuenta").val();
+    var tcuenta = $("#tcuenta").val();
     var renta = $("#renta").val();
     var contrato = $("#tipoContrato").val();
     var afp = $("#afp").val();
@@ -123,7 +124,7 @@ function agregarConductor()
     var password = $("#password").val();
     var password2 = $("#password2").val();
     var array = [tipo,rut,nombre,papellido,mapellido,celular,direccion,mail,nacimiento,tipoLicencia,
-                renta,contrato,vlicencia,afp,isapre,isapread,mutual,seguroInicio,descuento,nick,
+                renta,contrato,vlicencia,banco,ncuenta,tcuenta,afp,isapre,isapread,mutual,seguroInicio,descuento,nick,
                 password,password2];
     var exp = obtenerExcepciones();
     if(ADJUNTANDO)
@@ -150,8 +151,9 @@ function agregarConductor()
         var archivoContrato = $("#contratoOculta").val();
         var params = {nombre : nombre, papellido : papellido, mapellido : mapellido,
         rut : rut, nick : nick, password : btoa(password), telefono : telefono, celular : celular, 
-        direccion : direccion, mail : mail, tipoLicencia : tipoLicencia, vlicencia : vlicencia, 
-        grupo : grupo , nacimiento : nacimiento, renta : renta, contrato : contrato, afp : afp,
+        direccion : direccion, mail : mail, tipoLicencia : tipoLicencia, vlicencia : vlicencia,
+        banco : banco, ncuenta : ncuenta, tcuenta : tcuenta,
+        nacimiento : nacimiento, renta : renta, contrato : contrato, afp : afp,
         isapre : isapre, isapread : isapread, mutual : mutual, seguroInicio : seguroInicio,
         descuento : descuento, transportista : transportista,
         imagen : imagen, archivoContrato : archivoContrato, tipo : tipo};
@@ -192,6 +194,9 @@ function modificarConductor()
     var password2 = $("#password2").val();
     var tipoLicencia = $("#tipoLicencia").val();
     var vlicencia = $("#vlicencia").val();
+    var banco = $("#banco").val();
+    var ncuenta = $("#ncuenta").val();
+    var tcuenta = $("#tcuenta").val();
     var nacimiento = $("#nacimiento").val();
     var renta = $("#renta").val();
     var contrato = $("#tipoContrato").val();
@@ -202,14 +207,13 @@ function modificarConductor()
     var seguroInicio = $("#seguroInicio").val();
     var descuento = $("#descuento").val();
     var transportista = $("#transportista").val();
-    var grupo = $("#grupo").val() === '' ? 'Indefinido' : $("#grupo").val() ;
     var imagen = $("#imagenOculta").val();
     var archivoContrato = $("#contratoOculta").val();
     var array;
     var params = {id : id, rut : rut, nombre : nombre, papellido : papellido, mapellido : mapellido, direccion : direccion, telefono : telefono, celular : celular, 
-        mail : mail, tipoLicencia : tipoLicencia, vlicencia : vlicencia, nacimiento : nacimiento,
+        mail : mail, nick : nick, tipoLicencia : tipoLicencia, vlicencia : vlicencia, banco : banco, ncuenta : ncuenta, tcuenta : tcuenta, nacimiento : nacimiento,
         renta : renta, contrato : contrato, afp : afp, isapre : isapre, isapread : isapread, mutual : mutual, 
-        seguroInicio : seguroInicio, descuento : descuento, transportista : transportista, grupo : grupo,
+        seguroInicio : seguroInicio, descuento : descuento, transportista : transportista,
         imagen : imagen, archivoContrato : archivoContrato, tipo : tipo};
     if(ADJUNTANDO)
     {
@@ -268,7 +272,6 @@ function modificarConductor()
 
 function buscarConductor()
 {
-    grupos.clear();
     var busqueda = $("#busqueda").val();
     var params = {busqueda : busqueda};
     var url = urlBase + "/conductor/GetConductores.php";
@@ -431,8 +434,8 @@ function abrirModificar(id)
         });
         
         $("#volver").click(function(){
-            if(typeof ID_GRUPO === 'undefided')
-            { 
+            if(typeof ID_GRUPO === 'undefined')
+            {
                 buscarConductor();
             }
             else
@@ -467,7 +470,6 @@ function abrirModificar(id)
         $("#mail").val(conductor.conductor_mail);
         $("#tipoLicencia").val(conductor.conductor_tipoLicencia);
         $("#vlicencia").val(conductor.conductor_vencLicencia);
-        $("#grupo").val(conductor.conductor_grupo);
         $("#nacimiento").val(conductor.conductor_nacimiento);
         $("#renta").val(conductor.conductor_renta);
         $("#tipoContrato").val(conductor.conductor_tipo_contrato);
@@ -838,7 +840,6 @@ function validarTipo()
         {
             $("#checkMutual").attr("checked",true);
         }
-        alert(descuento.val());
         if(descuento.val() === '0' || descuento.val() === '')
         {
             marcarCampoDisabled(descuento);

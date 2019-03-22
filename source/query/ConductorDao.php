@@ -22,6 +22,9 @@ class ConductorDao {
         $password = $conductor->getPassword();
         $tipoLicencia = $conductor->getTipoLicencia();
         $vencLicencia = $conductor->getVencLicencia();
+        $banco = $conductor->getBanco();
+        $ncuenta = $conductor->getNumeroCuenta();
+        $tcuenta = $conductor->getTipoCuenta();
         $nacimiento = $conductor->getNacimiento();
         $renta = $conductor->getRenta();
         $contrato = $conductor->getContrato();
@@ -32,18 +35,17 @@ class ConductorDao {
         $seguroInicio = $conductor->getSeguroInicio();
         $descuento = $conductor->getDescuento();
         $transportista = $conductor->getTransportista();
-        $grupo = $conductor->getGrupo();
         $imagen = $conductor->getImagenAdjunta();
         $archivoContrato = $conductor->getContratoAdjunto();
         $conn = new Conexion();
         try {
             $query = "INSERT INTO tbl_conductor (conductor_nombre,conductor_papellido,conductor_mapellido,"
                     . "conductor_tipo,conductor_rut,conductor_nick,conductor_clave,conductor_telefono,"
-                    . "conductor_celular,conductor_direccion,conductor_mail,conductor_tipo_licencia,conductor_venc_licencia,"
+                    . "conductor_celular,conductor_direccion,conductor_mail,conductor_tipo_licencia,conductor_venc_licencia,conductor_banco,conductor_ncuenta,conductor_tcuenta,"
                     . "conductor_nacimiento,conductor_renta,conductor_tipo_contrato , conductor_prevision ,conductor_isapre,conductor_isapre_ad,conductor_mutual,"
-                    . "conductor_seguro_inicio,conductor_descuento,conductor_transportista,conductor_grupo,conductor_imagen,conductor_contrato) VALUES "
-                    . "('$nombre','$papellido','$mapellido',$tipo,'$rut','$nick','$password','$telefono','$celular','$direccion','$mail','$tipoLicencia','$vencLicencia',"
-                    . "'$nacimiento',$renta,'$contrato','$afp','$isapre','$isapreAd','$mutual','$seguroInicio','$descuento','$transportista','$grupo','$imagen','$archivoContrato')"; 
+                    . "conductor_seguro_inicio,conductor_descuento,conductor_transportista,conductor_imagen,conductor_contrato) VALUES "
+                    . "('$nombre','$papellido','$mapellido',$tipo,'$rut','$nick','$password','$telefono','$celular','$direccion','$mail','$tipoLicencia','$vencLicencia','$banco','$ncuenta','$tcuenta',"
+                    . "'$nacimiento',$renta,'$contrato','$afp','$isapre','$isapreAd','$mutual','$seguroInicio','$descuento','$transportista','$imagen','$archivoContrato')"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -72,6 +74,9 @@ class ConductorDao {
         $mail = $conductor->getMail();
         $tipoLicencia = $conductor->getTipoLicencia();
         $vencLicencia = $conductor->getVencLicencia();
+        $banco = $conductor->getBanco();
+        $ncuenta = $conductor->getNumeroCuenta();
+        $tcuenta = $conductor->getTipoCuenta();
         $nacimiento = $conductor->getNacimiento();
         $renta = $conductor->getRenta();
         $contrato = $conductor->getContrato();
@@ -82,7 +87,6 @@ class ConductorDao {
         $seguroInicio = $conductor->getSeguroInicio();
         $descuento = $conductor->getDescuento();
         $transportista = $conductor->getTransportista();
-        $grupo = $conductor->getGrupo();
         $imagen = $conductor->getImagenAdjunta();
         $archivoContrato = $conductor->getContratoAdjunto();
         $conn = new Conexion();
@@ -96,11 +100,11 @@ class ConductorDao {
                     {
                         $query .= "conductor_clave = '$password',";
                     }
-                    $query .= "conductor_tipo_licencia = '$tipoLicencia',conductor_venc_licencia = '$vencLicencia',conductor_nacimiento = '$nacimiento',"
+                    $query .= "conductor_tipo_licencia = '$tipoLicencia',conductor_venc_licencia = '$vencLicencia',conductor_banco = '$banco',conductor_ncuenta = '$ncuenta',conductor_tcuenta = '$tcuenta',conductor_nacimiento = '$nacimiento',"
                     . "conductor_renta = '$renta',conductor_tipo_contrato = '$contrato',"
                     . "conductor_prevision = '$afp',conductor_isapre = '$isapre',conductor_isapre_ad = '$isapreAd',conductor_mutual = '$mutual',"
                     . "conductor_seguro_inicio = '$seguroInicio',"
-                    . "conductor_descuento = '$descuento',conductor_transportista = '$transportista',conductor_grupo = '$grupo',conductor_imagen = '$imagen',"
+                    . "conductor_descuento = '$descuento',conductor_transportista = '$transportista',conductor_imagen = '$imagen',"
                     . "conductor_contrato = '$archivoContrato' WHERE conductor_rut = '$rut'";    
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
@@ -142,6 +146,9 @@ class ConductorDao {
                 $conductor->setMail($row["conductor_mail"]);
                 $conductor->setTipoLicencia($row["conductor_tipo_licencia"]);
                 $conductor->setVencLicencia($row["conductor_venc_licencia"]);
+                $conductor->setBanco($row["conductor_banco"]);
+                $conductor->setTipoCuenta($row["conductor_tcuenta"]);
+                $conductor->setNumeroCuenta($row["conductor_ncuenta"]);
                 $conductor->setNacimiento($row["conductor_nacimiento"]);
                 $conductor->setRenta($row["conductor_renta"]);
                 $conductor->setContrato($row["conductor_tipo_contrato"]);
@@ -154,7 +161,6 @@ class ConductorDao {
                 $conductor->setImagenAdjunta($row["conductor_imagen"]);
                 $conductor->setContratoAdjunto($row["conductor_contrato"]);
                 $conductor->setTransportista($row["conductor_transportista"]);
-                $conductor->setGrupo($row["conductor_grupo"]);
                 array_push($array, $conductor);
             }
         } catch (Exception $exc) {
@@ -163,12 +169,12 @@ class ConductorDao {
         return $array;
     }
     
-    function getConductoresGrupo($grupo)
+    function getConductoresGrupo($tipo)
     {
         $array = array();
         $conn = new Conexion();
         try {
-            $query = "SELECT * FROM tbl_conductor WHERE conductor_tipo = '".$grupo."'";
+            $query = "SELECT * FROM tbl_conductor WHERE conductor_tipo = '".$tipo."'";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
             while($row = mysqli_fetch_array($result)) {
@@ -198,7 +204,6 @@ class ConductorDao {
                 $conductor->setImagenAdjunta($row["conductor_imagen"]);
                 $conductor->setContratoAdjunto($row["conductor_contrato"]);
                 $conductor->setTransportista($row["conductor_transportista"]);
-                $conductor->setGrupo($row["conductor_grupo"]);
                 array_push($array, $conductor);
             }
         } catch (Exception $exc) {

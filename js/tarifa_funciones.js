@@ -140,7 +140,7 @@ function buscarTarifas(id,nombre)
     marcarFilaActiva(id);
     quitarclase($("#agregar"),"oculto");
     $("#lista_busqueda_tarifa_detalle").html("");
-    cambiarPropiedad($("#lista_busqueda_tarifa_detalle"),"height","calc(100% - 65px)");
+//    cambiarPropiedad($("#lista_busqueda_tarifa_detalle"),"height","calc(100% - 65px)");
     cambiarPropiedad($(".mensaje_bienvenida"),"display","none");
     var busqueda = NOMBRE_CLIENTE;
     var params = {busqueda : busqueda};
