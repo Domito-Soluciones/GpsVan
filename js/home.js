@@ -21,17 +21,17 @@ function generarGraficoDona(canvas,data,options)
     });
 }
 
-function graficoVehiculosConectados()
+function getDashBoard()
 {
     var url = urlBase + "/estadistica/GetDashBoard.php";
     var params = {};
-    var success = function (response)
+    var success = function(response)
     {
         $("#sFinalizado").html(response.servicio_finalizado);
         $("#sRuta").html(response.servicio_ruta);
         $("#sRealizar").html(response.servicio_realizar);
         $("#sAsignar").html(response.servicio_asignar);
-        var data = {
+        var dataVehiculo = {
             labels: [
                 "Activos",
                 "Inactivos"
@@ -45,14 +45,48 @@ function graficoVehiculosConectados()
                     ]
                 }]
         };
-        generarGraficoDona($("#vActivos"),data,[]);
+        var convenios = [];
+        var totales = [];
+        for(var i = 0 ; i < response.servicio_convenios.length;i++)
+        {
+            var aux = response.servicio_convenios[i];
+            convenios.push(aux.convenio_nombre);
+            totales.push(aux.convenio_cantidad);
+        }
+        var dataServicio =  {
+            labels: convenios,
+            datasets: [{
+                data: totales,
+                fillColor: ["rgba(220,220,220,0.5)", "navy", "red", "orange"],
+                strokeColor: "rgba(220,220,220,0.8)",
+                highlightFill: "rgba(220,220,220,0.75)",
+                highlightStroke: "rgba(220,220,220,1)",
+                borderWidth: 2,
+                hoverBorderWidth: 0
+            }]
+        };
+        var optionsVehiculo = {
+            percentageInnerCutout: 10,
+            animationEasing: 'easeOutCirc',
+            segmentShowStroke: false
+        };
+        
+        var optionsServicio = {
+            scales: {
+                yAxes: [{
+                    barPercentage: 1
+                }]
+            },
+            elements: {
+                rectangle: {
+                    borderSkipped: 'left'
+                }
+            }
+        };
+        generarGraficoDona($("#vActivos"),dataVehiculo,optionsVehiculo);
+        generarGraficoBarra($("#vConvenio"),dataServicio,optionsServicio);
     };
     postRequest(url,params,success);
-}
-
-function getDashBoard()
-{
-    graficoVehiculosConectados();
 }
 
 function mostrarServiciosPendientes()
@@ -62,6 +96,15 @@ function mostrarServiciosPendientes()
 function ocultarServiciosPendientes()
 {
     cambiarPropiedad($(".contenedor-servicios"),"display","none");
+}
+
+function generarGraficoBarra(canvas,data,options)
+{
+    new Chart(canvas, {
+        type: 'horizontalBar',
+        data: data,
+        options: options
+    });
 }
 
 
