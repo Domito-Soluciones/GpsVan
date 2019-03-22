@@ -6,12 +6,13 @@ function agregarTarifa()
     var cliente = $("#clientes").val();
     var tipo = $("#tipo").val();
     var horario = $("#horario").val();
+    var descripcion = $("#descripcion").val();
     var nombre = $("#nombre").val();
     var origen = $("#origen").val();
     var destino = $("#destino").val();
     var valor1 = $("#valor1").val();
     var valor2 = $("#valor2").val();
-    var array = [cliente,tipo,horario,nombre,origen,destino,valor1,valor2];
+    var array = [tipo,horario,descripcion,nombre,origen,destino,valor1,valor2];
     if(!validarCamposOr(array))
     {
         activarPestania(array);
@@ -20,7 +21,7 @@ function agregarTarifa()
     }
     if(validarTipoDatoTarifa())
     {
-        var params = {cliente : cliente, tipo : tipo,horario : horario, nombre : nombre, origen : origen,
+        var params = {cliente : cliente, tipo : tipo,horario : horario, descripcion: descripcion,nombre : nombre, origen : origen,
             destino : destino, valor1 : valor1, valor2 : valor2};
         var url = urlBase + "/tarifa/AddTarifa.php";
         var success = function(response)
@@ -45,12 +46,13 @@ function modificarTarifa()
     var cliente = $("#clientes").val();;
     var tipo = $("#tipo").val();
     var horario = $("#horario").val();
+    var descripcion = $("#descripcion").val();
     var nombre = $("#nombre").val();
     var origen = $("#origen").val();
     var destino = $("#destino").val();
     var valor1 = $("#valor1").val();
     var valor2 = $("#valor2").val();
-    var array = [cliente,tipo,horario,nombre,valor1,valor2];
+    var array = [tipo,horario,descripcion,nombre,valor1,valor2];
     if(!validarCamposOr(array))
     {
         activarPestania(array);
@@ -59,7 +61,7 @@ function modificarTarifa()
     }
     if(validarTipoDatoTarifa())
     {
-        var params = {id : id,cliente : cliente, tipo : tipo,horario : horario, nombre : nombre, origen : origen,
+        var params = {id : id,cliente : cliente, tipo : tipo,horario : horario, descripcion : descripcion,nombre : nombre, origen : origen,
             destino : destino, valor1 : valor1, valor2 : valor2};
         var url = urlBase + "/tarifa/ModTarifa.php";
         var success = function(response)
@@ -78,7 +80,7 @@ function modificarTarifa()
 function buscarClienteTarifa()
 {
     var busqueda = $("#busqueda").val();
-    var params = {busqueda : busqueda,buscaCC : '1'};
+    var params = {busqueda : busqueda,buscaCC : '0'};
     var url = urlBase + "/cliente/GetClientes.php";
     var success = function(response)
     {
@@ -140,8 +142,6 @@ function buscarTarifas(id,nombre)
     marcarFilaActiva(id);
     quitarclase($("#agregar"),"oculto");
     $("#lista_busqueda_tarifa_detalle").html("");
-//    cambiarPropiedad($("#lista_busqueda_tarifa_detalle"),"height","calc(100% - 65px)");
-    cambiarPropiedad($(".mensaje_bienvenida"),"display","none");
     var busqueda = NOMBRE_CLIENTE;
     var params = {busqueda : busqueda};
     var url = urlBase + "/tarifa/GetTarifas.php";
@@ -175,6 +175,7 @@ function buscarTarifas(id,nombre)
     postRequest(url,params,success);
     
 }
+
 function abrirBuscador(id)
 {
     AGREGAR = false;
@@ -207,6 +208,7 @@ function abrirBuscador(id)
         $("#clientes").val(tarifa.tarifa_cliente);
         $("#tipo").val(tarifa.tarifa_tipo);
         $("#horario").val(tarifa.tarifa_horario);
+        $("#descripcion").val(tarifa.tarifa_descripcion);
         $("#nombre").prop("readonly",true);
         $("#nombre").val(tarifa.tarifa_nombre);
         $("#origen").val(tarifa.tarifa_origen);
@@ -226,8 +228,17 @@ function abrirBuscador(id)
             },null);
         });
         $("#volver").click(function(){
-            buscarTarifas(ID_CLIENTE,NOMBRE_CLIENTE);
-            cambiarPropiedad($("#pie-aniadir"),"display","block");
+            buscarTarifas(NOMBRE_CLIENTE,ID_CLIENTE);
+            if(typeof NOMBRE_CLIENTE === "undefined")
+            {
+                cambiarPropiedad($("#agregar"),"visibility","hidden");
+            }   
+            else
+            {
+                cambiarPropiedad($("#agregar"),"visibility","visible");
+            }
+            cambiarPropiedad($("#guardar"),"visibility","hidden");
+            cambiarPropiedad($("#eliminar"),"visibility","hidden");
         });
         
     });

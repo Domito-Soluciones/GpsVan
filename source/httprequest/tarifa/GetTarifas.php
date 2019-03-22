@@ -11,6 +11,7 @@ echo "[";
 for ($i = 0 ; $i < count($tarifas); $i++)
 {
     $cId = $tarifas[$i]->getId();
+    $descripcion = $tarifas[$i]->getDescripcion();
     $nombre = $tarifas[$i]->getNombre();
     $origen = $tarifas[$i]->getOrigen();
     $destino = $tarifas[$i]->getDestino();
@@ -20,6 +21,7 @@ for ($i = 0 ; $i < count($tarifas); $i++)
     $tipo = $tarifas[$i]->getTipo();
     $horario = $tarifas[$i]->getHorario();
     echo "{\"tarifa_id\":\"".$cId."\","
+        . "\"tarifa_descripcion\":\"".$descripcion."\","
         . "\"tarifa_nombre\":\"".$nombre."\","
         . "\"tarifa_origen\":\"".$origen."\","
         . "\"tarifa_destino\":\"".$destino."\","

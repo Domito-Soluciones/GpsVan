@@ -156,7 +156,7 @@ function init()
     else
     {
         cambiarPropiedad($(".asignacion_buscador"),"margin-left","calc(37% - 24px)");
-        cambiarPropiedad($(".asignacion_buscador"),"width","calc(70% - 66px)");
+        cambiarPropiedad($(".asignacion_buscador"),"width","calc(70% - 67px)");
     }
     cargarClientes();
     cargarMoviles();

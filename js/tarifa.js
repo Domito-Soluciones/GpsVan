@@ -3,17 +3,19 @@ var ID_TARIFA;
 var TARIFAS;
 var AGREGAR = true;
 var PAGINA = 'TARIFAS';
-var CAMPOS = ["clientes","tipo","horario","nombre","valor1","valor2"];
+var CAMPOS = ["tipo","horario","descripcion","nombre","valor1","valor2"];
 var clientes_tarifa = [];
 
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
     buscarClienteTarifa();
+    //buscarTarifasAll();
     $("#agregar").click(function(){
         AGREGAR = true;
         $("#lista_busqueda_tarifa_detalle").load("html/datos_tarifa.html", function( response, status, xhr ) {
             quitarclase($("#guardar"),"oculto");
             cambiarPropiedad($("#agregar"),"visibility","hidden");
+            cambiarPropiedad($("#eliminar"),"visibility","hidden");
             $("#clientes").val(NOMBRE_CLIENTE);
             cambioEjecutado();
             cargarClientes();
@@ -51,7 +53,17 @@ $(document).ready(function(){
             
             $("#volver").click(function(){
                 buscarTarifas(NOMBRE_CLIENTE,ID_CLIENTE);
-                cambiarPropiedad($("#agregar"),"visibility","visible");
+                if(typeof ID_CLIENTE === "undefined")
+                {
+                    cambiarPropiedad($("#agregar"),"visibility","hidden");
+                }   
+                else
+                {
+                    cambiarPropiedad($("#agregar"),"visibility","visible");
+                }
+                cambiarPropiedad($("#guardar"),"visibility","hidden");
+                cambiarPropiedad($("#eliminar"),"visibility","hidden");
+
             });
             
             $("#guardar").click(function (){

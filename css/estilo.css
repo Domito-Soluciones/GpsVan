@@ -271,6 +271,7 @@ select
     height: calc(100% - 50px);
     border-right: solid 1px silver;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .contenedor-inicial
@@ -320,7 +321,7 @@ select
 .asignacion_buscador
 {
     margin-left: calc(37% - 24px);
-    width: calc(70% - 66px);
+    width: calc(70% - 67px);
     height: calc(100% - 1px);
 }
 
@@ -362,7 +363,7 @@ select
 .mapa_bajo
 {
     width: calc(42% - 16px) !important;
-    margin-left: calc(60% - 9px) !important;
+    margin-left: calc(60% - 10px) !important;
 }
 .buscador-asignacion-boton
 {
@@ -525,7 +526,7 @@ select
 {
     border: solid 1px silver;
     background-color: white;
-    height: calc(100% - 82px);
+    height: calc(100% - 52px);
     padding-top: 20px;
     min-height: 460px;
 }
@@ -1500,7 +1501,7 @@ select
 
 .pie-extenso
 {
-    height: 50px;
+    height: 49px;
 }
 
 .lista_busqueda_extendida

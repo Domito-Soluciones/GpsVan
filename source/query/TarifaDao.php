@@ -22,6 +22,7 @@ class TarifaDao {
             while($row = mysqli_fetch_array($result)) {
                 $tarifa = new Tarifa();
                 $tarifa->setId($row["tarifa_id"]);
+                $tarifa->setDescripcion($row["tarifa_descripcion"]);
                 $tarifa->setNombre($row["tarifa_nombre"]);
                 $tarifa->setOrigen($row["tarifa_origen"]);
                 $tarifa->setDestino($row["tarifa_destino"]);
@@ -48,6 +49,7 @@ class TarifaDao {
             while($row = mysqli_fetch_array($result)) {
                 $tarifa = new Tarifa();
                 $tarifa->setId($row["tarifa_id"]);
+                $tarifa->setDescripcion($row["tarifa_descripcion"]);
                 $tarifa->setNombre($row["tarifa_nombre"]);
                 $tarifa->setOrigen($row["tarifa_origen"]);
                 $tarifa->setDestino($row["tarifa_destino"]);
@@ -84,6 +86,7 @@ class TarifaDao {
     public function agregarTarifa($tarifa)
     {
         $id = 0;
+        $descripcion = $tarifa->getDescripcion();
         $nombre = $tarifa->getNombre();
         $origen = $tarifa->getOrigen();
         $destino = $tarifa->getDestino();
@@ -94,9 +97,9 @@ class TarifaDao {
         $horario = $tarifa->getHorario();
         $conn = new Conexion();
         try {
-            $query = "INSERT INTO tbl_tarifa (tarifa_nombre,tarifa_origen,"
+            $query = "INSERT INTO tbl_tarifa (tarifa_descripcion,tarifa_nombre,tarifa_origen,"
                     . "tarifa_destino,tarifa_valor1,tarifa_valor2,tarifa_cliente,tarifa_tipo,tarifa_horario) VALUES "
-                    . "('$nombre','$origen','$destino','$valor1','$valor2','$cliente','$tipo','$horario')";
+                    . "('$descripcion','$nombre','$origen','$destino','$valor1','$valor2','$cliente','$tipo','$horario')";
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -112,6 +115,7 @@ class TarifaDao {
     public function modificarTarifa($tarifa)
     {
         $id = $tarifa->getId();
+        $descripcion = $tarifa->getDescripcion();
         $nombre = $tarifa->getNombre();
         $origen = $tarifa->getOrigen();
         $destino = $tarifa->getDestino();
@@ -122,7 +126,7 @@ class TarifaDao {
         $horario = $tarifa->getHorario();
         $conn = new Conexion();
         try {
-            $query = "UPDATE tbl_tarifa SET tarifa_origen = '$origen',"
+            $query = "UPDATE tbl_tarifa SET tarifa_descripcion = '$descripcion',tarifa_origen = '$origen',"
                     . " tarifa_destino = '$destino',tarifa_valor1 = $valor1,tarifa_valor2 = $valor2,"
                     . " tarifa_cliente = '$cliente',tarifa_tipo = '$tipo', tarifa_horario = '$horario',"
                     . " tarifa_nombre = '$nombre' WHERE tarifa_id = $id";       

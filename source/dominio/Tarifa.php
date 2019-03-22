@@ -2,6 +2,7 @@
 
 class Tarifa {
     private $id;
+    private $descripcion;
     private $nombre;
     private $origen;
     private $destino;
@@ -13,6 +14,10 @@ class Tarifa {
     
     function getId() {
         return $this->id;
+    }
+
+    function getDescripcion() {
+        return $this->descripcion;
     }
 
     function getNombre() {
@@ -49,6 +54,10 @@ class Tarifa {
 
     function setId($id) {
         $this->id = $id;
+    }
+
+    function setDescripcion($descripcion) {
+        $this->descripcion = $descripcion;
     }
 
     function setNombre($nombre) {
