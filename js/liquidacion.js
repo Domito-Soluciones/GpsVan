@@ -1,4 +1,4 @@
-/* global urlBase, alertify */
+/* global urlBase, alertify, ID_CONDUCTOR */
 
 var MESES = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
   "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
@@ -66,7 +66,7 @@ function generarLiquidacion(id)
     agregarclase($("#"+id),"fila_contenedor_activa");
     cambiarPropiedad($(".mensaje_bienvenida"),"display","none");
     $(".contenedor_liquidacion").html("");
-    var url = urlBase + "/liquidacion/GenerarLiquidacion.php";
+    var url = urlBase + "/liquidacion/GetLiquidacion.php";
     var params = {id : id};
     var success = function(response)
     {

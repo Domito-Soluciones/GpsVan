@@ -21,7 +21,7 @@ class DashBoardDao {
         return $array;
     }
     
-    public function getServiciosDiarios()
+    public function getServicios()
     {
         $array = array();
         $conn = new Conexion();
@@ -31,15 +31,16 @@ class DashBoardDao {
         $anio = $date['year'];
         $fecha = $anio."-".$mes."-".$dia;
         try {
-            $query = "SELECT COUNT(*) AS servicio_cantidad FROM tbl_servicio WHERE DATE_FORMAT(servicio_fecha, '%Y-%m-%d') = '$fecha' AND servicio_estado = 5";
+            $query = "SELECT COUNT(*) AS servicio_cantidad,servicio_estado FROM tbl_servicio WHERE DATE_FORMAT(servicio_fecha, '%Y-%m-%d') = '$fecha' GROUP BY servicio_estado";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
             while($row = mysqli_fetch_array($result)) {
-                array_push($array, $row["servicio_cantidad"]);                    
+                array_push($array, $row["servicio_estado"]."%".$row["servicio_cantidad"]);
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
         return $array;
     }
+    
 }

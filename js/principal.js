@@ -28,7 +28,7 @@ var TIPO_SERVICIO = 0;
 var MENU_VISIBLE = false;
 
 $(document).ready(function(){
-    $.getScript(GOOGLE_MAPS_API+"key="+API_KEY+"&callback=initMap&libraries=places",function(){
+    //$.getScript(GOOGLE_MAPS_API+"key="+API_KEY+"&callback=initMap&libraries=places",function(){
         getLocation();
         $("#menu").load("menu.php", function( response, status, xhr ) {
             agregarclase($("#principal"),"menu-activo");
@@ -70,7 +70,7 @@ $(document).ready(function(){
         $("#enlace-salir").click(function() {
             salir();
         }); 
-    });
+    //});
 });
 
 function initMap() {

@@ -5,7 +5,31 @@ include '../../query/DashBoardDao.php';
 
 header('Content-Type: application/json');
 $dashboardDao = new DashBoardDao();
-$servicios = $dashboardDao->getServiciosDiarios();
+$servicios = $dashboardDao->getServicios();
+$serviciosFinalizados = 0;
+$serviciosEnRuta = 0;
+$serviciosPorRealizar = 0;
+$serviciosPorAsignar = 0;
+for($i = 0 ; $i < count($servicios); $i++)
+{
+    $aux = explode("%",$servicios[$i]);
+    if($aux[0] == '1')
+    {
+        $serviciosPorAsignar = $aux[1];
+    }
+    else if($aux[0] == '3')
+    {
+        $serviciosPorRealizar = $aux[1];
+    }
+    else if($aux[0] == '4')
+    {
+        $serviciosEnRuta = $aux[1];
+    }
+    else if($aux[0] == '5')
+    {
+        $serviciosFinalizados = $aux[1];
+    }
+}
 $vehiculos = $dashboardDao->getMovilesActivos();
 $activos = 0;
 $inactivos = 0;
@@ -24,5 +48,8 @@ if(isset($servicios[0]))
 }
 echo "{\"movil_activo\":\"".$activos."\","
     . "\"movil_inactivo\":\"".$inactivos."\","
-    . "\"servicio_diario\":\"".$serviciosDiarios."\""        
+    . "\"servicio_finalizado\":\"".$serviciosFinalizados."\","        
+    . "\"servicio_ruta\":\"".$serviciosEnRuta."\","        
+    . "\"servicio_realizar\":\"".$serviciosPorRealizar."\","
+    . "\"servicio_asignar\":\"".$serviciosPorAsignar."\""
     . "}";

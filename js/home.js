@@ -27,7 +27,10 @@ function graficoVehiculosConectados()
     var params = {};
     var success = function (response)
     {
-        $("#sDiarios").html(response.servicio_diario);
+        $("#sFinalizado").html(response.servicio_finalizado);
+        $("#sRuta").html(response.servicio_ruta);
+        $("#sRealizar").html(response.servicio_realizar);
+        $("#sAsignar").html(response.servicio_asignar);
         var data = {
             labels: [
                 "Activos",
@@ -47,14 +50,8 @@ function graficoVehiculosConectados()
     postRequest(url,params,success);
 }
 
-function graficoServiciosDiarios()
-{
-    
-}
-
 function getDashBoard()
 {
-    graficoServiciosDiarios();
     graficoVehiculosConectados();
 }
 

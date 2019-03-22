@@ -160,12 +160,12 @@ function init()
     }
     cargarClientes();
     cargarMoviles();
-    directionsService = new google.maps.DirectionsService();
-    if(directionsDisplay === null)
-    {
-        directionsDisplay = new google.maps.DirectionsRenderer();
-        directionsDisplay.setMap(map);
-    }
+//    directionsService = new google.maps.DirectionsService();
+//    if(directionsDisplay === null)
+//    {
+//        directionsDisplay = new google.maps.DirectionsRenderer();
+//        directionsDisplay.setMap(map);
+//    }
     for(var i = 0; i < markers.length;i++)
     {
         markers[i].setMap(null);
@@ -390,9 +390,9 @@ function cargarMoviles()
         for(var i = 0 ; i < response.length ; i++)
         {
             var nombre = response[i].movil_nombre;
+            var id = response[i].movil_conductor;
             var conductor = response[i].movil_conductor_nombre;
-            var nick = response[i].movil_conductor_nick;
-            conductores.set(conductor,nick);
+            conductores.set(conductor,id);
             if(conductor.length === 1)
             {
                 conductor = "No Definido";
@@ -890,27 +890,27 @@ function editarPasajero(valor,obj,hidden)
             $("#"+hidden).val($("#input_editar").val());
             $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+origen);
         }
-        if(directionsDisplay === null)
-        {
-            directionsDisplay = new google.maps.DirectionsRenderer();
-            directionsDisplay.setMap(map);
-        }
+//        if(directionsDisplay === null)
+//        {
+//            directionsDisplay = new google.maps.DirectionsRenderer();
+//            directionsDisplay.setMap(map);
+//        }
         dibujarRuta(origen,destinos);
     });
 }
 
 function initPlacesAutoComplete(input) {
-    autocomplete = new google.maps.places.Autocomplete(input,
-    {componentRestrictions:{'country': 'cl'}});
-    places = new google.maps.places.PlacesService(map);
-    autocomplete.addListener('place_changed', function(){
-        var place = autocomplete.getPlace();
-        if (place.geometry) {
-            map.panTo(place.geometry.location);
-            map.setZoom(15);
-            colocarMarcadorPlaces(input);
-        }
-    });
+    //autocomplete = new google.maps.places.Autocomplete(input,
+    //{componentRestrictions:{'country': 'cl'}});
+    //places = new google.maps.places.PlacesService(map);
+    //autocomplete.addListener('place_changed', function(){
+        //var place = autocomplete.getPlace();
+        //if (place.geometry) {
+        //    map.panTo(place.geometry.location);
+        //    map.setZoom(15);
+        //    colocarMarcadorPlaces(input);
+        //}
+    //});
 }
 
 function colocarMarcadorPlaces(input)
