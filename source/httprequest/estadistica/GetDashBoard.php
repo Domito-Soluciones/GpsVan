@@ -6,6 +6,7 @@ include '../../query/DashBoardDao.php';
 header('Content-Type: application/json');
 $dashboardDao = new DashBoardDao();
 $servicios = $dashboardDao->getServicios();
+$serviciosConvenio = $dashboardDao->getServiciosConvenio();
 $serviciosFinalizados = 0;
 $serviciosEnRuta = 0;
 $serviciosPorRealizar = 0;
@@ -51,5 +52,19 @@ echo "{\"movil_activo\":\"".$activos."\","
     . "\"servicio_finalizado\":\"".$serviciosFinalizados."\","        
     . "\"servicio_ruta\":\"".$serviciosEnRuta."\","        
     . "\"servicio_realizar\":\"".$serviciosPorRealizar."\","
-    . "\"servicio_asignar\":\"".$serviciosPorAsignar."\""
-    . "}";
+    . "\"servicio_asignar\":\"".$serviciosPorAsignar."\","
+    . "\"servicio_convenios\":[";
+    for($j = 0 ; $j < count($serviciosConvenio);$j++)
+    {
+        $aux = explode("%", $serviciosConvenio[$j]);
+        echo "{"
+            . "\"convenio_nombre\":\"".$aux[0]."\","
+            . "\"convenio_cantidad\":\"".$aux[1]."\""
+        . "}";
+        if (($j+1) != count($serviciosConvenio))
+        {
+            echo ",";
+        }
+    }
+        echo "]";
+   echo "}";
