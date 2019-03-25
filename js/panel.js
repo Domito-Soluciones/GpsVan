@@ -439,6 +439,7 @@ function cargarRutas()
         {
             TARIFAS = response;
             var descripcion = response[i].tarifa_descripcion;
+            alert(response[i].tarifa_descripcion + " - " + ruta);
             if(response[i].tarifa_descripcion !== ruta)
             {
                 $("#lruta").append("<option value=\""+descripcion+"\">"+descripcion+"</option>");

@@ -401,7 +401,7 @@ class ServicioDao {
             $query = "SELECT servicio_id,servicio_cliente,servicio_ruta,servicio_fecha,"
                     . "servicio_hora,servicio_conductor,servicio_estado,servicio_tarifa1,"
                     . "servicio_observacion,servicio_conductor,movil_nombre,"
-                    . "servicio_pasajero_destino,pasajero_id,pasajero_nombre,pasajero_papellido,pasajero_celular,cliente_direccion "
+                    . "servicio_pasajero_estado,servicio_pasajero_destino,pasajero_id,pasajero_nombre,pasajero_papellido,pasajero_celular,cliente_direccion "
                     . " FROM tbl_servicio JOIN tbl_servicio_pasajero ON"
                     . " servicio_id = servicio_pasajero_id_servicio JOIN tbl_servicio_detalle"
                     . " ON servicio_id = servicio_detalle_servicio "
@@ -429,6 +429,7 @@ class ServicioDao {
                 $pasajero->setId($row["pasajero_id"]);
                 $pasajero->setNombre($row["pasajero_nombre"] . " " . $row["pasajero_papellido"]);
                 $pasajero->setCelular($row["pasajero_celular"]);
+                $pasajero->setEstado($row["servicio_pasajero_estado"]);
                 $servicio->setPasajero($pasajero);
                 $servicio->setDestino($row["servicio_pasajero_destino"]);
                 array_push($array, $servicio);
@@ -477,7 +478,7 @@ class ServicioDao {
             $query = "SELECT servicio_id,servicio_cliente,servicio_ruta,servicio_fecha,"
                     . "servicio_hora,servicio_conductor,servicio_estado,servicio_tarifa1,"
                     . "servicio_observacion,servicio_conductor,movil_nombre,"
-                    . "servicio_pasajero_destino,pasajero_id,pasajero_nombre,pasajero_papellido,pasajero_celular,cliente_direccion "
+                    . "servicio_pasajero_estado,servicio_pasajero_destino,pasajero_id,pasajero_nombre,pasajero_papellido,pasajero_celular,cliente_direccion "
                     . " FROM tbl_servicio JOIN tbl_servicio_pasajero ON"
                     . " servicio_id = servicio_pasajero_id_servicio JOIN tbl_servicio_detalle"
                     . " ON servicio_id = servicio_detalle_servicio "
@@ -504,6 +505,7 @@ class ServicioDao {
                 $pasajero->setId($row["pasajero_id"]);
                 $pasajero->setNombre($row["pasajero_nombre"] . " " . $row["pasajero_papellido"]);
                 $pasajero->setCelular($row["pasajero_celular"]);
+                $pasajero->setEstado($row["servicio_pasajero_estado"]);
                 $servicio->setPasajero($pasajero);
                 $servicio->setDestino($row["servicio_pasajero_destino"]);
                 array_push($array, $servicio);
