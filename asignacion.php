@@ -4,6 +4,10 @@ if(!isset($_SESSION['agente']))
 {
     header('Location: index.php');
 }
+else if($_SESSION['tipo'] == '0')
+{
+    header('Location: index.php');
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -59,18 +63,6 @@ if(!isset($_SESSION['agente']))
                     <div>
                         <div class="input-monitoreo">
                             <input type="hidden" id="clientes" value="<?php echo $_SESSION['empresa']?>">
-                        </div>
-                    </div>
-                    <div>
-                        <div class="cont-pre-monitor">
-                            Tipo
-                        </div>
-                         <div class="input-monitoreo">
-                             <select id="ruta" class="select_asignar_cliente">
-                                 <option value="">Seleccione</option>
-                                 <option value="<?php echo $_SESSION['empresa']?>-ZP-ESP">Zarpe</option>
-                                 <option value="<?php echo $_SESSION['empresa']?>-RG-ESP">Recogida</option>
-                            </select>
                         </div>
                     </div>
                     <div>

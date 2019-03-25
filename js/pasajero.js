@@ -1,4 +1,4 @@
-/* global urlBase, alertify, PLACES_AUTOCOMPLETE_API, POSITION, ID_CLIENTE, directionsDisplay, markers, google, geocoder, map, markersPanel */
+/* global urlBase, alertify, PLACES_AUTOCOMPLETE_API, POSITION, ID_CLIENTE, directionsDisplay, markers, google, geocoder, map */
 var ID_PASAJERO;
 var ID_EMPRESA;
 var ID_RUTA;
@@ -230,6 +230,7 @@ function modificarPasajero()
             cambiarPestaniaGeneral();
             alertify.success("Pasajero Modificado");
             resetFormulario();
+            ocultarMapa();
             buscarPasajero();
         };
         postRequest(url,params,success);
@@ -643,16 +644,20 @@ function cargarRutas(empresa,ruta)
     var success = function(response)
     {
         $("#ruta").html("<option value=\"\">Seleccione</option>");
+        var aux = "";
         for(var i = 0 ; i < response.length ; i++)
         {
-            var sel = "";
-            if(ruta === response[i].tarifa_nombre)
+            if(response[i].tarifa_descripcion !== aux)
             {
-                sel = " selected ";
+                var sel = "";
+                if(ruta === response[i].tarifa_descripcion)
+                {
+                    sel = " selected ";
+                }
+                var nombre = response[i].tarifa_descripcion;
+                $("#ruta").append("<option value=\""+nombre+"\" "+sel+">"+nombre+"</option>");
+                aux = response[i].tarifa_descripcion;
             }
-            var nombre = response[i].tarifa_nombre;
-            $("#ruta").append("<option value=\""+nombre+"\" "+sel+">"+nombre+"</option>");
-            
         }
     };
     postRequest(url,params,success,false);
@@ -721,10 +726,7 @@ function colocarMarcadorPlaces()
     {
         POLYLINE.setMap(null);
     }
-    for(var i = 0 ; i < markersPanel.length;i++)
-    {
-        markersPanel[i].setMap(null);
-    }
+    eliminarMarkers()
     var icon = {
         url: "img/marcador.svg",
         scaledSize: new google.maps.Size(70, 30),
@@ -758,7 +760,7 @@ function colocarMarcadorPlaces()
             }
             else
             {
-                window.alert('Geocoder failed due to: ' + status);
+                alertify.error('Geocoder failed due to: ' + status);
             }
         });
     });

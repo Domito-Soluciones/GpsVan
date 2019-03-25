@@ -3,6 +3,7 @@ include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/AgenteDao.php';
 include '../../cripto/Cripto.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $agenteId = filter_input(INPUT_POST, 'id');
@@ -35,4 +36,4 @@ $agente->setEmpresa($empresa);
 $agenteDao = new AgenteDao();
 $agenteDao->modificarAgente($agente);
 echo "{\"agente_id\":\"".$agente->getId()."\"}";
-
+Log::write_log("MODAGENTE", 0);

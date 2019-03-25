@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/ConductorDao.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $busqueda = filter_input(INPUT_POST, 'busqueda');
@@ -75,3 +76,4 @@ for ($i = 0 ; $i < count($conductores); $i++)
     }
 }
 echo "]";
+Log::write_log("GETCONDUCTORES", 0);

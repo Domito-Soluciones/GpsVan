@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/PasajeroDao.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $busqueda = filter_input(INPUT_POST, 'id');
@@ -40,3 +41,4 @@ echo "{\"pasajero_id\":\"".$cId."\","
     . "\"pasajero_empresa\":\"".$empresa."\","
     . "\"pasajero_ruta\":\"".$ruta."\""
     . "}";
+Log::write_log("GETPASAJEROS", 0);

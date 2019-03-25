@@ -1,4 +1,4 @@
-<div class="titulo_pagina">
+<div class="titulo_pagina" id="titulo_tarifa">
     <img src="img/atras.svg" class="img_volver" id="volver"> Informaci&oacute;n Tarifa
 </div>
 <div class="contenedor-titulo" id="contenedor_tarifa">
@@ -6,7 +6,7 @@
         1. General
     </div>
 </div>
-<div class="contenedor-info general" id="cont_general">
+<div class="contenedor-info general cont-tarifa" id="cont_general">
     <div class="contenedor-formulario">
         <div class="contenedor-fila">
             <input type="hidden" id="clientes">
@@ -40,6 +40,22 @@
             </div>
             <div class="contenedor-input">
                 <input type="text" id="descripcion" placeholder="Ej: Ruta 1" maxlength="20">
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                Número (*)
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="numero" placeholder="Ej: 1" maxlength="5">
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                Hora (*)
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="hora" placeholder="Ej: 23:54" maxlength="20">
             </div>
         </div>
         <div class="contenedor-fila">
@@ -81,6 +97,20 @@
             <div class="contenedor-input">
                 <input type="text" id="valor2" placeholder="Ej: 1200" maxlength="20">
             </div>
+        </div>
+    </div>
+</div>
+<div class="pie-tarifa">
+    <div class="pie-center">
+        <div class="boton oculto" id="guardar">
+            <img src="img/guardar.svg" width="12" height="12">
+            Guardar
+        </div>
+    </div>
+    <div class="pie-right">
+        <div class="boton oculto" id="eliminar">
+            <img src="img/eliminar.svg" width="12" height="12">
+            Eliminar
         </div>
     </div>
 </div>

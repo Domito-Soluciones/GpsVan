@@ -3,6 +3,8 @@ var servicios_diarios = [];
 var moviles_diarios = [];
 var pasajeros_diarios = [];
 var PAGINA = "MONITOREO";
+var interval;
+var PATENTE;
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
     if (directionsDisplay !== null) {
@@ -14,10 +16,30 @@ $(document).ready(function(){
         markers[i].setMap(null);
     }
     cargarMovilesMapa(true);
-    setInterval('moverMovilesMapa()',1000);
+    interval = setInterval('moverMovilesMapa()',60000);
     
     $("#busqueda").keyup(function(e){
         cargarMovilesMapa(false);
+    });
+    
+    google.maps.event.addListener(map,'zoom_changed',function(){
+        if(map.getZoom() > 17)
+        {
+            console.log(map.getZoom());
+            for(var i = 0 ; i < markers.length; i++)
+            {
+                if(markers[i].get("idMarker") === PATENTE)
+                {
+                    clearInterval(interval);
+                    interval = setInterval('moverMovilesMapa()',3000);
+                }
+            }
+       }
+       else
+       {
+            clearInterval(interval);
+            interval = setInterval('moverMovilesMapa()',60000);           
+       }
     });
 });
 
@@ -50,7 +72,7 @@ function buscarServicio()
             var id = response[i].servicio_id;
             var movil = response[i].servicio_movil;
             var cliente = response[i].servicio_pasajero;
-            servicios.append(" <div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"dibujarServicio('"+id+"','"+movil+"')\">"+id+" "+movil+"</div>");
+            servicios.append(" <div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"dibujarServicio('"+id+"')\">"+id+" "+movil+"</div>");
             servicios_diarios.push(id);
             moviles_diarios.push(movil);
             pasajeros_diarios.push(cliente);
@@ -117,7 +139,7 @@ function cargarMovilesMapa(monitor)
             {
                 dibujarMarcador(patente,parseFloat(lat),parseFloat(lon),nombre,servicio);
             }
-            moviles.append("<div class=\"fila_contenedor\" id=\""+patente+"\" onClick=\"cambiarFila('"+patente+"')\">"+imgEstado+nombre+"</div>");
+            moviles.append("<div class=\"fila_contenedor\" id=\""+patente+"\" onClick=\"animarMovil('"+patente+"')\">"+imgEstado+nombre+"</div>");
         }
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
@@ -134,18 +156,15 @@ function moverMovilesMapa()
             for(var j = 0 ; i < markers.length; i++)
             {                
                 var patente = response[i].movil_patente;
-                var nombre = response[i].movil_nombre;
                 var lat = response[i].movil_lat;
                 var lon = response[i].movil_lon;
                 var estado = response[i].movil_estado;
-                var servicio = response[i].movil_servicio;
                 if(estado !== '0')
                 {
                     if(markers[j].get("idMarker") === patente)
                     {
                         var latlng = new google.maps.LatLng(lat, lon);
                         markers[j].setPosition(latlng);
-                        marker.setB
                     }
                 }
             }
@@ -191,12 +210,9 @@ function dibujarMarcador(id,lat,lon,nombre,servicio)
 
 }
 
-function dibujarServicio(id,movil)
+function dibujarServicio(id)
 {
-    if(typeof POLYLINE !== "undefined")
-    {
-        POLYLINE.setMap(null);
-    }
+    borrarDirections();
     var params = {id : id};
     var url = urlBase + "/servicio/GetDetalleServicio.php";
     var success = function(response){
@@ -221,10 +237,14 @@ function dibujarServicio(id,movil)
             var lat = response.movil_lat;
             var lng = response.movil_lon;
             dibujarMarcador(patente,parseFloat(lat),parseFloat(lng),patente,id);
-        }
+        };
         getRequest(url,success);
     };
     postRequest(url,params,success);
+}
 
-
+function animarMovil(patente)
+{
+    PATENTE = patente;
+    map.setZoom(18);   
 }

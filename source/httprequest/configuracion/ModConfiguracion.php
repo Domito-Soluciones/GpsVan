@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/ConfiguracionDao.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $uf = filter_input(INPUT_POST, 'uf');
@@ -11,3 +12,4 @@ $mutual = filter_input(INPUT_POST, 'mutual');
 $configuracionDao = new ConfiguracionDao();
 $configuracionDao->modificarConfiguracion($uf,$afp,$isapre,$mutual);
 echo "{\"configuracion_estado\":\"ok\"}";
+Log::write_log("MODCONFIGURACION", 0);

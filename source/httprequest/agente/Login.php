@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../query/AgenteDao.php';
 include '../../cripto/Cripto.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $respuesta = '0';
@@ -23,3 +24,4 @@ else
 {
     echo "{\"agente_id\":".$respuesta."}";
 }
+Log::write_log("LOGIN", 0);

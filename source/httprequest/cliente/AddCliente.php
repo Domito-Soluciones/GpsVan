@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/ClienteDao.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $razon = filter_input(INPUT_POST, 'razon');
@@ -38,3 +39,4 @@ if($clienteId > 0)
     }
 }
 echo "{\"cliente_id\":\"".$clienteId."\"}";
+Log::write_log("ADDCLIENTE", 0);

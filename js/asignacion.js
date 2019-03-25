@@ -1,6 +1,9 @@
 /* global urlBase, alertify, google */
 
+var PAGINA = 'ASIGNACION';
+
 $(document).ready(function(){
+    PAGINA_ANTERIOR = PAGINA;
     setInterval('validarServicios()', 5000);
 });
 

@@ -19,7 +19,7 @@
                 Id Servicio
             </div>
             <div class="contenedor-input">
-                <div id="idServicio" class="resultado_busqueda"></div>
+                <input type="text" id="idServicio" maxlength="20" readonly>
             </div>
         </div>
         <div class="contenedor-fila">
@@ -27,7 +27,8 @@
                 Empresa
             </div>
             <div class="contenedor-input">
-                <div id="clienteServicio" class="resultado_busqueda" ></div>
+                <input type="text" id="clienteServicio" list="lcliente" placeholder="Ej: Falabella" maxlength="20" readonly>
+                <datalist id="lcliente"></datalist>
             </div>
         </div>
         <div class="contenedor-fila">
@@ -35,7 +36,8 @@
                 Ruta
             </div>
             <div class="contenedor-input">
-                <div id="rutaServicio" class="resultado_busqueda" ></div>
+                <input type="text" id="rutaServicio" list="lruta" placeholder="Ej: Ruta 1" maxlength="20">
+                <datalist id="lruta"></datalist>
             </div>
         </div>
         <div class="contenedor-fila">
@@ -43,7 +45,7 @@
                 Fecha
             </div>
             <div class="contenedor-input">
-                    <input type="text" id="fechaServicio" placeholder="Ej: 23/12/2005" maxlength="20">
+                <input type="text" id="fechaServicio" placeholder="Ej: 23/12/2005" maxlength="20">
             </div>
         </div>
         <div class="contenedor-fila">
@@ -82,7 +84,7 @@
                 Conductor
             </div> 
             <div class="contenedor-input">
-                <div id="conductorServicio" class="resultado_busqueda" ></div>
+                <input type="text" id="conductorServicio" placeholder="Ej: Juan Perez" maxlength="20" readonly>
             </div>
         </div>
         <div class="contenedor-fila">
@@ -90,7 +92,7 @@
                 Tarifa 1
             </div>
             <div class="contenedor-input">
-                <div id="tarifaServicio" class="resultado_busqueda" ></div>
+                <input type="text" id="tarifaServicio" placeholder="Ej: Juan Perez" maxlength="20">
             </div>
         </div>
         <div class="contenedor-fila">
@@ -98,22 +100,12 @@
                 Tarifa 2
             </div>
             <div class="contenedor-input">
-                <div id="tarifa2Servicio" class="resultado_busqueda" ></div>
-            </div>
-        </div>
-        <div class="pie-servicio">
-            <div class="boton" id="guardar">
-                <img src="img/guardar.svg" width="12" height="12">
-                Guardar
-            </div>
-            <div class="boton btn-eliminar" id="eliminar">
-                <img src="img/eliminar.svg" width="12" height="12">
-                Eliminar
+                <input type="text" id="tarifa2Servicio" placeholder="Ej: Juan Perez" maxlength="20">
             </div>
         </div>
     </div>
 </div>
-<div class="contenedor-info info-servicio contenedor_oculto" id="cont_pasajero">
+<div class="contenedor-info info-servicio contenedor_oculto contenedor-info-servicio" id="cont_pasajero">
     <div class="titulo_pasajero">
         <div class="nombre_pasajero">
             Pasajero
@@ -134,6 +126,14 @@
 </div>
 <div class="contenedor-info info-servicio-mapa contenedor_oculto" id="cont_ruta">
     <div id="contenedor_mapa" class="contenedor_mapa">
-
+        <div class="contenedor-loader">
+            <div class="loader" id="loader_pasajero">Loading...</div>
+        </div>
     </div>
+</div>
+<div class="pie-left">
+    <div class="boton" id="guardar">
+        <img src="img/guardar.svg" width="12" height="12">
+        Guardar
+    </div>  
 </div>

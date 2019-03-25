@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/DashBoardDao.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $dashboardDao = new DashBoardDao();
@@ -68,3 +69,4 @@ echo "{\"movil_activo\":\"".$activos."\","
     }
         echo "]";
    echo "}";
+   Log::write_log("GETDASHBOARD", 0);

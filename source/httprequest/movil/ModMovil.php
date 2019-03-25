@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/MovilDao.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $movilId = filter_input(INPUT_POST, 'id');
@@ -129,3 +130,4 @@ $movil->setAdjuntoSegRcExceso($adjuntoSegExceso);
 $movilDao = new MovilDao();
 $movilDao->modificarMovil($movil);
 echo "{\"movil_id\":\"".$movil->getId()."\"}";
+Log::write_log("MODMOVIL", 0);

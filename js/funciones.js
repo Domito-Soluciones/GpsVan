@@ -1,11 +1,20 @@
 
-/* global MODIFICADO, alertify, PAGINA_ANTERIOR, INTERVAL_SERVICIOS, MENU_OCULTO, PLACES_AUTOCOMPLETE_API, POSITION, API_KEY */
+/* global MODIFICADO, alertify, PAGINA_ANTERIOR, INTERVAL_SERVICIOS, MENU_OCULTO, PLACES_AUTOCOMPLETE_API, POSITION, API_KEY, google, map */
+var PAGINA_ANTERIOR;
 var MODIFICADO = false;
 var KEY = "DGFSGHJRTJTHWGWEJNGWI9EFN";
 var urlBase= "source/httprequest";
 var urlUtil= "source/util";
 var ADJUNTANDO = false;
-var markersPanel = [];
+var CREADO = "0";
+var EN_PROCCESO_DE_ASIGNACION = "1";
+var ASIGNADO = "2";
+var ACEPTADO = "3";
+var EN_PROGRESO = "4";
+var FINALIZADO = "5";
+var CANCELADO = "6";
+var TIPO_USUARIO;
+var MENU_VISIBLE = false;
 
 function darFoco(elemento)
 {
@@ -141,10 +150,6 @@ function cambiarModulo(pagina,params = null){
                 agregarclase($("#"+pagina),"menu-activo");
                 if(pagina !== 'panel' || pagina !== 'monitoreo' || pagina !== 'servicio' || pagina !== 'pasajero' || pagina !== 'cliente')
                 {
-                    if(pagina !== 'panel')
-                    {
-                        clearInterval(INTERVAL_SERVICIOS);
-                    }
                     ocultarMapa();
                 }
                 $("#contenido-central").html("");
@@ -157,7 +162,7 @@ function cambiarModulo(pagina,params = null){
                             $("#ids").val(params.ids);
                             $("#clientes").val(params.clientes);
                             $("#ruta").val(params.ruta);
-                            $("#fechas").val(params.fechas);
+                            $("#fechaDesde").val(params.fechas);
                             $("#hora").val(params.hora);
                             $("#observacion").val(params.observacion);
                             TIPO_SERVICIO = 1;
@@ -176,10 +181,6 @@ function cambiarModulo(pagina,params = null){
         agregarclase($("#"+pagina),"menu-activo");
         if(pagina !== 'panel' || pagina !== 'monitoreo' || pagina !== 'servicio' || pagina !== 'pasajero' || pagina !== 'cliente')
         {
-            if(pagina !== 'panel')
-            {
-                clearInterval(INTERVAL_SERVICIOS);
-            }
             ocultarMapa();
         }
         $("#contenido-central").html("");
@@ -192,7 +193,7 @@ function cambiarModulo(pagina,params = null){
                     $("#ids").val(params.ids);
                     $("#clientes").val(params.clientes);
                     $("#ruta").val(params.ruta);
-                    $("#fechas").val(params.fechas);
+                    $("#fechaDesde").val(params.fechas);
                     $("#hora").val(params.hora);
                     $("#observacion").val(params.observacion);
                     TIPO_SERVICIO = 1;
@@ -323,6 +324,7 @@ function abrirFile(e,obj){
 function subirFicheroPDF(event,form,nombre,archivo,index)
 {
     ADJUNTANDO = true;
+    cambiarPropiedad($("#loaderContrato"),"visibility","visible");
     if(nombre.val() !== '' && (validarRut(nombre.val()) || validarPatente(nombre.val())))
     {
         var url = 'source/util/subirFichero.php?nombre='+nombre.val()+'&tipo=pdf&archivo='+archivo.val();
@@ -342,7 +344,7 @@ function subirFicheroPDF(event,form,nombre,archivo,index)
                 ADJUNTANDO = false;
                 cambiarPropiedad($("#loader"+index),"visibility","hidden");
                 var archivo = $("#contratoOculta"+index).val();
-                var ext = archivo.split("\.")[1];
+                var ext = archivo.substring(archivo.length-3,archivo.length);
                 if(ext !== 'pdf'){
                     alertify.error("Archivo invalido");
                     return;
@@ -351,7 +353,12 @@ function subirFicheroPDF(event,form,nombre,archivo,index)
                 {
                     var enlace = "<a href=\"source/util/pdf/"+archivo+"\" target=\"_blanck\">Ver</a>";
                     $("#contenedor_contrato"+index).html(enlace);
-                }       
+                } 
+                cambiarPropiedad($("#loaderContrato"),"visibility","hidden");
+            },
+            error: function(response)
+            {
+                cambiarPropiedad($("#loaderContrato"),"visibility","hidden");
             }
         });
     }
@@ -729,9 +736,12 @@ function cerrarTooltip(tooltip)
 
 function eliminarMarkers()
 {
-    for(var i = 0 ; i < markersPanel.length;i++)
+    if(typeof markers !== 'undefined')
     {
-        markersPanel[i].setMap(null);
+        for(var i = 0 ; i < markers.length;i++)
+        {
+            markers[i].setMap(null);
+        }
     }
 }
 
@@ -780,4 +790,24 @@ function getRandomColor() {
         color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
+}
+
+function setDirections()
+{
+    if(directionsDisplay === null)
+    {
+        directionsDisplay = new google.maps.DirectionsRenderer();
+        directionsDisplay.setMap(map);
+    }
+}
+
+function borrarDirections()
+{
+    if(typeof directionsDisplay !== 'undefined')
+    {
+        if (directionsDisplay !== null) {
+            directionsDisplay.setMap(null);
+            directionsDisplay = null;
+        }
+    }
 }

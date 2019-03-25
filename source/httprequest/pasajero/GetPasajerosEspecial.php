@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/PasajeroDao.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $idServicio = filter_input(INPUT_POST, 'id');
@@ -51,3 +52,4 @@ for ($i = 0 ; $i < count($pasajeros); $i++)
     }
 }
 echo "]";
+Log::write_log("GETPASAJEROESPECIAL", 0);

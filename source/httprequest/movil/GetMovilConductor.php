@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/MovilDao.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $data = filter_input(INPUT_POST, 'movil');
@@ -46,3 +47,4 @@ echo "{\"movil_id\":\"".$movilId."\","
         . "\"conductor_mail\":\"".$movilConductor->getMail()."\""
         . "}";
     echo "}";
+    Log::write_log("GETMOVILCONDUCTOR", 0);

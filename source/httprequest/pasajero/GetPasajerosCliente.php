@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/PasajeroDao.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $cliente = filter_input(INPUT_POST, 'cliente');
@@ -49,3 +50,4 @@ for ($i = 0 ; $i < count($pasajeros); $i++)
     }
 }
 echo "]";
+Log::write_log("GETPASAJEROCLIENTE", 0);

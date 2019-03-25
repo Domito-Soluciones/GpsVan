@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/TarifaDao.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $busqueda = filter_input(INPUT_POST, 'busqueda');
@@ -12,6 +13,8 @@ for ($i = 0 ; $i < count($tarifas); $i++)
 {
     $cId = $tarifas[$i]->getId();
     $descripcion = $tarifas[$i]->getDescripcion();
+    $numero = $tarifas[$i]->getNumero();
+    $hora = $tarifas[$i]->getHora();
     $nombre = $tarifas[$i]->getNombre();
     $origen = $tarifas[$i]->getOrigen();
     $destino = $tarifas[$i]->getDestino();
@@ -22,6 +25,8 @@ for ($i = 0 ; $i < count($tarifas); $i++)
     $horario = $tarifas[$i]->getHorario();
     echo "{\"tarifa_id\":\"".$cId."\","
         . "\"tarifa_descripcion\":\"".$descripcion."\","
+        . "\"tarifa_numero\":\"".$numero."\","
+        . "\"tarifa_hora\":\"".$hora."\","            
         . "\"tarifa_nombre\":\"".$nombre."\","
         . "\"tarifa_origen\":\"".$origen."\","
         . "\"tarifa_destino\":\"".$destino."\","
@@ -37,3 +42,4 @@ for ($i = 0 ; $i < count($tarifas); $i++)
     }
 }
 echo "]";
+Log::write_log("GETTARIFAS", 0);

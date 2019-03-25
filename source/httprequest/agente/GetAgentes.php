@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/AgenteDao.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $busqueda = filter_input(INPUT_POST, 'busqueda');
@@ -41,3 +42,4 @@ for ($i = 0 ; $i < count($agentes); $i++)
     }
 }
 echo "]";
+Log::write_log("GETAGENTES", 0);

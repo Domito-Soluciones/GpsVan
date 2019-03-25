@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/ClienteDao.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $id = filter_input(INPUT_POST, 'id');
@@ -39,3 +40,4 @@ if($cliente->getId() > 0)
     }
 }
 echo "{\"cliente_id\":\"".$cliente->getId()."\"}";
+Log::write_log("MODCLIENTE", 0);

@@ -41,15 +41,15 @@
                         <datalist id="lruta"></datalist>
                     </div>
                 </div>
-<!--                <div class="contenedor-panel">
+                <div class="contenedor-panel">
                     <div class="cont-pre-monitor cont-destino1">
-                        Destino
+                        Tipo Ruta
                     </div>
                     <div class="input-panel" id="destinos">
-                        <input type="text" class="input_asignar destino" id="destino" placeholder="Ej: Av los pinos 723" disabled>
-                        <div class="datalist-visible" id="destinol"></div>
+                        <input type="text" class="input_asignar" list="ltruta" id="truta" placeholder="Ej: RG-MAN">
+                        <datalist id="ltruta"></datalist>
                     </div>
-                </div>-->
+                </div>
                 <div class="contenedor-panel">
                     <div class="cont-pre-monitor">
                         Tarifa 1
@@ -58,36 +58,28 @@
                         <input type="text" class="input_asignar" list="ltarifa1" id="tarifa1" placeholder="Ej: Tarifa 1">
                     </div>
                 </div>
-<!--                <div class="contenedor-panel">
-                    <div class="cont-pre-monitor">
-                        Pasajero
-                    </div>
-                     <div class="input-panel">
-                        <input type="text" class="input_asignar" id="usuarios" placeholder="Ej: Juan Perez"  autocomplete="off" disabled>
-                    </div>
-                </div>-->
                 <div class="contenedor-panel">
                     <div class="cont-pre-monitor">
                         Tarifa 2
                     </div>
                     <div class="input-panel">
-                        <input type="text" class="input_asignar" id="tarifa2" placeholder="Ej: Tarifa 2">
+                        <input type="text" class="input_asignar" id="tarifa2" placeholder="Ej: Tarifa 2" disabled>
                     </div>
                 </div>
-<!--                <div class="contenedor-panel">
-                    <div class="cont-pre-monitor">
-                        Celular
-                    </div>
-                     <div class="input-panel">
-                        <input type="text" class="input_asignar" id="celular" placeholder="Ej: 98754565"  autocomplete="off"  disabled>
-                    </div>
-                </div>-->
                 <div class="contenedor-panel">
                     <div class="cont-pre-monitor">
-                        Fecha
+                        Fecha Desde
                     </div>
                     <div class="input-panel">
-                         <input type="text" class="input_asignar" id="fechas" placeholder="Ej: 01/01/2020">
+                         <input type="text" class="input_asignar" id="fechaDesde" placeholder="Ej: 01/01/2020">
+                    </div>
+                </div>
+                <div class="contenedor-panel">
+                    <div class="cont-pre-monitor">
+                        Fecha Hasta
+                    </div>
+                    <div class="input-panel">
+                         <input type="text" class="input_asignar" id="fechaHasta" placeholder="Ej: 01/01/2020">
                     </div>
                 </div>
                 <div class="contenedor-panel">
@@ -109,10 +101,13 @@
                     </div>
                 </div>
                 <div class="contenedor-panel">
-                    <div id="conductores" class="conductores">
+                    <div class="cont-pre-monitor">
                         Conductor:
                     </div>
-                    <input type="hidden" id="conductorH" >
+                    <div class="input-panel">
+                        <input type="text" id="conductorV" class="input_asignar"  placeholder="Ej: Juan Perez" readonly>     
+                        <input type="hidden" id="conductorH" >                        
+                    </div>
                 </div>
                 <div class="contenedor-panel-completo">
                     <div class="cont-pre-monitor">

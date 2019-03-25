@@ -1,9 +1,10 @@
 /* global alertify, urlBase, urlUtil, POLYLINE_LAT, POLYLINE_LNG */
 
-var CAMPOS = ["clientes","ruta","fechas","hora"];
+var CAMPOS = ["clientes","fechas","hora"];
 var clientesArray = [];
 var destinos = new Map();
 $(document).ready(function(){
+    TIPO_USUARIO = 'CLIENTE';
     $("#menu").load("menu.php", function( response, status, xhr ) {
         agregarclase($("#panel_cliente"),"menu-activo");
     
@@ -26,11 +27,10 @@ $(document).ready(function(){
 function crearServicio()
 {
     var cliente = $("#clientes").val();
-    var ruta = $("#ruta").val();
     var fecha = $("#fechas").val();
     var hora = $("#hora").val();
     var observaciones = $("#observacion").val();
-    var array = [cliente,ruta,fecha,hora];
+    var array = [cliente,fecha,hora];
     if(!validarCamposOr(array))
     {
         activarPestania(array);
@@ -56,7 +56,7 @@ function crearServicio()
         return;
     }
     vaciarFormulario();
-    var params = {cliente : cliente, ruta : ruta, fecha : fecha, hora : hora, observaciones : observaciones, estado : 0, tarifa1 : 0,tarifa2 : 0, tipo : 1};
+    var params = {cliente : cliente, fecha : fecha, hora : hora, observaciones : observaciones, estado : 0, tarifa1 : 0,tarifa2 : 0, tipo : 1};
     var url = urlBase + "/servicio/AddServicio.php";
     var success = function(response)
     {

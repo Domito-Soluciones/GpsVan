@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/ServicioDao.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $cliente = filter_input(INPUT_POST, 'cliente');
@@ -37,3 +38,4 @@ $servicio->setTipo($tipo);
 $servicioDao = new ServicioDao();
 $idServicio = $servicioDao->addServicio($servicio);
 echo "{\"servicio_id\":\"".$idServicio."\"}";
+Log::write_log("ADDSERVICIO", 0);

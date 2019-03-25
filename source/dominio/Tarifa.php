@@ -3,6 +3,8 @@
 class Tarifa {
     private $id;
     private $descripcion;
+    private $numero;
+    private $hora;
     private $nombre;
     private $origen;
     private $destino;
@@ -18,6 +20,14 @@ class Tarifa {
 
     function getDescripcion() {
         return $this->descripcion;
+    }
+
+    function getNumero() {
+        return $this->numero;
+    }
+
+    function getHora() {
+        return $this->hora;
     }
 
     function getNombre() {
@@ -60,6 +70,14 @@ class Tarifa {
         $this->descripcion = $descripcion;
     }
 
+    function setNumero($numero) {
+        $this->numero = $numero;
+    }
+
+    function setHora($hora) {
+        $this->hora = $hora;
+    }
+
     function setNombre($nombre) {
         $this->nombre = $nombre;
     }
@@ -92,5 +110,7 @@ class Tarifa {
         $this->horario = $horario;
     }
 
+
+    
 
 }

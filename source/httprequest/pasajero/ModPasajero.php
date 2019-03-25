@@ -3,6 +3,7 @@ include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/PasajeroDao.php';
 include '../../cripto/Cripto.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $id = filter_input(INPUT_POST, 'id');
@@ -41,4 +42,4 @@ $pasajero->setRuta($ruta);
 $pasajeroDao = new PasajeroDao();
 $pasajeroDao->modificarPasajero($pasajero);
 echo "{\"pasajero_id\":\"".$pasajero->getId()."\"}";
-
+Log::write_log("MODPASAJERO", 0);

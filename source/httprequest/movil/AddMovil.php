@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/MovilDao.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $patente = filter_input(INPUT_POST, 'patente');
@@ -127,3 +128,4 @@ $movil->setAdjuntoSegRcExceso($adjuntoSegExceso);
 $movilDao = new MovilDao();
 $movilId = $movilDao->agregarMovil($movil);
 echo "{\"movil_id\":\"".$movilId."\"}";
+Log::write_log("ADDMOVIL", 0);

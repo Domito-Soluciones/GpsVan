@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/ServicioDao.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $partida = filter_input(INPUT_POST, 'partida');
@@ -35,3 +36,4 @@ $servicio->setObservaciones($observaciones);
 $servicioDao = new ServicioDao();
 $idServicio = $servicioDao->addServicioEspecial($servicio);
 echo "{\"servicio_id\":\"".$idServicio."\"}";
+Log::write_log("ADDSERVICIOESPECIAL", 0);

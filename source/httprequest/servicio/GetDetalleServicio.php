@@ -1,6 +1,7 @@
 <?php
 include '../../util/validarPeticion.php';
 include '../../query/ServicioDao.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json; charset=utf-8');
 $id = filter_input(INPUT_POST, 'id');
@@ -26,3 +27,4 @@ for($i = 0 ; $i < count($lat) ; $i++)
 $respuesta .= "]";
 
 echo $respuesta;
+Log::write_log("GETDETALLESERVICIO", 0);

@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/LiquidacionDao.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $conductor = filter_input(INPUT_POST, 'conductor');
@@ -21,3 +22,4 @@ for ($i = 0 ; $i < count($servicios); $i++)
 
 }
 echo "]";
+Log::write_log("GETLIQUIDACION", 0);

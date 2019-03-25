@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/ClienteDao.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $busqueda = filter_input(INPUT_POST, 'busqueda');
@@ -55,3 +56,4 @@ for ($i = 0 ; $i < count($clientes); $i++)
     }
 }
 echo "]";
+Log::write_log("GETCLIENTES", 0);

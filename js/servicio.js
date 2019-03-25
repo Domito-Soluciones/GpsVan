@@ -1,4 +1,4 @@
-/* global urlBase, alertify, CREADO, EN_PROCCESO_DE_ASIGNACION, ASIGNADO, ACEPTADO, EN_PROGRESO, FINALIZADO, google, map, markers, directionsDisplay */
+/* global urlBase, alertify, CREADO, EN_PROCCESO_DE_ASIGNACION, ASIGNADO, ACEPTADO, EN_PROGRESO, FINALIZADO, google, map, markers, directionsDisplay, TIPO_USUARIO */
 var SERVICIOS;
 var ESTADO_SERVICIO;
 var RUTA;
@@ -6,16 +6,11 @@ var conductores = new Map();
 var conductoresNick = new Map();
 var MOVILES = {};
 var PAGINA = 'SERVICIOS';
+var CAMPOS = ["clienteServicio","rutaServicio","fechaServicio","inicioServicio","estadoServicio","movilServicio","conductorServicio"];
 $(document).ready(function(){
+    borrarDirections();
     PAGINA_ANTERIOR = PAGINA;
-    if (directionsDisplay !== null) {
-        directionsDisplay.setMap(null);
-        directionsDisplay = null;
-    }
-    for(var i = 0; i < markers.length;i++)
-    {
-        markers[i].setMap(null);
-    }
+    eliminarMarkers();
     iniciarFecha([$("#desde"),$("#hasta")]);
     iniciarHora([$("#hdesde"),$("#hhasta")]);
     buscarServicio();
@@ -103,10 +98,26 @@ function abrirBuscador(id)
     quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
     agregarclase($("#"+id),"fila_contenedor_activa");
     $("#contenedor_central").load("html/datos_servicio.html", function( response, status, xhr ) {
+        if(TIPO_USUARIO === 'CLIENTE')
+        {
+            $("#rutaServicio").prop("readonly",true);
+            $("#fechaServicio").prop("readonly",true);
+            $("#inicioServicio").prop("readonly",true);
+            $("#estadoServicio").prop("disabled",true);
+            $("#movilServicio").prop("disabled",true);
+            $("#tarifaServicio").prop("readonly",true);
+            $("#tarifa2Servicio").prop("readonly",true);
+            cambiarPropiedad($("#guardar"),"display","none");
+        }
+        else if(TIPO_USUARIO === 'ADMIN')
+        {
+            cargarClientes();
+            cargarRutas();
+            iniciarFecha([$("#fechaServicio")]);
+            iniciarHora([$("#inicioServicio")]);
+        }
         cambioEjecutado();
         iniciarPestanias();
-        iniciarFecha([$("#fechaServicio")]);
-        iniciarHora([$("#inicioServicio")]);
         var servicio;
         for(var i = 0 ; i < SERVICIOS.length; i++)
         {
@@ -115,11 +126,12 @@ function abrirBuscador(id)
                 servicio = SERVICIOS[i];
             }
         }
-        $("#idServicio").html(servicio.servicio_id);
-        $("#clienteServicio").html(servicio.servicio_cliente);
-        $("#rutaServicio").html(servicio.servicio_ruta);
+        $("#idServicio").val(servicio.servicio_id);
+        $("#clienteServicio").val(servicio.servicio_cliente);
+        $("#rutaServicio").val(servicio.servicio_ruta);
         $("#estadoServicio").val(servicio.servicio_estado);
         ESTADO_SERVICIO = servicio.servicio_estado;
+        cargarRutas();
         var conductorReal = "";
         for(var i = 0 ; i < MOVILES.length; i++)
         {
@@ -138,11 +150,11 @@ function abrirBuscador(id)
             }
             $("#movilServicio").append("<option value='"+movil+"'"+sel+">"+movil+" / "+conductor+"</option>");
         }
-        $("#conductorServicio").html(conductorReal.length===1?"No Definido":conductorReal);
+        $("#conductorServicio").val(conductorReal.length===1?"No Definido":conductorReal);
         $("#inicioServicio").val(servicio.servicio_hora);
         $("#fechaServicio").val(servicio.servicio_fecha);
-        $("#tarifaServicio").html(servicio.servicio_tarifa1);
-        $("#tarifa2Servicio").html(servicio.servicio_tarifa2);        
+        $("#tarifaServicio").val(servicio.servicio_tarifa1);
+        $("#tarifa2Servicio").val(servicio.servicio_tarifa2);        
         if(ESTADO_SERVICIO === FINALIZADO || ESTADO_SERVICIO === EN_PROGRESO)
         {
             $("#fechaServicio").prop("disabled",true);
@@ -152,6 +164,9 @@ function abrirBuscador(id)
             cambiarPropiedad($("#guardar"),"display","none");
             cambiarPropiedad($("#eliminar"),"display","none");
         }
+        $("#clienteServicio").on('input',function () {
+            cargarRutas();
+        });
         $("#volver").click(function(){
             buscarServicio();
         });
@@ -159,11 +174,11 @@ function abrirBuscador(id)
             if($(this).val() !== "")
             {
                 var conductor = $(this).children("option").filter(":selected").text().split(" / ")[1];
-                $("#conductorServicio").html(conductor);
+                $("#conductorServicio").val(conductor);
             }
             else
             {
-                $("#conductores").html("");
+                $("#conductorServicio").val("");
             }
         });
         $("#guardar").click(function(){
@@ -182,33 +197,36 @@ function abrirBuscador(id)
 function modificarServicio()
 {
     var id = ID_SERVICIO;
+    var cliente = $("#clienteServicio").val();
+    var ruta = $("#rutaServicio").val();
     var fecha = $("#fechaServicio").val();
     var hora = $("#inicioServicio").val();
     var estado = $("#estadoServicio").val();
     var movil = $("#movilServicio").val();
     var conductor = conductoresNick.get($("#conductorServicio").text());
-    var array = ["fechaServicio","inicioServicio","estadoServicio","movilServicio","conductorServicio"];
-    var params = {id : id,fecha : fecha, hora : hora, estado : estado,movil : movil, conductor : conductor};
-    if($("#conductorServicio").text() === 'No Definido')
-    {
-        alertify.error("Debe seleccionar un vehículo con conductor");
-        return;
-    }
+    var tarifa1 = $("#tarifaServicio").val();
+    var tarifa2 = $("#tarifa2Servicio").val();
+    var array = [cliente,ruta,fecha,hora,estado,movil,tarifa1,tarifa2];
+    var params = {id : id,cliente : cliente,ruta : ruta,fecha : fecha, hora : hora,
+        estado : estado,movil : movil, conductor : conductor, tarifa1 : tarifa1, tarifa2 : tarifa2};
     if(!validarCamposOr(array))
     {
         activarPestania(array);
         alertify.error("Ingrese todos los campos necesarios");
         return;
     }
-    var url = urlBase + "/servicio/ModServicio.php";
-    var success = function(response)
+    if(validarTipoDato())
     {
-        cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
-        cerrarSession(response);
-        alertify.success("Servicio Modificado");
-        buscarServicio();
-    };
-    postRequest(url,params,success);
+        var url = urlBase + "/servicio/ModServicio.php";
+        var success = function(response)
+        {
+            cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
+            cerrarSession(response);
+            alertify.success("Servicio Modificado");
+            buscarServicio();
+        };
+        postRequest(url,params,success);
+    }
 }
 
 function eliminarServicio()
@@ -236,7 +254,7 @@ function iniciarPestanias()
     $("#p_ruta").click(function(){
         if(ESTADO_SERVICIO < 5)
         {
-            $("#contenedor_mapa").html("<div class=\"mensaje_bienvenida\">El servicio de estar finalizado para ver la ruta</div>");
+            $("#contenedor_mapa").html("<div class=\"mensaje_bienvenida\">El servicio debe estar finalizado para ver la ruta</div>");
         }
         else
         {
@@ -367,9 +385,88 @@ function obtenerPasajeros()
                 estado = "Cancelado";
             }
             var destino = response[i].servicio_destino;
-            $("#pasajeros_contenido").append("<div class=\"nombre_pasajero\">"+pasajero+"</div>"+
-            "<div class=\"dir_pasajero\">"+destino+"</div><div class=\"dato_pasajero\">"+horaDestino+"</div><div class=\"dato_pasajero\">"+estado+"</div>");
+            $("#pasajeros_contenido").append("<div class=\"fila_contenedor fila_contenedor_servicio\">"+
+                    "<div class=\"nombre_pasajero\">"+pasajero+"</div>"+
+                    "<div class=\"dir_pasajero\">"+destino+"</div>"+
+                    "<div class=\"dato_pasajero\">"+horaDestino+"</div>"+
+                    "<div class=\"dato_pasajero\">"+estado+"</div></div>");
         }
     };
     postRequest(url,params,success);
+}
+
+function cargarClientes()
+{
+    var params = {busqueda : '',buscaCC : '0'};
+    var url = urlBase + "/cliente/GetClientes.php";
+    var success = function(response)
+    {
+        $("#lcliente").html("");
+        for(var i = 0 ; i < response.length ; i++)
+        {
+            var nombre = response[i].cliente_razon;
+            $("#lcliente").append("<option value=\""+nombre+"\">"+nombre+"</option>");
+        }
+    };
+    postRequest(url,params,success,false);
+}
+
+function cargarRutas()
+{
+    var clientes = $('#clienteServicio').val();
+    NOMBRE_CLIENTE = clientes;
+    var params = {empresa : clientes};
+    var url = urlBase + "/tarifa/GetTarifasEmpresa.php";
+    var success = function(response)
+    {
+        $("#lruta").html("");
+        for(var i = 0 ; i < response.length ; i++)
+        {
+            TARIFAS = response;
+            var nombre = response[i].tarifa_nombre;
+            $("#lruta").append("<option value=\""+nombre+"\">"+nombre+"</option>");
+        }
+    };
+    postRequest(url,params,success,false);
+}
+
+function activarPestania(array)
+{
+    for(var i = 0 ; i < CAMPOS.length ; i++)
+    {
+        if(array[i] === '')
+        {
+            marcarCampoError($("#"+CAMPOS[i]));
+        }
+        else
+        {
+            marcarCampoOk($("#"+CAMPOS[i]));
+        }
+    }
+}
+
+function validarTipoDato()
+{
+    for(var i = 0 ; i < CAMPOS.length ; i++)
+    {
+        marcarCampoOk($("#"+CAMPOS[i]));
+    }
+    var tarifa1 = $("#tarifaServicio");
+    var tarifa2 = $("#tarifa2Servicio");
+    if(!validarNumero(tarifa1.val()))
+    {
+        cambiarPestaniaGeneral();
+        marcarCampoError(tarifa1);
+        alertify.error('Tarifa 1 debe ser numerico');
+        return false;
+    }
+    if(!validarNumero(tarifa2.val()))
+    {
+        cambiarPestaniaGeneral();
+        marcarCampoError(tarifa2);
+        alertify.error('Tarifa 2 debe ser numerico');
+        return false;
+    }
+    
+   return true;
 }

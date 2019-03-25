@@ -531,6 +531,11 @@ select
     min-height: 460px;
 }
 
+.contenedor-info-servicio
+{
+    padding-top: 1px !important;
+}
+
 .dispose
 {
     color: white !important;
@@ -1305,8 +1310,17 @@ select
     width: 100%;
     font-size: 60px;
     text-align: center;
+    height: calc(100% - 20px);
+    line-height: 140px;
+}
+.indicador-valor-mitad
+{
+    width: 50%;
+    font-size: 60px;
+    text-align: center;
     height: 100px;
     line-height: 140px;
+    float: left;
 }
 .ruta
 {
@@ -1411,12 +1425,12 @@ select
 
 .info-servicio
 {
-    height: calc(100% - 85px) !important;
+    height: calc(100% - 140px) !important
 }
 .info-servicio-mapa
 {
     padding-top: 0 !important;
-    height: calc(100% - 65px);
+    height: calc(100% - 115px);
 }
     
 .contenedor_mapa
@@ -1439,6 +1453,13 @@ select
     margin-top: 15%;
     width: 200%;
     background-color: #ecf0f1;
+}
+.pie-tarifa
+{
+    width: 100%;
+    background-color: #ecf0f1;
+    height: 50px;
+    display: none;
 }
 
 .btn-eliminar
@@ -1464,7 +1485,7 @@ select
 .pasajeros_contenido
 {
     width: 100%;
-    height: calc(100% - 46px);
+    height: calc(100% - 50px);
     line-height: 50px;
     background-color: #f9f9f9;
 }
@@ -1627,4 +1648,13 @@ select
 #servicios_pendientes_link
 {
     display: none;
+}
+
+#vConvenio
+{
+    font-size: 12px;
+}
+#vConvenio div
+{
+    height: 20px;
 }

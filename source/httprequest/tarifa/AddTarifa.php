@@ -2,9 +2,12 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/TarifaDao.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $descripcion = filter_input(INPUT_POST, 'descripcion');
+$numero = filter_input(INPUT_POST, 'numero');
+$hora = filter_input(INPUT_POST, 'hora');
 $nombre = filter_input(INPUT_POST, 'nombre');
 $origen = filter_input(INPUT_POST, 'origen');
 $destino = filter_input(INPUT_POST, 'destino');
@@ -15,6 +18,8 @@ $tipo = filter_input(INPUT_POST, 'tipo');
 $horario = filter_input(INPUT_POST, 'horario');
 $tarifa = new Tarifa();
 $tarifa->setDescripcion($descripcion);
+$tarifa->setNumero($numero);
+$tarifa->setHora($hora);
 $tarifa->setNombre($nombre);
 $tarifa->setOrigen($origen);
 $tarifa->setDestino($destino);
@@ -26,3 +31,4 @@ $tarifa->setHorario($horario);
 $tarifaDao = new TarifaDao();
 $tarifaId = $tarifaDao->agregarTarifa($tarifa);
 echo "{\"tarifa_id\":\"".$tarifaId."\"}";
+Log::write_log("ADDTARIFA", 0);

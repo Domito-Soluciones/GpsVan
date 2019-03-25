@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/MovilDao.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $busqueda = filter_input(INPUT_POST, 'busqueda');
@@ -68,3 +69,4 @@ echo "{\"movil_id\":\"".$movilId."\","
     . "\"movil_lon\":\"".$movilLon."\","
     . "\"movil_servicio\":\"".$movilServicio."\""
     . "}";
+Log::write_log("GETMOVIL", 0);

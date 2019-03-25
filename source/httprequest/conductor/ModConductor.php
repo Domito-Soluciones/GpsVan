@@ -3,6 +3,7 @@ include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/ConductorDao.php';
 include '../../cripto/Cripto.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $id =filter_input(INPUT_POST, 'id');
@@ -67,3 +68,4 @@ $conductor->setContratoAdjunto($archivoContrato);
 $conductorDao = new ConductorDao();
 $conductorDao->modificarConductor($conductor);
 echo "{\"conductor_id\":\"".$conductor->getId()."\"}";
+Log::write_log("MODCONDUCTOR", 0);

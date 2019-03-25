@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/ConductorDao.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $conductorDao = new ConductorDao();
@@ -26,3 +27,4 @@ for ($i = 0 ; $i < count($conductores); $i++)
     }
 }
 echo "]";
+Log::write_log("GETTRANSPORTISTAS", 0);

@@ -1,4 +1,4 @@
-/* global POLYLINE, alertify, urlBase, PLACES_AUTOCOMPLETE_API, POSITION, API_KEY, PLACES_DETAILS_API, google, map, DIRECTIONS_API, EN_PROCCESO_DE_ASIGNACION, markers, TIPO_SERVICIO, markersPanel, directionsService, directionsDisplay, geocoder, MENU_VISIBLE, GOOGLE_MAPS_API */
+/* global POLYLINE, alertify, urlBase, PLACES_AUTOCOMPLETE_API, POSITION, API_KEY, PLACES_DETAILS_API, google, map, DIRECTIONS_API, EN_PROCCESO_DE_ASIGNACION, markers, TIPO_SERVICIO, directionsService, directionsDisplay, geocoder, MENU_VISIBLE, GOOGLE_MAPS_API */
 var CLIENTES = {};
 var moviles = [];
 var clientesArray = [];
@@ -14,7 +14,7 @@ var NOMBRE_CLIENTE;
 var conductores = new Map();
 var TIPO = 'NORMAL';
 
-var CAMPOS = ["clientes","ruta","fechas","hora","vehiculos","tarifa1","tarifa2"];
+var CAMPOS = ["clientes","ruta","truta","fechaDesde","hora","vehiculos","tarifa1","tarifa2"];
 
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
@@ -25,7 +25,10 @@ $(document).ready(function(){
     }
     if(TIPO_SERVICIO === 1)
     {
+        $("#especial").prop("checked",true);
+        $("#tarifa2").prop("disabled",false);
         $("#ruta").prop("disabled",true);
+        $("#truta").prop("disabled",true);
         cambiarPropiedad($(".buscador-pasajero"),"display","initial");
         agregarclase($("#contenedor_mapa"),"mapa_bajo");
         cargarPasajeros();
@@ -46,7 +49,10 @@ $(document).ready(function(){
             if(TARIFAS[i].tarifa_nombre === $(this).val())
             {
                 $("#tarifa1").val(TARIFAS[i].tarifa_valor1);
-                $("#tarifa2").val(TARIFAS[i].tarifa_valor2);
+                if(TIPO === 'ESPECIAL')
+                {
+                    $("#tarifa2").val(TARIFAS[i].tarifa_valor2);
+                }
                 break;
             }
         }
@@ -57,12 +63,8 @@ $(document).ready(function(){
         if($(this).val() !== "")
         {
             var conductor = $(this).children("option").filter(":selected").text().split(" / ")[1];
-            $("#conductores").html("Conductor: "+conductor);
+            $("#conductorV").val(conductor);
             $("#conductorH").val(conductores.get(conductor));
-        }
-        else
-        {
-            $("#conductores").html("");
         }
     });
     
@@ -104,7 +106,19 @@ $(document).ready(function(){
     });
 
     $("#solicitar").click(function () {
-        agregarServicio();
+        var f1 = $("#fechaDesde").val();
+        var f2 = $("#fechaHasta").val();
+        var dias = 1;
+        if(f2 !== '')
+        {
+            dias += diasDiferencia(f1,f2);
+        }
+        var fecha = $("#fechaDesde").val();
+        for(var i = 0 ; i < dias; i++)
+        {
+            agregarServicio(fecha);
+            fecha = sumarDias(fecha,1);
+        }
     });
     $("#solicitar2").click(function () {
         agregarServicioEspecial();
@@ -170,8 +184,8 @@ function init()
     {
         markers[i].setMap(null);
     }
-    iniciarFecha(['#fechas','#fechas2']);
-    iniciarHora(['#hora','#hora2']);
+    iniciarFecha(['#fechaDesde','#fechaHasta']);
+    iniciarHora(['#hora']);
 }
 
 function cargarClientes()
@@ -226,8 +240,9 @@ function cargarPasajeros()
         if(ruta.indexOf("-ZP-") !== -1)
         {
             origen = response[0].pasajero_empresa_direccion;
+            contenedorDir.html("<b>Origen:</b> "+origen);
+            contenedor.prepend("<div class=\"cont-pasajero-gral\"><div class=\"cont-pasajero\">"+response[0].pasajero_empresa+"</div><div class=\"cont-mini-pasajero\"><div>"+ origen + "</div><div>");
         }
-        contenedorDir.html("<b>Origen:</b> "+origen);
         pasajeros = [];
         destinos = [];
         var partidaExiste = true;
@@ -248,7 +263,8 @@ function cargarPasajeros()
                 
                 if(ruta.indexOf("-ZP-") !== -1 && i === response.length-1)
                 {
-                    contenedorDes.html("<b>Destino:</b> "+punto);                    
+                    contenedorDes.html("<b>Destino:</b> "+punto);   
+                    contenedor.append("<div class=\"cont-pasajero-gral\"><div class=\"cont-pasajero\">"+response[0].pasajero_empresa+"</div><div class=\"cont-mini-pasajero\"><div>"+ punto + "</div><div>");
                 }
                 //if(i > 0)
                 //{
@@ -273,7 +289,8 @@ function cargarPasajeros()
                 
                 if(ruta.indexOf("-ZP-") !== -1 && i === response.length-1)
                 {
-                    contenedorDes.html("<b>Destino:</b> "+punto);                    
+                    contenedorDes.html("<b>Destino:</b> "+punto);   
+                    contenedor.append("<div class=\"cont-pasajero-gral\"><div class=\"cont-pasajero\">"+response[0].pasajero_empresa+"</div><div class=\"cont-mini-pasajero\"><div>"+ punto + "</div><div>");
                 }
                 contenedor.append("<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" draggable=\"true\" ondragstart=\"drag(event,$(this))\" ondrop=\"drop(event,$(this))\" ondragover=\"allowDrop(event)\">"
                                  +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+punto+"\">"
@@ -295,6 +312,7 @@ function cargarPasajeros()
         {
             destinos.push(response[0].pasajero_empresa_direccion);
             contenedorDes.html("<b>Destino:</b> "+response[0].pasajero_empresa_direccion);
+ /*esta no*/contenedor.append("<div class=\"cont-pasajero-gral\"><div class=\"cont-pasajero\">"+response[0].pasajero_empresa+"</div><div class=\"cont-mini-pasajero\"><div>"+ response[0].pasajero_empresa_direccion + "</div><div>");
         }
         
         dibujarRuta(origen,destinos);
@@ -326,6 +344,7 @@ function cargarPasajerosEspecial()
         contenedor.html("");
         contenedorEx.html("");
         contenedorDir.html("<b>Origen:</b> "+origen);
+        contenedor.prepend("<div class=\"cont-pasajero-gral\"><div class=\"cont-pasajero\">"+response[0].pasajero_empresa+"</div><div class=\"cont-mini-pasajero\"><div>"+ origen + "</div><div>");
         pasajeros = [];
         destinos = [];
         for(var i = 0 ; i < response.length ; i++)
@@ -335,6 +354,7 @@ function cargarPasajerosEspecial()
             var punto = response[i].pasajero_punto_encuentro;
             var celular = response[i].pasajero_celular;
             contenedorDir.html("<b>Origen:</b> ");
+            contenedor.prepend("<div class=\"cont-pasajero-gral\"><div class=\"cont-pasajero\">"+response[0].pasajero_empresa+"</div><div class=\"cont-mini-pasajero\"><div>"+ origen + "</div><div>");
             contenedorDes.html("<b>Destino:</b> ");                    
             contenedorEx.append("<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" \">"
                                  +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+punto+"\">"
@@ -414,22 +434,26 @@ function cargarRutas()
     var success = function(response)
     {
         $("#lruta").html("");
+        var ruta = "";
         for(var i = 0 ; i < response.length ; i++)
         {
             TARIFAS = response;
-            var nombre = response[i].tarifa_nombre;
-            $("#lruta").append("<option value=\""+nombre+"\">"+nombre+"</option>");
+            var descripcion = response[i].tarifa_descripcion;
+            if(response[i].tarifa_descripcion !== ruta)
+            {
+                $("#lruta").append("<option value=\""+descripcion+"\">"+descripcion+"</option>");
+                ruta = response[i].tarifa_descripcion;
+            }
         }
     };
     postRequest(url,params,success,false);
 }
 
-function agregarServicio()
+function agregarServicio(fecha)
 {
     var id = $("#ids").val();
     var cliente = $("#clientes").val();
     var ruta = $("#ruta").val();
-    var fecha = $("#fechas").val();
     var hora = $("#hora").val();
     var movil = $("#vehiculos").val();
     var conductor = $("#conductorH").val();
@@ -503,10 +527,7 @@ function agregarServicio()
 
 function dibujarRuta(origen,destinos)
 {
-    for(var i = 0 ; i < markersPanel.length;i++)
-    {
-        markersPanel[i].setMap(null);
-    }
+    eliminarMarkers();
     var largo = destinos.length;
     if(largo === 0)
     {
@@ -796,6 +817,9 @@ function cambiarServicioNormal()
     borrarDirections();
     cambiarPropiedad($(".buscador-pasajero"),"display","none");
     quitarclase($("#contenedor_mapa"),"mapa_bajo");
+    $("#tarifa2").prop("disabled",true);
+    cambiarPropiedad($("#tarifa2"),"background-color","silver");
+    $("#tarifa2").val("");
 }
 function cambiarServicioEspecial()
 {
@@ -803,6 +827,9 @@ function cambiarServicioEspecial()
     destinos = [];
     pasajeros = [];
     origen = undefined;
+    $("#tarifa2").prop("disabled",false);
+    $("#tarifa2").val("");
+    cambiarPropiedad($("#tarifa2"),"background-color","white");
     $("#ruta").prop("readonly",true);
     vaciarFormulario();
     borrarDirections();
@@ -816,6 +843,7 @@ function activarPestania(array)
     {
         if(array[i] === '')
         {
+            console.log(array[i] + " "+ i);
             marcarCampoError($("#"+CAMPOS[i]));
         }
         else
@@ -854,6 +882,10 @@ function obtenerExcepciones()
     if(TIPO_SERVICIO === 1)
     {
         exp += '||1||';
+    }
+    else if(TIPO_SERVICIO === 0)
+    {
+        exp += '||6||';
     }
     return exp;
 }
@@ -915,10 +947,7 @@ function initPlacesAutoComplete(input) {
 
 function colocarMarcadorPlaces(input)
 {
-    for(var i = 0 ; i < markersPanel.length;i++)
-    {
-        markersPanel[i].setMap(null);
-    }
+    eliminarMarkers();
     var icon = {
         url: "img/marcador.svg",
         scaledSize: new google.maps.Size(70, 30),
@@ -930,9 +959,7 @@ function colocarMarcadorPlaces(input)
         icon : icon,
         map: map
     });
-    
-    markersPanel.push(marker);
-
+    markers.push(marker);
     map.setZoom(17);
     map.panTo(marker.position);
     
@@ -958,14 +985,6 @@ function colocarMarcadorPlaces(input)
     });
 }
 
-function borrarDirections()
-{
-    if (directionsDisplay !== null) {
-        directionsDisplay.setMap(null);
-        directionsDisplay = null;
-    }
-}
-
 function abrirAddPasajero()
 {
     initPlacesAutoComplete(document.getElementById('agregaDireccion'));
@@ -981,11 +1000,23 @@ function cerrarAddPasajero()
     quitarclase($("#contenedor_mapa"),"mapa_agregar");   
 }
 
-function setDirections()
+function diasDiferencia(f1,f2)
 {
-    if(directionsDisplay === null)
-    {
-        directionsDisplay = new google.maps.DirectionsRenderer();
-        directionsDisplay.setMap(map);
-    }
+    f1A = f1.split("/");
+    f2A = f2.split("/");
+    f1 = f1A[2]+"-"+f1A[1]+"-"+f1A[0];
+    f2 = f2A[2]+"-"+f2A[1]+"-"+f2A[0];
+    var fecha1 = moment(f1);
+    var fecha2 = moment(f2);
+    return fecha2.diff(fecha1, 'days');
+}
+
+function sumarDias(fecha, dias){
+  var f = fecha.split("/");
+  var date = new Date(parseInt(f[2]),parseInt(f[1])-1,parseInt(f[0]));
+  date.setDate(date.getDate() + dias);
+  var day = date.getDate();
+  var monthIndex = date.getMonth()+1;
+  var year = date.getFullYear();
+  return day+"/"+monthIndex+"/"+year;
 }

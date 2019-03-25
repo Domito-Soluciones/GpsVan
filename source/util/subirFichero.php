@@ -2,7 +2,8 @@
 $upload_max_size = ini_get('upload_max_filesize');
 $nombre = $_REQUEST['nombre'];
 $archivo = $_REQUEST['archivo'];
-$ext = explode(".", $archivo)[1];
+$ext = substr($_REQUEST['archivo'], -3);
+echo "esta es la extension: ".$ext;
 if($ext != 'pdf')
 {
     if($ext != 'png')

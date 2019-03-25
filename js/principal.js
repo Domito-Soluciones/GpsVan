@@ -13,21 +13,11 @@ var geocoder = null;
 var autocomplete;
 var places;
 var GOOGLE_MAPS_API = "https://maps.googleapis.com/maps/api/js?";
-var PAGINA_ANTERIOR;
-var INTERVAL_SERVICIOS;
-var CREADO = "0";
-var EN_PROCCESO_DE_ASIGNACION = "1";
-var ASIGNADO = "2";
-var ACEPTADO = "3";
-var EN_PROGRESO = "4";
-var FINALIZADO = "5";
-var CANCELADO = "6";
 var servicios = new Map();
 var TIPO_SERVICIO = 0;
 
-var MENU_VISIBLE = false;
-
 $(document).ready(function(){
+    TIPO_USUARIO = 'ADMIN';
     $.getScript(GOOGLE_MAPS_API+"key="+API_KEY+"&callback=initMap&libraries=places",function(){
         getLocation();
         $("#menu").load("menu.php", function( response, status, xhr ) {
@@ -154,7 +144,7 @@ function decodePolyline(encoded) {
                 var observacion = response[i].servicio_observacion;
                 if(typeof servicios.get(id) === 'undefined')
                 {
-                    alertify.success("nuevo servicio para asignar: "+id);
+                    alertify.success("Nuevo servicio para asignar: "+id);
                 }
                 cont.append("<div class=\"pendiente\" onclick=\"abrirServicio('"+id+"','"+cliente+"','"+ruta+"','"+fecha+"','"+hora+"','"+observacion+"')\" >"+id+" - "+cliente+"</div>");
                 servicios.set(id,id);                

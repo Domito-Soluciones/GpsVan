@@ -2,7 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/ServicioDao.php';
-
+include '../../log/Log.php';
 
 header('Content-Type: application/json; charset=utf-8');
 $servicioDao = new ServicioDao();
@@ -30,5 +30,4 @@ if (($i+1) != count($servicios))
     }
 }
 echo "]";
-
-
+Log::write_log("GETSERVICIOSPENDIENTES", 0);

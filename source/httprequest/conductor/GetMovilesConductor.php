@@ -1,6 +1,7 @@
 <?php
 include '../../util/validarPeticion.php';
 include '../../query/ConductorDao.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $conductorDao = new ConductorDao();
@@ -35,3 +36,4 @@ for ($i = 0 ; $i < count($moviles); $i++)
     }
 }
 echo "]";
+Log::write_log("GETMOVILESCONDUCTOR", 0);

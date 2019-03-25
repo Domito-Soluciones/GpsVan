@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/NotificacionDao.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $llave = filter_input(INPUT_POST, 'llave');
@@ -25,3 +26,4 @@ for ($i = 0 ; $i < count($notificaciones); $i++)
     }
 }
 echo "]";
+Log::write_log("GETNOTIFICACIONES", 0);

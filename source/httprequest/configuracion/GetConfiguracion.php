@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/ConfiguracionDao.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $configuracionDao = new ConfiguracionDao();
@@ -22,3 +23,4 @@ for ($i = 0 ; $i < count($configuraciones); $i++)
     }
 }
 echo "]";
+Log::write_log("GETCONFIGURACION", 0);

@@ -2,10 +2,13 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/TarifaDao.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $id = filter_input(INPUT_POST, 'id');
 $descripcion = filter_input(INPUT_POST, 'descripcion');
+$numero = filter_input(INPUT_POST, 'numero');
+$hora = filter_input(INPUT_POST, 'hora');
 $nombre = filter_input(INPUT_POST, 'nombre');
 $origen = filter_input(INPUT_POST, 'origen');
 $destino = filter_input(INPUT_POST, 'destino');
@@ -17,6 +20,8 @@ $horario = filter_input(INPUT_POST, 'horario');
 $tarifa = new Tarifa();
 $tarifa->setId($id);
 $tarifa->setDescripcion($descripcion);
+$tarifa->setNumero($numero);
+$tarifa->setHora($hora);
 $tarifa->setNombre($nombre);
 $tarifa->setOrigen($origen);
 $tarifa->setDestino($destino);
@@ -28,3 +33,4 @@ $tarifa->setHorario($horario);
 $tarifaDao = new TarifaDao();
 $tarifaDao->modificarTarifa($tarifa);
 echo "{\"tarifa_id\":\"".$tarifa->getId()."\"}";
+Log::write_log("MODTARIFA", 0);

@@ -3,7 +3,6 @@
     if($_SESSION['tipo'] == '0')
     {
 ?>
-
 <div class="opcion-menu menu-activo" id="home" onclick="cambiarModulo('home')">
     <div class="cont-img-menu">
         <img class="img-menu" src="img/dashboard.svg">
@@ -180,6 +179,17 @@
         </div>
         <div class="tooltip" id="tooltip_panel">
             Asignaci&oacute;n
+        </div>
+    </div>
+    <div class="opcion-menu" id="servicios" onclick="cambiarModulo('servicios')">
+        <div class="cont-img-menu">
+            <img class="img-menu" src="img/servicio.svg">
+        </div>
+        <div class="contenido-menu">
+            Servicios
+        </div>
+        <div class="tooltip" id="tooltip_panel">
+            Servicios
         </div>
     </div>
 <?php

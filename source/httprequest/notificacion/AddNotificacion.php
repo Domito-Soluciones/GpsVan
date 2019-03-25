@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/NotificacionDao.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $texto = filter_input(INPUT_POST, 'texto');
@@ -21,3 +22,4 @@ $notificacion->setFecha($fecha." ".$hora);
 $notificacionDao = new NotificacionDao();
 $notificacionId = $notificacionDao->agregarNotificacion($notificacion);
 echo "{\"notificacion_id\":\"".$notificacionId."\"}";
+Log::write_log("ADDNOTIFICACION", 0);

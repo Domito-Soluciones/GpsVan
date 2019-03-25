@@ -3,6 +3,7 @@ include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/AgenteDao.php';
 include '../../cripto/Cripto.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $rut = filter_input(INPUT_POST, 'rut');
@@ -33,4 +34,4 @@ $agente->setEmpresa($empresa);
 $agenteDao = new AgenteDao();
 $agenteId = $agenteDao->agregarAgente($agente);
 echo "{\"cliente_id\":\"".$agenteId."\"}";
-
+Log::write_log("ADDAGENTE", 0);

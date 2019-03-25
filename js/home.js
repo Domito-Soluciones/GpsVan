@@ -31,60 +31,64 @@ function getDashBoard()
         $("#sRuta").html(response.servicio_ruta);
         $("#sRealizar").html(response.servicio_realizar);
         $("#sAsignar").html(response.servicio_asignar);
-        var dataVehiculo = {
-            labels: [
-                "Activos",
-                "Inactivos"
-            ],
-            datasets: [
-                {
-                    data: [response.movil_activo, response.movil_inactivo],
-                    backgroundColor: [
-                        "#008000",
-                        "#0000ff"
-                    ]
-                }]
-        };
-        var convenios = [];
-        var totales = [];
+        var total = parseInt(response.movil_activo)+parseInt(response.movil_inactivo);
+        $("#vActivos").html(response.movil_activo+"/"+total);
+        var cont = $("#vConvenio");
+        if(response.servicio_convenios.length === 0)
+        {
+            cont.append("<div class=\"mensaje_bienvenida\" style=\"padding-top: 0\">No hay datos registrados</div>");
+        }
         for(var i = 0 ; i < response.servicio_convenios.length;i++)
         {
             var aux = response.servicio_convenios[i];
-            convenios.push(aux.convenio_nombre);
-            totales.push(aux.convenio_cantidad);
+            cont.append("<div>"+aux.convenio_nombre+" "+aux.convenio_cantidad+"</div>");
         }
-        var dataServicio =  {
-            labels: convenios,
-            datasets: [{
-                data: totales,
-                fillColor: ["rgba(220,220,220,0.5)", "navy", "red", "orange"],
-                strokeColor: "rgba(220,220,220,0.8)",
-                highlightFill: "rgba(220,220,220,0.75)",
-                highlightStroke: "rgba(220,220,220,1)",
-                borderWidth: 2,
-                hoverBorderWidth: 0
-            }]
-        };
-        var optionsVehiculo = {
-            percentageInnerCutout: 10,
-            animationEasing: 'easeOutCirc',
-            segmentShowStroke: false
-        };
-        
-        var optionsServicio = {
-            scales: {
-                yAxes: [{
-                    barPercentage: 1
-                }]
-            },
-            elements: {
-                rectangle: {
-                    borderSkipped: 'left'
-                }
-            }
-        };
-        generarGraficoDona($("#vActivos"),dataVehiculo,optionsVehiculo);
-        generarGraficoBarra($("#vConvenio"),dataServicio,optionsServicio);
+//        var dataVehiculo = {
+//            labels: [
+//                "Activos",
+//                "Inactivos"
+//            ],
+//            datasets: [
+//                {
+//                    data: [response.movil_activo, response.movil_inactivo],
+//                    backgroundColor: [
+//                        "#008000",
+//                        "#0000ff"
+//                    ]
+//                }]
+//        };
+//        var dataServicio =  {
+//            labels: convenios,
+//            datasets: [{
+//                data: totales,
+//                fillColor: ["rgba(220,220,220,0.5)", "navy", "red", "orange"],
+//                strokeColor: "rgba(220,220,220,0.8)",
+//                highlightFill: "rgba(220,220,220,0.75)",
+//                highlightStroke: "rgba(220,220,220,1)",
+//                borderWidth: 2,
+//                hoverBorderWidth: 0
+//            }]
+//        };
+//        var optionsVehiculo = {
+//            percentageInnerCutout: 10,
+//            animationEasing: 'easeOutCirc',
+//            segmentShowStroke: false
+//        };
+//        
+//        var optionsServicio = {
+//            scales: {
+//                yAxes: [{
+//                    barPercentage: 1
+//                }]
+//            },
+//            elements: {
+//                rectangle: {
+//                    borderSkipped: 'left'
+//                }
+//            }
+//        };
+//        generarGraficoDona($("#vActivos"),dataVehiculo,optionsVehiculo);
+//        generarGraficoBarra($("#vConvenio"),dataServicio,optionsServicio);
     };
     postRequest(url,params,success);
 }

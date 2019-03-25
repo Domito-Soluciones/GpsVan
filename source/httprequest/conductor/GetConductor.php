@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/ConductorDao.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $respuesta = 0;
@@ -12,3 +13,4 @@ $datos = $conductorDao->getDatosConductor($nick);
 echo "{\"conductor_nombre\":\"".$datos[0]."\","
         ."\"conductor_estado\":\"".$datos[1]."\""
         . "}";
+Log::write_log("GETCONDUCTOR", 0);

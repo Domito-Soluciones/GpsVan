@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/MovilDao.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $busqueda = filter_input(INPUT_POST, 'busqueda');
@@ -119,3 +120,4 @@ for ($i = 0 ; $i < count($moviles); $i++)
     }
 }
 echo "]";
+Log::write_log("GETMOVILES", 0);

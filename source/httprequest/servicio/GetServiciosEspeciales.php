@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../util/validarSession.php';
 include '../../query/ServicioDao.php';
+include '../../log/Log.php';
 
 header('Content-Type: application/json; charset=utf-8');
 $conductor = filter_input(INPUT_POST, 'conductor');
@@ -46,5 +47,5 @@ for ($i = 0 ; $i < count($servicios); $i++)
         }
 }
 echo "]";
-
+Log::write_log("GETSERVICIOSESPECIALES", 0);
 

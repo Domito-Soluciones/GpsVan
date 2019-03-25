@@ -1,4 +1,4 @@
-/* global urlBase, alertify, obj, google, API_KEY, map, markersPanel, directionsDisplay, markers, geocoder */
+/* global urlBase, alertify, obj, google, API_KEY, map, directionsDisplay, markers, geocoder */
 var CLIENTES;
 var AGREGAR = true;
 var PAGINA = 'CLIENTES';
@@ -14,6 +14,7 @@ $(document).ready(function(){
     {
         geocoder = new google.maps.Geocoder();
     }
+    cambiarPropiedad($("#titulo_tarifa"),"background-color","white");
     PAGINA_ANTERIOR = PAGINA;
     if (directionsDisplay !== null) {
         directionsDisplay.setMap(null);
@@ -615,10 +616,7 @@ function succesSubirContrato()
 
 function colocarMarcadorPlaces()
 {
-    for(var i = 0 ; i < markersPanel.length;i++)
-    {
-        markersPanel[i].setMap(null);
-    }
+    eliminarMarkers();
     var icon = {
         url: "img/marcador.svg",
         scaledSize: new google.maps.Size(70, 30),
@@ -631,7 +629,7 @@ function colocarMarcadorPlaces()
         map: map
     });
     
-    markersPanel.push(marker);
+    markers.push(marker);
 
     map.setZoom(17);
     map.panTo(marker.position);
@@ -652,7 +650,7 @@ function colocarMarcadorPlaces()
             }
             else
             {
-                window.alert('Geocoder failed due to: ' + status);
+                alertify.error('Geocoder failed due to: ' + status);
             }
         });
     });

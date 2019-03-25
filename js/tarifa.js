@@ -3,9 +3,9 @@ var ID_TARIFA;
 var TARIFAS;
 var AGREGAR = true;
 var PAGINA = 'TARIFAS';
-var CAMPOS = ["tipo","horario","descripcion","nombre","valor1","valor2"];
+var CAMPOS = ["tipo","horario","descripcion","numero","hora","nombre","valor1","valor2"];
 var clientes_tarifa = [];
-
+var DIRECCION_EMPRESA;
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
     buscarClienteTarifa();
@@ -13,6 +13,7 @@ $(document).ready(function(){
     $("#agregar").click(function(){
         AGREGAR = true;
         $("#lista_busqueda_tarifa_detalle").load("html/datos_tarifa.html", function( response, status, xhr ) {
+            iniciarHora([$("#hora")]);
             quitarclase($("#guardar"),"oculto");
             cambiarPropiedad($("#agregar"),"visibility","hidden");
             cambiarPropiedad($("#eliminar"),"visibility","hidden");
@@ -24,6 +25,17 @@ $(document).ready(function(){
             });
             $("#tipo").change(function(){
                 generarNombre('tipo');
+                var tipo = $(this).val();
+                if(tipo === 'RG')
+                {
+                    $("#destino").val(DIRECCION_EMPRESA);
+                    $("#origen").val("");
+                }
+                else if(tipo === 'ZP')
+                {
+                    $("#origen").val(DIRECCION_EMPRESA);
+                    $("#destino").val("");
+                }
             });
             $("#horario").change(function(){
                 generarNombre('horario');
@@ -66,20 +78,24 @@ $(document).ready(function(){
 
             });
             
-            $("#guardar").click(function (){
-                agregarTarifa();
-            });
-            
         });
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
     });
-    $("#cancelar").click(function(){
-        validarCancelar(PAGINA);
-    });
 
     $("#busqueda").keyup(function(){
         buscarClienteTarifa($(this).val());
+    });
+                
+    $("#guardar").click(function (){
+        if(AGREGAR)
+        {
+            agregarTarifa();
+        }
+        else
+        {
+            modificarTarifa();
+        }
     });
 });
 
