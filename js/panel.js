@@ -60,6 +60,10 @@ $(document).ready(function(){
                 {
                     $("#tarifa2").val(TARIFAS[i].tarifa_valor2);
                 }
+                else
+                {
+                    $("#tarifa2Hidden").val(TARIFAS[i].tarifa_valor2);
+                }
             }
         }
         cargarPasajeros();
@@ -248,7 +252,7 @@ function cargarPasajeros()
         {
             origen = response[0].pasajero_empresa_direccion;
             contenedorDir.html("<b>Origen:</b> "+origen);
-            contenedor.prepend("<div class=\"cont-pasajero-gral\"><div class=\"cont-pasajero\">"+response[0].pasajero_empresa+"</div><div class=\"cont-mini-pasajero\"><div>"+ origen + "</div><div>");
+            contenedor.prepend("<div class=\"cont-pasajero-gral\" id=\"origen_empresa\"><div class=\"cont-pasajero\">"+response[0].pasajero_empresa+"</div><div class=\"cont-mini-pasajero\"><div>"+ origen + "</div><div>");
         }
         pasajeros = [];
         destinos = [];
@@ -270,8 +274,8 @@ function cargarPasajeros()
                 
                 if(ruta.indexOf("ZP") !== -1 && i === response.length-1)
                 {
-                    contenedorDes.html("<b>Destino:</b> "+punto);   
-                    contenedor.append("<div class=\"cont-pasajero-gral\"><div class=\"cont-pasajero\">"+response[0].pasajero_empresa+"</div><div class=\"cont-mini-pasajero\"><div>"+ punto + "</div><div>");
+                    contenedorDes.html("<b>Destino:</b> "+punto);
+                    contenedor.append("<div class=\"cont-pasajero-gral\" id=\"destino_empresa\"><div class=\"cont-pasajero\">"+response[0].pasajero_empresa+"</div><div class=\"cont-mini-pasajero\"><div>"+ punto + "</div><div>");
                 }
                 destinos.push(punto);
                 contenedor.append("<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" draggable=\"true\" ondragstart=\"drag(event,$(this))\" ondrop=\"drop(event,$(this))\" ondragover=\"allowDrop(event)\">"
@@ -316,11 +320,10 @@ function cargarPasajeros()
         {
             destinos.push(response[0].pasajero_empresa_direccion);
             contenedorDes.html("<b>Destino:</b> "+response[0].pasajero_empresa_direccion);
- /*esta no*/contenedor.append("<div class=\"cont-pasajero-gral\"><div class=\"cont-pasajero\">"+response[0].pasajero_empresa+"</div><div class=\"cont-mini-pasajero\"><div>"+ response[0].pasajero_empresa_direccion + "</div><div>");
+ /*esta no*/contenedor.append("<div class=\"cont-pasajero-gral\" id=\"destino_empresa\"><div class=\"cont-pasajero\">"+response[0].pasajero_empresa+"</div><div class=\"cont-mini-pasajero\"><div>"+ response[0].pasajero_empresa_direccion + "</div><div>");
         }
-        
+        console.log(origen + " - " + destinos);
         dibujarRuta(origen,destinos);
-        console.log(destinos+"");
     };
     postRequest(url,params,success,false);
 }
@@ -463,7 +466,7 @@ function agregarServicio(fecha)
     var movil = $("#vehiculos").val();
     var conductor = $("#conductorH").val();
     var tarifa1 = $("#tarifa1").val();
-    var tarifa2 = $("#tarifa2").val();
+    var tarifa2 = $("#tarifa2").val() === '' ? $("#tarifa2Hidden").val() : $("#tarifa2").val();
     var observaciones = $("#observacion").val();
     var tipo = TIPO === 'NORMAL' ? 0 : 2;
     var array = [cliente,ruta,truta,fecha,hora,movil,tarifa1,tarifa2];
@@ -479,7 +482,7 @@ function agregarServicio(fecha)
     var now = new Date();
     if(date < now)
     {
-        alertify.error("Debe seleccionar una fecha futura");
+        alertify.error("Debe seleccionar una fecha válida");
         return;
     }
     if(pasajeros.length === 0)
@@ -533,6 +536,10 @@ function agregarServicio(fecha)
 
 function dibujarRuta(origen,destinos)
 {
+    if(typeof origen === 'undefined')
+    {
+        return;
+    }
     eliminarMarkers();
     var largo = destinos.length;
     if(largo === 0)
@@ -738,13 +745,22 @@ function borrarPasajero(obj,nombre,punto,celular)
     {
         if(pasajeros[i] === id)
         {
+            console.log("pasajero borrado: "+id);
             pasajeros.splice(i, 1);
         }
+    }
+    if(origen === punto)
+    {
+        console.log("destino borrado: "+punto);
+        origen = undefined;
+        $("#contenedor_punto_encuentro").html("<b>Origen:</b> ");
+        borrarDirections();
     }
     for(var i = 0; i < destinos.length; i++)
     {
         if(destinos[i] === punto)
         {
+            console.log("destino borrado: "+punto);
             destinos.splice(i, 1);
         }
     }
@@ -775,9 +791,12 @@ function agregarPasajero(obj,nombre,punto,celular)
     {
         pasajeros.push(id);
         $("#contenedor_punto_destino").html("<b>Destino: </b>"+direccion_empresa);
-        var d = destinos.pop();
-        destinos.push(punto);
-        destinos.push(direccion_empresa);
+        var final = destinos.pop();
+        if(typeof origen !== 'undefined')
+        {
+            destinos.push(punto);
+        }
+        destinos.push(final);
     }
     else if(ruta.indexOf("ZP") !== -1)
     {
@@ -806,8 +825,21 @@ function agregarPasajero(obj,nombre,punto,celular)
                                  +"<div class=\"boton-chico\" onclick=\"editarPasajero('"+punto+"','punto_"+id+"','hidden_"+id+"')\"><img src=\"img/editar.svg\" width=\"12\" height=\"12\"></div>"
                                  +"<div class=\"boton-chico\" onclick=\"borrarPasajero('pasajero_"+id+"','"+nombre+"','"+punto+"','"+celular+"')\"><img src=\"img/cancelar.svg\" width=\"12\" height=\"12\"></div></div>"
                                  +"<div class=\"cont-mini-pasajero\"><div id=\"punto_"+id+"\">"+ punto + "</div><div>" + celular+"</div></div>";
-    $("#contenedor_pasajero").append(texto);
+    if(ruta.indexOf("RG") !== -1)
+    {
+        if(typeof origen === 'undefined')
+        {
+            origen = punto;
+            $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+punto);
+        }
+        $(texto).insertBefore($("#destino_empresa"));
+    }
+    else
+    {
+        $("#contenedor_pasajero").append(texto);
+    }
     pasajero.remove();
+    console.log(origen + " - " + destinos);
     dibujarRuta(origen,destinos);
 }
 

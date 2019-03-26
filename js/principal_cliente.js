@@ -42,7 +42,7 @@ function crearServicio()
     var now = new Date();
     if(date < now)
     {
-        alertify.error("Debe seleccionar una fecha futura");
+        alertify.error("Debe seleccionar una fecha válida");
         return;
     }
     var pasajeros = [];
