@@ -6,6 +6,7 @@ class Servicio {
     private $cliente;
     private $clienteDireccion;
     private $ruta;
+    private $truta;
     private $fecha;
     private $hora;
     private $movil;
@@ -35,6 +36,10 @@ class Servicio {
 
     function getRuta() {
         return $this->ruta;
+    }
+
+    function getTruta() {
+        return $this->truta;
     }
 
     function getFecha() {
@@ -107,6 +112,10 @@ class Servicio {
 
     function setRuta($ruta) {
         $this->ruta = $ruta;
+    }
+
+    function setTruta($truta) {
+        $this->truta = $truta;
     }
 
     function setFecha($fecha) {

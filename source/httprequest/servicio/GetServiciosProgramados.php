@@ -19,6 +19,7 @@ for ($i = 0 ; $i < count($servicios); $i++)
     $cliente = $servicio->getCliente();
     $clienteDireccion = $servicio->getClienteDireccion();
     $ruta = $servicio->getRuta();
+    $truta = $servicio->getTruta();
     $timestamp = strtotime($servicio->getFecha());
     $fecha = date('d-m-Y',$timestamp);
     $hora = $servicio->getHora();
@@ -36,6 +37,7 @@ for ($i = 0 ; $i < count($servicios); $i++)
             . "\"servicio_cliente\":\"".$cliente."\","
             . "\"servicio_cliente_direccion\":\"".$clienteDireccion."\","
             . "\"servicio_ruta\":\"".$ruta."\","
+            . "\"servicio_truta\":\"".$truta."\","
             . "\"servicio_fecha\":\"".$fecha."\","
             . "\"servicio_hora\":\"".$hora."\","
             . "\"servicio_estado\":\"".$estado."\","

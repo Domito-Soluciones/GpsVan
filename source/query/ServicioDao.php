@@ -15,6 +15,7 @@ class ServicioDao {
         $id = 0;
         $cliente = $servicio->getCliente();
         $ruta = $servicio->getRuta();
+        $truta = $servicio->getTruta();
         $fecha = $servicio->getFecha();
         $hora = $servicio->getHora();
         $movil = $servicio->getMovil();
@@ -27,9 +28,9 @@ class ServicioDao {
         $tipo = $servicio->getTipo();
         $conn = new Conexion();
         try {
-            $query = "INSERT INTO tbl_servicio (servicio_cliente,servicio_ruta,servicio_fecha,"
+            $query = "INSERT INTO tbl_servicio (servicio_cliente,servicio_ruta,servicio_truta,servicio_fecha,"
                     . "servicio_hora,servicio_movil,servicio_conductor,servicio_tarifa1,servicio_tarifa2,servicio_observacion,servicio_agente,servicio_estado,servicio_tipo)"
-                    . " VALUES ('$cliente','$ruta','$fecha','$hora','$movil','$conductor','$tarifa1','$tarifa2','$observaciones',$agente,$estado,$tipo)";
+                    . " VALUES ('$cliente','$ruta','$truta','$fecha','$hora','$movil','$conductor','$tarifa1','$tarifa2','$observaciones',$agente,$estado,$tipo)";
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -398,7 +399,7 @@ class ServicioDao {
         $array = array();
         $conn = new Conexion();
         try {
-            $query = "SELECT servicio_id,servicio_cliente,servicio_ruta,servicio_fecha,"
+            $query = "SELECT servicio_id,servicio_cliente,servicio_ruta,servicio_truta,servicio_fecha,"
                     . "servicio_hora,servicio_conductor,servicio_estado,servicio_tarifa1,"
                     . "servicio_observacion,servicio_conductor,movil_nombre,"
                     . "servicio_pasajero_estado,servicio_pasajero_destino,pasajero_id,pasajero_nombre,pasajero_papellido,pasajero_celular,cliente_direccion "
@@ -418,6 +419,7 @@ class ServicioDao {
                 $servicio->setCliente($row["servicio_cliente"]);
                 $servicio->setClienteDireccion($row["cliente_direccion"]);
                 $servicio->setRuta($row["servicio_ruta"]);
+                $servicio->setTruta($row["servicio_truta"]);
                 $servicio->setFecha($row["servicio_fecha"]);
                 $servicio->setHora($row["servicio_hora"]);
                 $servicio->setMovil($row["movil_nombre"]);
@@ -475,7 +477,7 @@ class ServicioDao {
         $array = array();
         $conn = new Conexion();
         try {
-            $query = "SELECT servicio_id,servicio_cliente,servicio_ruta,servicio_fecha,"
+            $query = "SELECT servicio_id,servicio_cliente,servicio_ruta,servicio_truta,servicio_fecha,"
                     . "servicio_hora,servicio_conductor,servicio_estado,servicio_tarifa1,"
                     . "servicio_observacion,servicio_conductor,movil_nombre,"
                     . "servicio_pasajero_estado,servicio_pasajero_destino,pasajero_id,pasajero_nombre,pasajero_papellido,pasajero_celular,cliente_direccion "
@@ -494,6 +496,7 @@ class ServicioDao {
                 $servicio->setCliente($row["servicio_cliente"]);
                 $servicio->setClienteDireccion($row["cliente_direccion"]);
                 $servicio->setRuta($row["servicio_ruta"]);
+                $servicio->setTruta($row["servicio_truta"]);
                 $servicio->setFecha($row["servicio_fecha"]);
                 $servicio->setHora($row["servicio_hora"]);
                 $servicio->setMovil($row["movil_nombre"]);

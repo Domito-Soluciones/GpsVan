@@ -7,6 +7,7 @@ include '../../log/Log.php';
 header('Content-Type: application/json');
 $cliente = filter_input(INPUT_POST, 'cliente');
 $ruta = filter_input(INPUT_POST, 'ruta');
+$truta = filter_input(INPUT_POST, 'truta');
 $fecha = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_POST, 'fecha'))->format('Y/m/d');
 $hora = filter_input(INPUT_POST, 'hora');
 $movil = filter_input(INPUT_POST, 'movil');    
@@ -25,6 +26,7 @@ if(filter_input(INPUT_POST, 'app') == '')
 $servicio = new Servicio();
 $servicio->setCliente($cliente);
 $servicio->setRuta($ruta);
+$servicio->setTruta($truta);
 $servicio->setFecha($fecha);
 $servicio->setHora($hora);
 $servicio->setMovil($movil);

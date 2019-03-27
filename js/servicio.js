@@ -113,6 +113,13 @@ function abrirBuscador(id)
         {
             cargarClientes();
             cargarRutas();
+            $("#rutaServicio").prop("readonly",false);
+            $("#fechaServicio").prop("readonly",false);
+            $("#inicioServicio").prop("readonly",false);
+            $("#estadoServicio").prop("disabled",false);
+            $("#movilServicio").prop("disabled",false);
+            $("#tarifaServicio").prop("readonly",false);
+            $("#tarifa2Servicio").prop("readonly",false);
             iniciarFecha([$("#fechaServicio")]);
             iniciarHora([$("#inicioServicio")]);
         }

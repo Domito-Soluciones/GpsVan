@@ -55,6 +55,7 @@ $(document).ready(function(){
         {
             if(TARIFAS[i].tarifa_nombre === $(this).val())
             {
+                $("#hora").val(TARIFAS[i].tarifa_hora);
                 $("#tarifa1").val(TARIFAS[i].tarifa_valor1);
                 if(TIPO === 'ESPECIAL')
                 {
