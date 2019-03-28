@@ -323,7 +323,6 @@ function cargarPasajeros()
             contenedorDes.html("<b>Destino:</b> "+response[0].pasajero_empresa_direccion);
  /*esta no*/contenedor.append("<div class=\"cont-pasajero-gral\" id=\"destino_empresa\"><div class=\"cont-pasajero\">"+response[0].pasajero_empresa+"</div><div class=\"cont-mini-pasajero\"><div>"+ response[0].pasajero_empresa_direccion + "</div><div>");
         }
-        console.log(origen + " - " + destinos);
         dibujarRuta(origen,destinos);
     };
     postRequest(url,params,success,false);
@@ -594,6 +593,14 @@ function agregarDetalleServicio(idServicio)
     var params = {};
     var destinoFinal = "";
     var pasajeroFinal = "";
+    var esRecogida = $("#truta").val().indexOf("RG") !== -1;
+    if(esRecogida)
+    {
+        console.log("estos son los destinos antes de "+destinos)
+        destinos.splice(0, 0, origen);
+        destinos.pop();
+         console.log("estos son los destinos despues de "+destinos)
+    }
     for(var i = 0; i < destinos.length;i++)
     {
         destinoFinal += destinos[i] + "%";
@@ -746,13 +753,11 @@ function borrarPasajero(obj,nombre,punto,celular)
     {
         if(pasajeros[i] === id)
         {
-            console.log("pasajero borrado: "+id);
             pasajeros.splice(i, 1);
         }
     }
     if(origen === punto)
     {
-        console.log("destino borrado: "+punto);
         origen = undefined;
         $("#contenedor_punto_encuentro").html("<b>Origen:</b> ");
         borrarDirections();
@@ -761,7 +766,6 @@ function borrarPasajero(obj,nombre,punto,celular)
     {
         if(destinos[i] === punto)
         {
-            console.log("destino borrado: "+punto);
             destinos.splice(i, 1);
         }
     }
@@ -840,7 +844,6 @@ function agregarPasajero(obj,nombre,punto,celular)
         $("#contenedor_pasajero").append(texto);
     }
     pasajero.remove();
-    console.log(origen + " - " + destinos);
     dibujarRuta(origen,destinos);
 }
 
@@ -880,7 +883,6 @@ function activarPestania(array)
     {
         if(array[i] === '')
         {
-            console.log(array[i] + " "+ i);
             marcarCampoError($("#"+CAMPOS[i]));
         }
         else
