@@ -10,10 +10,6 @@ var mapa_oculto = true;
 //var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","punto","empresa","centro","nick"];
 var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","punto","empresa","centro"];
 $(document).ready(function(){
-    if(geocoder === null)
-    {
-        geocoder = new google.maps.Geocoder();
-    }
     PAGINA_ANTERIOR = PAGINA;
     if (directionsDisplay !== null) {
         directionsDisplay.setMap(null);
@@ -52,6 +48,7 @@ $(document).ready(function(){
 //                }
 //            });
             $("#volver").click(function(){
+                ocultarMapa();
                 if(typeof ID_CLIENTE === 'undefined')
                 {
                     buscarPasajero();
@@ -119,7 +116,7 @@ function agregarPasajero()
     var nombre = $("#nombre").val();
     var papellido = $("#papellido").val();
     var mapellido = $("#mapellido").val();
-    var telefono = $("#telefono").val();
+    var telefono = $("#aparato").val();
     var celular = $("#celular").val();
     var direccion = $("#direccion").val();
     var punto = $("#punto").val();
@@ -164,7 +161,6 @@ function agregarPasajero()
             vaciarFormulario();
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
             resetFormulario();
-            buscarPasajero();
         };
         postRequest(url,params,success);
     }
@@ -177,7 +173,7 @@ function modificarPasajero()
     var nombre = $("#nombre").val();
     var papellido = $("#papellido").val();
     var mapellido = $("#mapellido").val();
-    var telefono = $("#telefono").val();
+    var telefono = $("#aparato").val();
     var celular = $("#celular").val();
     var direccion = $("#direccion").val();
     var punto = $("#punto").val();
@@ -230,8 +226,6 @@ function modificarPasajero()
             cambiarPestaniaGeneral();
             alertify.success("Pasajero Modificado");
             resetFormulario();
-            ocultarMapa();
-            buscarPasajero();
         };
         postRequest(url,params,success);
     }
@@ -349,6 +343,7 @@ function abrirModificar(id)
         });
 
         $("#volver").click(function(){
+            ocultarMapa();
             if(typeof ID_CLIENTE === 'undefined')
             {
                 buscarPasajero();
@@ -373,7 +368,7 @@ function abrirModificar(id)
         $("#papellido").val(pasajero.pasajero_papellido);
         $("#mapellido").val(pasajero.pasajero_mapellido);
 //        $("#nick").val(pasajero.pasajero_nick);
-        $("#telefono").val(pasajero.pasajero_telefono);
+        $("#aparato").val(pasajero.pasajero_telefono);
         $("#celular").val(pasajero.pasajero_celular);
         $("#direccion").val(pasajero.pasajero_direccion);
         $("#punto").val(pasajero.pasajero_punto_encuentro);
@@ -463,7 +458,7 @@ function validarTipoDato()
         marcarCampoOk($("#"+CAMPOS[i]));
     }
     var rut = $("#rut");
-    var telefono = $("#telefono");
+    var telefono = $("#aparato");
     var celular = $("#celular");
     var mail = $("#mail");
     if(!validarRut(rut.val()))
@@ -644,20 +639,16 @@ function cargarRutas(empresa,ruta)
     var success = function(response)
     {
         $("#ruta").html("<option value=\"\">Seleccione</option>");
-        var aux = "";
         for(var i = 0 ; i < response.length ; i++)
         {
-            if(response[i].tarifa_descripcion !== aux)
+            var sel = "";
+            if(ruta === response[i].tarifa_nombre)
             {
-                var sel = "";
-                if(ruta === response[i].tarifa_descripcion)
-                {
-                    sel = " selected ";
-                }
-                var nombre = response[i].tarifa_descripcion;
-                $("#ruta").append("<option value=\""+nombre+"\" "+sel+">"+nombre+"</option>");
-                aux = response[i].tarifa_descripcion;
+                sel = " selected ";
             }
+            var nombre = response[i].tarifa_descripcion;
+            var descripcion = response[i].tarifa_nombre;
+            $("#ruta").append("<option value=\""+descripcion+"\" "+sel+">"+nombre+" / "+descripcion+"</option>");
         }
     };
     postRequest(url,params,success,false);
@@ -722,24 +713,13 @@ function cambiarFilaPasajero(id)
 
 function colocarMarcadorPlaces()
 {
-    if(typeof POLYLINE !== "undefined")
-    {
-        POLYLINE.setMap(null);
-    }
-    eliminarMarkers()
-    var icon = {
-        url: "img/marcador.svg",
-        scaledSize: new google.maps.Size(70, 30),
-        origin: new google.maps.Point(0,0),
-        anchor: new google.maps.Point(0, 0)
-    };
+    eliminarMarkers();
     var marker = new google.maps.Marker({
         position: map.getCenter(),
-        icon : icon,
         map: map
     });
     
-    markersPanel.push(marker);
+    markers.push(marker);
 
     map.setZoom(17);
     map.panTo(marker.position);
@@ -751,11 +731,13 @@ function colocarMarcadorPlaces()
     
     google.maps.event.addListener(map, "dragend", function() {
         var latlng = new google.maps.LatLng(POSITION[0], POSITION[1]);
+        var punto = $('#punto');
+        punto.val("Cargando...");
+        setTimeout(function(){},2000);
         geocoder.geocode({'location': latlng}, function(results, status) {
             if (status === 'OK') {
                 var zero = results[0];
                 var address = zero.formatted_address;
-                var punto = $('#punto');
                 punto.val(address);                
             }
             else
@@ -800,9 +782,37 @@ function preEliminarPasajero(id)
     
     function onPlaceChanged()
     {
+        eliminarMarkers();
         var place = autocomplete.getPlace();
         if (place.geometry) {
+            var marker = new google.maps.Marker({
+                position: place.geometry.location,
+                map: map
+            });
+            markers.push(marker);
             map.panTo(place.geometry.location);
             map.setZoom(15);
+            google.maps.event.addListener(map, "drag", function() {
+            marker.setPosition(this.getCenter());
+                POSITION = [this.getCenter().lat(),this.getCenter().lng()];
+            });
+    
+            google.maps.event.addListener(map, "dragend", function() {
+                var latlng = new google.maps.LatLng(POSITION[0], POSITION[1]);
+                var punto = $('#punto');
+                punto.val("Cargando...");
+                setTimeout(function(){},2000);
+                geocoder.geocode({'location': latlng}, function(results, status) {
+                    if (status === 'OK') {
+                        var zero = results[0];
+                        var address = zero.formatted_address;
+                        punto.val(address);                
+                    }
+                    else
+                    {
+                        alertify.error('Geocoder failed due to: ' + status);
+                    }
+                });
+            });
         }
     }

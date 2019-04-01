@@ -50,7 +50,6 @@ $(document).ready(function(){
         destinos = [];
         cambiarPropiedad($(".buscador-pasajero"),"display","initial");
         agregarclase($("#contenedor_mapa"),"mapa_bajo");
-        $("#ltruta").html("");
         for(var i = 0; i < TARIFAS.length; i++)
         {
             if(TARIFAS[i].tarifa_nombre === $(this).val())
@@ -106,7 +105,7 @@ $(document).ready(function(){
         else
         {
             $("#ruta").val("ESP");
-            $("#truta").val($("#clientes").val()+"-XX-ESP");
+            $("#truta").val("XX-ESP");
             cambiarPropiedad($(".buscador-pasajero"),"display","initial");
             agregarclase($("#contenedor_mapa"),"mapa_bajo");
             cargarPasajerosEspecial();
@@ -278,7 +277,10 @@ function cargarPasajeros()
                     contenedorDes.html("<b>Destino:</b> "+punto);
                     contenedor.append("<div class=\"cont-pasajero-gral\" id=\"destino_empresa\"><div class=\"cont-pasajero\">"+response[0].pasajero_empresa+"</div><div class=\"cont-mini-pasajero\"><div>"+ punto + "</div><div>");
                 }
-                destinos.push(punto);
+                if(origen !== punto)
+                {
+                    destinos.push(punto);
+                }
                 contenedor.append("<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" draggable=\"true\" ondragstart=\"drag(event,$(this))\" ondrop=\"drop(event,$(this))\" ondragover=\"allowDrop(event)\">"
                                  +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+punto+"\">"
                                  +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'>"
@@ -321,7 +323,11 @@ function cargarPasajeros()
         {
             destinos.push(response[0].pasajero_empresa_direccion);
             contenedorDes.html("<b>Destino:</b> "+response[0].pasajero_empresa_direccion);
- /*esta no*/contenedor.append("<div class=\"cont-pasajero-gral\" id=\"destino_empresa\"><div class=\"cont-pasajero\">"+response[0].pasajero_empresa+"</div><div class=\"cont-mini-pasajero\"><div>"+ response[0].pasajero_empresa_direccion + "</div><div>");
+            contenedor.append("<div class=\"cont-pasajero-gral\" id=\"destino_empresa\"><div class=\"cont-pasajero\">"+response[0].pasajero_empresa+"</div><div class=\"cont-mini-pasajero\"><div>"+ response[0].pasajero_empresa_direccion + "</div><div>");
+        }
+        else if(ruta.indexOf("ZP") !== -1)
+        {
+            contenedorDes.html("<b>Destino:</b> "+destinos[destinos.length-1]);
         }
         dibujarRuta(origen,destinos);
     };
@@ -351,7 +357,7 @@ function cargarPasajerosEspecial()
         contenedor.html("");
         contenedorEx.html("");
         contenedorDir.html("<b>Origen:</b> "+origen);
-        contenedor.prepend("<div class=\"cont-pasajero-gral\"><div class=\"cont-pasajero\">"+response[0].pasajero_empresa+"</div><div class=\"cont-mini-pasajero\"><div>"+ origen + "</div><div>");
+        //contenedor.prepend("<div class=\"cont-pasajero-gral\"><div class=\"cont-pasajero\">"+response[0].pasajero_empresa+"</div><div class=\"cont-mini-pasajero\"><div>"+ origen + "</div><div>");
         pasajeros = [];
         destinos = [];
         for(var i = 0 ; i < response.length ; i++)
@@ -361,7 +367,6 @@ function cargarPasajerosEspecial()
             var punto = response[i].pasajero_punto_encuentro;
             var celular = response[i].pasajero_celular;
             contenedorDir.html("<b>Origen:</b> ");
-            contenedor.prepend("<div class=\"cont-pasajero-gral\"><div class=\"cont-pasajero\">"+response[0].pasajero_empresa+"</div><div class=\"cont-mini-pasajero\"><div>"+ origen + "</div><div>");
             contenedorDes.html("<b>Destino:</b> ");                    
             contenedorEx.append("<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" \">"
                                  +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+punto+"\">"
@@ -599,7 +604,7 @@ function agregarDetalleServicio(idServicio)
         console.log("estos son los destinos antes de "+destinos)
         destinos.splice(0, 0, origen);
         destinos.pop();
-         console.log("estos son los destinos despues de "+destinos)
+         console.log("estos son los destinos despues de "+destinos);
     }
     for(var i = 0; i < destinos.length;i++)
     {
@@ -691,7 +696,7 @@ function drop(ev,obj) {
     obj.attr("id",idAnt);
     pasajeros = [];
     destinos = [];
-    let ruta = $("#ruta").val();
+    let ruta = $("#truta").val();
     var total = $("#contenedor_pasajero .cont-pasajero-gral .hidden" ).length;
     $("#contenedor_pasajero .cont-pasajero-gral .hidden" ).each(function(index) {
         pasajeros.push($(this).attr("id").split("_")[1]);
@@ -854,6 +859,7 @@ function cambiarServicioNormal()
     $("#truta").prop("readonly",false);
     vaciarFormulario();
     borrarDirections();
+    eliminarMarkers();
     cambiarPropiedad($(".buscador-pasajero"),"display","none");
     quitarclase($("#contenedor_mapa"),"mapa_bajo");
     $("#tarifa2").prop("disabled",true);
@@ -873,6 +879,7 @@ function cambiarServicioEspecial()
     $("#truta").prop("readonly",true);
     vaciarFormulario();
     borrarDirections();
+    eliminarMarkers();
     cambiarPropiedad($(".buscador-pasajero"),"display","none");
     quitarclase($("#contenedor_mapa"),"mapa_bajo");
 }
@@ -987,15 +994,8 @@ function initPlacesAutoComplete(input) {
 function colocarMarcadorPlaces(input)
 {
     eliminarMarkers();
-    var icon = {
-        url: "img/marcador.svg",
-        scaledSize: new google.maps.Size(70, 30),
-        origin: new google.maps.Point(0,0),
-        anchor: new google.maps.Point(0, 0)
-    };
     var marker = new google.maps.Marker({
         position: map.getCenter(),
-        icon : icon,
         map: map
     });
     markers.push(marker);
@@ -1009,11 +1009,13 @@ function colocarMarcadorPlaces(input)
     
     google.maps.event.addListener(map, "dragend", function() {
         var latlng = new google.maps.LatLng(POSITION[0], POSITION[1]);
+        var punto = input;
+        punto.val("Cargando...");
+        setTimeout(function(){},2000);
         geocoder.geocode({'location': latlng}, function(results, status) {
             if (status === 'OK') {
                 var zero = results[0];
                 var address = zero.formatted_address;
-                var punto = input;
                 punto.value =address;                
             }
             else
@@ -1037,6 +1039,7 @@ function cerrarAddPasajero()
 {
     cambiarPropiedad($(".contenedor_agregar"),"display","none");
     quitarclase($("#contenedor_mapa"),"mapa_agregar");   
+    eliminarMarkers();
 }
 
 function diasDiferencia(f1,f2)

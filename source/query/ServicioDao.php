@@ -524,14 +524,14 @@ class ServicioDao {
         $array = array();
         $conn = new Conexion();
         try {
-            $query = "SELECT * FROM tbl_servicio_detalle_real WHERE servicio_detalle_real_id = $idServicio";
+            $query = "SELECT * FROM tbl_servicio_detalle_real WHERE servicio_detalle_real_servicio = $idServicio";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query); 
             while($row = mysqli_fetch_array($result)) {
                 $servicioDetalle = new ServicioDetalle();
                 $servicioDetalle->setId($row["servicio_detalle_real_servicio"]);
                 $servicioDetalle->setLat($row["servicio_detalle_real_lat"]);
-                $servicioDetalle->setLat($row["servicio_detalle_real_lon"]);
+                $servicioDetalle->setLon($row["servicio_detalle_real_lon"]);
                 array_push($array, $servicioDetalle);
             }
         } catch (Exception $exc) {

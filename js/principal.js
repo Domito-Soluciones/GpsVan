@@ -1,4 +1,4 @@
-/* global google, urlBase, alertify */
+/* global google, urlBase, alertify, MENU_VISIBLE */
 var NICK_GLOBAL;
 var map;
 var markers = [];
@@ -78,6 +78,7 @@ function initMap() {
             //styles: json
         };
         map = new google.maps.Map(document.getElementById("map"), myOptions);
+        geocoder = new google.maps.Geocoder();
     //});
 }
 

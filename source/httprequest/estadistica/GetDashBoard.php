@@ -8,6 +8,9 @@ header('Content-Type: application/json');
 $dashboardDao = new DashBoardDao();
 $servicios = $dashboardDao->getServicios();
 $serviciosConvenio = $dashboardDao->getServiciosConvenio();
+$produccionDiaria = $dashboardDao->getProduccionDiaria();
+$produccionMensual = $dashboardDao->getProduccionMensual();
+$produccionMInternos = $dashboardDao->getProduccionMInternos();
 $serviciosFinalizados = 0;
 $serviciosEnRuta = 0;
 $serviciosPorRealizar = 0;
@@ -54,6 +57,9 @@ echo "{\"movil_activo\":\"".$activos."\","
     . "\"servicio_ruta\":\"".$serviciosEnRuta."\","        
     . "\"servicio_realizar\":\"".$serviciosPorRealizar."\","
     . "\"servicio_asignar\":\"".$serviciosPorAsignar."\","
+    . "\"produccion_diaria\":\"".$produccionDiaria."\","
+    . "\"produccion_mensual\":\"".$produccionMensual."\","
+    . "\"produccion_minterno\":\"".$produccionMInternos."\","
     . "\"servicio_convenios\":[";
     for($j = 0 ; $j < count($serviciosConvenio);$j++)
     {

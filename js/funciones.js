@@ -237,6 +237,11 @@ function resetPagina()
     {
         ID_LIQUIDACION = undefined;
     }
+    if(PAGINA_ANTERIOR === "TARIFAS")
+    {
+        ID_TARIFA = undefined;
+        ID_CLIENTE = undefined;
+    }
 }
 
 
@@ -745,43 +750,6 @@ function eliminarMarkers()
     }
 }
 
-function buscarTarifasAll()
-{
-    $("#lista_busqueda_tarifa_detalle").html("");
-    cambiarPropiedad($(".mensaje_bienvenida"),"display","none");
-    var busqueda = $("#busqueda").val();
-    var params = {busqueda : busqueda};
-    var url = urlBase + "/tarifa/GetTarifas.php";
-    var success = function(response)
-    {
-        cambiarPropiedad($("#loaderTarifa"),"display","none");
-        cerrarSession(response);
-        var tarifas = $("#lista_busqueda_tarifa_detalle");
-        tarifas.html("");
-        TARIFAS = response;
-        tarifas.append("<div class=\"contenedor_central_titulo_tarifa\"><div>Nombre</div><div>Origen</div><div>Destino</div><div></div></div>");
-        if(response.length === 0)
-        {
-            tarifas.append("<div class=\"mensaje_bienvenida\">No hay registros que mostrar</div>");
-        }
-        for(var i = 0 ; i < response.length; i++)
-        {
-            var id = response[i].tarifa_id;
-            var nombre = response[i].tarifa_nombre;
-            var origen = response[i].tarifa_origen;
-            var destino = response[i].tarifa_destino;
-            tarifas.append("<div class=\"fila_contenedor fila_contenedor_tarifa_detalle\" id=\""+id+"\" \">"+
-                    "<div onClick=\"abrirBuscador('"+id+"')\">"+nombre+"</div>"+
-                    "<div onClick=\"abrirBuscador('"+id+"')\">"+origen+"</div>"+
-                    "<div onClick=\"abrirBuscador('"+id+"')\">"+destino+"</div>"+
-                    "<div><img onclick=\"preEliminarTarifa('"+nombre+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
-                    "</div>");
-        }
-        cambiarPropiedad($("#loader"),"visibility","hidden");
-    };
-    postRequest(url,params,success);
-    
-}
 
 function getRandomColor() {
     var letters = '0123456789ABCDEF'.split('');
@@ -810,4 +778,9 @@ function borrarDirections()
             directionsDisplay = null;
         }
     }
+}
+
+function exportarExcel(data)
+{
+    location.href= urlUtil + "/reporteExcel.php?data="+data;
 }

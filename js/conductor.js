@@ -258,7 +258,7 @@ function modificarConductor()
             cambiarPestaniaGeneral();
             alertify.success("Conductor Modificado");
             resetFormulario();
-            buscarConductor();
+            //buscarConductor();
             if(password !== '')
             {
                 $("#password").val("");

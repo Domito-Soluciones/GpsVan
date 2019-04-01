@@ -34,4 +34,44 @@ class LiquidacionDao {
         }
         return $array;
     }
+    
+    public function getDescuentosConductor($conductor)
+    {
+        $array = array();
+        $conn = new Conexion();
+        try {
+            $query = "SELECT movil_seg_ob_valor,movil_seg_rcdm_valor,movil_seg_as_valor, movil_seg_rcexceso_valor, movil_gps, movil_celular, movil_app FROM tbl_movil WHERE movil_conductor = $conductor";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            while($row = mysqli_fetch_array($result)) {
+                array_push($array,$row["movil_seg_ob_valor"]);
+                array_push($array,$row["movil_seg_rcdm_valor"]);
+                array_push($array,$row["movil_seg_as_valor"]);
+                array_push($array,$row["movil_seg_rcexceso_valor"]);
+                array_push($array,$row["movil_gps"]);
+                array_push($array,$row["movil_celular"]);
+                array_push($array,$row["movil_app"]);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $array;
+    }
+    
+    public function getPorcentajes()
+    {
+        $array = array();
+        $conn = new Conexion();
+        try {
+            $query = "SELECT configuracion_valor FROM tbl_configuracion ORDER BY configuracion_id";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            while($row = mysqli_fetch_array($result)) {
+                array_push($array,$row["configuracion_valor"]);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $array;
+    }
 }

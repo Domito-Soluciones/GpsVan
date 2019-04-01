@@ -114,8 +114,8 @@ function abrirBuscador(id)
             cargarClientes();
             cargarRutas();
             $("#rutaServicio").prop("readonly",false);
-            $("#fechaServicio").prop("readonly",false);
-            $("#inicioServicio").prop("readonly",false);
+            $("#fechaServicio").prop("disabled",false);
+            $("#inicioServicio").prop("disabled",false);
             $("#estadoServicio").prop("disabled",false);
             $("#movilServicio").prop("disabled",false);
             $("#tarifaServicio").prop("readonly",false);
@@ -162,15 +162,6 @@ function abrirBuscador(id)
         $("#fechaServicio").val(servicio.servicio_fecha);
         $("#tarifaServicio").val(servicio.servicio_tarifa1);
         $("#tarifa2Servicio").val(servicio.servicio_tarifa2);        
-        if(ESTADO_SERVICIO === FINALIZADO || ESTADO_SERVICIO === EN_PROGRESO)
-        {
-            $("#fechaServicio").prop("disabled",true);
-            $("#inicioServicio").prop("disabled",true);
-            $("#movilServicio").prop("disabled",true);
-            $("#estadoServicio").prop("disabled",true);
-            cambiarPropiedad($("#guardar"),"display","none");
-            cambiarPropiedad($("#eliminar"),"display","none");
-        }
         $("#clienteServicio").on('input',function () {
             cargarRutas();
         });
@@ -321,7 +312,7 @@ function obtenerEstadoServicio(servicio)
     }
     else if(servicio === ACEPTADO)
     {
-        return "Confirmado";            
+        return "Aceptado";            
     }
     else if(servicio === EN_PROGRESO)
     {
@@ -343,7 +334,7 @@ function dibujarRutaReal()
         for(var i = 0 ; i < response.length; i++)
         {
             var servicio = response[i];
-            polyline += {lat: servicio.servicio_lat, lng: servicio.servicio_lon}
+            polyline += {lat: servicio.servicio_lat, lng: servicio.servicio_lon};
         }
         var flightPath = new google.maps.Polyline({
             path: polyline,
@@ -352,15 +343,10 @@ function dibujarRutaReal()
             strokeOpacity: 1.0,
             strokeWeight: 3
         });
-        POLYLINE = flightPath;
         flightPath.setMap(map);
         var bounds = new google.maps.LatLngBounds();
-        POLYLINE_LAT = '';
-        POLYLINE_LNG = '';
         polyline.forEach(function(LatLng) {
             bounds.extend(LatLng);
-            POLYLINE_LAT+= LatLng.lat + ",";
-            POLYLINE_LNG += LatLng.lng + ",";
         });
         map.fitBounds(bounds);
     };
@@ -381,15 +367,19 @@ function obtenerPasajeros()
             var estado = '';
             if(response[i].servicio_estado === '0')
             {
-                estado = "En Ruta";
+                estado = "Pendiente";
             }
             else if (response[i].servicio_estado === '1')
             {
-                estado = "Entregado";
+                estado = "En Ruta";
             }
             else if (response[i].servicio_estado === '2')
             {
                 estado = "Cancelado";
+            }
+            else if (response[i].servicio_estado === '2')
+            {
+                estado = "Entregado";
             }
             var destino = response[i].servicio_destino;
             $("#pasajeros_contenido").append("<div class=\"fila_contenedor fila_contenedor_servicio\">"+
@@ -427,11 +417,16 @@ function cargarRutas()
     var success = function(response)
     {
         $("#lruta").html("");
+        var ruta = "";
         for(var i = 0 ; i < response.length ; i++)
         {
             TARIFAS = response;
-            var nombre = response[i].tarifa_nombre;
-            $("#lruta").append("<option value=\""+nombre+"\">"+nombre+"</option>");
+            var descripcion = response[i].tarifa_descripcion;
+            if(response[i].tarifa_descripcion !== ruta)
+            {
+                $("#lruta").append("<option value=\""+descripcion+"\">"+descripcion+"</option>");
+                ruta = response[i].tarifa_descripcion;
+            }
         }
     };
     postRequest(url,params,success,false);

@@ -112,7 +112,7 @@ function buscarServicio()
 function cargarMovilesMapa(monitor)
 {
     var busqueda = $("#busqueda").val();
-    var params = {busqueda : busqueda}
+    var params = {busqueda : busqueda};
     var url = urlBase + "/movil/GetMoviles.php";
     var success = function(response)
     {

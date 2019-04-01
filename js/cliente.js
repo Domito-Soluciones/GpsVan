@@ -1,4 +1,4 @@
-/* global urlBase, alertify, obj, google, API_KEY, map, directionsDisplay, markers, geocoder */
+/* global urlBase, alertify, obj, google, API_KEY, map, directionsDisplay, markers, geocoder, DIRECCION_EMPRESA */
 var CLIENTES;
 var AGREGAR = true;
 var PAGINA = 'CLIENTES';
@@ -10,10 +10,6 @@ var mapa_oculto = true;
 var clientes_tarifa = [];
 var CAMPOS = ["rut","razon","tipoCliente","direccion","nombreContacto","telefono","mail","mail2"];
 $(document).ready(function(){
-    if(geocoder === null)
-    {
-        geocoder = new google.maps.Geocoder();
-    }
     cambiarPropiedad($("#titulo_tarifa"),"background-color","white");
     PAGINA_ANTERIOR = PAGINA;
     if (directionsDisplay !== null) {
@@ -63,6 +59,7 @@ $(document).ready(function(){
                 }
             });
             $("#volver").click(function(){
+                ocultarMapa();
                 if(typeof TIPO_GRUPO === 'undefined')
                 {
                     buscarCliente();
@@ -115,8 +112,8 @@ function agregarCliente()
     var direccion = $("#direccion").val();
     var nombre = $("#nombreContacto").val();
     var telefono = $("#telefono").val();
-    var mail = $("#mail").val();
-    var mail2 = $("#mail2").val();
+    var mail = $("#data").val();
+    var mail2 = $("#data2").val();
     var grupo = $("#grupo").val();
     var contrato = $("#contratoOculta").val();
     var cc = $(".centro_costo");
@@ -149,7 +146,6 @@ function agregarCliente()
             vaciarFormulario();
             cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
             resetFormulario();
-            buscarCliente();
             CENTROS_COSTO = [];
             $(".contenedor_contrato_movil").html("");
         };
@@ -166,8 +162,8 @@ function modificarCliente()
     var direccion = $("#direccion").val();
     var nombre = $("#nombreContacto").val();
     var telefono = $("#telefono").val();
-    var mail = $("#mail").val();
-    var mail2 = $("#mail2").val();
+    var mail = $("#data").val();
+    var mail2 = $("#data2").val();
     var grupo = $("#grupo").val();
     var contrato = $("#contratoOculta").val();
     var cc = $(".centro_costo");
@@ -197,7 +193,6 @@ function modificarCliente()
             cambiarPestaniaGeneral();
             alertify.success("Cliente Modificado");
             resetFormulario();
-            buscarCliente();
             CENTROS_COSTO = [];
         };
         postRequest(url,params,success);
@@ -246,10 +241,10 @@ function buscarCliente()
                 grupo = 'Pequeños Clientes';
             }
             clientes.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\">"+
-                    "<div onClick=\"abrirModificar('"+id+"')\">"+rut+"</div>"+
-                    "<div onClick=\"abrirModificar('"+id+"')\">"+nombre+"</div>"+
-                    "<div onClick=\"abrirModificar('"+id+"')\">"+tipo+"</div>"+
-                    "<div onClick=\"abrirModificar('"+id+"')\">"+grupo+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"','"+nombre+"')\">"+rut+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"','"+nombre+"')\">"+nombre+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"','"+nombre+"')\">"+tipo+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"','"+nombre+"')\">"+grupo+"</div>"+
                     "<div><img onclick=\"preEliminarCliente('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
                     "</div>");
         }
@@ -312,10 +307,10 @@ function buscarClienteTipo(tipo)
                 grupo = 'Pequeños clientes';
             }
             clientes.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\">"+
-                    "<div onClick=\"abrirModificar('"+id+"')\">"+rut+"</div>"+
-                    "<div onClick=\"abrirModificar('"+id+"')\">"+nombre+"</div>"+
-                    "<div onClick=\"abrirModificar('"+id+"')\">"+tipoG+"</div>"+
-                    "<div onClick=\"abrirModificar('"+id+"')\">"+grupo+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"','"+nombre+"')\">"+rut+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"','"+nombre+"')\">"+nombre+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"','"+nombre+"')\">"+tipoG+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"','"+nombre+"')\">"+grupo+"</div>"+
                     "<div><img onclick=\"preEliminarCliente('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
                     "</div>");
         }
@@ -332,7 +327,7 @@ function abrirModificar(id,nombre)
     AGREGAR = false;
     ID_CLIENTE = id;
     NOMBRE_CLIENTE = nombre;
-    marcarFilaActiva(ID_CLIENTE);
+    //marcarFilaActiva(ID_CLIENTE);
     $("#lista_busqueda_cliente_detalle").load("html/datos_cliente.html", function( response, status, xhr ) {
         initPlacesAutoComplete();
         iniciarPestanias();
@@ -350,8 +345,99 @@ function abrirModificar(id,nombre)
                 $("#razon").val("");
                 return;
             }
-        });    
+        });  
+        $("#eliminarT").click(function (){
+            confirmar("Eliminar tarifa","Esta seguro que desea eliminar la tarifa "+$("#descripcion").val() + " " +$("#nombre").val(),
+            function(){
+                eliminarTarifa();
+            },null);
+        });
+        $("#agregarT").click(function(){
+            AGREGAR = true;
+            $("#lista_busqueda_tarifa_detalle").load("html/datos_tarifa_cliente.html", function( response, status, xhr ) {
+                iniciarHora([$("#hora")]);
+                cambiarPropiedad($("#titulo_tarifa"),"background-color","white");
+                cambiarPropiedad($(".contenedor-pre-input"),"height","25px");
+                agregarclase($("#agregarT"),"oculto");
+                quitarclase($("#guardarT"),"oculto");
+                $("#clientes").val(NOMBRE_CLIENTE);
+                cambioEjecutado();                cambiarPropiedad($("#titulo_tarifa"),"background-color","white");
+                cambiarPropiedad($(".contenedor-pre-input"),"height","25px");
+                cargarClientes();
+                $("#clientes").on('input',function(){
+                    generarNombre('cliente');
+                });
+                $("#tipo").change(function(){
+                    generarNombre('tipo');
+                    var tipo = $(this).val();
+                    if(tipo === 'RG')
+                    {
+                        $("#destino").val(DIRECCION_EMPRESA);
+                        $("#origen").val("");
+                    }
+                    else if(tipo === 'ZP')
+                    {
+                        $("#origen").val(DIRECCION_EMPRESA);
+                        $("#destino").val("");
+                    }
+                });
+                $("#horario").change(function(){
+                    generarNombre('horario');
+                });
+
+                $("#nombre").blur(function (){
+                    if(validarExistencia('nombre',$(this).val()))
+                    {
+                        alertify.error("El nombre "+$(this).val()+" ya existe");
+                        $("#nombre").val("");
+                        return;
+                    }
+                });
+                $("#clientes").on('blur',function () {
+                    if($("#clientes").val() === "")
+                    {
+                        //cargarPasajeros();
+                    }
+                    var noExiste = validarInexistencia($("#clientes").val(),clientes);
+                    if(noExiste)
+                    {
+                        alertify.error("Cliente inexistente");
+                        $("#clientes").val("");
+
+                    }
+                });
+
+                $("#volverT").click(function(){
+                    buscarTarifas(NOMBRE_CLIENTE,ID_CLIENTE);
+                    if(typeof ID_CLIENTE === "undefined")
+                    {
+                        cambiarPropiedad($("#agregar"),"visibility","hidden");
+                    }   
+                    else
+                    {
+                        cambiarPropiedad($("#agregar"),"visibility","visible");
+                    }
+                    cambiarPropiedad($("#guardar"),"visibility","hidden");
+                    cambiarPropiedad($("#eliminar"),"visibility","hidden");
+
+                });
+
+            });
+            cambiarPropiedad($("#guardar"),"visibility","visible");
+            cambiarPropiedad($("#cancelar"),"visibility","visible");
+        });
+        $("#guardarT").click(function (){
+            if(AGREGAR)
+            {
+                agregarTarifa();
+            }
+            else
+            {
+                modificarTarifa();
+            }
+        });
         $("#volver").click(function(){
+            ocultarMapa();
             if(typeof TIPO_GRUPO === 'undefined')
             {
                 buscarCliente();
@@ -393,8 +479,8 @@ function abrirModificar(id,nombre)
         $("#nombreContacto").val(cliente.cliente_nombre_contacto);
         $("#telefono").val(cliente.cliente_fono_contacto);
         $("#direccion").val(cliente.cliente_direccion);
-        $("#mail").val(cliente.cliente_mail_contacto);
-        $("#mail2").val(cliente.cliente_mail_facturacion);
+        $("#data").val(cliente.cliente_mail_contacto);
+        $("#data2").val(cliente.cliente_mail_facturacion);
         $("#grupo").val(cliente.cliente_grupo);
         verAdjunto(cliente.cliente_contrato,'');
         var j = 0;
@@ -422,7 +508,6 @@ function abrirModificar(id,nombre)
             quitarCentroCosto();
         });
         
-        buscarTarifas(ID_CLIENTE, NOMBRE_CLIENTE);
         mostrarMapa();
     });
 }
@@ -466,8 +551,8 @@ function validarTipoDato()
     }
     var rut = $("#rut");
     var telefono = $("#telefono");
-    var mail = $("#mail");
-    var mail2 = $("#mail2");
+    var mail = $("#data");
+    var mail2 = $("#data2");
     if(!validarRut(rut.val()))
     {
         cambiarPestaniaGeneral();
@@ -530,6 +615,7 @@ function iniciarPestanias()
     });
     $("#p_tarifa").click(function(){
         cambiarPestaniaTarifa();
+        buscarTarifas(ID_CLIENTE, NOMBRE_CLIENTE,'');
     });
 }
 
@@ -617,15 +703,8 @@ function succesSubirContrato()
 function colocarMarcadorPlaces()
 {
     eliminarMarkers();
-    var icon = {
-        url: "img/marcador.svg",
-        scaledSize: new google.maps.Size(70, 30),
-        origin: new google.maps.Point(0,0),
-        anchor: new google.maps.Point(0, 0)
-    };
     var marker = new google.maps.Marker({
         position: map.getCenter(),
-        icon : icon,
         map: map
     });
     
@@ -641,11 +720,13 @@ function colocarMarcadorPlaces()
     
     google.maps.event.addListener(map, "dragend", function() {
         var latlng = new google.maps.LatLng(POSITION[0], POSITION[1]);
+        var punto = $('#direccion');
+        punto.val("Cargando...");
+        setTimeout(function(){},2000);
         geocoder.geocode({'location': latlng}, function(results, status) {
             if (status === 'OK') {
                 var zero = results[0];
                 var address = zero.formatted_address;
-                var punto = $('#direccion');
                 punto.val(address);                
             }
             else
@@ -690,9 +771,37 @@ function preEliminarCliente(id)
     
     function onPlaceChanged()
     {
+        eliminarMarkers();
         var place = autocomplete.getPlace();
         if (place.geometry) {
+            var marker = new google.maps.Marker({
+                position: place.geometry.location,
+                map: map
+            });
+            markers.push(marker);
             map.panTo(place.geometry.location);
             map.setZoom(15);
+            google.maps.event.addListener(map, "drag", function() {
+            marker.setPosition(this.getCenter());
+                POSITION = [this.getCenter().lat(),this.getCenter().lng()];
+            });
+    
+            google.maps.event.addListener(map, "dragend", function() {
+                var latlng = new google.maps.LatLng(POSITION[0], POSITION[1]);
+                var punto = $('#direccion');
+                punto.val("Cargando...");
+                setTimeout(function(){},2000);
+                geocoder.geocode({'location': latlng}, function(results, status) {
+                    if (status === 'OK') {
+                        var zero = results[0];
+                        var address = zero.formatted_address;
+                        punto.val(address);                
+                    }
+                    else
+                    {
+                        alertify.error('Geocoder failed due to: ' + status);
+                    }
+                });
+            });
         }
     }

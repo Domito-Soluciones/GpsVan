@@ -12,7 +12,7 @@
         3. Rutas / Tarifas
     </div>
 </div>
-<div class="contenedor-info general" id="cont_general">
+<div class="contenedor-info general cont-tarifa" id="cont_general">
     <div class="contenedor-formulario">
         <div class="contenedor-fila">
             <div class="contenedor-fila">
@@ -59,6 +59,7 @@
                 Nombre Contacto (*)
             </div>
             <div class="contenedor-input recargado">
+                <input style="display:none" type="text" name="falsonombreContacto" autocomplete="off" />
                 <input type="text" id="nombreContacto" placeholder="Ej: Juan perez" maxlength="30">                    
             </div>
         </div>
@@ -75,7 +76,7 @@
                 E-mail Contacto (*)
             </div>
             <div class="contenedor-input recargado">
-                <input type="text" id="mail" placeholder="Ej: user@dominio.cl" maxlength="40">
+                <input type="text" id="data" placeholder="Ej: user@dominio.cl" maxlength="40">
             </div>
         </div>
         <div class="contenedor-fila">
@@ -83,7 +84,7 @@
                 E-mail Facturaci&oacute;n (*)
             </div>
             <div class="contenedor-input recargado">
-                <input type="text" id="mail2" placeholder="Ej: user@dominio.cl" maxlength="40">
+                <input type="text" id="data2" placeholder="Ej: user@dominio.cl" maxlength="40">
             </div>
         </div>
         <div class="contenedor-fila">
@@ -121,7 +122,7 @@
         <div class="contenedor_central pasajero_mapa oculto" id="contenedor_mapa"></div>
     </div>
 </div>
-<div class="contenedor-info contenedor_oculto" id="cont_ccosto">
+<div class="contenedor-info contenedor_oculto cont-tarifa" id="cont_ccosto">
     <div class="contenedor-formulario modificado">
         <div class="contenedor-fila contenedor-fila-cc">
             <div class="contenor-centro-costo" id="centro_costo">
@@ -147,17 +148,27 @@
         </div>
     </div>
 </div>
-<div class="contenedor-info tarifa_cont contenedor_oculto" id="cont_tarifa">
+<div class="contenedor-info tarifa_cont_cliente contenedor_oculto" id="cont_tarifa">
     <div id="lista_busqueda_tarifa_detalle" class="lista_busqueda_extendida">
         <div class="contenedor-loader">
             <div class="loader" id="loaderTarifa">Loading...</div>
         </div>
-        <div class="pie-tarifa">
-            <div class="pie-left">
-                <div class="boton oculto" id="agregar">
-                    <img src="img/anadir.svg" width="12" height="12">
-                    A&ntilde;adir
-                </div>
+    </div>
+    <div class="pie-tarifa">
+        <div class="pie-left">
+            <div class="boton btn-grande" id="agregarT">
+                <img src="img/anadir.svg" width="12" height="12">
+                A&ntilde;adir Tarifa
+            </div>
+        </div>
+        <div class="pie-center">
+            <div class="boton btn-grande oculto" id="guardarT">
+                <img src="img/guardar.svg" width="12" height="12">
+                Guardar Tarifa
+            </div>
+            <div class="boton btn-grande oculto" id="eliminarT">
+                <img src="img/eliminar.svg" width="12" height="12">
+                Eliminar Tarifa
             </div>
         </div>
     </div>

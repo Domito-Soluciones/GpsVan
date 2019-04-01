@@ -1025,7 +1025,7 @@ select
     background-color: #FFFFFF;
     position: absolute;
     top:60px;
-    left:calc(100% - 300px);
+    left:calc(100% - 315px);
     float: right;
     z-index: 2;
 }
@@ -1218,24 +1218,25 @@ select
     text-align: center;
     width: 37%;
     font-weight: bold;
-    display: inline-block;
+    float: left;
 }
 .contenido_tabla_liq
 {
     width: 37%;
-    height: 300px;
+    height: calc(100% - 190px);
     border: solid 1px silver;
-    display: inline-block;
+    float: left;
 }
 .detalle_tabla_liq
 {
+    font-weight: bold;
     border: solid 1px silver;
     width: 37%;
-    display: inline-block;
+    float: left;
 }
 .contenedor_liquidacion
 {
-    height: calc(100% - 50px);
+    height: calc(100% - 57px);
 }
 
 .conductores
@@ -1312,6 +1313,12 @@ select
     text-align: center;
     height: calc(100% - 20px);
     line-height: 140px;
+}
+.indicador-valor2
+{
+    width: 100%;
+    font-size: 60px;
+    height: calc(100% - 20px);
 }
 .indicador-valor-mitad
 {
@@ -1561,6 +1568,14 @@ select
 .tarifa_cont
 {
     padding-top: 1px !important;
+    height:calc(100% - 63px) !important;
+    min-height: 0 !important;
+}
+.tarifa_cont_cliente
+{
+    padding-top: 1px !important;
+    height:calc(100% - 112px);
+    min-height: 0 !important;
 }
 
 .input-panel
@@ -1590,7 +1605,7 @@ select
 .recargado
 {
     margin-left: 0 !important;
-    width: 214px !important;
+    width: 226px !important;
 }
 
 .check_pasajero
@@ -1657,4 +1672,65 @@ select
 #vConvenio div
 {
     height: 20px;
+}
+
+.contenedor_agente
+{
+    height: calc(100% - 81px);
+}
+
+.barra
+{
+    height: 10px !important;
+    background-color:green;
+    display: inline-block;
+}
+.titulo_barra
+{
+    margin-left: 3%;
+    margin-right: 3%;
+    width: 50px;
+    display: inline-block; 
+}
+.fin_barra
+{
+    margin-left: 3%;
+    margin-right: 3%;
+    display: inline-block; 
+}
+
+.cont-tarifa
+{
+    height: calc(100% - 82px);
+}
+
+#contenido_tabla_liq_prod,#contenido_tabla_liq_desc
+{
+    font-weight: bold ;
+    margin-top: 10px;
+    width: 100%;
+    height: calc(100% - 10px);
+    min-height: 345px;
+}
+
+.liquidacion_item
+{
+    margin-left: 10%;
+    width: 70%;
+    float:left;
+}
+.liquidacion_valor
+{
+    width:20%;
+    float:left;
+}
+.detalle_total
+{
+    padding-left: 20px;
+    float: left;
+}
+.detalle_total_val
+{
+    float: right;
+    padding-right: 20px;
 }
