@@ -1,0 +1,139 @@
+<div class="titulo_pagina">
+    <img src="img/atras.svg" class="img_volver" id="volver"> Informaci&oacute;n Servicio
+</div>
+<div class="contenedor-titulo">
+    <div class="titulo_pagina_general" id="p_general">
+        1. General
+    </div>
+    <div class="titulo_pagina_general dispose" id="p_pasajero">
+        2. Pasajeros
+    </div>
+    <div class="titulo_pagina_general dispose" id="p_ruta">
+        3. Ruta
+    </div>
+</div>
+<div class="contenedor-info info-servicio general" id="cont_general">
+    <div class="contenedor-formulario">
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                Id Servicio
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="idServicio" maxlength="20" readonly>
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                Empresa
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="clienteServicio" list="lcliente" placeholder="Ej: Falabella" maxlength="20" readonly>
+                <datalist id="lcliente"></datalist>
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                Ruta
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="rutaServicio" list="lruta" placeholder="Ej: Ruta 1" maxlength="20">
+                <datalist id="lruta"></datalist>
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                Fecha
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="fechaServicio" placeholder="Ej: 23/12/2005" maxlength="20">
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                Hora Inicio
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="inicioServicio" placeholder="Ej: 15:34" maxlength="5">  
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                Estado
+            </div>
+            <div class="contenedor-input">
+                <select id="estadoServicio">
+                    <option value="1">En Proceso de asignación</option>
+                    <option value="3">Asignado</option>
+                    <option value="4">En Ruta</option>
+                    <option value="5">Finalizado</option>
+                </select>
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                Veh&iacute;culo
+            </div>
+            <div class="contenedor-input">
+                <select id="movilServicio">
+                    <option value="">Seleccione</option>
+                </select>
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                Conductor
+            </div> 
+            <div class="contenedor-input">
+                <input type="text" id="conductorServicio" placeholder="Ej: Juan Perez" maxlength="20" readonly>
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                Tarifa 1
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="tarifaServicio" placeholder="Ej: Juan Perez" maxlength="20">
+            </div>
+        </div>
+        <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                Tarifa 2
+            </div>
+            <div class="contenedor-input">
+                <input type="text" id="tarifa2Servicio" placeholder="Ej: Juan Perez" maxlength="20">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="contenedor-info info-servicio contenedor_oculto contenedor-info-servicio" id="cont_pasajero">
+    <div class="titulo_pasajero">
+        <div class="nombre_pasajero">
+            Pasajero
+        </div>
+        <div class="dir_pasajero">
+            Destino
+        </div>
+        <div class="dato_pasajero">
+            Hora Destino
+        </div>
+        <div class="dato_pasajero">
+            Estado
+        </div>
+    </div>
+    <div class="pasajeros_contenido" id="pasajeros_contenido">
+        
+    </div>
+</div>
+<div class="contenedor-info info-servicio-mapa contenedor_oculto" id="cont_ruta">
+    <div id="contenedor_mapa" class="contenedor_mapa">
+        <div class="contenedor-loader">
+            <div class="loader" id="loader_pasajero">Loading...</div>
+        </div>
+    </div>
+</div>
+<div class="pie-left">
+    <div class="boton" id="guardar">
+        <img src="img/guardar.svg" width="12" height="12">
+        Guardar
+    </div>  
+</div>

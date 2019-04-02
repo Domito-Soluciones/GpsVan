@@ -784,3 +784,31 @@ function exportarExcel(data)
 {
     location.href= urlUtil + "/reporteExcel.php?data="+data;
 }
+
+function obtenerEstadoServicio(servicio)
+{
+    if(servicio === CREADO)
+    {
+        return "Creado"; 
+    }
+    else if(servicio === EN_PROCCESO_DE_ASIGNACION)
+    {
+        return "En proceso de asignaci&oacute;n";            
+    }
+    else if(servicio === ASIGNADO)
+    {
+        return "Asignado";     
+    }
+    else if(servicio === ACEPTADO)
+    {
+        return "Aceptado";            
+    }
+    else if(servicio === EN_PROGRESO)
+    {
+        return "En Ruta";
+    }
+    else if(servicio === FINALIZADO)
+    {
+        return "Finalizado"; 
+    }
+}
