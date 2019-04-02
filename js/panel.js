@@ -40,6 +40,7 @@ $(document).ready(function(){
         cargarRutas();
     });
     $("#ruta").on('input',function(){
+        $("#ltruta").html("");
         for(var i = 0; i < TARIFAS.length; i++)
         {
             $("#ltruta").append("<option val=\""+TARIFAS[i].tarifa_nombre+"\">"+TARIFAS[i].tarifa_nombre+"</option>");   
