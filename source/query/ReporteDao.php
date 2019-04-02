@@ -12,7 +12,7 @@ class ReporteDao {
             $buscaFecha = '';
             if($empresa != '')
             {
-                $buscaEmpresa = " AND servicio_cliente LIKE '%$empresa%' ";
+                $buscaEmpresa = " AND servicio_cliente = '$empresa' ";
             }
             if($conductor != '')
             {
@@ -32,7 +32,6 @@ class ReporteDao {
             }
             $query = "SELECT servicio_estado,count(*) as servicio_cantidad FROM tbl_servicio WHERE servicio_estado NOT IN (0,6) "
                     .$buscaFecha." ".$buscaEmpresa." ".$buscaConductor. " GROUP BY servicio_estado";
-            echo $query;
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
             while($row = mysqli_fetch_array($result)) {

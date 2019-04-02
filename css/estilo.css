@@ -1734,3 +1734,13 @@ select
     float: right;
     padding-right: 20px;
 }
+
+.item_reporte
+{
+    width: 60% !important;
+    cursor: initial !important;
+}
+.total_reporte
+{
+    width: 30% !important;
+}

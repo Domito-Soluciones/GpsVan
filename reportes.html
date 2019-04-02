@@ -11,7 +11,7 @@
                         Empresa
                     </div>
                     <div class="input-monitoreo">
-                        <input type="text" id="empresa" >
+                        <select id="empresa"></select>
                     </div>
                 </div>
                 <div>
@@ -19,7 +19,7 @@
                         Conductor
                     </div>
                     <div class="input-monitoreo">
-                        <input type="text" id="conductor" >
+                        <select id="conductores" ></select>
                     </div>
                 </div>
                 <div>
@@ -67,8 +67,20 @@
         </div>
         <div class="contenedor_central_servicio" id="contenedor_central">
             <div id="lista_busqueda_servicio" class="lista_busqueda_extendida">
-                <div class="contenedor-loader">
-                    <div class="loader" id="loader">Loading...</div>
+                <div class="mensaje_bienvenida">
+                    SELECCIONE OPCIONES PARA VER REPORTES
+                </div>
+            </div>
+        </div>
+        <div class="pie">
+            <div class="pie-left">
+                <div class="boton btn-grande oculto" id="exportar">
+                    <img src="img/icon.svg" width="12" height="12">
+                    Exportar Excel
+                </div>
+                <div class="boton btn-grande oculto" id="exportar">
+                    <img src="img/icon.svg" width="12" height="12">
+                    Exportar PDF
                 </div>
             </div>
         </div>

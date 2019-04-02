@@ -5,7 +5,8 @@ $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
     iniciarFecha([$("#desde"),$("#hasta")]);
     iniciarHora([$("#hdesde"),$("#hhasta")]);
-
+    cargarClientes();
+    cargarConductores();
     $("#exportar").click(function(){
         exportarReporte(); 
     });
@@ -15,48 +16,66 @@ $(document).ready(function(){
     });
 });
 
-function buscarServicio()
+function buscarReporte()
 {
-    var id = $("#id").val();
     var empresa = $("#empresa").val();
-    var movil = $("#empresa").val();
+    var conductor = $("#conductores").val();
     var desde = $("#desde").val();
     var hdesde = $("#hdesde").val();
     var hasta = $("#hasta").val();
     var hhasta = $("#hhasta").val();
-    var params = {id : id, empresa : empresa, movil : movil,
+    var params = {empresa : empresa, conductor : conductor,
         desde : desde, hdesde : hdesde, hasta : hasta, hhasta : hhasta};
-    var url = urlBase + "/servicio/GetServicios.php";
+    var url = urlBase + "/reporte/GetReporte.php";
     var success = function(response)
     {
         cerrarSession(response);
-        var servicios = $("#contenedor_central");
-        servicios.html("");
-        SERVICIOS = response;
-        if(response.length === 0)
-        {
-            alertify.error("No hay registros que mostrar");
-            return;
-        }
-        servicios.append("<div class=\"contenedor_central_titulo\"><div></div><div>ID Servicio</div><div>Empresa</div><div>Fecha</div><div>Estado</div><div>Vehículo</div></div>")
-        for(var i = 0 ; i < response.length; i++)
-        {
-            var id = response[i].servicio_id;
-            var cliente = response[i].servicio_cliente;
-            var fecha = response[i].servicio_fecha;
-            var hora = response[i].servicio_hora;
-            var estado = response[i].servicio_estado;
-            var conductor = response[i].servicio_movil;
-            servicios.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\" onClick=\"abrirBuscador('"+id+"')\">"+
-                    "<div>"+id+"</div>"+
-                    "<div>"+cliente+"</div>"+
-                    "<div>"+fecha+" "+hora+"</div>"+
-                    "<div>"+obtenerEstadoServicio(estado)+"</div>"+
-                    "<div>"+conductor+"</div></div>");
-        }
+        var reporte = $("#contenedor_central");
+        reporte.html("");
+        reporte.append("<div class=\"contenedor_central_titulo\"><div class=\"item_reporte\">Item</div><div class=\"total_reporte\">Total</div></div>")
+            var asignar = response.servicio_asignar;
+            var realizar = response.servicio_realizar;
+            var ruta = response.servicio_ruta;
+            var finalizado = response.servicio_finalizado;
+            reporte.append("<div class=\"fila_contenedor fila_contenedor_servicio\"><div class=\"item_reporte\">Servicio Pendiente Asignaciòn</div><div class=\"total_reporte\">"+asignar+"</div></div>");
+            reporte.append("<div class=\"fila_contenedor fila_contenedor_servicio\"><div class=\"item_reporte\">Servicio Aceptado</div><div class=\"total_reporte\">"+realizar+"</div></div>");
+            reporte.append("<div class=\"fila_contenedor fila_contenedor_servicio\"><div class=\"item_reporte\">Servicio en Ruta</div><div class=\"total_reporte\">"+ruta+"</div></div>");
+            reporte.append("<div class=\"fila_contenedor fila_contenedor_servicio\"><div class=\"item_reporte\">Servicio Finalizado</div><div class=\"total_reporte\">"+finalizado+"</div></div>");
         cambiarPropiedad($("#loader"),"visibility","hidden");
     };
     postRequest(url,params,success);
+}
+
+function cargarClientes()
+{
+    var params = {busqueda : '',buscaCC : '0'};
+    var url = urlBase + "/cliente/GetClientes.php";
+    var success = function(response)
+    {
+        $("#empresa").html("<option value=\"\">Seleccione</option>");
+        for(var i = 0 ; i < response.length ; i++)
+        {
+            var nombre = response[i].cliente_razon;
+            $("#empresa").append("<option value=\""+nombre+"\">"+nombre+"</option>");
+        }
+    };
+    postRequest(url,params,success,false);
+}
+function cargarConductores()
+{
+    var params = {busqueda : ''};
+    var url = urlBase + "/conductor/GetConductores.php";
+    var success = function(response)
+    {
+        $("#conductores").html("<option value=\"\">Seleccione</option>");
+        for(var i = 0 ; i < response.length ; i++)
+        {
+            var id = response[i].conductor_id;
+            var nombre = id + " / " + response[i].conductor_nombre + " " + response[i].conductor_papellido;
+            $("#conductores").append("<option value=\""+id+"\">"+nombre+"</option>");
+        }
+    };
+    postRequest(url,params,success,false);
 }
 
 

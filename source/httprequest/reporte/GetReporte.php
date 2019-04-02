@@ -4,29 +4,28 @@ include '../../query/ReporteDao.php';
 include '../../log/Log.php';
 
 header('Content-Type: application/json; charset=utf-8');
-$empresa = filter_input(INPUT_GET, 'empresa');
-$conductor = filter_input(INPUT_GET, 'conductor');
-$estado = filter_input(INPUT_GET, 'estado');
+$empresa = filter_input(INPUT_POST, 'empresa');
+$conductor = filter_input(INPUT_POST, 'conductor');
 $desde = '';
-if(filter_input(INPUT_GET, 'desde') != '')
+if(filter_input(INPUT_POST, 'desde') != '')
 {
-    $desde = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_GET, 'desde'))->format('Y/m/d');
+    $desde = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_POST, 'desde'))->format('Y/m/d');
 }
 else
 {
-    $desde = filter_input(INPUT_GET, 'desde');
+    $desde = filter_input(INPUT_POST, 'desde');
 }
-$hdesde = filter_input(INPUT_GET, 'hdesde');
+$hdesde = filter_input(INPUT_POST, 'hdesde');
 $hasta = '23:59:59';
-if(filter_input(INPUT_GET, 'hasta') != '')
+if(filter_input(INPUT_POST, 'hasta') != '')
 {
-    $hasta = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_GET, 'hasta'))->format('Y/m/d');
+    $hasta = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_POST, 'hasta'))->format('Y/m/d');
 }
 else
 {
-    $hasta = filter_input(INPUT_GET, 'hasta');
+    $hasta = filter_input(INPUT_POST, 'hasta');
 }
-$hhasta = filter_input(INPUT_GET, 'hhasta');
+$hhasta = filter_input(INPUT_POST, 'hhasta');
 $reporteDao = new ReporteDao();
 $servicios = $reporteDao->getServicios($empresa,$conductor,$desde,$hdesde,$hasta,$hhasta);
 $serviciosFinalizados = 0;

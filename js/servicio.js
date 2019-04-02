@@ -28,7 +28,7 @@ function buscarServicio()
 {
     var id = $("#id").val();
     var empresa = $("#empresa").val();
-    var movil = $("#empresa").val();
+    var movil = $("#movil").val();
     var desde = $("#desde").val();
     var hdesde = $("#hdesde").val();
     var hasta = $("#hasta").val();
