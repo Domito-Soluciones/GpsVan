@@ -515,6 +515,10 @@ function agregarServicio(fecha)
         }
         var success = function(response)
         {
+            if(response.resp === 'return')
+            {
+                location.href="index.php";
+            }
             agregarDetalleServicio(response.servicio_id);
             vaciarFormulario();
             origen = undefined;

@@ -21,7 +21,15 @@ $agente = 0;
 if(filter_input(INPUT_POST, 'app') == '')
 {
     session_start();
-    $agente = $_SESSION['agente'];
+    if(isset($_SESSION['agente']))
+    {
+        $agente = $_SESSION['agente'];
+    }
+    else
+    {
+        echo "{\"resp\":\"return\"}";
+        exit();
+    }
 }
 $servicio = new Servicio();
 $servicio->setCliente($cliente);
