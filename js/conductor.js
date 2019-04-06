@@ -383,13 +383,12 @@ function buscarConductorGrupo(grupo)
 function cambiarFila(id)
 {
     if(MODIFICADO)
-    {  
+    {
         confirmar("Cambio de conductor",
         "¿Desea cambiar de conductor sin guardar los cambios?",
         function()
         {
             MODIFICADO = false;
-            //abrirModificar(id);
             buscarConductorGrupo(id);
         },
         function()
@@ -399,7 +398,6 @@ function cambiarFila(id)
     }
     else
     {
-        //abrirModificar(id);
         buscarConductorGrupo(id);
     }
 }
@@ -409,6 +407,7 @@ function abrirModificar(id)
     ID_CONDUCTOR = id;
     AGREGAR = false;
     $("#lista_busqueda_conductor_detalle").load("html/datos_conductor.html", function( response, status, xhr ) {
+        cargarTransportistas();
         iniciarPestanias();
         cambioEjecutado();
         iniciarFecha(['#nacimiento','#seguroInicio','#vlicencia']);
@@ -470,6 +469,9 @@ function abrirModificar(id)
         $("#mail").val(conductor.conductor_mail);
         $("#tipoLicencia").val(conductor.conductor_tipoLicencia);
         $("#vlicencia").val(conductor.conductor_vencLicencia);
+        $("#banco").val(conductor.conductor_banco);
+        $("#ncuenta").val(conductor.conductor_ncuenta);
+        $("#tcuenta").val(conductor.conductor_tcuenta);
         $("#nacimiento").val(conductor.conductor_nacimiento);
         $("#renta").val(conductor.conductor_renta);
         $("#tipoContrato").val(conductor.conductor_tipo_contrato);
@@ -915,7 +917,7 @@ function cargarTransportistas()
     var params = {};
     var success = function(response)
     {
-        $("#transportista").html("<option value=''>Seleccione</option>");
+        $("#transportista").html("<option value='0'>Seleccione</option>");
         for(var i = 0 ; i < response.length ; i++)
         {
             var id = response[i].conductor_id;
