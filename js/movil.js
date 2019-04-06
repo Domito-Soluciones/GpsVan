@@ -535,8 +535,12 @@ function abrirModificar(id)
             $("#venSegOb").prop("disabled",false);
             $("#polizaSegOb").prop("disabled",false);
             $("#valorSegOb").prop("disabled",false);
+            $("#venSegOb").val(movil.movil_ven_seg_ob);
         }
-        $("#venSegOb").val(movil.movil_ven_seg_ob);
+        else
+        {
+            $("#venSegOb").val("");
+        }
         $("#polizaSegOb").val(movil.movil_pol_seg_ob); 
         $("#valorSegOb").val(movil.movil_seg_ob_valor); 
         if(movil.movil_seg_rcdm !== 'NO')
@@ -552,8 +556,12 @@ function abrirModificar(id)
             $("#venSegRcDm").prop("disabled",false);
             $("#polizaSegRcDm").prop("disabled",false);
             $("#valorSegRcDm").prop("disabled",false);
+            $("#venSegRcDm").val(movil.movil_ven_seg_rcdm);
         }
-        $("#venSegRcDm").val(movil.movil_ven_seg_rcdm);
+        else
+        {
+            $("#venSegRcDm").val("");
+        }
         $("#polizaSegRcDm").val(movil.movil_pol_seg_rcdm); 
         $("#valorSegRcDm").val(movil.movil_seg_rcdm_valor); 
         if(movil.movil_seg_as !== 'NO')
@@ -567,10 +575,15 @@ function abrirModificar(id)
                 $("#SegAsEx").prop("checked",true);
             }
             $("#venSegAs").prop("disabled",false);
+            $("#venSegAs").val("");
             $("#polizaSegAs").prop("disabled",false);
             $("#valorSegAs").prop("disabled",false);
+            $("#venSegAs").val(movil.movil_ven_seg_as);
         }
-        $("#venSegAs").val(movil.movil_ven_seg_as);
+        else
+        {
+            $("#venSegAs").val("");
+        }
         $("#polizaSegAs").val(movil.movil_pol_seg_as); 
         $("#valorSegAs").val(movil.movil_seg_as_valor); 
         if(movil.movil_seg_rcexceso !== 'NO')
@@ -584,10 +597,15 @@ function abrirModificar(id)
                 $("#SegRcExcesoEx").prop("checked",true);
             }
             $("#venSegRcExceso").prop("disabled",false);
+            $("#venSegRcExceso").val("");
             $("#polizaSegRcExceso").prop("disabled",false);
             $("#valorSegRcExceso").prop("disabled",false);
+            $("#venSegRcExceso").val(movil.movil_ven_seg_rcexceso);
         }
-        $("#venSegRcExceso").val(movil.movil_ven_seg_rcexceso);
+        else
+        {
+            $("#venSegRcExceso").val("");
+        }
         $("#polizaSegRcExceso").val(movil.movil_pol_seg_rcexceso); 
         $("#valorSegRcExceso").val(movil.movil_seg_rcexceso_valor); 
         $("#conductor").val(movil.movil_conductor);

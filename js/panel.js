@@ -546,6 +546,7 @@ function agregarServicio(fecha)
 
 function dibujarRuta(origen,destinos)
 {
+    console.log(destinos+"");
     if(typeof origen === 'undefined')
     {
         return;
@@ -722,9 +723,9 @@ function drop(ev,obj) {
             if(index === 0)
             {
                 origen = direccion_empresa;
-                $("#contenedor_punto_destino").html("<b>Origen: </b>"+origen);
+                $("#contenedor_punto_origen").html("<b>Origen: </b>"+origen);
             }
-            if(index > 0)
+            else if(index > 0)
             {
                 destinos.push($(this).val());
             }

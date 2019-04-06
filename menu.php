@@ -91,14 +91,14 @@
         Monitoreo
     </div>
 </div>
-<div class="opcion-menu"  id="estadistica" onclick="cambiarModulo('estadistica')">
+<div class="opcion-menu"  id="reportes" onclick="cambiarModulo('reportes')">
     <div class="cont-img-menu">
         <img class="img-menu" src="img/reporte.svg">
     </div>
     <div class="contenido-menu">
         Reportes
     </div>
-    <div class="tooltip" id="tooltip_estadistica">
+    <div class="tooltip" id="tooltip_reportes">
         Reportes
     </div>
 </div>

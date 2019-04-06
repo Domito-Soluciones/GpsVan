@@ -605,11 +605,7 @@ select
 }
 .contenedor-input-radio
 {
-    font-size: 13px;
-    margin-left: 5%;
-    width: 100%;
-    height: 30px;
-    display: inline-block;
+    width: 208px !important;
 }
 .contenedor-input input
 {
@@ -1733,4 +1729,14 @@ select
 {
     float: right;
     padding-right: 20px;
+}
+
+.item_reporte
+{
+    width: 60% !important;
+    cursor: initial !important;
+}
+.total_reporte
+{
+    width: 30% !important;
 }
