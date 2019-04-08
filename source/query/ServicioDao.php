@@ -520,6 +520,53 @@ class ServicioDao {
         return $array;
     }
     
+    public function getServicioHistorico($idServicio)
+    {
+        $array = array();
+        $conn = new Conexion();
+        try {
+            $query = "SELECT servicio_id,servicio_cliente,servicio_ruta,servicio_truta,servicio_fecha,"
+                    . "servicio_hora,servicio_conductor,servicio_estado,servicio_tarifa1,"
+                    . "servicio_observacion,servicio_conductor,movil_nombre,"
+                    . "servicio_pasajero_estado,servicio_pasajero_destino,pasajero_id,pasajero_nombre,pasajero_papellido,pasajero_celular,cliente_direccion "
+                    . " FROM tbl_servicio JOIN tbl_servicio_pasajero ON"
+                    . " servicio_id = servicio_pasajero_id_servicio JOIN tbl_servicio_detalle"
+                    . " ON servicio_id = servicio_detalle_servicio "
+                    . "JOIN tbl_movil ON servicio_movil = movil_nombre "
+                    . "JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id "
+                    . "JOIN tbl_cliente ON servicio_cliente = cliente_razon_social "
+                    . "WHERE servicio_id = $idServicio AND servicio_estado = 5 ORDER BY servicio_pasajero_id";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query); 
+            while($row = mysqli_fetch_array($result)) {
+                $servicio = new Servicio();            
+                $servicio->setId($row["servicio_id"]);
+                $servicio->setCliente($row["servicio_cliente"]);
+                $servicio->setClienteDireccion($row["cliente_direccion"]);
+                $servicio->setRuta($row["servicio_ruta"]);
+                $servicio->setTruta($row["servicio_truta"]);
+                $servicio->setFecha($row["servicio_fecha"]);
+                $servicio->setHora($row["servicio_hora"]);
+                $servicio->setMovil($row["movil_nombre"]);
+                $servicio->setEstado($row["servicio_estado"]);
+                $servicio->setConductor($row["servicio_conductor"]);
+                $servicio->setTarifa1($row["servicio_tarifa1"]); 
+                $servicio->setObservaciones($row["servicio_observacion"]);
+                $pasajero = new Pasajero();
+                $pasajero->setId($row["pasajero_id"]);
+                $pasajero->setNombre($row["pasajero_nombre"] . " " . $row["pasajero_papellido"]);
+                $pasajero->setCelular($row["pasajero_celular"]);
+                $pasajero->setEstado($row["servicio_pasajero_estado"]);
+                $servicio->setPasajero($pasajero);
+                $servicio->setDestino($row["servicio_pasajero_destino"]);
+                array_push($array, $servicio);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $array;
+    }
+    
     public function getServicioReal($idServicio)
     {
         $array = array();

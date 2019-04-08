@@ -4,7 +4,7 @@ var PAGINA = 'ASIGNACION';
 
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
-    setInterval('validarServicios()', 5000);
+    setInterval('validarServicios()', 60000*10);
 });
 
     
