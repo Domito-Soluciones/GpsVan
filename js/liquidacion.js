@@ -5,6 +5,10 @@ var MESES = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
 
 ];
 var ID_LIQUIDACION;
+var MES;
+var ANIO;
+var RUT;
+var NOMBRE;
 var PAGINA = "LIQUIDACION";
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
@@ -19,9 +23,25 @@ $(document).ready(function(){
         }
         else
         {
-            var data = $("#liquidacion").html();
-            exportarExcel(data);
+            var params = "mes="+MES+"&anio="+ANIO+"&conductor="+ID_LIQUIDACION+"&rut="+RUT+"&nombre="+NOMBRE;
+            exportar('liquidacion/GetExcelLiquidacion',params);
         }
+    });
+    $("#exportar2").click(function(){
+        if(typeof ID_LIQUIDACION === "undefined")
+        {
+            alertify.error("No hay datos para exportar");
+            return;
+        }
+        else
+        {
+            var params = "mes="+MES+"&anio="+ANIO+"&conductor="+ID_LIQUIDACION+"&rut="+RUT+"&nombre="+NOMBRE;
+            window.open(urlBase+"/liquidacion/GetPdfLiquidacion.php?"+params, '_blank');
+        }
+    });
+    
+    $("#busqueda").keyup(function(){
+        buscarConductor();
     });
 });
 
@@ -67,23 +87,37 @@ function buscarConductor()
 function generarLiquidacion(id,rut,nombre)
 {
     ID_LIQUIDACION = id;
-    var mes = $("#mes").val();
-    var anio = $("#anio").val();
+    RUT = rut;
+    NOMBRE = nombre;
+    MES = $("#mes").val();
+    ANIO =$("#anio").val();
+    var d = new Date();
+//    if (ANIO > d.getFullYear())
+//    {
+//        alertify.error("La liquidación no esta lista");
+//        return;
+//    }
+//    if(parseInt(MES) >= (d.getMonth()))
+//    {
+//        alertify.error("La liquidación no esta lista");
+//        return;
+//    }
     quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
     agregarclase($("#"+id),"fila_contenedor_activa");
     cambiarPropiedad($(".mensaje_bienvenida"),"display","none");
     $(".contenedor_liquidacion").html("");
-    var params = {conductor:id,mes:mes,anio:anio};
+    var params = {conductor:id,mes:MES,anio:ANIO};
     var url = urlBase + "/liquidacion/GetLiquidacion.php";
     var success = function(responseLiquidacion)
     {
         quitarclase($("#exportar"),"oculto");
         $(".contenedor_liquidacion").load("html/datos_liquidacion.html", function( response, status, xhr ) {
-            $("#subtitulo_liquidacion").text("Periodo: "+MESES[$("#mes").val()] + " " + $("#anio").val());
+            $("#subtitulo_liquidacion").text("Periodo: "+MESES[MES] + " " + ANIO);
             $("#nombre_conductor").html("<b>Nombre:</b> "+nombre);
             $("#rut_conductor").html("<b>Rut:</b> "+rut);
             var cont = $("#contenido_tabla_liq_prod");
             var cont2 = $("#contenido_tabla_liq_desc");
+            var cont3 = $("#contenido_tabla_liq_rend");
             var totalBruto = 0;
             for(var i = 0 ; i < responseLiquidacion.produccion.length;i++)
             {
@@ -94,6 +128,21 @@ function generarLiquidacion(id,rut,nombre)
             }
             var porcentajes = responseLiquidacion.porcentajes;
             var descuentos = responseLiquidacion.descuentos;
+            var rendiciones = [];
+            var descuento_ad = [];
+            for(var j = 0; j < responseLiquidacion.rendiciones.length; j++)
+            {
+                console.log(responseLiquidacion.rendiciones.length);
+                var rend = responseLiquidacion.rendiciones[j];
+                if(rend.rendicion_tipo === '0')
+                {
+                    rendiciones.push(rend.rendicion_dato+"%"+rend.rendicion_valor);
+                }
+                else if(rend.rendicion_tipo === '1')
+                {
+                    descuento_ad.push(rend.rendicion_dato+"%"+rend.rendicion_valor);
+                }
+            }
             $("#prod_bruta").html("$  "+totalBruto);
             var totalLiquido = Math.round(totalBruto * 0.8);
             $("#prod_liquida").html("$  "+totalLiquido);
@@ -119,12 +168,31 @@ function generarLiquidacion(id,rut,nombre)
                                 "<div class=\"liquidacion_valor\">$  "+descuentos.movil_celular+"</div>");
                 cont2.append("<div class=\"liquidacion_item\">APP</div>"+
                                 "<div class=\"liquidacion_valor\">$  "+descuentos.movil_app+"</div>");
-                var totalDesc = prevision + parseInt(descuentos.movil_seg_ob_valor) + parseInt(descuentos.movil_seg_rcdm_valor) + 
+                var totalDesc = 0;
+                for(var k = 0; k < descuento_ad.length;k++)
+                {
+                    var data = descuento_ad[k].split("%");
+                    cont2.append("<div class=\"liquidacion_item\">"+data[0]+"</div>"+
+                                "<div class=\"liquidacion_valor\">$  "+data[1]+"</div>");
+                    totalDesc += parseInt(data[1]);
+                }
+                totalDesc += prevision + parseInt(descuentos.movil_seg_ob_valor) + parseInt(descuentos.movil_seg_rcdm_valor) + 
                         parseInt(descuentos.movil_seg_as_valor) + parseInt(descuentos.movil_seg_rcexceso_valor) + 
                         parseInt(descuentos.movil_gps) + parseInt(descuentos.movil_celular) + parseInt(descuentos.movil_app);
                 $("#total_desc").html("$  "+totalDesc);
+                
+                var totalRend = 0;
+                for(var k = 0; k < rendiciones.length;k++)
+                {
+                    var data = rendiciones[k].split("%");
+                    cont3.append("<div class=\"liquidacion_item\">"+data[0]+"</div>"+
+                                "<div class=\"liquidacion_valor\">$  "+data[1]+"</div>");
+                    totalRend += parseInt(data[1]);
+                }
+                
+                $("#total_rend").html("$  "+totalRend);
             }
-            var total = totalLiquido - totalDesc;
+            var total = totalLiquido - totalDesc + totalRend;
             if(isNaN(total))
             {
                 $("#liq_pagar").html("$  0");   

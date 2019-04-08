@@ -11,6 +11,7 @@ $anio = filter_input(INPUT_POST, 'anio');
 $liquidacionDao = new LiquidacionDao();
 $servicios = $liquidacionDao->getServiciosConvenio($conductor, $mes, $anio);
 $descuentos = $liquidacionDao->getDescuentosConductor($conductor);
+$rendiciones = $liquidacionDao->getRendiciones($conductor,$mes,$anio);
 $porcentajes = $liquidacionDao->getPorcentajes();
 echo "{\"produccion\":[";
 for ($i = 0 ; $i < count($servicios); $i++)
@@ -35,5 +36,21 @@ echo "\"porcentajes\":{"
         . "\"porcentaje_uf\":\"".$porcentajes[0]."\","
         . "\"porcentaje_afp\":\"".$porcentajes[1]."\","
         . "\"porcentaje_isapre\":\"".$porcentajes[2]."\","
-        . "\"porcentaje_mutual\":\"".$porcentajes[3]."\"}}";
+        . "\"porcentaje_mutual\":\"".$porcentajes[3]."\"}"
+        . ","
+        . "\"rendiciones\":[";
+        for($j = 0; $j < count($rendiciones); $j++)
+        {
+            $data = explode("%", $rendiciones[$j]);
+            echo "{";
+            echo "\"rendicion_dato\":\"".$data[0]."\",";
+            echo "\"rendicion_valor\":\"".$data[1]."\",";
+            echo "\"rendicion_tipo\":\"".$data[2]."\"";
+            echo "}";
+            if (($j+1) != count($rendiciones))
+            {
+                echo ",";
+            }
+        }
+        echo "]}";
 Log::write_log("GETLIQUIDACION", 0);

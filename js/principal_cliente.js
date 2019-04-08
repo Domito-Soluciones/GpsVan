@@ -8,20 +8,22 @@ $(document).ready(function(){
     $("#menu").load("menu.php", function( response, status, xhr ) {
         agregarclase($("#panel_cliente"),"menu-activo");
     
-    });   
+    });
+    
     getUsuario();
     getfecha();
     setInterval(function(){getfecha();},5000);
-    $("#solicitar").click(function(){
-        crearServicio();
-    });
     $("#enlace-salir").click(function() {
         salir();
     });
     
+    $("#solicitar").click(function(){
+        crearServicio();
+    });
     iniciarFecha(['#fechas']);
     iniciarHora(['#hora']);
     buscarPasajeroCliente($("#clientes").val());
+    
 });
 
 function crearServicio()

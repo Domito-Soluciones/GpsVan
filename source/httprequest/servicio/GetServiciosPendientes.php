@@ -30,4 +30,4 @@ if (($i+1) != count($servicios))
     }
 }
 echo "]";
-Log::write_log("GETSERVICIOSPENDIENTES", 0);
+//Log::write_log("GETSERVICIOSPENDIENTES", 0);

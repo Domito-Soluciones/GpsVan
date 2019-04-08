@@ -35,7 +35,18 @@ else if($_SESSION['tipo'] == '0')
         <script src="js/lib/alertify.js" type="text/javascript"></script>
         <script src="js/lib/jquery.datetimepicker.js" type="text/javascript"></script>
         <script src="js/funciones.js" type="text/javascript"></script>
-        <script src="js/principal_cliente.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#contenido-central").load("panel_cliente.html",function( response, status, xhr ) {
+                    $("#solicitar").click(function(){
+                        crearServicio();
+                    });
+                    iniciarFecha(['#fechas']);
+                    iniciarHora(['#hora']);
+                    buscarPasajeroCliente($("#clientes").val());
+                });
+            });
+        </script>
     </head>
     <body>
         <div class="cabecera" id="cabecera">
@@ -53,51 +64,13 @@ else if($_SESSION['tipo'] == '0')
                 
             </div>
             <img src="img/menu.svg" id="menu-telefono" class="menu-telefono">
+            <input type="hidden" id="clientes" value="<?php echo $_SESSION['empresa']?>">
         </div>
         <div id="menu" class="menu">
            
         </div>
         <div id="contenido-central" class="contenido-central">
-            <div class="contenedor-lateral buscador-asignacion-cliente">
-                <div id="servicio-normal" class="buscador barra_asignacion">
-                    <div>
-                        <div class="input-monitoreo">
-                            <input type="hidden" id="clientes" value="<?php echo $_SESSION['empresa']?>">
-                        </div>
-                    </div>
-                    <div>
-                        <div class="cont-pre-monitor">
-                            Fecha
-                        </div>
-                        <div class="input-monitoreo">
-                             <input type="text" class="input_cliente" id="fechas" placeholder="Ej: 01/01/2020">
-                        </div>
-                    </div>
-                    <div>
-                        <div class="cont-pre-monitor">
-                            Hora
-                        </div>
-                         <div class="input-monitoreo">
-                            <input type="text" class="input_cliente" id="hora" placeholder="Ej: 12:23:00">
-                        </div>
-                    </div>
-                    <div>
-                        <div class="cont-pre-monitor">
-                            Observaciones
-                        </div>
-                        <div class="input-monitoreo">
-                            <textarea maxlength="200" class="textarea_asignar" id="observacion" rows="5" cols="30"></textarea>
-                        </div>
-                    </div>
-                    <div class="boton" id="solicitar">
-                        <img src="img/guardar.svg" width="12" height="12">
-                        Solicitar
-                    </div>
-                </div>
-            </div>
-            <div id="contenedor-pasajero" class="contenedor-lateral buscador-asignacion-cliente-pasajero">
-                
-            </div>
+            
         </div>
     </body>
 </html>

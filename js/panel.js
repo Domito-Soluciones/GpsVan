@@ -12,7 +12,6 @@ var pasajeros = [];
 var direccion_empresa;
 var NOMBRE_CLIENTE;
 var conductores = new Map();
-var TIPO = 'NORMAL';
 
 var CAMPOS = ["clientes","ruta","truta","fechaDesde","hora","vehiculos","tarifa1","tarifa2"];
 
@@ -23,15 +22,17 @@ $(document).ready(function(){
     {
         cargarRutas();
     }
-    if(TIPO_SERVICIO === 1)
+    if(TIPO_SERVICIO === 1 || TIPO_SERVICIO === 2)
     {
+        $("#ruta").val("ESP");
+        $("#truta").val("XX-ESP");
         $("#especial").prop("checked",true);
         $("#tarifa2").prop("disabled",false);
         $("#ruta").prop("disabled",true);
         $("#truta").prop("disabled",true);
         cambiarPropiedad($(".buscador-pasajero"),"display","initial");
         agregarclase($("#contenedor_mapa"),"mapa_bajo");
-        cargarPasajeros();
+        cargarPasajerosEspecial();
     }
     $("#clientes").keyup(function () {
         cargarClientes();
@@ -57,7 +58,7 @@ $(document).ready(function(){
             {
                 $("#hora").val(TARIFAS[i].tarifa_hora);
                 $("#tarifa1").val(TARIFAS[i].tarifa_valor1);
-                if(TIPO === 'ESPECIAL')
+                if(TIPO_SERVICIO === 1 || TIPO_SERVICIO === 2)
                 {
                     $("#tarifa2").val(TARIFAS[i].tarifa_valor2);
                 }
@@ -93,7 +94,7 @@ $(document).ready(function(){
     });
     
     $("#clientes").on('blur',function () {
-        if(TIPO !== 'ESPECIAL')
+        if(TIPO_SERVICIO === 0)
         {
             var noExiste = validarInexistencia($("#clientes").val(),clientesArray);
             if(noExiste)
@@ -228,7 +229,7 @@ function cargarPasajeros()
     var ruta = $('#truta').val();
     var params = {cliente : cliente, pasajero : pasajero, ruta : ''};
     var url = urlBase + "/pasajero/GetPasajerosRuta.php";
-    if(TIPO_SERVICIO === 1)
+    if(TIPO_SERVICIO === 1 || TIPO_SERVICIO === 2)
     {
         params = {id : id};
         url =  urlBase + "/pasajero/GetPasajerosEspecial.php";
@@ -474,7 +475,7 @@ function agregarServicio(fecha)
     var tarifa1 = $("#tarifa1").val();
     var tarifa2 = $("#tarifa2").val() === '' ? $("#tarifa2Hidden").val() : $("#tarifa2").val();
     var observaciones = $("#observacion").val();
-    var tipo = TIPO === 'NORMAL' ? 0 : 2;
+    var tipo = TIPO_SERVICIO;
     var array = [cliente,ruta,truta,fecha,hora,movil,tarifa1,tarifa2];
     var exp = obtenerExcepciones();
     if(!validarCamposOr(array,exp))
@@ -494,6 +495,11 @@ function agregarServicio(fecha)
     if(pasajeros.length === 0)
     {
         alertify.error("No hay pasajeros asignados a este servicio");
+        return;
+    }
+    if(typeof origen === 'undefined' || destinos.length === 0)
+    {
+        alertify.error("Seleccione origen y destino");
         return;
     }
     if(conductor === "")
@@ -617,7 +623,7 @@ function agregarDetalleServicio(idServicio)
         destinoFinal += destinos[i] + "%";
         pasajeroFinal += pasajeros[i] + "%";
     }
-    if(TIPO_SERVICIO === 1)
+    if(TIPO_SERVICIO === 1 || TIPO_SERVICIO === 2)
     {
         params = { lat : POLYLINE_LAT, lon : POLYLINE_LNG, pasajeros : "" ,destinos : destinoFinal, id : idServicio };
     }
@@ -724,13 +730,14 @@ function drop(ev,obj) {
             {
                 origen = direccion_empresa;
                 $("#contenedor_punto_origen").html("<b>Origen: </b>"+origen);
+                destinos.push($(this).val());
             }
             else if(index > 0)
             {
                 destinos.push($(this).val());
             }
         }
-        else if(TIPO === 'ESPECIAL')
+        else if(TIPO_SERVICIO === 1 || TIPO_SERVICIO === 2)
         {
             if(index === 0)
             {
@@ -860,7 +867,7 @@ function agregarPasajero(obj,nombre,punto,celular)
 
 function cambiarServicioNormal()
 {
-    TIPO = 'NORMAL';
+    TIPO_SERVICIO = 0;
     $("#ruta").prop("readonly",false);
     $("#truta").prop("readonly",false);
     vaciarFormulario();
@@ -874,7 +881,7 @@ function cambiarServicioNormal()
 }
 function cambiarServicioEspecial()
 {
-    TIPO = 'ESPECIAL';
+    TIPO_SERVICIO = 2;
     destinos = [];
     pasajeros = [];
     origen = undefined;

@@ -22,12 +22,21 @@ $(document).ready(function(){
     $("#buscar").click(function(){
         buscarServicio(); 
     });
+    
+    if(TIPO_USUARIO === 'CLIENTE')
+    {
+        cambiarPropiedad($("#cont_empresa"),"display","none");
+    }
 });
 
 function buscarServicio()
 {
     var id = $("#id").val();
     var empresa = $("#empresa").val();
+    if(TIPO_USUARIO === 'CLIENTE')
+    {
+        empresa = $("#clientes").val();
+    }
     var movil = $("#movil").val();
     var desde = $("#desde").val();
     var hdesde = $("#hdesde").val();
@@ -100,6 +109,7 @@ function abrirBuscador(id)
     $("#contenedor_central").load("html/datos_servicio.html", function( response, status, xhr ) {
         if(TIPO_USUARIO === 'CLIENTE')
         {
+            cambiarPropiedad($("#p_ruta"),"display","none");
             $("#rutaServicio").prop("readonly",true);
             $("#fechaServicio").prop("readonly",true);
             $("#inicioServicio").prop("readonly",true);
@@ -330,11 +340,11 @@ function dibujarRutaReal()
     var url = urlBase + "/servicio/GetDetalleServicioReal.php";
     var success = function(response)
     {
-        var polyline;
+        var polyline = [];
         for(var i = 0 ; i < response.length; i++)
         {
             var servicio = response[i];
-            polyline += {lat: servicio.servicio_lat, lng: servicio.servicio_lon};
+            polyline.push({lat: parseFloat(servicio.servicio_lat), lng: parseFloat(servicio.servicio_lon)});
         }
         var flightPath = new google.maps.Polyline({
             path: polyline,

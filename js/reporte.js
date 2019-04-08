@@ -1,5 +1,12 @@
 /* global urlBase, alertify, CREADO, EN_PROCCESO_DE_ASIGNACION, ASIGNADO, ACEPTADO, EN_PROGRESO, FINALIZADO, google, map, markers, directionsDisplay, TIPO_USUARIO */
 var ESTADO_SERVICIO;
+var REPORTE;
+var EMPRESA;
+var CONDUCTOR;
+var DESDE;
+var HDESDE;
+var HASTA;
+var HHASTA;
 var PAGINA = 'REPORTES';
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
@@ -7,41 +14,63 @@ $(document).ready(function(){
     iniciarHora([$("#hdesde"),$("#hhasta")]);
     cargarClientes();
     cargarConductores();
-    $("#exportar").click(function(){
-        exportarReporte(); 
-    });
     
     $("#buscar").click(function(){
         buscarReporte(); 
+    });
+    
+    $("#exportar").click(function(){
+        if(typeof REPORTE === "undefined")
+        {
+            alertify.error("No hay datos para exportar");
+            return;
+        }
+        else
+        {
+            var params = "empresa="+EMPRESA+"&conductor="+CONDUCTOR+"&desde="+DESDE+"&hdesde="+HDESDE+"&hasta="+HASTA+"&hhasta="+HHASTA;
+            exportar('reporte/GetExcelReporte',params);
+        }
+    });
+    $("#exportar2").click(function(){
+        if(typeof REPORTE === "undefined")
+        {
+            alertify.error("No hay datos para exportar");
+            return;
+        }
+        else
+        {
+            var params = "empresa="+EMPRESA+"&conductor="+CONDUCTOR+"&desde="+DESDE+"&hdesde="+HDESDE+"&hasta="+HASTA+"&hhasta="+HHASTA;
+            window.open(urlBase+"/reporte/GetPdfReporte.php?"+params, '_blank');
+        }
     });
 });
 
 function buscarReporte()
 {
-    var empresa = $("#empresa").val();
-    var conductor = $("#conductores").val();
-    var desde = $("#desde").val();
-    var hdesde = $("#hdesde").val();
-    var hasta = $("#hasta").val();
-    var hhasta = $("#hhasta").val();
-    var params = {empresa : empresa, conductor : conductor,
-        desde : desde, hdesde : hdesde, hasta : hasta, hhasta : hhasta};
+    REPORTE = '';
+    EMPRESA = $("#empresa").val();
+    CONDUCTOR = $("#conductores").val();
+    DESDE = $("#desde").val();
+    HDESDE = $("#hdesde").val();
+    HASTA = $("#hasta").val();
+    HHASTA = $("#hhasta").val();
+    var params = {empresa : EMPRESA, conductor : CONDUCTOR,
+        desde : DESDE, hdesde : HDESDE, hasta : HASTA, hhasta : HHASTA};
     var url = urlBase + "/reporte/GetReporte.php";
     var success = function(response)
     {
         cerrarSession(response);
         var reporte = $("#contenedor_central");
         reporte.html("");
-        reporte.append("<div class=\"contenedor_central_titulo\"><div class=\"item_reporte\">Item</div><div class=\"total_reporte\">Total</div></div>")
+        reporte.append("<div class=\"contenedor_central_titulo\"><div class=\"item_reporte\">Item</div><div class=\"total_reporte\">Total</div></div>");
             var asignar = response.servicio_asignar;
             var realizar = response.servicio_realizar;
             var ruta = response.servicio_ruta;
             var finalizado = response.servicio_finalizado;
-            reporte.append("<div class=\"fila_contenedor fila_contenedor_servicio\"><div class=\"item_reporte\">Servicio Pendiente Asignaciòn</div><div class=\"total_reporte\">"+asignar+"</div></div>");
+            reporte.append("<div class=\"fila_contenedor fila_contenedor_servicio\"><div class=\"item_reporte\">Servicio Pendiente Asignación</div><div class=\"total_reporte\">"+asignar+"</div></div>");
             reporte.append("<div class=\"fila_contenedor fila_contenedor_servicio\"><div class=\"item_reporte\">Servicio Aceptado</div><div class=\"total_reporte\">"+realizar+"</div></div>");
             reporte.append("<div class=\"fila_contenedor fila_contenedor_servicio\"><div class=\"item_reporte\">Servicio en Ruta</div><div class=\"total_reporte\">"+ruta+"</div></div>");
             reporte.append("<div class=\"fila_contenedor fila_contenedor_servicio\"><div class=\"item_reporte\">Servicio Finalizado</div><div class=\"total_reporte\">"+finalizado+"</div></div>");
-        cambiarPropiedad($("#loader"),"visibility","hidden");
     };
     postRequest(url,params,success);
 }

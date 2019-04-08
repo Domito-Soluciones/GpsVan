@@ -273,7 +273,10 @@ select
     overflow-y: auto;
     overflow-x: hidden;
 }
-
+.contenedor-lateral-liq
+{
+    height: calc(100% - 0px) !important;
+}
 .contenedor-inicial
 {
     position: relative;
@@ -287,6 +290,15 @@ select
     background-color: #ecf0f1;
     height: 49px;
 }
+.pie_liquidacion
+{
+    padding-left: 20px;
+    position: relative;
+    width: 100%;
+    border-top: solid 1px silver;
+    background-color: #ecf0f1;
+    height: 50px;
+}
 .contenedor_central
 {
     position: relative;
@@ -295,6 +307,14 @@ select
     height: calc(100% - 50px);
 }
 .contenedor_central_servicio
+{
+    position: relative;
+    margin-left: 20%;
+    width: calc(80% - 1px);
+    height: calc(100% - 0px);
+    overflow: auto;
+}
+.contenedor_central_reporte
 {
     position: relative;
     margin-left: 20%;
@@ -1212,14 +1232,14 @@ select
 {
     border: solid 1px silver;
     text-align: center;
-    width: 37%;
+    width: calc(25% - 3px);
     font-weight: bold;
     float: left;
 }
 .contenido_tabla_liq
 {
-    width: 37%;
-    height: calc(100% - 190px);
+    width: calc(25% - 3px);
+    height: calc(100% - 100px);
     border: solid 1px silver;
     float: left;
 }
@@ -1232,7 +1252,7 @@ select
 }
 .contenedor_liquidacion
 {
-    height: calc(100% - 57px);
+    height: calc(100% - 101px);
 }
 
 .conductores
@@ -1700,7 +1720,7 @@ select
     height: calc(100% - 82px);
 }
 
-#contenido_tabla_liq_prod,#contenido_tabla_liq_desc
+#contenido_tabla_liq_prod,#contenido_tabla_liq_desc,#contenido_tabla_liq_rend
 {
     font-weight: bold ;
     margin-top: 10px;
@@ -1739,4 +1759,9 @@ select
 .total_reporte
 {
     width: 30% !important;
+}
+
+.lista_busqueda_liq
+{
+    height: calc(100% - 204px);
 }

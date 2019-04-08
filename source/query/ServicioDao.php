@@ -131,6 +131,7 @@ class ServicioDao {
         $id = $servicio->getId();
         $cliente = $servicio->getCliente();
         $ruta = $servicio->getRuta();
+        $truta = $servicio->getTRuta();
         $fecha = $servicio->getFecha();
         $hora = $servicio->getHora();
         $estado = $servicio->getEstado();
@@ -141,7 +142,7 @@ class ServicioDao {
         $conductor = $servicio->getConductor();
         $conn = new Conexion();
         try {
-            $query = "UPDATE tbl_servicio SET servicio_cliente = '$cliente',servicio_ruta = '$ruta', servicio_fecha = '$fecha',"
+            $query = "UPDATE tbl_servicio SET servicio_cliente = '$cliente',servicio_ruta = '$ruta',servicio_truta = '$truta', servicio_fecha = '$fecha',"
                     . "servicio_hora = '$hora',servicio_movil = '$movil',servicio_estado = '$estado',"
                     . "servicio_conductor = '$conductor',servicio_observacion = '$observacion', servicio_tarifa1 = '$tarifa1', servicio_tarifa2 = '$tarifa2' WHERE servicio_id = ".$id; 
             $conn->conectar();

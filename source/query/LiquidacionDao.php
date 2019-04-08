@@ -58,6 +58,27 @@ class LiquidacionDao {
         return $array;
     }
     
+    public function getRendiciones($conductor,$mes,$anio)
+    {
+        $array = array();
+        $conn = new Conexion();
+        try {
+            if(count($mes) == 1)
+            {
+                $mes = "0".$mes;
+            }
+            $query = "SELECT * FROM tbl_rendicion WHERE rendicion_conductor = $conductor AND rendicion_fecha = '$mes-$anio'";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            while($row = mysqli_fetch_array($result)) {
+                array_push($array,$row["rendicion_dato"] ."%".$row["rendicion_valor"]."%".$row["rendicion_tipo"]);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $array;
+    }
+    
     public function getPorcentajes()
     {
         $array = array();

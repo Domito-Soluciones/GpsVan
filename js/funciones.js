@@ -295,7 +295,7 @@ function getUsuario()
     var success = function(response)
     {
         NICK_GLOBAL = response;
-        $("#enlace_usuario").append(response);
+        $("#enlace_usuario").html(response);
     };
     getRequest(url,success,false);
 }
@@ -612,7 +612,10 @@ function cambioEjecutado()
 function marcarFilaActiva(id)
 {
     quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
-    agregarclase($("#"+id),"fila_contenedor_activa");
+    if(id !== '')
+    {
+        agregarclase($("#"+id),"fila_contenedor_activa");
+    }
 }
 
 function recortar(titulo,index = 32)
@@ -780,9 +783,9 @@ function borrarDirections()
     }
 }
 
-function exportarExcel(data)
+function exportar(data,params)
 {
-    location.href= urlUtil + "/reporteExcel.php?data="+data;
+    location.href= urlBase + "/"+data+".php?"+params;
 }
 
 function obtenerEstadoServicio(servicio)

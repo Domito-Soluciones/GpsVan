@@ -82,7 +82,7 @@
 </div>
 <div class="opcion-menu" id="monitoreo" onclick="cambiarModulo('monitoreo')">
     <div class="cont-img-menu">
-        <img class="img-menu" src="img/mapa.svg">
+        <img class="img-menu" src="img/monitorear.svg">
     </div>
     <div class="contenido-menu">
         Monitoreo
@@ -111,6 +111,17 @@
     </div>
     <div class="tooltip" id="tooltip_liquidaciones">
         Liquidaciones
+    </div>
+</div>
+<div class="opcion-menu" id="rendiciones" onclick="cambiarModulo('rendiciones')">
+    <div class="cont-img-menu">
+        <img class="img-menu" src="img/rendiciones.svg">
+    </div>
+    <div class="contenido-menu">
+        Rendiciones
+    </div>
+    <div class="tooltip" id="tooltip_liquidaciones">
+        Rendiciones
     </div>
 </div>
 <div class="opcion-menu" id="contrato" onclick="cambiarModulo('contrato')">
