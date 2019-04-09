@@ -6,6 +6,7 @@ var conductores = new Map();
 var conductoresNick = new Map();
 var MOVILES = {};
 var PAGINA = 'SERVICIOS';
+var flightPath;
 var CAMPOS = ["clienteServicio","rutaServicio","fechaServicio","inicioServicio","estadoServicio","movilServicio","conductorServicio"];
 $(document).ready(function(){
     borrarDirections();
@@ -47,6 +48,7 @@ function buscarServicio()
     var url = urlBase + "/servicio/GetServicios.php";
     var success = function(response)
     {
+        ocultarMapa();
         cerrarSession(response);
         var servicios = $("#contenedor_central");
         servicios.html("");
@@ -340,13 +342,17 @@ function dibujarRutaReal()
     var url = urlBase + "/servicio/GetDetalleServicioReal.php";
     var success = function(response)
     {
+        if(typeof flightPath !== "undefined")
+        {
+            flightPath.setMap(null);
+        }
         var polyline = [];
         for(var i = 0 ; i < response.length; i++)
         {
             var servicio = response[i];
             polyline.push({lat: parseFloat(servicio.servicio_lat), lng: parseFloat(servicio.servicio_lon)});
         }
-        var flightPath = new google.maps.Polyline({
+        flightPath = new google.maps.Polyline({
             path: polyline,
             geodesic: true,
             strokeColor: '#7394e7',
@@ -387,7 +393,7 @@ function obtenerPasajeros()
             {
                 estado = "Cancelado";
             }
-            else if (response[i].servicio_estado === '2')
+            else if (response[i].servicio_estado === '3')
             {
                 estado = "Entregado";
             }

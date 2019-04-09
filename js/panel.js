@@ -1023,13 +1023,13 @@ function colocarMarcadorPlaces(input)
     google.maps.event.addListener(map, "dragend", function() {
         var latlng = new google.maps.LatLng(POSITION[0], POSITION[1]);
         var punto = input;
-        punto.val("Cargando...");
+        punto.value = "Cargando...";
         setTimeout(function(){},2000);
         geocoder.geocode({'location': latlng}, function(results, status) {
             if (status === 'OK') {
                 var zero = results[0];
                 var address = zero.formatted_address;
-                punto.value =address;                
+                punto.value = address;                
             }
             else
             {
