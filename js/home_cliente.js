@@ -1,25 +1,10 @@
 /* global urlBase */
 
-var options = {};
-
 $(document).ready(function(){
-    validarServicios();
-    getDashBoard();
-    
-    $("#servicios_pendientes_link").click(function(){
-        mostrarServiciosPendientes();
-    });
-    
+    $("#contenido-central").load("home_cliente.html",function( response, status, xhr ) {
+        getDashBoard();
+    });   
 });
-
-function generarGraficoDona(canvas,data,options)
-{    
-    new Chart(canvas, {
-        type: 'doughnut',
-        data: data,
-        options: options
-    });
-}
 
 function getDashBoard()
 {
@@ -60,22 +45,5 @@ function getDashBoard()
     postRequest(url,params,success);
 }
 
-function mostrarServiciosPendientes()
-{
-    cambiarPropiedad($(".contenedor-servicios"),"display","initial");
-}
-function ocultarServiciosPendientes()
-{
-    cambiarPropiedad($(".contenedor-servicios"),"display","none");
-}
-
-function generarGraficoBarra(canvas,data,options)
-{
-    new Chart(canvas, {
-        type: 'horizontalBar',
-        data: data,
-        options: options
-    });
-}
 
 

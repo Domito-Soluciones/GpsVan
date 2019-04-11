@@ -120,7 +120,7 @@
     <div class="contenido-menu">
         Rendiciones
     </div>
-    <div class="tooltip" id="tooltip_liquidaciones">
+    <div class="tooltip" id="tooltip_rendiciones">
         Rendiciones
     </div>
 </div>
@@ -162,10 +162,10 @@
         <img class="img-menu" src="img/configuracion.svg">
     </div>
     <div class="contenido-menu">
-        Configuración
+        Configuraci&oacute;n
     </div>
-    <div class=tooltip id="tooltip_agente">
-        Configuración
+    <div class=tooltip id="tooltip_configuracion">
+        Configuraci&oacute;n
     </div>
 </div>
 <div class="opcion-menu menu-salir" id="salir" onclick="salir()">
@@ -181,6 +181,17 @@
     else
     {
 ?>
+    <div class="opcion-menu" id="home_cliente" onclick="cambiarModulo('home_cliente')">
+        <div class="cont-img-menu">
+            <img class="img-menu" src="img/dashboard.svg">
+        </div>
+        <div class="contenido-menu">
+            DashBoard
+        </div>
+        <div class="tooltip" id="tooltip_home_cliente">
+            DashBoard
+        </div>
+    </div>
     <div class="opcion-menu" id="panel_cliente" onclick="cambiarModulo('panel_cliente')">
         <div class="cont-img-menu">
             <img class="img-menu" src="img/mapa.svg">

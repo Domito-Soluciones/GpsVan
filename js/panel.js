@@ -524,6 +524,7 @@ function agregarServicio(fecha)
             if(response.resp === 'return')
             {
                 location.href="index.php";
+                return;
             }
             agregarDetalleServicio(response.servicio_id);
             vaciarFormulario();

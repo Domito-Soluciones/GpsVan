@@ -35,18 +35,7 @@ else if($_SESSION['tipo'] == '0')
         <script src="js/lib/alertify.js" type="text/javascript"></script>
         <script src="js/lib/jquery.datetimepicker.js" type="text/javascript"></script>
         <script src="js/funciones.js" type="text/javascript"></script>
-        <script type="text/javascript">
-            $(document).ready(function(){
-                $("#contenido-central").load("panel_cliente.html",function( response, status, xhr ) {
-                    $("#solicitar").click(function(){
-                        crearServicio();
-                    });
-                    iniciarFecha(['#fechas']);
-                    iniciarHora(['#hora']);
-                    buscarPasajeroCliente($("#clientes").val());
-                });
-            });
-        </script>
+        <script src="js/principal_cliente.js" type="text/javascript"></script>
     </head>
     <body>
         <div class="cabecera" id="cabecera">

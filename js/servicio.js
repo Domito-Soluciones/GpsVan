@@ -117,8 +117,9 @@ function abrirBuscador(id)
             $("#inicioServicio").prop("readonly",true);
             $("#estadoServicio").prop("disabled",true);
             $("#movilServicio").prop("disabled",true);
-            $("#tarifaServicio").prop("readonly",true);
             $("#tarifa2Servicio").prop("readonly",true);
+            cambiarPropiedad($("#tarifaServicio"),"display","none");
+            cambiarPropiedad($("#contTarifa1"),"display","none");
             cambiarPropiedad($("#guardar"),"display","none");
         }
         else if(TIPO_USUARIO === 'ADMIN')
