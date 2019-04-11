@@ -727,4 +727,22 @@ class ServicioDao {
         }
         return $idServicio;
     }
+    
+    public function modificarEstadoServicioPasajeros($idServicio,$estado)
+    {
+        $id = 0;
+        $conn = new Conexion();
+        try {
+            $query = "UPDATE tbl_servicio_pasajero SET servicio_pasajero_estado = $estado,servicio_pasajero_hora_destino = CURRENT_TIME() WHERE servicio_pasajero_id_servicio = $idServicio AND servicio_pasajero_estado  != 2";
+            $conn->conectar();
+            if (mysqli_query($conn->conn,$query)) {
+                $id = mysqli_insert_id($conn->conn);
+            } else {
+                echo mysqli_error($conn->conn);
+            }           
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $idServicio;
+    }
 }
