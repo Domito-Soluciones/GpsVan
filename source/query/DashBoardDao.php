@@ -43,6 +43,28 @@ class DashBoardDao {
         return $array;
     }
     
+    public function getServiciosCliente($cliente)
+    {
+        $array = array();
+        $conn = new Conexion();
+        $date = getdate();
+        $dia = $date['mday'] < 10 ? "0".$date['mday'] : $date['mday'];
+        $mes = $date['mon'] < 10 ? "0".$date['mon'] : $date['mon'];
+        $anio = $date['year'];
+        $fecha = $anio."-".$mes."-".$dia;
+        try {
+            $query = "SELECT COUNT(*) AS servicio_cantidad,servicio_estado FROM tbl_servicio WHERE DATE_FORMAT(servicio_fecha, '%Y-%m-%d') = '$fecha' AND servicio_cliente = '$cliente' GROUP BY servicio_estado";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            while($row = mysqli_fetch_array($result)) {
+                array_push($array, $row["servicio_estado"]."%".$row["servicio_cantidad"]);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $array;
+    }
+    
     public function getServiciosConvenio()
     {
         $array = array();
@@ -58,6 +80,49 @@ class DashBoardDao {
             $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
             while($row = mysqli_fetch_array($result)) {
                 array_push($array, $row["servicio_cliente"]."%".$row["servicio_cantidad"]);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $array;
+    }
+    
+    public function getServiciosCentroCosto()
+    {
+        $array = array();
+        $conn = new Conexion();
+        $date = getdate();
+        $dia = $date['mday'] < 10 ? "0".$date['mday'] : $date['mday'];
+        $mes = $date['mon'] < 10 ? "0".$date['mon'] : $date['mon'];
+        $anio = $date['year'];
+        $fecha = $anio."-".$mes."-".$dia;
+        try {
+            $query = "SELECT count(*) as servicio_cantidad,pasajero_centro_costo FROM tbl_servicio JOIN tbl_servicio_pasajero ON servicio_id = servicio_pasajero_id_servicio JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id JOIN tbl_centro_costo ON pasajero_centro_costo = centro_costo_nombre WHERE DATE_FORMAT(servicio_fecha, '%Y-%m-%d') = '$fecha' AND servicio_estado = 5 GROUP BY servicio_cliente ORDER BY servicio_cantidad DESC";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            while($row = mysqli_fetch_array($result)) {
+                array_push($array, $row["pasajero_centro_costo"]."%".$row["servicio_cantidad"]);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $array;
+    }
+    public function getGastoCentroCosto()
+    {
+        $array = array();
+        $conn = new Conexion();
+        $date = getdate();
+        $dia = $date['mday'] < 10 ? "0".$date['mday'] : $date['mday'];
+        $mes = $date['mon'] < 10 ? "0".$date['mon'] : $date['mon'];
+        $anio = $date['year'];
+        $fecha = $anio."-".$mes."-".$dia;
+        try {
+            $query = "SELECT sum(servicio_tarifa2) as servicio_cantidad,pasajero_centro_costo FROM tbl_servicio JOIN tbl_servicio_pasajero ON servicio_id = servicio_pasajero_id_servicio JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id JOIN tbl_centro_costo ON pasajero_centro_costo = centro_costo_nombre WHERE DATE_FORMAT(servicio_fecha, '%Y-%m-%d') = '$fecha' AND servicio_estado = 5 GROUP BY servicio_cliente ORDER BY servicio_cantidad DESC";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            while($row = mysqli_fetch_array($result)) {
+                array_push($array, $row["pasajero_centro_costo"]."%".$row["servicio_cantidad"]);
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

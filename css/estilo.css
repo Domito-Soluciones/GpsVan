@@ -1270,6 +1270,13 @@ select
     width: 80%;
     height: calc(100% - 40px);
 }
+.contenedor-dashboard-cliente
+{
+    padding-top: 40px;
+    float: left;
+    width: 100%;
+    height: calc(100% - 40px);
+}
 .contenedor-servicios
 {
     float: left;
@@ -1681,11 +1688,11 @@ select
     display: none;
 }
 
-#vConvenio
+#vConvenio,#vGanCC,#vCantCC
 {
     font-size: 12px;
 }
-#vConvenio div
+#vConvenio div,#vGanCC div,#vCantCC div
 {
     height: 20px;
 }
@@ -1695,7 +1702,7 @@ select
     height: calc(100% - 81px);
 }
 
-.barra
+.barra,.barra2
 {
     height: 10px !important;
     background-color:green;
