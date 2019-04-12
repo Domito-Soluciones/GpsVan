@@ -1772,3 +1772,8 @@ select
 {
     height: calc(100% - 204px);
 }
+
+#botonCancelar
+{
+    display: none;
+}

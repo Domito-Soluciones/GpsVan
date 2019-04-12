@@ -10,6 +10,10 @@ $(document).ready(function(){
         mostrarServiciosPendientes();
     });
     
+    $("#botonCancelar").click(function(){
+        ocultarServiciosPendientes();
+    });
+    
 });
 
 function generarGraficoDona(canvas,data,options)

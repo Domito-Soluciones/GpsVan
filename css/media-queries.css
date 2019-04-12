@@ -120,6 +120,8 @@
     #servicios_pendientes_link
     {
         display: block;
+        width: 100%;
+        padding: 0;
     }
     .servicios_pendientes{
         left: 0;
@@ -128,7 +130,35 @@
     }
     #botonCancelar
     {
-        display: initial;
+        display: block;
+    }
+    
+    .indicador-dashboard
+    {
+        
+    }
+    .menu
+    {
+        width:50px;
+    }
+    .contenedor-dashboard
+    {
+        width: 100%;
+        padding-top: 20px;
+    }
+    .indicador-dashboard
+    {
+        margin: 0;
+        width: calc(100% - 0px);
+    }
+    
+    #contenedor_mapa
+    {
+        margin-left: 0 !important;
+    }
+    .buscador-asignacion
+    {
+        height: 480px;        
     }
     
 }
