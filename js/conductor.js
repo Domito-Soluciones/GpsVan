@@ -293,7 +293,7 @@ function buscarConductor()
             alertify.error("No hay registros que mostrar");
             return;
         }
-        conductores.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div>Tipo</div><div></div></div>")
+        conductores.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div class=\"mini_tab\">Tipo</div><div></div></div>")
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].conductor_id;
@@ -321,7 +321,7 @@ function buscarConductor()
                     "<div onClick=\"abrirModificar('"+id+"')\">"+rut+"</div>"+
                     "<div onClick=\"abrirModificar('"+id+"')\">"+nombre+"</div>"+
                     "<div onClick=\"abrirModificar('"+id+"')\">"+papellido+"</div>"+
-                    "<div onClick=\"abrirModificar('"+id+"')\">"+tipo+"</div>"+
+                    "<div class=\"mini_tab\" onClick=\"abrirModificar('"+id+"')\">"+tipo+"</div>"+
                     "<div><img onclick=\"preEliminarConductor('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
                     "</div>");
         }
@@ -336,7 +336,7 @@ function buscarConductorGrupo(grupo)
     marcarFilaActiva(grupo);
     var conductores = $("#lista_busqueda_conductor_detalle");
     conductores.html("");
-    conductores.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div>Grupo</div></div>")
+    conductores.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div class=\"mini_tab\" >Grupo</div></div>")
     var noHayRegistros = true;
     for(var i = 0 ; i < CONDUCTORES.length; i++)
     {
@@ -368,7 +368,7 @@ function buscarConductorGrupo(grupo)
                     "<div onClick=\"abrirModificar('"+id+"')\">"+rut+"</div>"+
                     "<div onClick=\"abrirModificar('"+id+"')\">"+nombre+"</div>"+
                     "<div onClick=\"abrirModificar('"+id+"')\">"+papellido+"</div>"+
-                    "<div onClick=\"abrirModificar('"+id+"')\">"+tipo+"</div>"+
+                    "<div class=\"mini_tab\" onClick=\"abrirModificar('"+id+"')\">"+tipo+"</div>"+
                     "<div><img onclick=\"preEliminarConductor('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
                     "</div>");
         }

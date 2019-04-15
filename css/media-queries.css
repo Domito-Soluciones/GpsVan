@@ -158,7 +158,53 @@
     }
     .buscador-asignacion
     {
-        height: 480px;        
+        height: auto;
+        padding-bottom: 20px;
+    }
+    
+    .asignacion_buscador
+    {
+        float: left;
+    }
+    .buscador-pasajero
+    {
+        height: auto;
+        padding-bottom: 20px;
+    }
+    .contenedor_agregar
+    {
+        padding-left: 15px;
+        width: 100%;
+        margin-left: 0;
+        height: auto;
+        padding-bottom: 50px;
+    }
+    .input_asignar_agregar,.input_asignar_agregar_grande
+    {
+        width: 80%;
+    }
+    .contenedor_editar
+    {
+        padding-left: 15px;
+        width: 100%;
+        margin-left: 0;
+        height: auto;
+        padding-bottom: 20px;
+    }
+    .input_asignar_editar {
+        width:200px;
+    }
+    .contenedor_central
+    {
+        margin-top: 200px;
+    }
+    
+    .fila_contenedor_servicio div
+    {
+        font-size: 12px;
+    }
+    .mini_tab{
+        display: none;
     }
     
 }
