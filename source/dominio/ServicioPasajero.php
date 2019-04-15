@@ -6,6 +6,7 @@ class ServicioPasajero {
     private $destino;
     private $hora;
     private $estado;
+    private $estadoCancelacion;
     
     function getId() {
         return $this->id;
@@ -27,6 +28,10 @@ class ServicioPasajero {
         return $this->estado;
     }
 
+    function getEstadoCancelacion() {
+        return $this->estadoCancelacion;
+    }
+
     function setId($id) {
         $this->id = $id;
     }
@@ -46,6 +51,11 @@ class ServicioPasajero {
     function setEstado($estado) {
         $this->estado = $estado;
     }
+
+    function setEstadoCancelacion($estadoCanelacion) {
+        $this->estadoCancelacion = $estadoCanelacion;
+    }
+
 
 
 }

@@ -81,7 +81,7 @@ class Servicio {
     function getEstado() {
         return $this->estado;
     }
-
+    
     function getObservaciones() {
         return $this->observaciones;
     }

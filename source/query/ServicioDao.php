@@ -272,6 +272,7 @@ class ServicioDao {
                 $servicioPasajero->setId($row["servicio_pasajero_id_servicio"]);          
                 $servicioPasajero->setPasajero($row["pasajero_nombre"]." ".$row["pasajero_papellido"]);
                 $servicioPasajero->setEstado($row["servicio_pasajero_estado"]);
+                $servicioPasajero->setEstadoCancelacion($row["pasajero_estado_cancelado"]);
                 $servicioPasajero->setHora($row["servicio_pasajero_hora_destino"]);
                 $servicioPasajero->setDestino($row["servicio_pasajero_destino"]);
                 array_push($array, $servicioPasajero);

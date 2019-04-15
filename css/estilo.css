@@ -1525,7 +1525,7 @@ select
     text-align: center;
     width: 25%;
     float: left;
-    font-size: 17px;
+    font-size: 15px;
 }
 
 .pendiente
@@ -1641,12 +1641,16 @@ select
 }
 .dir_pasajero
 {
-    width: 47% !important;
+    width: 44% !important;
+}
+.est_pasajero
+{
+    width: 27% !important;
 }
 
 .nombre_pasajero
 {
-    width: 24% !important;
+    width: 17% !important;
 }
 .contenedor_editar
 {

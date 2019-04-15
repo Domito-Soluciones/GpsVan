@@ -16,11 +16,13 @@ for ($i = 0 ; $i < count($servicios); $i++)
     $pasajero = $servicio->getPasajero();
     $hora = $servicio->getHora();
     $estado = $servicio->getEstado();
+    $estadoCancelacion = $servicio->getEstadoCancelacion();
     $destino = $servicio->getDestino();
         echo "{\"servicio_id\":\"".$id."\","
             . "\"servicio_pasajero\":\"".$pasajero."\","
             . "\"servicio_hora_destino\":\"".$hora."\","
             . "\"servicio_estado\":\"".$estado."\","
+            . "\"servicio_estado_cancelacion\":\"".$estadoCancelacion."\","
             . "\"servicio_destino\":\"".$destino."\"}";
         if (($i+1) != count($servicios))
         {

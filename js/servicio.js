@@ -66,6 +66,7 @@ function buscarServicio()
             var fecha = response[i].servicio_fecha;
             var hora = response[i].servicio_hora;
             var estado = response[i].servicio_estado;
+            var estadoCancelacion = response[i].servicio_estado;
             var conductor = response[i].servicio_movil;
             servicios.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\" onClick=\"abrirBuscador('"+id+"')\">"+
                     "<div>"+id+"</div>"+
@@ -288,6 +289,7 @@ function cambiarPestaniaGeneral()
     quitarclase($("#p_general"),"dispose");
     agregarclase($("#p_pasajero"),"dispose");
     agregarclase($("#p_ruta"),"dispose");
+    quitarclase($("#guardar"),"oculto");
 }
 
 function cambiarPestaniaPasajero()
@@ -298,6 +300,7 @@ function cambiarPestaniaPasajero()
     quitarclase($("#p_pasajero"),"dispose");
     agregarclase($("#p_general"),"dispose");
     agregarclase($("#p_ruta"),"dispose");
+    agregarclase($("#guardar"),"oculto");
 }
 function cambiarPestaniaRuta()
 {
@@ -307,6 +310,7 @@ function cambiarPestaniaRuta()
     quitarclase($("#p_ruta"),"dispose");
     agregarclase($("#p_general"),"dispose");
     agregarclase($("#p_pasajero"),"dispose");
+    agregarclase($("#guardar"),"oculto");
 }
 
 function obtenerEstadoServicio(servicio)
@@ -392,7 +396,7 @@ function obtenerPasajeros()
             }
             else if (response[i].servicio_estado === '2')
             {
-                estado = "Cancelado";
+                estado = response[i].servicio_estado_cancelacion;
             }
             else if (response[i].servicio_estado === '3')
             {
@@ -403,7 +407,7 @@ function obtenerPasajeros()
                     "<div class=\"nombre_pasajero\">"+pasajero+"</div>"+
                     "<div class=\"dir_pasajero\">"+destino+"</div>"+
                     "<div class=\"dato_pasajero\">"+horaDestino+"</div>"+
-                    "<div class=\"dato_pasajero\">"+estado+"</div></div>");
+                    "<div class=\"est_pasajero\">"+estado+"</div></div>");
         }
     };
     postRequest(url,params,success);

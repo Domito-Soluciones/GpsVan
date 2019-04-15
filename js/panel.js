@@ -12,6 +12,7 @@ var pasajeros = [];
 var direccion_empresa;
 var NOMBRE_CLIENTE;
 var conductores = new Map();
+var GEOCODING = false;
 
 var CAMPOS = ["clientes","ruta","truta","fechaDesde","hora","vehiculos","tarifa1","tarifa2"];
 
@@ -553,6 +554,7 @@ function agregarServicio(fecha)
 
 function dibujarRuta(origen,destinos)
 {
+    GEOCODING = false;
     console.log(destinos+"");
     if(typeof origen === 'undefined')
     {
@@ -1008,6 +1010,7 @@ function initPlacesAutoComplete(input) {
 function colocarMarcadorPlaces(input)
 {
     eliminarMarkers();
+    GEOCODING = true;
     var marker = new google.maps.Marker({
         position: map.getCenter(),
         map: map
@@ -1022,21 +1025,24 @@ function colocarMarcadorPlaces(input)
     });
     
     google.maps.event.addListener(map, "dragend", function() {
-        var latlng = new google.maps.LatLng(POSITION[0], POSITION[1]);
-        var punto = input;
-        punto.value = "Cargando...";
-        setTimeout(function(){},2000);
-        geocoder.geocode({'location': latlng}, function(results, status) {
-            if (status === 'OK') {
-                var zero = results[0];
-                var address = zero.formatted_address;
-                punto.value = address;                
-            }
-            else
-            {
-                alertify.error('Geocoder failed due to: ' + status);
-            }
-        });
+        if(GEOCODING)
+        {
+            var latlng = new google.maps.LatLng(POSITION[0], POSITION[1]);
+            var punto = input;
+            punto.value = "Cargando...";
+            setTimeout(function(){},2000);
+            geocoder.geocode({'location': latlng}, function(results, status) {
+                if (status === 'OK') {
+                    var zero = results[0];
+                    var address = zero.formatted_address;
+                    punto.value = address;                
+                }
+                else
+                {
+                    alertify.error('Geocoder failed due to: ' + status);
+                }
+            });
+        }
     });
 }
 
