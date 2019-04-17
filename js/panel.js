@@ -1039,7 +1039,7 @@ function colocarMarcadorPlaces(input)
                 }
                 else
                 {
-                    alertify.error('Geocoder failed due to: ' + status);
+                    //alertify.error('Geocoder failed due to: ' + status);
                 }
             });
         }

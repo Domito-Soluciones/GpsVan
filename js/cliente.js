@@ -731,7 +731,7 @@ function colocarMarcadorPlaces()
             }
             else
             {
-                alertify.error('Geocoder failed due to: ' + status);
+                //alertify.error('Geocoder failed due to: ' + status);
             }
         });
     });
@@ -799,7 +799,7 @@ function preEliminarCliente(id)
                     }
                     else
                     {
-                        alertify.error('Geocoder failed due to: ' + status);
+                        //alertify.error('Geocoder failed due to: ' + status);
                     }
                 });
             });
