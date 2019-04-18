@@ -1,4 +1,4 @@
-/* global urlBase, alertify, PLACES_AUTOCOMPLETE_API, POSITION, ID_CLIENTE, directionsDisplay, markers, google, geocoder, map */
+/* global urlBase, alertify, PLACES_AUTOCOMPLETE_API, POSITION, ID_CLIENTE, directionsDisplay, markers, google, geocoder, map, flightPath */
 var ID_PASAJERO;
 var ID_EMPRESA;
 var ID_RUTA;
@@ -11,14 +11,7 @@ var mapa_oculto = true;
 var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","punto","empresa","centro"];
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
-    if (directionsDisplay !== null) {
-        directionsDisplay.setMap(null);
-        directionsDisplay = null;
-    }
-    for(var i = 0; i < markers.length;i++)
-    {
-        markers[i].setMap(null);
-    }
+    limpiarMapa();
     buscarClientePasajero();
     buscarPasajero();
     $("#agregar").click(function(){
