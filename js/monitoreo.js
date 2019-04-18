@@ -7,14 +7,7 @@ var interval;
 var PATENTE;
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
-    if (directionsDisplay !== null) {
-        directionsDisplay.setMap(null);
-        directionsDisplay = null;
-    }
-    for(var i = 0; i < markers.length;i++)
-    {
-        markers[i].setMap(null);
-    }
+    limpiarMapa();
     cargarMovilesMapa(true);
     interval = setInterval('moverMovilesMapa()',60000);
     

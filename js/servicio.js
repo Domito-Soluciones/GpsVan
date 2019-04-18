@@ -1,4 +1,4 @@
-/* global urlBase, alertify, CREADO, EN_PROCCESO_DE_ASIGNACION, ASIGNADO, ACEPTADO, EN_PROGRESO, FINALIZADO, google, map, markers, directionsDisplay, TIPO_USUARIO */
+/* global urlBase, alertify, CREADO, EN_PROCCESO_DE_ASIGNACION, ASIGNADO, ACEPTADO, EN_PROGRESO, FINALIZADO, google, map, markers, directionsDisplay, TIPO_USUARIO, flightPath */
 var SERVICIOS;
 var ESTADO_SERVICIO;
 var RUTA;
@@ -6,10 +6,9 @@ var conductores = new Map();
 var conductoresNick = new Map();
 var MOVILES = {};
 var PAGINA = 'SERVICIOS';
-var flightPath;
 var CAMPOS = ["clienteServicio","rutaServicio","fechaServicio","inicioServicio","estadoServicio","movilServicio","conductorServicio"];
 $(document).ready(function(){
-    borrarDirections();
+    limpiarMapa();
     PAGINA_ANTERIOR = PAGINA;
     eliminarMarkers();
     iniciarFecha([$("#desde"),$("#hasta")]);
@@ -347,10 +346,6 @@ function dibujarRutaReal()
     var url = urlBase + "/servicio/GetDetalleServicioReal.php";
     var success = function(response)
     {
-        if(typeof flightPath !== "undefined")
-        {
-            flightPath.setMap(null);
-        }
         var polyline = [];
         for(var i = 0 ; i < response.length; i++)
         {

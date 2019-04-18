@@ -15,6 +15,7 @@ var places;
 var GOOGLE_MAPS_API = "https://maps.googleapis.com/maps/api/js?";
 var servicios = new Map();
 var TIPO_SERVICIO = 0;
+var flightPath;
 
 $(document).ready(function(){
     TIPO_USUARIO = 'ADMIN';

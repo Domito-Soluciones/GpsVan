@@ -1,5 +1,5 @@
 
-/* global MODIFICADO, alertify, PAGINA_ANTERIOR, INTERVAL_SERVICIOS, MENU_OCULTO, PLACES_AUTOCOMPLETE_API, POSITION, API_KEY, google, map */
+/* global MODIFICADO, alertify, PAGINA_ANTERIOR, INTERVAL_SERVICIOS, MENU_OCULTO, PLACES_AUTOCOMPLETE_API, POSITION, API_KEY, google, map, flightPath, markers */
 var PAGINA_ANTERIOR;
 var MODIFICADO = false;
 var KEY = "DGFSGHJRTJTHWGWEJNGWI9EFN";
@@ -813,5 +813,21 @@ function obtenerEstadoServicio(servicio)
     else if(servicio === FINALIZADO)
     {
         return "Finalizado"; 
+    }
+}
+
+function limpiarMapa()
+{
+    if (directionsDisplay !== null) {
+        directionsDisplay.setMap(null);
+        directionsDisplay = null;
+    }
+    if(typeof flightPath !== "undefined")
+    {
+        flightPath.setMap(null);
+    }
+    for(var i = 0; i < markers.length;i++)
+    {
+        markers[i].setMap(null);
     }
 }

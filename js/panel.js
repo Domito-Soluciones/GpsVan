@@ -1,4 +1,4 @@
-/* global POLYLINE, alertify, urlBase, PLACES_AUTOCOMPLETE_API, POSITION, API_KEY, PLACES_DETAILS_API, google, map, DIRECTIONS_API, EN_PROCCESO_DE_ASIGNACION, markers, TIPO_SERVICIO, directionsService, directionsDisplay, geocoder, MENU_VISIBLE, GOOGLE_MAPS_API */
+/* global POLYLINE, alertify, urlBase, PLACES_AUTOCOMPLETE_API, POSITION, API_KEY, PLACES_DETAILS_API, google, map, DIRECTIONS_API, EN_PROCCESO_DE_ASIGNACION, markers, TIPO_SERVICIO, directionsService, directionsDisplay, geocoder, MENU_VISIBLE, GOOGLE_MAPS_API, flightPath */
 var CLIENTES = {};
 var moviles = [];
 var clientesArray = [];
@@ -189,15 +189,7 @@ function init()
     cargarClientes();
     cargarMoviles();
     directionsService = new google.maps.DirectionsService();
-    if(directionsDisplay === null)
-    {
-        directionsDisplay = new google.maps.DirectionsRenderer();
-        directionsDisplay.setMap(map);
-    }
-    for(var i = 0; i < markers.length;i++)
-    {
-        markers[i].setMap(null);
-    }
+    limpiarMapa();
     iniciarFecha(['#fechaDesde','#fechaHasta']);
     iniciarHora(['#hora']);
 }

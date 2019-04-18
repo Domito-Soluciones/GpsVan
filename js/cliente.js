@@ -1,4 +1,4 @@
-/* global urlBase, alertify, obj, google, API_KEY, map, directionsDisplay, markers, geocoder, DIRECCION_EMPRESA */
+/* global urlBase, alertify, obj, google, API_KEY, map, directionsDisplay, markers, geocoder, DIRECCION_EMPRESA, flightPath */
 var CLIENTES;
 var AGREGAR = true;
 var PAGINA = 'CLIENTES';
@@ -12,14 +12,7 @@ var CAMPOS = ["rut","razon","tipoCliente","direccion","nombreContacto","telefono
 $(document).ready(function(){
     cambiarPropiedad($("#titulo_tarifa"),"background-color","white");
     PAGINA_ANTERIOR = PAGINA;
-    if (directionsDisplay !== null) {
-        directionsDisplay.setMap(null);
-        directionsDisplay = null;
-    }
-    for(var i = 0; i < markers.length;i++)
-    {
-        markers[i].setMap(null);
-    }
+    limpiarMapa();
     buscarCliente();
     $("#agregar").click(function(){
         quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
