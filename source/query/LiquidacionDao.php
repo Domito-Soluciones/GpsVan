@@ -95,4 +95,136 @@ class LiquidacionDao {
         }
         return $array;
     }
+    
+    public function getServicios($id,$empresa,$conductor,$estado,$movil,$desde,$hdesde,$hasta,$hhasta)
+    {
+        $array = array();
+        $conn = new Conexion();
+        try {
+            $buscaId = '';
+            $buscaEmpresa = '';
+            $buscaConductor = '';
+            $buscaMovil = '';
+            $buscaEstado = '';
+            $buscaFecha = '';
+            if($id != '')
+            {
+                $buscaId = " AND servicio_id LIKE '%$id%' ";
+            }
+            if($empresa != '')
+            {
+                $buscaEmpresa = " AND servicio_cliente LIKE '%$empresa%' ";
+            }
+            if($conductor != '')
+            {
+                $buscaConductor = " AND servicio_conductor = '$conductor' ";
+            }
+            if($movil != '')
+            {
+                $buscaMovil = " AND servicio_movil LIKE '%$movil%' ";
+            }
+            if($estado != '')
+            {
+                $buscaEstado = " AND servicio_estado = $estado ";
+            }
+            if($desde != '' && $hasta == '')
+            {
+                $buscaFecha = "AND servicio_fecha > '".$desde." ".$hdesde."' ";
+            }
+            if($hasta != '' && $desde == '')
+            {
+                $buscaFecha = "AND servicio_fecha < '".$hasta." ".$hhasta."' ";
+            }
+            if($desde != '' && $hasta != '')
+            {
+                $buscaFecha = "AND servicio_fecha BETWEEN '".$desde." ".$hdesde."' AND '".$hasta." ".$hhasta."'";
+            }
+            $query = "SELECT * FROM tbl_servicio WHERE servicio_estado NOT IN (0,6) "
+                    .$buscaFecha." ".$buscaId." ".$buscaEmpresa." ".$buscaConductor." ".$buscaMovil." ".$buscaEstado
+                    . " ORDER BY servicio_id DESC LIMIT 15";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            while($row = mysqli_fetch_array($result)) {
+                $servicio = new Servicio();
+                $servicio->setId($row["servicio_id"]);          
+                $servicio->setCliente($row["servicio_cliente"]);
+                $servicio->setRuta($row["servicio_ruta"]);
+                $date = new DateTime($row["servicio_fecha"]);
+                $servicio->setFecha(date_format($date, 'd/m/Y'));
+                $servicio->setHora($row["servicio_hora"]);
+                $servicio->setMovil($row["servicio_movil"]);
+                $servicio->setConductor($row["servicio_conductor"]);
+                $servicio->setTarifa1($row["servicio_tarifa1"]);
+                $servicio->setTarifa2($row["servicio_tarifa2"]);
+                $servicio->setEstado($row["servicio_estado"]);
+                array_push($array, $servicio);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $array;
+    }
+    
+    public function getProduccion($id,$empresa,$conductor,$estado,$movil,$desde,$hdesde,$hasta,$hhasta)
+    {
+        $array = array();
+        $conn = new Conexion();
+        try {
+            $buscaId = '';
+            $buscaEmpresa = '';
+            $buscaConductor = '';
+            $buscaMovil = '';
+            $buscaEstado = '';
+            $buscaFecha = '';
+            if($id != '')
+            {
+                $buscaId = " AND servicio_id LIKE '%$id%' ";
+            }
+            if($empresa != '')
+            {
+                $buscaEmpresa = " AND servicio_cliente LIKE '%$empresa%' ";
+            }
+            if($conductor != '')
+            {
+                $buscaConductor = " AND servicio_conductor = '$conductor' ";
+            }
+            if($movil != '')
+            {
+                $buscaMovil = " AND servicio_movil LIKE '%$movil%' ";
+            }
+            if($estado != '')
+            {
+                $buscaEstado = " AND servicio_estado = $estado ";
+            }
+            if($desde != '' && $hasta == '')
+            {
+                $buscaFecha = "AND servicio_fecha > '".$desde." ".$hdesde."' ";
+            }
+            if($hasta != '' && $desde == '')
+            {
+                $buscaFecha = "AND servicio_fecha < '".$hasta." ".$hhasta."' ";
+            }
+            if($desde != '' && $hasta != '')
+            {
+                $buscaFecha = "AND servicio_fecha BETWEEN '".$desde." ".$hdesde."' AND '".$hasta." ".$hhasta."'";
+            }
+            $query = "SELECT * FROM tbl_servicio WHERE servicio_estado = 5 "
+                    .$buscaFecha." ".$buscaId." ".$buscaEmpresa." ".$buscaConductor." ".$buscaMovil." ".$buscaEstado
+                    . " ORDER BY servicio_id DESC";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            while($row = mysqli_fetch_array($result)) {
+                $servicio = new Servicio();
+                $servicio->setId($row["servicio_id"]);          
+                $date = new DateTime($row["servicio_fecha"]);
+                $servicio->setFecha(date_format($date, 'd/m/Y'));
+                $servicio->setHora($row["servicio_hora"]);
+                $servicio->setTarifa1($row["servicio_tarifa1"]);
+                array_push($array, $servicio);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $array;
+    }
 }
