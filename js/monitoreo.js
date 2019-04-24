@@ -170,10 +170,9 @@ function dibujarMarcador(id,lat,lon,nombre,servicio)
 {
     var myLatLng = {lat: lat, lng: lon};
     var icon = {
-        url: "img/furgon.svg", // url
+        url: "img/furgon.svg",
         scaledSize: new google.maps.Size(70, 30),
-        origin: new google.maps.Point(0,0),
-        anchor: new google.maps.Point(0, 0)
+        origin: new google.maps.Point(0,0)
     };
     var marker = new google.maps.Marker({
         position: myLatLng,
@@ -189,7 +188,7 @@ function dibujarMarcador(id,lat,lon,nombre,servicio)
         divServicio = "<div style='font-size:10px;font-weight:bold;'>N: "+servicio+"</div>";
         estiloMovil = " style='font-size:8px;font-weight:bold;' ";
     }
-    var contentString = "<div style='height:23px;'>"+divServicio+"<div "+estiloMovil+">"+id+"</div>";
+    var contentString = "<div style='height:35px;'>"+divServicio+"<div "+estiloMovil+">"+id+"</div><div "+estiloMovil+">"+nombre+"</div>";
     var infowindow = new google.maps.InfoWindow({
         content: contentString
     });
@@ -237,6 +236,17 @@ function dibujarServicio(id)
 
 function animarMovil(patente)
 {
+    marcarFilaActiva(patente);
     PATENTE = patente;
-    map.setZoom(18);   
+    for(var i = 0 ; i < markers.length; i++)
+    {
+        if(markers[i].get("idMarker") === PATENTE)
+        {
+            var latLng = markers[i].getPosition(); 
+            map.setCenter(latLng); 
+            map.setZoom(18);  
+            break;
+        }
+    } 
+    
 }

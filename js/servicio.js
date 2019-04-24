@@ -265,7 +265,7 @@ function iniciarPestanias()
         obtenerPasajeros();
     });
     $("#p_ruta").click(function(){
-        if(ESTADO_SERVICIO < 5)
+        if(ESTADO_SERVICIO === 5)
         {
             $("#contenedor_mapa").html("<div class=\"mensaje_bienvenida\">El servicio debe estar finalizado para ver la ruta</div>");
         }
