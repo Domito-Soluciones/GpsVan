@@ -9,30 +9,30 @@ $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
     limpiarMapa();
     cargarMovilesMapa(true);
-    interval = setInterval('moverMovilesMapa()',60000);
+    interval = setInterval('moverMovilesMapa()',3000);
     
     $("#busqueda").keyup(function(e){
         cargarMovilesMapa(false);
     });
     
-    google.maps.event.addListener(map,'zoom_changed',function(){
-        if(map.getZoom() > 17)
-        {
-            for(var i = 0 ; i < markers.length; i++)
-            {
-                if(markers[i].get("idMarker") === PATENTE)
-                {
-                    clearInterval(interval);
-                    interval = setInterval('moverMovilesMapa()',3000);
-                }
-            }
-       }
-       else
-       {
-            clearInterval(interval);
-            interval = setInterval('moverMovilesMapa()',60000);           
-       }
-    });
+//    google.maps.event.addListener(map,'zoom_changed',function(){
+//        if(map.getZoom() > 17)
+//        {
+//            for(var i = 0 ; i < markers.length; i++)
+//            {
+//                if(markers[i].get("idMarker") === PATENTE)
+//                {
+//                    clearInterval(interval);
+//                    interval = setInterval('moverMovilesMapa()',3000);
+//                }
+//            }
+//       }
+//       else
+//       {
+//            clearInterval(interval);
+//            interval = setInterval('moverMovilesMapa()',60000);           
+//       }
+//    });
 });
 
 function buscarServicio()
@@ -148,14 +148,21 @@ function moverMovilesMapa()
             for(var j = 0 ; i < markers.length; i++)
             {                
                 var patente = response[i].movil_patente;
+                var nombre = response[i].movil_nombre;
+                var servicio = response[i].movil_servicio;
                 var lat = response[i].movil_lat;
                 var lon = response[i].movil_lon;
                 var estado = response[i].movil_estado;
-                if(estado !== '0')
+                if(markers[j].get("idMarker") === patente)
                 {
-                    if(markers[j].get("idMarker") === patente)
+                    if(estado === '0')
                     {
-                        var latlng = new google.maps.LatLng(lat, lon);
+                        markers[j].setMap(null);
+                    }
+                    else
+                    {
+                        var latlng = new google.maps.LatLng(parseInt(lat), parseInt(lon));
+                        dibujarMarcador(patente,lat,lon,nombre,servicio);
                         markers[j].setPosition(latlng);
                     }
                 }
