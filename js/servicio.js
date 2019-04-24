@@ -1,4 +1,4 @@
-/* global urlBase, alertify, CREADO, EN_PROCCESO_DE_ASIGNACION, ASIGNADO, ACEPTADO, EN_PROGRESO, FINALIZADO, google, map, markers, directionsDisplay, TIPO_USUARIO, flightPath */
+/* global urlBase, alertify, CREADO, EN_PROCCESO_DE_ASIGNACION, ASIGNADO, ACEPTADO, EN_PROGRESO, FINALIZADO, google, map, markers, directionsDisplay, TIPO_USUARIO, flightPath, CANCELADO */
 var SERVICIOS;
 var ESTADO_SERVICIO;
 var RUTA;
@@ -263,7 +263,7 @@ function iniciarPestanias()
         obtenerPasajeros();
     });
     $("#p_ruta").click(function(){
-        if(ESTADO_SERVICIO < 5)
+        if(ESTADO_SERVICIO === 5)
         {
             $("#contenedor_mapa").html("<div class=\"mensaje_bienvenida\">El servicio debe estar finalizado para ver la ruta</div>");
         }
@@ -337,6 +337,10 @@ function obtenerEstadoServicio(servicio)
     else if(servicio === FINALIZADO)
     {
         return "Finalizado"; 
+    }
+    else if(servicio === CANCELADO)
+    {
+        return "Cancelado"; 
     }
 }
 
