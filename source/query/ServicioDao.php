@@ -90,9 +90,9 @@ class ServicioDao {
             }
             for($i = 0 ; $i < count($pasajeros) ; $i++)
             {
-                if($pasajeros[$i] != "undefined")
+                if($pasajeros[$i] != "")
                 {
-                    $query .= "INSERT INTO tbl_servicio_pasajero (servicio_pasajero_id_servicio,servicio_pasajero_id_pasajero,servicio_pasajero_destino) VALUES ($idServicio,$pasajeros[$i],'$destinos[$i]');"; 
+                    $query .= "INSERT INTO tbl_servicio_pasajero (servicio_pasajero_id_servicio,servicio_pasajero_id_pasajero,servicio_pasajero_destino) VALUES ($idServicio,'$pasajeros[$i]','$destinos[$i]');"; 
                 }
             }
             $conn->conectar();
@@ -404,12 +404,12 @@ class ServicioDao {
             $query = "SELECT servicio_id,servicio_cliente,servicio_ruta,servicio_truta,servicio_fecha,"
                     . "servicio_hora,servicio_conductor,servicio_estado,servicio_tarifa1,"
                     . "servicio_observacion,servicio_conductor,movil_nombre,"
-                    . "servicio_pasajero_estado,servicio_pasajero_destino,pasajero_id,pasajero_nombre,pasajero_papellido,pasajero_celular,cliente_direccion "
+                    . "servicio_pasajero_estado,servicio_pasajero_id_pasajero,servicio_pasajero_destino,pasajero_id,pasajero_nombre,pasajero_papellido,pasajero_celular,cliente_direccion "
                     . " FROM tbl_servicio JOIN tbl_servicio_pasajero ON"
                     . " servicio_id = servicio_pasajero_id_servicio JOIN tbl_servicio_detalle"
                     . " ON servicio_id = servicio_detalle_servicio "
                     . "JOIN tbl_movil ON servicio_movil = movil_nombre "
-                    . "JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id "
+                    . "LEFT JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id "
                     . "JOIN tbl_cliente ON servicio_cliente = cliente_razon_social "
                     . "WHERE servicio_conductor = '$conductor' AND servicio_estado NOT IN (5,6) "
                     . "ORDER BY servicio_id desc LIMIT 20";
@@ -433,6 +433,13 @@ class ServicioDao {
                 $pasajero->setId($row["pasajero_id"]);
                 $pasajero->setNombre($row["pasajero_nombre"] . " " . $row["pasajero_papellido"]);
                 $pasajero->setCelular($row["pasajero_celular"]);
+                if($row["pasajero_id"] == '')
+                {
+                    $data = $nombres = explode("&", $row["servicio_pasajero_id_pasajero"]);
+                    $pasajero->setId($row["servicio_pasajero_id_pasajero"]);
+                    $pasajero->setNombre($data[0]);
+                    $pasajero->setCelular($data[1]);
+                }
                 $pasajero->setEstado($row["servicio_pasajero_estado"]);
                 $servicio->setPasajero($pasajero);
                 $servicio->setDestino($row["servicio_pasajero_destino"]);
@@ -482,12 +489,12 @@ class ServicioDao {
             $query = "SELECT servicio_id,servicio_cliente,servicio_ruta,servicio_truta,servicio_fecha,"
                     . "servicio_hora,servicio_conductor,servicio_estado,servicio_tarifa1,"
                     . "servicio_observacion,servicio_conductor,movil_nombre,"
-                    . "servicio_pasajero_estado,servicio_pasajero_destino,pasajero_id,pasajero_nombre,pasajero_papellido,pasajero_celular,cliente_direccion "
+                    . "servicio_pasajero_estado,servicio_pasajero_id_pasajero,servicio_pasajero_destino,pasajero_id,pasajero_nombre,pasajero_papellido,pasajero_celular,cliente_direccion "
                     . " FROM tbl_servicio JOIN tbl_servicio_pasajero ON"
                     . " servicio_id = servicio_pasajero_id_servicio JOIN tbl_servicio_detalle"
                     . " ON servicio_id = servicio_detalle_servicio "
                     . "JOIN tbl_movil ON servicio_movil = movil_nombre "
-                    . "JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id "
+                    . "LEFT JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id "
                     . "JOIN tbl_cliente ON servicio_cliente = cliente_razon_social "
                     . "WHERE servicio_id = $idServicio AND servicio_conductor = '$idConductor' AND servicio_estado IN (3,4) ORDER BY servicio_pasajero_id";
             $conn->conectar();
@@ -510,6 +517,13 @@ class ServicioDao {
                 $pasajero->setId($row["pasajero_id"]);
                 $pasajero->setNombre($row["pasajero_nombre"] . " " . $row["pasajero_papellido"]);
                 $pasajero->setCelular($row["pasajero_celular"]);
+                if($row["pasajero_id"] == '')
+                {
+                    $data = $nombres = explode("&", $row["servicio_pasajero_id_pasajero"]);
+                    $pasajero->setId($row["servicio_pasajero_id_pasajero"]);
+                    $pasajero->setNombre($data[0]);
+                    $pasajero->setCelular($data[1]);
+                }
                 $pasajero->setEstado($row["servicio_pasajero_estado"]);
                 $servicio->setPasajero($pasajero);
                 $servicio->setDestino($row["servicio_pasajero_destino"]);
@@ -716,7 +730,7 @@ class ServicioDao {
         $id = 0;
         $conn = new Conexion();
         try {
-            $query = "UPDATE tbl_servicio_pasajero SET servicio_pasajero_estado = $estado,servicio_pasajero_hora_destino = CURRENT_TIME(),pasajero_estado_cancelado = '$observacion' WHERE servicio_pasajero_id_servicio = $idServicio AND servicio_pasajero_id_pasajero  = $idPasajero";
+            $query = "UPDATE tbl_servicio_pasajero SET servicio_pasajero_estado = $estado,servicio_pasajero_hora_destino = CURRENT_TIME(),pasajero_estado_cancelado = '$observacion' WHERE servicio_pasajero_id_servicio = $idServicio AND servicio_pasajero_id_pasajero  = '$idPasajero'";
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);

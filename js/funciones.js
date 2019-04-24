@@ -247,7 +247,7 @@ function resetPagina()
 
 function cerrarSession(response)
 {
-    if(response === 'return')
+    if(response.resp === 'return')
     {
         alertify.error('sesion expirada');
         location.href = "index.php";

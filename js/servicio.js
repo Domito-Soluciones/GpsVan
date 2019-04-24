@@ -1,4 +1,4 @@
-/* global urlBase, alertify, CREADO, EN_PROCCESO_DE_ASIGNACION, ASIGNADO, ACEPTADO, EN_PROGRESO, FINALIZADO, google, map, markers, directionsDisplay, TIPO_USUARIO, flightPath */
+/* global urlBase, alertify, CREADO, EN_PROCCESO_DE_ASIGNACION, ASIGNADO, ACEPTADO, EN_PROGRESO, FINALIZADO, google, map, markers, directionsDisplay, TIPO_USUARIO, flightPath, CANCELADO */
 var SERVICIOS;
 var ESTADO_SERVICIO;
 var RUTA;
@@ -8,7 +8,10 @@ var MOVILES = {};
 var PAGINA = 'SERVICIOS';
 var CAMPOS = ["clienteServicio","rutaServicio","fechaServicio","inicioServicio","estadoServicio","movilServicio","conductorServicio"];
 $(document).ready(function(){
-    limpiarMapa();
+    if(TIPO_USUARIO !== 'CLIENTE')
+    {
+        limpiarMapa();
+    }
     PAGINA_ANTERIOR = PAGINA;
     eliminarMarkers();
     iniciarFecha([$("#desde"),$("#hasta")]);
@@ -65,7 +68,6 @@ function buscarServicio()
             var fecha = response[i].servicio_fecha;
             var hora = response[i].servicio_hora;
             var estado = response[i].servicio_estado;
-            var estadoCancelacion = response[i].servicio_estado;
             var conductor = response[i].servicio_movil;
             servicios.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\" onClick=\"abrirBuscador('"+id+"')\">"+
                     "<div>"+id+"</div>"+
@@ -337,6 +339,10 @@ function obtenerEstadoServicio(servicio)
     else if(servicio === FINALIZADO)
     {
         return "Finalizado"; 
+    }
+    else if(servicio === CANCELADO)
+    {
+        return "Cancelado"; 
     }
 }
 

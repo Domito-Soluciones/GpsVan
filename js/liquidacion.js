@@ -132,7 +132,6 @@ function generarLiquidacion(id,rut,nombre)
             var descuento_ad = [];
             for(var j = 0; j < responseLiquidacion.rendiciones.length; j++)
             {
-                console.log(responseLiquidacion.rendiciones.length);
                 var rend = responseLiquidacion.rendiciones[j];
                 if(rend.rendicion_tipo === '0')
                 {

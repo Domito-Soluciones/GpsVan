@@ -1,6 +1,7 @@
 <?php
 
 include '../../conexion/Conexion.php';
+include '../../dominio/Servicio.php';
 
 class LiquidacionDao {
      

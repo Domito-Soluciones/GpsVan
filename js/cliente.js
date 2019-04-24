@@ -712,20 +712,15 @@ function colocarMarcadorPlaces()
     });
     
     google.maps.event.addListener(map, "dragend", function() {
-        var latlng = new google.maps.LatLng(POSITION[0], POSITION[1]);
         var punto = $('#direccion');
         punto.val("Cargando...");
-        setTimeout(function(){},2000);
-        geocoder.geocode({'location': latlng}, function(results, status) {
-            if (status === 'OK') {
-                var zero = results[0];
+        var query = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + POSITION[0] +','+ POSITION[1]+'&key=' + API_KEY;
+        $.getJSON(query, function (data) {
+            if (data.status === 'OK') { 
+                var zero = data.results[0];
                 var address = zero.formatted_address;
-                punto.val(address);                
-            }
-            else
-            {
-                //alertify.error('Geocoder failed due to: ' + status);
-            }
+                punto.val(address);     
+            } 
         });
     });
 }
@@ -780,20 +775,15 @@ function preEliminarCliente(id)
             });
     
             google.maps.event.addListener(map, "dragend", function() {
-                var latlng = new google.maps.LatLng(POSITION[0], POSITION[1]);
                 var punto = $('#direccion');
                 punto.val("Cargando...");
-                setTimeout(function(){},2000);
-                geocoder.geocode({'location': latlng}, function(results, status) {
-                    if (status === 'OK') {
-                        var zero = results[0];
+                var query = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + POSITION[0] +','+ POSITION[1]+'&key=' + API_KEY;
+                $.getJSON(query, function (data) {
+                    if (data.status === 'OK') { 
+                        var zero = data.results[0];
                         var address = zero.formatted_address;
-                        punto.val(address);                
-                    }
-                    else
-                    {
-                        //alertify.error('Geocoder failed due to: ' + status);
-                    }
+                        punto.val(address);     
+                    } 
                 });
             });
         }

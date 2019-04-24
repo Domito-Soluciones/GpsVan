@@ -159,9 +159,6 @@ $(document).ready(function(){
         if(nombre !== '' && direccion !== '' && celular !== '')
         {
             agregarPasajero('0',nombre,direccion,celular);
-            $("#agregaNombre").val("");
-            $("#agregaDireccion").val("");
-            $("#agregaCelular").val("");
         }
         else
         {
@@ -514,15 +511,10 @@ function agregarServicio(fecha)
         }
         var success = function(response)
         {
-            if(response.resp === 'return')
-            {
-                location.href="index.php";
-                return;
-            }
+            cerrarSession(response);
             agregarDetalleServicio(response.servicio_id);
             vaciarFormulario();
             origen = undefined;
-            cerrarSession(response);
             borrarDirections();
             cambiarPropiedad($(".contenedor_agregar"),"display","none");
             cambiarPropiedad($(".contenedor_editar"),"display","none");
@@ -538,7 +530,6 @@ function agregarServicio(fecha)
             quitarclase($("#contenedor_mapa"),"mapa_bajo");
             notificarConductor(response.servicio_id,conductor);
             notificarServicioFuturo(response.servicio_id,conductor,fecha,hora);
-            TIPO_SERVICIO = 0;
         };
         postRequest(url,params,success);
     }
@@ -547,7 +538,6 @@ function agregarServicio(fecha)
 function dibujarRuta(origen,destinos)
 {
     GEOCODING = false;
-    console.log(destinos+"");
     if(typeof origen === 'undefined')
     {
         return;
@@ -606,26 +596,23 @@ function agregarDetalleServicio(idServicio)
     var destinoFinal = "";
     var pasajeroFinal = "";
     var esRecogida = $("#truta").val().indexOf("RG") !== -1;
+    var esEspecial = $("#truta").val().indexOf("ESP") !== -1;
     if(esRecogida)
     {
-        console.log("estos son los destinos antes de "+destinos)
         destinos.splice(0, 0, origen);
         destinos.pop();
-         console.log("estos son los destinos despues de "+destinos);
     }
+    if(esEspecial)
+    {
+        destinos.splice(0, 0, origen);
+    }
+    console.log("estos son los destinos");
     for(var i = 0; i < destinos.length;i++)
     {
         destinoFinal += destinos[i] + "%";
         pasajeroFinal += pasajeros[i] + "%";
     }
-    if(TIPO_SERVICIO === 1 || TIPO_SERVICIO === 2)
-    {
-        params = { lat : POLYLINE_LAT, lon : POLYLINE_LNG, pasajeros : "" ,destinos : destinoFinal, id : idServicio };
-    }
-    else
-    {
-        params = { lat : POLYLINE_LAT, lon : POLYLINE_LNG, pasajeros : pasajeroFinal ,destinos : destinoFinal, id : idServicio};        
-    }
+    params = { lat : POLYLINE_LAT, lon : POLYLINE_LNG, pasajeros : pasajeroFinal ,destinos : destinoFinal, id : idServicio};
     var url = urlBase + "/servicio/AddServicioDetalle.php";
     postRequest(url,params,null);
 }
@@ -803,7 +790,24 @@ function borrarPasajero(obj,nombre,punto,celular)
 
 function agregarPasajero(obj,nombre,punto,celular)
 {
+    if(validarNumero(nombre))
+    {
+        alertify.error("Nombre no debe ser numerico");
+        return;
+    }
+    if(!validarNumero(celular))
+    {
+        alertify.error("Celular debe ser numerico");
+        return;
+    }
+    $("#agregaNombre").val("");
+    $("#agregaDireccion").val("");
+    $("#agregaCelular").val("");
     var id = obj.split("_")[1];
+    if(typeof id === 'undefined')
+    {
+        id = nombre+"&"+celular;
+    }
     var ruta = $('#truta').val();
     if(ruta.indexOf("RG") !== -1)
     {
@@ -1019,20 +1023,15 @@ function colocarMarcadorPlaces(input)
     google.maps.event.addListener(map, "dragend", function() {
         if(GEOCODING)
         {
-            var latlng = new google.maps.LatLng(POSITION[0], POSITION[1]);
             var punto = input;
             punto.value = "Cargando...";
-            setTimeout(function(){},2000);
-            geocoder.geocode({'location': latlng}, function(results, status) {
-                if (status === 'OK') {
-                    var zero = results[0];
+            var query = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + POSITION[0] +','+ POSITION[1]+'&key=' + API_KEY;
+            $.getJSON(query, function (data) {
+                if (data.status === 'OK') { 
+                    var zero = data.results[0];
                     var address = zero.formatted_address;
-                    punto.value = address;                
-                }
-                else
-                {
-                    //alertify.error('Geocoder failed due to: ' + status);
-                }
+                    punto.value = address;     
+                } 
             });
         }
     });

@@ -18,7 +18,6 @@ $(document).ready(function(){
     google.maps.event.addListener(map,'zoom_changed',function(){
         if(map.getZoom() > 17)
         {
-            console.log(map.getZoom());
             for(var i = 0 ; i < markers.length; i++)
             {
                 if(markers[i].get("idMarker") === PATENTE)
