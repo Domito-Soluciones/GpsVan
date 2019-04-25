@@ -156,13 +156,27 @@ $(document).ready(function(){
         var nombre = $("#agregaNombre").val();
         var direccion = $("#agregaDireccion").val();
         var celular = $("#agregaCelular").val();
-        if(nombre !== '' && direccion !== '' && celular !== '')
+        if(TIPO_SERVICIO !== 0)
         {
-            agregarPasajero('0',nombre,direccion,celular);
+            if(nombre !== '' && direccion !== '')
+            {
+                agregarPasajero('0',nombre,direccion,'');
+            }
+            else
+            {
+                alertify.error("Ingrese todos los campos necesarios");
+            }
         }
         else
         {
-            alertify.error("Ingrese todos los campos necesarios");
+            if(nombre !== '' && direccion !== '' && celular !== '')
+            {
+                agregarPasajero('0',nombre,direccion,celular);
+            }
+            else
+            {
+                alertify.error("Ingrese todos los campos necesarios");
+            }
         }
     });
     $("#cerrarAgregar").click(function(){
@@ -795,6 +809,11 @@ function agregarPasajero(obj,nombre,punto,celular)
         alertify.error("Nombre no debe ser numerico");
         return;
     }
+    if(nombre.indexOf("-") !== -1)
+    {
+        alertify.error("Nombre no debe ser numerico");
+        return;
+    }
     if(!validarNumero(celular))
     {
         alertify.error("Celular debe ser numerico");
@@ -806,7 +825,7 @@ function agregarPasajero(obj,nombre,punto,celular)
     var id = obj.split("_")[1];
     if(typeof id === 'undefined')
     {
-        id = nombre+"&"+celular;
+        id = nombre+"-"+celular;
     }
     var ruta = $('#truta').val();
     if(ruta.indexOf("RG") !== -1)
@@ -873,7 +892,11 @@ function cambiarServicioNormal()
     borrarDirections();
     eliminarMarkers();
     cambiarPropiedad($(".buscador-pasajero"),"display","none");
+    cambiarPropiedad($(".contenedor_agregar"),"display","none");
+    cambiarPropiedad($(".contenedor_editar"),"display","none");
     quitarclase($("#contenedor_mapa"),"mapa_bajo");
+    quitarclase($("#contenedor_mapa"),"mapa_agregar");
+    quitarclase($("#contenedor_mapa"),"mapa_editar");
     $("#tarifa2").prop("disabled",true);
     cambiarPropiedad($("#tarifa2"),"background-color","silver");
     $("#tarifa2").val("");
@@ -893,7 +916,11 @@ function cambiarServicioEspecial()
     borrarDirections();
     eliminarMarkers();
     cambiarPropiedad($(".buscador-pasajero"),"display","none");
+    cambiarPropiedad($(".contenedor_agregar"),"display","none");
+    cambiarPropiedad($(".contenedor_editar"),"display","none");
     quitarclase($("#contenedor_mapa"),"mapa_bajo");
+    quitarclase($("#contenedor_mapa"),"mapa_agregar");
+    quitarclase($("#contenedor_mapa"),"mapa_editar");
 }
 
 function activarPestania(array)

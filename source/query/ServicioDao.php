@@ -804,4 +804,23 @@ class ServicioDao {
         }
         return $idServicio;
     }
+    
+    function addObservacionServicio($idServicio,$comentario)
+    {
+        $id = 0;
+        $conn = new Conexion();
+        try {
+            $query = "UPDATE tbl_servicio SET servicio_observacion_adicional = '$comentario' WHERE servicio_id = ".$idServicio;
+            $conn->conectar();
+            if (mysqli_query($conn->conn,$query)) {
+                $id = mysqli_insert_id($conn->conn);
+            } else {
+                echo mysqli_error($conn->conn);
+            }           
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $idServicio;
+    }
+
 }

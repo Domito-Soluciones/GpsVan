@@ -15,24 +15,8 @@ $(document).ready(function(){
         cargarMovilesMapa(false);
     });
     
-//    google.maps.event.addListener(map,'zoom_changed',function(){
-//        if(map.getZoom() > 17)
-//        {
-//            for(var i = 0 ; i < markers.length; i++)
-//            {
-//                if(markers[i].get("idMarker") === PATENTE)
-//                {
-//                    clearInterval(interval);
-//                    interval = setInterval('moverMovilesMapa()',3000);
-//                }
-//            }
-//       }
-//       else
-//       {
-//            clearInterval(interval);
-//            interval = setInterval('moverMovilesMapa()',60000);           
-//       }
-//    });
+    google.maps.event.addListener(map,'zoom_changed',function(){});
+    
 });
 
 function buscarServicio()

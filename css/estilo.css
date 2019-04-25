@@ -1,4 +1,4 @@
-/* body  */
+.cont-pasajero-gral/* body  */
 html,body
 {
     margin: 0;
@@ -1145,6 +1145,7 @@ select
 {
     border-bottom: solid 1px silver;
     cursor: pointer;
+    height:50px;
 }
 .cont-pasajero-gral:hover
 {
