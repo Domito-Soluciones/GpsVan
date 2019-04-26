@@ -156,7 +156,7 @@ class ServicioDao {
         return $id;
     }
    
-    public function getServicios($id,$empresa,$conductor,$estado,$movil,$desde,$hdesde,$hasta,$hhasta)
+    public function getServicios($id,$empresa,$conductor,$estado,$movil,$truta,$desde,$hdesde,$hasta,$hhasta)
     {
         $array = array();
         $conn = new Conexion();
@@ -167,6 +167,7 @@ class ServicioDao {
             $buscaMovil = '';
             $buscaEstado = '';
             $buscaFecha = '';
+            $buscaTRuta = '';
             if($id != '')
             {
                 $buscaId = " AND servicio_id LIKE '%$id%' ";
@@ -182,6 +183,10 @@ class ServicioDao {
             if($movil != '')
             {
                 $buscaMovil = " AND servicio_movil LIKE '%$movil%' ";
+            }
+            if($truta != '')
+            {
+                $buscaTRuta = " AND servicio_truta = '$truta' ";
             }
             if($estado != '')
             {
@@ -200,7 +205,7 @@ class ServicioDao {
                 $buscaFecha = "AND servicio_fecha BETWEEN '".$desde." ".$hdesde."' AND '".$hasta." ".$hhasta."'";
             }
             $query = "SELECT * FROM tbl_servicio WHERE servicio_estado != 0 "
-                    .$buscaFecha." ".$buscaId." ".$buscaEmpresa." ".$buscaConductor." ".$buscaMovil." ".$buscaEstado
+                    .$buscaFecha." ".$buscaId." ".$buscaEmpresa." ".$buscaConductor." ". $buscaTRuta." ".$buscaMovil." ".$buscaEstado
                     . " ORDER BY servicio_id DESC LIMIT 15";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
@@ -209,6 +214,7 @@ class ServicioDao {
                 $servicio->setId($row["servicio_id"]);          
                 $servicio->setCliente($row["servicio_cliente"]);
                 $servicio->setRuta($row["servicio_ruta"]);
+                $servicio->setTruta($row["servicio_truta"]);
                 $date = new DateTime($row["servicio_fecha"]);
                 $servicio->setFecha(date_format($date, 'd/m/Y'));
                 $servicio->setHora($row["servicio_hora"]);
@@ -420,7 +426,7 @@ class ServicioDao {
         $array = array();
         $conn = new Conexion();
         try {
-            $query = "SELECT * FROM tbl_servicio WHERE servicio_estado = 0 AND servicio_tipo = 1 ORDER BY servicio_id";
+            $query = "SELECT * FROM tbl_servicio WHERE servicio_conductor = '' AND servicio_estado = 0 ORDER BY servicio_id";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query); 
             while($row = mysqli_fetch_array($result)) {
@@ -432,6 +438,7 @@ class ServicioDao {
                 $servicio->setFecha(date_format($date, 'd/m/Y'));
                 $servicio->setHora($row["servicio_hora"]);
                 $servicio->setObservaciones($row["servicio_observacion"]);
+                $servicio->setTipo($row["servicio_tipo"]);
                 array_push($array, $servicio);
             }
         } catch (Exception $exc) {
@@ -668,7 +675,31 @@ class ServicioDao {
     {
         $conn = new Conexion();
         try {
-            $query = "UPDATE tbl_servicio SET servicio_estado = '$estado' WHERE servicio_id = $id"; 
+            $stQuery = '';
+            if($estado == '1')
+            {
+                $stQuery  = " ,servicio_conductor = '',servicio_movil='',servicio_tipo=0 ";
+            }
+            $query = "UPDATE tbl_servicio SET servicio_estado = '$estado' $stQuery WHERE servicio_id = $id"; 
+            
+            echo $query;
+            $conn->conectar();
+            if (mysqli_query($conn->conn,$query)) {
+                return $id;
+            } else {
+                echo mysqli_error($conn->conn);
+                return 0;
+            }           
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+    
+    public function cambiarDestinoPasajero($id,$pasajero,$destino)
+    {
+        $conn = new Conexion();
+        try {
+            $query = "UPDATE tbl_servicio_pasajero SET servicio_pasajero_destino = '$destino' WHERE servicio_pasajero_id_servicio = $id AND servicio_pasajero_id_pasajero = '$pasajero'"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 return $id;

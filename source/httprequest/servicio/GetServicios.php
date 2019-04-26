@@ -9,6 +9,7 @@ $empresa = filter_input(INPUT_POST, 'empresa');
 $conductor = filter_input(INPUT_POST, 'conductor');
 $estado = filter_input(INPUT_POST, 'estado');
 $movil = filter_input(INPUT_POST, 'movil');
+$truta = filter_input(INPUT_POST, 'truta');
 $desde = '';
 if(filter_input(INPUT_POST, 'desde') != '')
 {
@@ -30,13 +31,14 @@ else
 }
 $hhasta = filter_input(INPUT_POST, 'hhasta');
 $servicioDao = new ServicioDao();
-$servicios = $servicioDao->getServicios($id,$empresa,$conductor,$estado,$movil,$desde,$hdesde,$hasta,$hhasta);
+$servicios = $servicioDao->getServicios($id,$empresa,$conductor,$estado,$movil,$truta,$desde,$hdesde,$hasta,$hhasta);
 echo "[";
 for ($i = 0 ; $i < count($servicios); $i++)
 {
     $servicioId = $servicios[$i]->getId();
     $servicioCliente = $servicios[$i]->getCliente();
     $servicioRuta = $servicios[$i]->getRuta();
+    $servicioTipoRuta = $servicios[$i]->getTruta();
     $servicioFecha = $servicios[$i]->getFecha();
     $servicioHora = $servicios[$i]->getHora();
     $servicioMovil = $servicios[$i]->getMovil();
@@ -48,6 +50,7 @@ for ($i = 0 ; $i < count($servicios); $i++)
     echo "{\"servicio_id\":\"".$servicioId."\","
         . "\"servicio_cliente\":\"".$servicioCliente."\","
         . "\"servicio_ruta\":\"".$servicioRuta."\","
+        . "\"servicio_truta\":\"".$servicioTipoRuta."\","
         . "\"servicio_fecha\":\"".$servicioFecha."\","
         . "\"servicio_hora\":\"".$servicioHora."\","
         . "\"servicio_movil\":\"".$servicioMovil."\","

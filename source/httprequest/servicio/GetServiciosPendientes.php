@@ -16,12 +16,14 @@ for ($i = 0 ; $i < count($servicios); $i++)
     $servicioRuta = $servicio->getRuta();
     $servicioFecha = $servicio->getFecha();
     $servicioHora = $servicio->getHora();
+    $servicioTipo = $servicio->getTipo();
     $servicioOb = $servicio->getObservaciones();
     echo "{\"servicio_id\":\"".$servicioId."\","
         . "\"servicio_cliente\":\"".$servicioCliente."\","
         . "\"servicio_ruta\":\"".$servicioRuta."\","
         . "\"servicio_fecha\":\"".$servicioFecha."\","
         . "\"servicio_hora\":\"".$servicioHora."\","
+        . "\"servicio_tipo\":\"".$servicioTipo."\","
         . "\"servicio_observacion\":\"".$servicioOb."\""
         . "}";
 if (($i+1) != count($servicios))

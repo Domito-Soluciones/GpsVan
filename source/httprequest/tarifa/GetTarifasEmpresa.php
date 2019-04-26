@@ -5,6 +5,16 @@ include '../../query/TarifaDao.php';
 include '../../log/Log.php';
 
 header('Content-Type: application/json');
+session_start();
+if(isset($_SESSION['agente']))
+{
+    $agente = $_SESSION['agente'];
+}
+else
+{
+    echo "{\"resp\":\"return\"}";
+    exit();
+}
 $empresa = filter_input(INPUT_POST, 'empresa');
 $tarifaDao = new TarifaDao();
 $tarifas = $tarifaDao->getTarifasEmpresa($empresa);

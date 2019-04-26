@@ -17,13 +17,7 @@ var GEOCODING = false;
 var CAMPOS = ["clientes","ruta","truta","fechaDesde","hora","vehiculos","tarifa1","tarifa2"];
 
 $(document).ready(function(){
-    PAGINA_ANTERIOR = PAGINA;
-    init();
-    if($("#ids").val() !== "")
-    {
-        cargarRutas();
-    }
-    if(TIPO_SERVICIO === 1 || TIPO_SERVICIO === 2)
+    if((TIPO_SERVICIO === 1 || TIPO_SERVICIO === 2) && PAGINA_ANTERIOR === 'ASIGNACION')
     {
         $("#ruta").val("ESP");
         $("#truta").val("XX-ESP");
@@ -34,6 +28,19 @@ $(document).ready(function(){
         cambiarPropiedad($(".buscador-pasajero"),"display","initial");
         agregarclase($("#contenedor_mapa"),"mapa_bajo");
         cargarPasajerosEspecial();
+    }
+    else
+    {
+        TIPO_SERVICIO = 0;
+    }
+    PAGINA_ANTERIOR = PAGINA;
+    map.setZoom(11);
+    var center = new google.maps.LatLng(POSITION[0], POSITION[1]);
+    map.panTo(center);
+    init();
+    if($("#ids").val() !== "")
+    {
+        cargarRutas();
     }
     $("#clientes").keyup(function () {
         cargarClientes();
@@ -451,6 +458,7 @@ function cargarRutas()
     var url = urlBase + "/tarifa/GetTarifasEmpresa.php";
     var success = function(response)
     {
+        cerrarSession(response);
         $("#lruta").html("");
         var ruta = "";
         for(var i = 0 ; i < response.length ; i++)

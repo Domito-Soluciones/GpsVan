@@ -144,6 +144,11 @@ function decodePolyline(encoded) {
                 var fecha = response[i].servicio_fecha;
                 var hora = response[i].servicio_hora;
                 var observacion = response[i].servicio_observacion;
+                var tipo = response[i].servicio_tipo;
+                if(tipo === '0')
+                {
+                    enviarCorreoDesasignacion("",id);
+                }
                 if(typeof servicios.get(id) === 'undefined')
                 {
                     alertify.success("Nuevo servicio para asignar: "+id);
@@ -153,6 +158,19 @@ function decodePolyline(encoded) {
             }
         });
     }
+    
+    function enviarCorreoDesasignacion(mail,id)
+{
+    var url = urlUtil + "/enviarMail.php";
+    var asunto = "Notificación Dómito";
+    var mensaje = "Estimado(a), el servicio "+id+" a sido rechazado por el conductor favor reasignar ";
+    var params = {email : mail,asunto : asunto, mensaje : mensaje, extra : ''};
+    var success = function(response)
+    {
+    };
+    postRequest(url,params,success);
+}
+
     
     function getLocation()
     {

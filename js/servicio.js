@@ -41,11 +41,12 @@ function buscarServicio()
         empresa = $("#clientes").val();
     }
     var movil = $("#movil").val();
+    var truta = $("#tipoRutaServicioBusca").val();
     var desde = $("#desde").val();
     var hdesde = $("#hdesde").val();
     var hasta = $("#hasta").val();
     var hhasta = $("#hhasta").val();
-    var params = {id : id, empresa : empresa, movil : movil,
+    var params = {id : id, empresa : empresa, movil : movil, truta : truta,
         desde : desde, hdesde : hdesde, hasta : hasta, hhasta : hhasta};
     var url = urlBase + "/servicio/GetServicios.php";
     var success = function(response)
@@ -115,6 +116,7 @@ function abrirBuscador(id)
         {
             cambiarPropiedad($("#p_ruta"),"display","none");
             $("#rutaServicio").prop("readonly",true);
+            $("#tipoRutaServicio").prop("readonly",true);
             $("#fechaServicio").prop("readonly",true);
             $("#inicioServicio").prop("readonly",true);
             $("#estadoServicio").prop("disabled",true);
@@ -129,6 +131,7 @@ function abrirBuscador(id)
             cargarClientes();
             cargarRutas();
             $("#rutaServicio").prop("readonly",false);
+            $("#tipoRutaServicio").prop("readonly",false);
             $("#fechaServicio").prop("disabled",false);
             $("#inicioServicio").prop("disabled",false);
             $("#estadoServicio").prop("disabled",false);
@@ -151,6 +154,7 @@ function abrirBuscador(id)
         $("#idServicio").val(servicio.servicio_id);
         $("#clienteServicio").val(servicio.servicio_cliente);
         $("#rutaServicio").val(servicio.servicio_ruta);
+        $("#tipoRutaServicio").val(servicio.servicio_truta);
         $("#estadoServicio").val(servicio.servicio_estado);
         ESTADO_SERVICIO = servicio.servicio_estado;
         cargarRutas();
@@ -212,15 +216,16 @@ function modificarServicio()
     var id = ID_SERVICIO;
     var cliente = $("#clienteServicio").val();
     var ruta = $("#rutaServicio").val();
+    var truta = $("#tipoRutaServicio").val();
     var fecha = $("#fechaServicio").val();
     var hora = $("#inicioServicio").val();
     var estado = $("#estadoServicio").val();
     var movil = $("#movilServicio").val();
-    var conductor = conductoresNick.get($("#conductorServicio").text());
+    var conductor = conductoresNick.get($("#conductorServicio").val());
     var tarifa1 = $("#tarifaServicio").val();
     var tarifa2 = $("#tarifa2Servicio").val();
     var array = [cliente,ruta,fecha,hora,estado,movil,tarifa1,tarifa2];
-    var params = {id : id,cliente : cliente,ruta : ruta,fecha : fecha, hora : hora,
+    var params = {id : id,cliente : cliente,ruta : ruta, truta : truta,fecha : fecha, hora : hora,
         estado : estado,movil : movil, conductor : conductor, tarifa1 : tarifa1, tarifa2 : tarifa2};
     if(!validarCamposOr(array))
     {
@@ -348,6 +353,7 @@ function obtenerEstadoServicio(servicio)
 
 function dibujarRutaReal()
 {
+    limpiarMapa();
     var params = {id : ID_SERVICIO};
     var url = urlBase + "/servicio/GetDetalleServicioReal.php";
     var success = function(response)

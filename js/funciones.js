@@ -249,7 +249,7 @@ function cerrarSession(response)
 {
     if(response.resp === 'return')
     {
-        alertify.error('sesion expirada');
+        alertify.error('Sesión expirada');
         location.href = "index.php";
         return;
     }
