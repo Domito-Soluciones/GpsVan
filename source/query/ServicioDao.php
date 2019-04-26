@@ -671,7 +671,7 @@ class ServicioDao {
             echo $exc->getTraceAsString();
         }
     }
-    public function cambiarEstadoServicio($id,$estado)
+    public function cambiarEstadoServicio($id,$estado,$observacion)
     {
         $conn = new Conexion();
         try {
@@ -680,7 +680,11 @@ class ServicioDao {
             {
                 $stQuery  = " ,servicio_conductor = '',servicio_movil='',servicio_tipo=0 ";
             }
-            $query = "UPDATE tbl_servicio SET servicio_estado = '$estado' $stQuery WHERE servicio_id = $id"; 
+            if($observacion !== '')
+            {
+                $stObs = ", servicio_observacion_adicional = '$observacion' ";
+            }
+            $query = "UPDATE tbl_servicio SET servicio_estado = '$estado' $stQuery $stObs WHERE servicio_id = $id"; 
             
             echo $query;
             $conn->conectar();
