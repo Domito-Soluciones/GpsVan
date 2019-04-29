@@ -18,6 +18,7 @@ class Servicio {
     private $agente;
     private $estado;
     private $observaciones;
+    private $observacionesAdicionales;
     private $pasajero;
     private $destino;
     private $tipo;
@@ -81,9 +82,13 @@ class Servicio {
     function getEstado() {
         return $this->estado;
     }
-    
+
     function getObservaciones() {
         return $this->observaciones;
+    }
+
+    function getObservacionesAdicionales() {
+        return $this->observacionesAdicionales;
     }
 
     function getPasajero() {
@@ -162,6 +167,10 @@ class Servicio {
         $this->observaciones = $observaciones;
     }
 
+    function setObservacionesAdicionales($observacionesAdicionales) {
+        $this->observacionesAdicionales = $observacionesAdicionales;
+    }
+
     function setPasajero($pasajero) {
         $this->pasajero = $pasajero;
     }
@@ -173,6 +182,7 @@ class Servicio {
     function setTipo($tipo) {
         $this->tipo = $tipo;
     }
+
 
 
 }

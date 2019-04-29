@@ -1,7 +1,6 @@
 <?php
 include '../../util/validarPeticion.php';
 include '../../query/LiquidacionDao.php';
-include '../../dominio/Servicio.php';
 include '../../log/Log.php';
 
 header('Content-Type: application/json; charset=utf-8');

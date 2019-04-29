@@ -12,11 +12,12 @@ class NotificacionDao {
         $tipo = $notificacion->getTipo();
         $llave = $notificacion->getLlave();
         $fecha = $notificacion->getFecha();
+        $servicio = $notificacion->getIdServicio();
         $conn = new Conexion();
         try {
             $query = "INSERT INTO tbl_notificacion (notificacion_texto,notificacion_tipo,"
-                    . "notificacion_estado,notificacion_llave,notificacion_fecha)"
-                    . " VALUES ('$texto','$tipo',0,'$llave','$fecha')"; 
+                    . "notificacion_estado,notificacion_servicio,notificacion_llave,notificacion_fecha)"
+                    . " VALUES ('$texto','$tipo',0,'$servicio','$llave','$fecha')"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -28,12 +29,12 @@ class NotificacionDao {
         }
         return $id;
     }
-    public function modificarEstadoNotificacion($idNotificacion)
+    public function modificarEstadoNotificacion($idNotificacion,$idServicio)
     {
         $id = 0;
         $conn = new Conexion();
         try {
-            $query = "UPDATE tbl_notificacion SET notificacion_estado = 1 WHERE notificacion_id = $idNotificacion"; 
+            $query = "UPDATE tbl_notificacion SET notificacion_estado = 1 WHERE notificacion_id = $idNotificacion OR notificacion_servicio = '$idServicio'"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);

@@ -13,7 +13,7 @@ var direccion_empresa;
 var NOMBRE_CLIENTE;
 var conductores = new Map();
 var GEOCODING = false;
-
+var INPUT_ACTUAL;
 var CAMPOS = ["clientes","ruta","truta","fechaDesde","hora","vehiculos","tarifa1","tarifa2"];
 
 $(document).ready(function(){
@@ -116,6 +116,8 @@ $(document).ready(function(){
         {
             $("#ruta").val("ESP");
             $("#truta").val("XX-ESP");
+            $("#partida").prop("disabled",false);
+            $("#destino").prop("disabled",false);
             cambiarPropiedad($(".buscador-pasajero"),"display","initial");
             agregarclase($("#contenedor_mapa"),"mapa_bajo");
             cargarPasajerosEspecial();
@@ -167,7 +169,7 @@ $(document).ready(function(){
         {
             if(nombre !== '' && direccion !== '')
             {
-                agregarPasajero('0',nombre,direccion,'');
+                agregarPasajero('0',nombre,direccion,celular);
             }
             else
             {
@@ -189,6 +191,33 @@ $(document).ready(function(){
     $("#cerrarAgregar").click(function(){
         cerrarAddPasajero();
     });
+    
+    $("#buscaPartida").click(function(){
+        agregarclase($(this),"oculto");
+        if(typeof origen === 'undefined')
+        {
+            origen = $("#partida").val();
+            $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+origen);
+        }
+        else
+        {
+            destinos.splice(0, 0, $("#partida").val());
+            origen = $("#partida").val();
+            $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+origen);
+        }
+        dibujarRuta(origen,destinos);
+    });
+    
+    $("#buscaDestino").click(function(){
+        agregarclase($(this),"oculto");
+        destinos.push($("#destino").val());
+        $("#contenedor_punto_destino").html("<b>Destino: </b>"+$("#destino").val());
+        dibujarRuta(origen,destinos);
+    });
+    
+    
+    initPlacesAutoComplete(document.getElementById("partida"));
+    initPlacesAutoComplete(document.getElementById("destino"));
     
 });
 
@@ -643,7 +672,7 @@ function notificarConductor(idServicio,llave)
 {
     var texto = "Nuevo servicio asignado con id: "+idServicio;
     var tipo = 0;
-    var params = {texto  : texto, tipo : tipo, llave : llave};        
+    var params = {texto  : texto, tipo : tipo, llave : llave, idServicio : idServicio};        
     var url = urlBase + "/notificacion/AddNotificacion.php";
     postRequest(url,params,null);
 }
@@ -652,7 +681,7 @@ function notificarServicioFuturo(idServicio,llave,fecha,hora)
 {
     var texto = "Se aproxima el siguiente servicio: "+idServicio;
     var tipo = 1;
-    var params = {texto  : texto, tipo : tipo, llave : llave, fecha : fecha, hora : hora};        
+    var params = {texto  : texto, tipo : tipo, llave : llave, fecha : fecha, hora : hora, idServicio : idServicio};            
     var url = urlBase + "/notificacion/AddNotificacion.php";
     postRequest(url,params,null);
 }
@@ -743,20 +772,22 @@ function drop(ev,obj) {
         }
         else if(TIPO_SERVICIO === 1 || TIPO_SERVICIO === 2)
         {
-            if(index === 0)
+            if(total > 1)
             {
-                origen = $(this).val();
-                $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+origen);
+                if(index === 0)
+                {
+                    origen = $(this).val();
+                    $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+origen);
+                }
+                else if(index > 0)
+                {
+                    destinos.push($(this).val());
+                }
+                if(index === total - 1)
+                {
+                    $("#contenedor_punto_destino").html("<b>Destino: </b>"+$(this).val());
+                }
             }
-            else if(index > 0)
-            {
-                destinos.push($(this).val());
-            }
-            if(index === total - 1)
-            {
-                $("#contenedor_punto_destino").html("<b>Destino: </b>"+$(this).val());
-            }
-            
         }
     });
     if(ruta.indexOf("RG") !== -1)
@@ -862,8 +893,18 @@ function agregarPasajero(obj,nombre,punto,celular)
         }
         else
         {
-            $("#contenedor_punto_destino").html("<b>Destino: </b>"+punto);
-            destinos.push(punto);
+            if($("#destino").val() === '')
+            {
+                $("#contenedor_punto_destino").html("<b>Destino: </b>"+punto);
+                destinos.push(punto);
+            }
+            else
+            {
+                var destinoFinal = destinos.pop();
+                $("#contenedor_punto_destino").html("<b>Destino: </b>"+destinoFinal);
+                destinos.push(punto);
+                destinos.push(destinoFinal);
+            }
         }
         pasajeros.push(id);
     }
@@ -906,7 +947,11 @@ function cambiarServicioNormal()
     quitarclase($("#contenedor_mapa"),"mapa_agregar");
     quitarclase($("#contenedor_mapa"),"mapa_editar");
     $("#tarifa2").prop("disabled",true);
-    cambiarPropiedad($("#tarifa2"),"background-color","silver");
+    $("#partida").prop("disabled",true);
+    $("#destino").prop("disabled",true);
+    cambiarPropiedad($("#tarifa2"),"background-color","#e5e7e9");
+    cambiarPropiedad($("#partida"),"background-color","#e5e7e9");
+    cambiarPropiedad($("#destino"),"background-color","#e5e7e9");
     $("#tarifa2").val("");
 }
 function cambiarServicioEspecial()
@@ -1025,20 +1070,29 @@ function editarPasajero(valor,obj,hidden)
 }
 
 function initPlacesAutoComplete(input) {
-    autocomplete = new google.maps.places.Autocomplete(input,
+    var autocomplete = new google.maps.places.Autocomplete(input,
     {componentRestrictions:{'country': 'cl'}});
     places = new google.maps.places.PlacesService(map);
     autocomplete.addListener('place_changed', function(){
+        INPUT_ACTUAL = input.id;
+        if(input.id === 'partida')
+        {
+            quitarclase($("#buscaPartida"),"oculto");
+        }
+        else if(input.id === 'destino')
+        {
+            quitarclase($("#buscaDestino"),"oculto");
+        }
         var place = autocomplete.getPlace();
         if (place.geometry) {
             map.panTo(place.geometry.location);
             map.setZoom(15);
-            colocarMarcadorPlaces(input);
+            colocarMarcadorPlaces();
         }
     });
 }
 
-function colocarMarcadorPlaces(input)
+function colocarMarcadorPlaces()
 {
     eliminarMarkers();
     GEOCODING = true;
@@ -1058,14 +1112,43 @@ function colocarMarcadorPlaces(input)
     google.maps.event.addListener(map, "dragend", function() {
         if(GEOCODING)
         {
-            var punto = input;
-            punto.value = "Cargando...";
+            if(INPUT_ACTUAL === 'partida')
+            {
+                document.getElementById('partida').value = "Cargando...";
+            }
+            else if(INPUT_ACTUAL === 'destino')
+            {
+                document.getElementById('destino').value = "Cargando...";
+            }
+            else if(INPUT_ACTUAL === 'agregaDireccion')
+            {
+                document.getElementById('agregaDireccion').value = "Cargando...";
+            }
+            else if(INPUT_ACTUAL === 'input_editar')
+            {
+                document.getElementById('input_editar').value = "Cargando...";
+            }
             var query = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + POSITION[0] +','+ POSITION[1]+'&key=' + API_KEY;
             $.getJSON(query, function (data) {
                 if (data.status === 'OK') { 
                     var zero = data.results[0];
                     var address = zero.formatted_address;
-                    punto.value = address;     
+                    if(INPUT_ACTUAL === 'partida')
+                    {
+                        document.getElementById('partida').value = address;
+                    }
+                    else if(INPUT_ACTUAL === 'destino')
+                    {
+                        document.getElementById('destino').value = address;
+                    }
+                    else if(INPUT_ACTUAL === 'agregaDireccion')
+                    {
+                        document.getElementById('agregaDireccion').value = address;
+                    }
+                    else if(INPUT_ACTUAL === 'input_editar')
+                    {
+                        document.getElementById('input_editar').value = address;
+                    }
                 } 
             });
         }

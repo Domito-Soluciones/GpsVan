@@ -92,7 +92,8 @@ class ServicioDao {
             {
                 if($pasajeros[$i] != "")
                 {
-                    $query .= "INSERT INTO tbl_servicio_pasajero (servicio_pasajero_id_servicio,servicio_pasajero_id_pasajero,servicio_pasajero_destino) VALUES ($idServicio,'$pasajeros[$i]','$destinos[$i]');"; 
+                    $destino = str_replace("'","\'",$destinos[$i]);
+                    $query .= "INSERT INTO tbl_servicio_pasajero (servicio_pasajero_id_servicio,servicio_pasajero_id_pasajero,servicio_pasajero_destino) VALUES ($idServicio,'$pasajeros[$i]','$destino');"; 
                 }
             }
             $conn->conectar();
@@ -223,6 +224,7 @@ class ServicioDao {
                 $servicio->setTarifa1($row["servicio_tarifa1"]);
                 $servicio->setTarifa2($row["servicio_tarifa2"]);
                 $servicio->setEstado($row["servicio_estado"]);
+                $servicio->setObservacionesAdicionales($row["servicio_observacion_adicional"]);
                 array_push($array, $servicio);
             }
         } catch (Exception $exc) {
@@ -313,7 +315,7 @@ class ServicioDao {
         $array = array();
         $conn = new Conexion();
         try {
-            $query = "SELECT * FROM tbl_servicio_pasajero JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id WHERE "
+            $query = "SELECT * FROM tbl_servicio_pasajero LEFT JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id WHERE "
                     . "servicio_pasajero_id_servicio = '$id'";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
@@ -321,9 +323,16 @@ class ServicioDao {
                 $servicioPasajero = new ServicioPasajero();
                 $servicioPasajero->setId($row["servicio_pasajero_id_servicio"]);          
                 $servicioPasajero->setPasajero($row["pasajero_nombre"]." ".$row["pasajero_papellido"]);
+                if(trim($servicioPasajero->getPasajero()) == '')
+                {
+                    $nombre = explode("-", $row["servicio_pasajero_id_pasajero"]);
+                    $servicioPasajero->setPasajero($nombre[0]);
+                }
                 $servicioPasajero->setEstado($row["servicio_pasajero_estado"]);
                 $servicioPasajero->setEstadoCancelacion($row["pasajero_estado_cancelado"]);
                 $servicioPasajero->setHora($row["servicio_pasajero_hora_destino"]);
+                $servicioPasajero->setLatDestino($row["servicio_pasajero_lat_destino"]);
+                $servicioPasajero->setLonDestino($row["servicio_pasajero_lon_destino"]);
                 $servicioPasajero->setDestino($row["servicio_pasajero_destino"]);
                 array_push($array, $servicioPasajero);
             }
@@ -426,7 +435,7 @@ class ServicioDao {
         $array = array();
         $conn = new Conexion();
         try {
-            $query = "SELECT * FROM tbl_servicio WHERE servicio_conductor = '' AND servicio_estado = 0 ORDER BY servicio_id";
+            $query = "SELECT * FROM tbl_servicio WHERE servicio_conductor = '' ORDER BY servicio_id";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query); 
             while($row = mysqli_fetch_array($result)) {
@@ -457,13 +466,12 @@ class ServicioDao {
                     . "servicio_observacion,servicio_conductor,movil_nombre,"
                     . "servicio_pasajero_estado,servicio_pasajero_id_pasajero,servicio_pasajero_destino,pasajero_id,pasajero_nombre,pasajero_papellido,pasajero_celular,cliente_direccion "
                     . " FROM tbl_servicio JOIN tbl_servicio_pasajero ON"
-                    . " servicio_id = servicio_pasajero_id_servicio JOIN tbl_servicio_detalle"
-                    . " ON servicio_id = servicio_detalle_servicio "
+                    . " servicio_id = servicio_pasajero_id_servicio "
                     . "JOIN tbl_movil ON servicio_movil = movil_nombre "
                     . "LEFT JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id "
                     . "JOIN tbl_cliente ON servicio_cliente = cliente_razon_social "
                     . "WHERE servicio_conductor = '$conductor' AND servicio_estado NOT IN (5,6) "
-                    . "ORDER BY servicio_id desc LIMIT 20";
+                    . "ORDER BY servicio_id desc";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query); 
             while($row = mysqli_fetch_array($result)) {
@@ -542,8 +550,7 @@ class ServicioDao {
                     . "servicio_observacion,servicio_conductor,movil_nombre,"
                     . "servicio_pasajero_estado,servicio_pasajero_id_pasajero,servicio_pasajero_destino,pasajero_id,pasajero_nombre,pasajero_papellido,pasajero_celular,cliente_direccion "
                     . " FROM tbl_servicio JOIN tbl_servicio_pasajero ON"
-                    . " servicio_id = servicio_pasajero_id_servicio JOIN tbl_servicio_detalle"
-                    . " ON servicio_id = servicio_detalle_servicio "
+                    . " servicio_id = servicio_pasajero_id_servicio "
                     . "JOIN tbl_movil ON servicio_movil = movil_nombre "
                     . "LEFT JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id "
                     . "JOIN tbl_cliente ON servicio_cliente = cliente_razon_social "
@@ -596,8 +603,7 @@ class ServicioDao {
                     . "servicio_observacion,servicio_conductor,movil_nombre,"
                     . "servicio_pasajero_estado,servicio_pasajero_destino,pasajero_id,pasajero_nombre,pasajero_papellido,pasajero_celular,cliente_direccion "
                     . " FROM tbl_servicio JOIN tbl_servicio_pasajero ON"
-                    . " servicio_id = servicio_pasajero_id_servicio JOIN tbl_servicio_detalle"
-                    . " ON servicio_id = servicio_detalle_servicio "
+                    . " servicio_id = servicio_pasajero_id_servicio "
                     . "JOIN tbl_movil ON servicio_movil = movil_nombre "
                     . "JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id "
                     . "JOIN tbl_cliente ON servicio_cliente = cliente_razon_social "
@@ -685,8 +691,6 @@ class ServicioDao {
                 $stObs = ", servicio_observacion_adicional = '$observacion' ";
             }
             $query = "UPDATE tbl_servicio SET servicio_estado = '$estado' $stQuery $stObs WHERE servicio_id = $id"; 
-            
-            echo $query;
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 return $id;
@@ -699,11 +703,11 @@ class ServicioDao {
         }
     }
     
-    public function cambiarDestinoPasajero($id,$pasajero,$destino)
+    public function cambiarDestinoPasajero($id,$pasajero,$destino,$lat,$lon)
     {
         $conn = new Conexion();
         try {
-            $query = "UPDATE tbl_servicio_pasajero SET servicio_pasajero_destino = '$destino' WHERE servicio_pasajero_id_servicio = $id AND servicio_pasajero_id_pasajero = '$pasajero'"; 
+            $query = "UPDATE tbl_servicio_pasajero SET servicio_pasajero_destino = '$destino',servicio_pasajero_lat_destino = $lat,servicio_pasajero_lon_destino = $lon WHERE servicio_pasajero_id_servicio = $id AND servicio_pasajero_id_pasajero = '$pasajero'"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 return $id;
@@ -804,12 +808,17 @@ class ServicioDao {
         return $idServicio;
     }
     
-    public function modificarEstadoServicioPasajero($idServicio,$idPasajero,$estado,$observacion)
+    public function modificarEstadoServicioPasajero($idServicio,$idPasajero,$estado,$tipo,$observacion,$lat,$lon)
     {
         $id = 0;
         $conn = new Conexion();
         try {
-            $query = "UPDATE tbl_servicio_pasajero SET servicio_pasajero_estado = $estado,servicio_pasajero_hora_destino = CURRENT_TIME(),pasajero_estado_cancelado = '$observacion' WHERE servicio_pasajero_id_servicio = $idServicio AND servicio_pasajero_id_pasajero  = '$idPasajero'";
+            $stLatlng = '';
+            if(($estado == '1' && strpos($tipo, 'RG') !== false) || ($estado == '1' && strpos($tipo, 'ESP') !== false) || ($estado == '3') && strpos($tipo, 'ZP') !== false)
+            {
+                $stLatlng = ",servicio_pasajero_hora_destino = CURRENT_TIME(),servicio_pasajero_lat_destino = $lat, servicio_pasajero_lon_destino = $lon ";
+            }
+            $query = "UPDATE tbl_servicio_pasajero SET servicio_pasajero_estado = $estado,pasajero_estado_cancelado = '$observacion' ".$stLatlng." WHERE servicio_pasajero_id_servicio = $idServicio AND servicio_pasajero_id_pasajero  = '$idPasajero'";
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -827,7 +836,7 @@ class ServicioDao {
         $id = 0;
         $conn = new Conexion();
         try {
-            $query = "UPDATE tbl_servicio_pasajero SET servicio_pasajero_estado = $estado,servicio_pasajero_hora_destino = CURRENT_TIME() WHERE servicio_pasajero_id_servicio = $idServicio AND servicio_pasajero_estado  != 2";
+            $query = "UPDATE tbl_servicio_pasajero SET servicio_pasajero_estado = $estado WHERE servicio_pasajero_id_servicio = $idServicio AND servicio_pasajero_estado  != 2";
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);

@@ -7,6 +7,7 @@ class Notificacion {
     private $tipo;
     private $llave;
     private $fecha;
+    private $idServicio;
     
     function getId() {
         return $this->id;
@@ -26,6 +27,14 @@ class Notificacion {
 
     function getLlave() {
         return $this->llave;
+    }
+
+    function getFecha() {
+        return $this->fecha;
+    }
+
+    function getIdServicio() {
+        return $this->idServicio;
     }
 
     function setId($id) {
@@ -48,14 +57,12 @@ class Notificacion {
         $this->llave = $llave;
     }
 
-    function getFecha() {
-        return $this->fecha;
-    }
-
     function setFecha($fecha) {
         $this->fecha = $fecha;
     }
 
-
+    function setIdServicio($idServicio) {
+        $this->idServicio = $idServicio;
+    }
 
 }

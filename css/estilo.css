@@ -1636,9 +1636,15 @@ select
 {
     width: 5% !important;
 }
+.letra_pasajero
+{
+    width:10px !important;
+    margin-left: 5px;
+    margin-right: 5px;
+}
 .dato_pasajero
 {
-    width: 12% !important;
+    width: 10% !important;
 }
 .dir_pasajero
 {
@@ -1781,4 +1787,9 @@ select
 #botonCancelar
 {
     display: none;
+}
+
+.valor_titulo
+{
+    display: inline;
 }

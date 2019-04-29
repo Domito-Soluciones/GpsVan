@@ -37,6 +37,7 @@
                         Ruta
                     </div>
                     <div class="input-panel" id="destinos">
+                        <input style="display:none" type="text" name="falsoruta" autocomplete="off" />
                         <input type="text" class="input_asignar" list="lruta" id="ruta" placeholder="Ej: Ruta 1">
                         <datalist id="lruta"></datalist>
                     </div>
@@ -99,6 +100,26 @@
                         <select id="vehiculos" class="select_asignar">
                             <option value="">Seleccione</option>
                         </select>
+                    </div>
+                </div>
+                <div class="contenedor-panel">
+                    <div class="cont-pre-monitor">
+                        Partida
+                    </div>
+                    <div class="input-panel">
+                        <input type="text" class="input_asignar" id="partida" placeholder="Ej: Av los pinos 123" disabled>
+                        <div class="datalist-visible" id="partidal"></div>
+                        <div class="boton-chico oculto" id="buscaPartida"><img src="img/guardar.svg" width="12" height="12"></div>
+                    </div>
+                </div>
+                <div class="contenedor-panel">
+                    <div class="cont-pre-monitor cont-destino1">
+                        Destino
+                    </div>
+                    <div class="input-panel" id="destinos">
+                        <input type="text" class="input_asignar destino" id="destino" placeholder="Ej: Av los pinos 723" disabled>
+                        <div class="datalist-visible" id="destinol"></div>
+                        <div class="boton-chico oculto" id="buscaDestino"><img src="img/guardar.svg" width="12" height="12"></div>
                     </div>
                 </div>
                 <div class="contenedor-panel-completo">

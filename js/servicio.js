@@ -1,5 +1,6 @@
 /* global urlBase, alertify, CREADO, EN_PROCCESO_DE_ASIGNACION, ASIGNADO, ACEPTADO, EN_PROGRESO, FINALIZADO, google, map, markers, directionsDisplay, TIPO_USUARIO, flightPath, CANCELADO */
 var SERVICIOS;
+var SERVICIOS_PASAJEROS;
 var ESTADO_SERVICIO;
 var RUTA;
 var conductores = new Map();
@@ -7,6 +8,7 @@ var conductoresNick = new Map();
 var MOVILES = {};
 var PAGINA = 'SERVICIOS';
 var CAMPOS = ["clienteServicio","rutaServicio","fechaServicio","inicioServicio","estadoServicio","movilServicio","conductorServicio"];
+var LETRAS = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
 $(document).ready(function(){
     if(TIPO_USUARIO !== 'CLIENTE')
     {
@@ -112,6 +114,7 @@ function abrirBuscador(id)
     quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
     agregarclase($("#"+id),"fila_contenedor_activa");
     $("#contenedor_central").load("html/datos_servicio.html", function( response, status, xhr ) {
+        $("#titulo_pagina_servicio").text(id);
         if(TIPO_USUARIO === 'CLIENTE')
         {
             cambiarPropiedad($("#p_ruta"),"display","none");
@@ -180,7 +183,15 @@ function abrirBuscador(id)
         $("#inicioServicio").val(servicio.servicio_hora);
         $("#fechaServicio").val(servicio.servicio_fecha);
         $("#tarifaServicio").val(servicio.servicio_tarifa1);
-        $("#tarifa2Servicio").val(servicio.servicio_tarifa2);        
+        $("#tarifa2Servicio").val(servicio.servicio_tarifa2); 
+        if(servicio.servicio_observacion_adicional !== '')
+        {
+            $("#cont_obs").html("<textarea readonly style=\"width:99%;height:400px;font-family:Arial, Helvetica, sans-serif;\">"+servicio.servicio_observacion_adicional+"</textarea>");
+        }   
+        else
+        {
+            $("#cont_obs").html("<div class=\"mensaje_bienvenida\" >No hay observaciones adicionales</div>");
+        }
         $("#clienteServicio").on('input',function () {
             cargarRutas();
         });
@@ -270,7 +281,8 @@ function iniciarPestanias()
         obtenerPasajeros();
     });
     $("#p_ruta").click(function(){
-        if(ESTADO_SERVICIO === 5)
+        cambiarPestaniaRuta();
+        if(ESTADO_SERVICIO !== '5')
         {
             $("#contenedor_mapa").html("<div class=\"mensaje_bienvenida\">El servicio debe estar finalizado para ver la ruta</div>");
         }
@@ -278,13 +290,51 @@ function iniciarPestanias()
         {
             for(var i = 0; i < markers.length;i++)
             {
+                alert("borrando el marcador "+markers[i]);
                 markers[i].setMap(null);
             }
             mostrarMapa();
+            dibujarRutaReal();
+            if(typeof SERVICIOS_PASAJEROS === 'undefined')
+            {
+                obtenerPasajerosMin();
+            }
+            else
+            {
+                cargarMarcadores();
+            } 
         }
-        cambiarPestaniaRuta();
-        dibujarRutaReal();
     });
+    $("#p_obs").click(function(){
+        cambiarPestaniaObservacion();
+    });
+}
+
+
+function cargarMarcadores()
+{
+    for(var i = 0 ; i < SERVICIOS_PASAJEROS.length ; i++)
+    {
+        var lat = parseFloat(SERVICIOS_PASAJEROS[i].servicio_lat_destino);
+        var lon = parseFloat(SERVICIOS_PASAJEROS[i].servicio_lon_destino);
+        dibujarMarcadorLetra(LETRAS[i],lat,lon);
+    }
+}
+
+function dibujarMarcadorLetra(letra,lat,lon)
+{
+    var myLatLng = {lat: lat, lng: lon};
+    var icon = {
+        url: "http://maps.google.com/mapfiles/marker" + letra + ".png",
+        scaledSize: new google.maps.Size(20, 30),
+        origin: new google.maps.Point(0,0)
+    };
+    var marker = new google.maps.Marker({
+        position: myLatLng,
+        icon:icon
+    });    
+    marker.setMap(map);
+    markers.push(marker);
 }
 
 function cambiarPestaniaGeneral()
@@ -292,9 +342,11 @@ function cambiarPestaniaGeneral()
     cambiarPropiedad($("#cont_general"),"display","block");
     cambiarPropiedad($("#cont_pasajero"),"display","none");
     cambiarPropiedad($("#cont_ruta"),"display","none");
+    cambiarPropiedad($("#cont_obs"),"display","none");
     quitarclase($("#p_general"),"dispose");
     agregarclase($("#p_pasajero"),"dispose");
     agregarclase($("#p_ruta"),"dispose");
+    agregarclase($("#p_obs"),"dispose");
     quitarclase($("#guardar"),"oculto");
 }
 
@@ -303,9 +355,11 @@ function cambiarPestaniaPasajero()
     cambiarPropiedad($("#cont_general"),"display","none");
     cambiarPropiedad($("#cont_pasajero"),"display","block");
     cambiarPropiedad($("#cont_ruta"),"display","none");
+    cambiarPropiedad($("#cont_obs"),"display","none");
     quitarclase($("#p_pasajero"),"dispose");
     agregarclase($("#p_general"),"dispose");
     agregarclase($("#p_ruta"),"dispose");
+    agregarclase($("#p_obs"),"dispose");
     agregarclase($("#guardar"),"oculto");
 }
 function cambiarPestaniaRuta()
@@ -313,12 +367,25 @@ function cambiarPestaniaRuta()
     cambiarPropiedad($("#cont_general"),"display","none");
     cambiarPropiedad($("#cont_pasajero"),"display","none");
     cambiarPropiedad($("#cont_ruta"),"display","block");
+    cambiarPropiedad($("#cont_obs"),"display","none");
     quitarclase($("#p_ruta"),"dispose");
     agregarclase($("#p_general"),"dispose");
     agregarclase($("#p_pasajero"),"dispose");
+    agregarclase($("#p_obs"),"dispose");
     agregarclase($("#guardar"),"oculto");
 }
-
+function cambiarPestaniaObservacion()
+{
+    cambiarPropiedad($("#cont_general"),"display","none");
+    cambiarPropiedad($("#cont_pasajero"),"display","none");
+    cambiarPropiedad($("#cont_ruta"),"display","none");
+    cambiarPropiedad($("#cont_obs"),"display","block");
+    quitarclase($("#p_obs"),"dispose");
+    agregarclase($("#p_general"),"dispose");
+    agregarclase($("#p_pasajero"),"dispose");
+    agregarclase($("#p_ruta"),"dispose");
+    agregarclase($("#guardar"),"oculto");
+}
 function obtenerEstadoServicio(servicio)
 {
     if(servicio === CREADO)
@@ -369,7 +436,7 @@ function dibujarRutaReal()
             geodesic: true,
             strokeColor: '#7394e7',
             strokeOpacity: 1.0,
-            strokeWeight: 3
+            strokeWeight: 6
         });
         flightPath.setMap(map);
         var bounds = new google.maps.LatLngBounds();
@@ -387,6 +454,7 @@ function obtenerPasajeros()
     var url = urlBase + "/servicio/GetPasajerosServicio.php";
     var success = function(response)
     {
+        SERVICIOS_PASAJEROS = response;
         $("#pasajeros_contenido").html("");
         for(var i = 0; i < response.length; i++)
         {
@@ -410,7 +478,8 @@ function obtenerPasajeros()
                 estado = "Entregado";
             }
             var destino = response[i].servicio_destino;
-            $("#pasajeros_contenido").append("<div class=\"fila_contenedor fila_contenedor_servicio\">"+
+            $("#pasajeros_contenido").append("<div class=\"fila_contenedor fila_contenedor_servicio\" onclick=\"mostrarPasajero()\">"+
+                    "<div class=\"letra_pasajero\">"+LETRAS[i]+"</div>"+
                     "<div class=\"nombre_pasajero\">"+pasajero+"</div>"+
                     "<div class=\"dir_pasajero\">"+destino+"</div>"+
                     "<div class=\"dato_pasajero\">"+horaDestino+"</div>"+
@@ -418,6 +487,26 @@ function obtenerPasajeros()
         }
     };
     postRequest(url,params,success);
+}
+
+function obtenerPasajerosMin()
+{
+    var params = {id : ID_SERVICIO};
+    var url = urlBase + "/servicio/GetPasajerosServicio.php";
+    var success = function(response)
+    {
+        SERVICIOS_PASAJEROS = response;
+        cargarMarcadores();
+    };
+    postRequest(url,params,success);
+}
+
+function mostrarPasajero()
+{
+    cambiarPestaniaRuta();
+    mostrarMapa();
+    dibujarRutaReal();
+    cargarMarcadores();
 }
 
 function cargarClientes()

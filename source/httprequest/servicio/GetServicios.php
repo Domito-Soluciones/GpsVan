@@ -47,6 +47,7 @@ for ($i = 0 ; $i < count($servicios); $i++)
     $servicioTarifa2 = $servicios[$i]->getTarifa2();
     $servicioAgente = $servicios[$i]->getAgente();
     $servicioEstado = $servicios[$i]->getEstado();
+    $servicioObAd = $servicios[$i]->getObservacionesAdicionales();
     echo "{\"servicio_id\":\"".$servicioId."\","
         . "\"servicio_cliente\":\"".$servicioCliente."\","
         . "\"servicio_ruta\":\"".$servicioRuta."\","
@@ -58,7 +59,8 @@ for ($i = 0 ; $i < count($servicios); $i++)
         . "\"servicio_tarifa1\":\"".$servicioTarifa1."\","
         . "\"servicio_tarifa2\":\"".$servicioTarifa2."\","
         . "\"servicio_agente\":\"".$servicioAgente."\","
-        . "\"servicio_estado\":\"".$servicioEstado."\""
+        . "\"servicio_estado\":\"".$servicioEstado."\","
+        . "\"servicio_observacion_adicional\":\"".$servicioObAd."\""
         . "}";
     if (($i+1) != count($servicios))
     {

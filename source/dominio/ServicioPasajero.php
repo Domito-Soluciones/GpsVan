@@ -4,6 +4,8 @@ class ServicioPasajero {
     private $id;
     private $pasajero;
     private $destino;
+    private $latDestino;
+    private $lonDestino;
     private $hora;
     private $estado;
     private $estadoCancelacion;
@@ -18,6 +20,14 @@ class ServicioPasajero {
 
     function getDestino() {
         return $this->destino;
+    }
+
+    function getLatDestino() {
+        return $this->latDestino;
+    }
+
+    function getLonDestino() {
+        return $this->lonDestino;
     }
 
     function getHora() {
@@ -44,6 +54,14 @@ class ServicioPasajero {
         $this->destino = $destino;
     }
 
+    function setLatDestino($latDestino) {
+        $this->latDestino = $latDestino;
+    }
+
+    function setLonDestino($lonDestino) {
+        $this->lonDestino = $lonDestino;
+    }
+
     function setHora($hora) {
         $this->hora = $hora;
     }
@@ -52,10 +70,9 @@ class ServicioPasajero {
         $this->estado = $estado;
     }
 
-    function setEstadoCancelacion($estadoCanelacion) {
-        $this->estadoCancelacion = $estadoCanelacion;
+    function setEstadoCancelacion($estadoCancelacion) {
+        $this->estadoCancelacion = $estadoCancelacion;
     }
-
 
 
 }

@@ -18,11 +18,15 @@ for ($i = 0 ; $i < count($servicios); $i++)
     $estado = $servicio->getEstado();
     $estadoCancelacion = $servicio->getEstadoCancelacion();
     $destino = $servicio->getDestino();
+    $lat = $servicio->getLatDestino();
+    $lon = $servicio->getLonDestino();
         echo "{\"servicio_id\":\"".$id."\","
             . "\"servicio_pasajero\":\"".$pasajero."\","
             . "\"servicio_hora_destino\":\"".$hora."\","
             . "\"servicio_estado\":\"".$estado."\","
             . "\"servicio_estado_cancelacion\":\"".$estadoCancelacion."\","
+            . "\"servicio_lat_destino\":\"".$lat."\","
+            . "\"servicio_lon_destino\":\"".$lon."\","
             . "\"servicio_destino\":\"".$destino."\"}";
         if (($i+1) != count($servicios))
         {
