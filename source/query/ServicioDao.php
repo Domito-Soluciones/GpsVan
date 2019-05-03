@@ -253,7 +253,7 @@ class ServicioDao {
                 $buscaFecha = "AND servicio_fecha BETWEEN '".$desde." 00:00:00' AND '".$hasta." 00:00:00'";
             }
             $query = "SELECT * FROM tbl_servicio WHERE servicio_estado IN (5,6) "
-                    .$buscaFecha." ".$buscaConductor." ORDER BY servicio_id DESC LIMIT 50";
+                    .$buscaFecha." ".$buscaConductor." ORDER BY servicio_id DESC";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
             while($row = mysqli_fetch_array($result)) {

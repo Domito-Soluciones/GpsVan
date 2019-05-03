@@ -194,6 +194,7 @@ $(document).ready(function(){
     
     $("#buscaPartida").click(function(){
         agregarclase($(this),"oculto");
+        var contenedor = $("#contenedor_pasajero");
         if(typeof origen === 'undefined')
         {
             origen = $("#partida").val();
@@ -205,13 +206,18 @@ $(document).ready(function(){
             origen = $("#partida").val();
             $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+origen);
         }
+        contenedor.prepend("<div class=\"cont-pasajero-gral\" id=\"origen_empresa\"><div class=\"cont-pasajero\">Origen</div><div class=\"cont-mini-pasajero\"><div>"+ origen + "</div><div>");
+        pasajeros.splice(0, 0, "Origen");
         dibujarRuta(origen,destinos);
     });
     
     $("#buscaDestino").click(function(){
         agregarclase($(this),"oculto");
+        var contenedor = $("#contenedor_pasajero");
         destinos.push($("#destino").val());
         $("#contenedor_punto_destino").html("<b>Destino: </b>"+$("#destino").val());
+        contenedor.append("<div class=\"cont-pasajero-gral\" id=\"destino_empresa\"><div class=\"cont-pasajero\">Destino</div><div class=\"cont-mini-pasajero\"><div>"+ $("#destino").val() + "</div><div>");
+        pasajeros.push("Destino");
         dibujarRuta(origen,destinos);
     });
     
@@ -901,9 +907,11 @@ function agregarPasajero(obj,nombre,punto,celular)
             else
             {
                 var destinoFinal = destinos.pop();
+                console.log("saco este "+destinoFinal)
                 $("#contenedor_punto_destino").html("<b>Destino: </b>"+destinoFinal);
                 destinos.push(punto);
                 destinos.push(destinoFinal);
+                console.log("pongo estos "+punto+" "+destinoFinal)
             }
         }
         pasajeros.push(id);
@@ -924,9 +932,20 @@ function agregarPasajero(obj,nombre,punto,celular)
         }
         $(texto).insertBefore($("#destino_empresa"));
     }
-    else
+    else if(ruta.indexOf("ZP") !== -1)
     {
         $("#contenedor_pasajero").append(texto);
+    }
+    else
+    {
+        if($("#destino").val() === '')
+        {
+            $("#contenedor_pasajero").append(texto);
+        }
+        else
+        {
+            $("#destino_empresa").append(texto);
+        }
     }
     pasajero.remove();
     dibujarRuta(origen,destinos);
