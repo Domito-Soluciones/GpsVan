@@ -911,7 +911,7 @@ function agregarPasajero(obj,nombre,punto,celular)
                 $("#contenedor_punto_destino").html("<b>Destino: </b>"+destinoFinal);
                 destinos.push(punto);
                 destinos.push(destinoFinal);
-                console.log("pongo estos "+punto+" "+destinoFinal)
+                console.log("pongo estos "+punto+" "+destinoFinal);
             }
         }
         pasajeros.push(id);
