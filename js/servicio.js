@@ -290,7 +290,6 @@ function iniciarPestanias()
         {
             for(var i = 0; i < markers.length;i++)
             {
-                alert("borrando el marcador "+markers[i]);
                 markers[i].setMap(null);
             }
             mostrarMapa();
