@@ -1,9 +1,9 @@
-
+var PAGINA = 'CONFIGURACION';
 var CAMPOS = ["valor_uf","porcentaje_afp","porcentaje_isapre","porcentaje_mutual"];
 
 $(document).ready(function(){
     obtenerConfiguracion();
-    
+    PAGINA_ANTERIOR = PAGINA;
     $("#guardar").click(function(){
         modificarConfiguracion();
     });

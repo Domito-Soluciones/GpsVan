@@ -32,7 +32,6 @@ function agregarTarifa()
             cerrarSession(response);
             alertify.success("Tarifa Agregada");
             vaciarFormulario();
-            cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
             resetFormulario();
             buscarTarifas(ID_CLIENTE,NOMBRE_CLIENTE);
             cambiarPropiedad($("#pie-aniadir"),"display","block");
@@ -73,7 +72,6 @@ function modificarTarifa()
         var url = urlBase + "/tarifa/ModTarifa.php";
         var success = function(response)
         {
-            cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
             cerrarSession(response);
             alertify.success("Tarifa Modificada");
             resetFormulario();
@@ -119,7 +117,6 @@ function buscarClienteTarifa()
                 clientes.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"cambiarFilaTarifa('"+id+"','"+nombre+"','"+direccion+"')\">"+titulo+"</div>");
             }
         }
-        cambiarPropiedad($("#loader"),"visibility","hidden");
     };
     postRequest(url,params,success);
 }
@@ -162,7 +159,6 @@ function buscarTarifas(id,nombre,direccion)
         
         cambiarPropiedad($(".pie-tarifa"),"display","block");
         cambiarPropiedad($("#eliminar2"),"visibility","hidden");
-        cambiarPropiedad($("#loaderTarifa"),"display","none");
         cerrarSession(response);
         var tarifas = $("#lista_busqueda_tarifa_detalle");
         tarifas.html("");
@@ -187,7 +183,6 @@ function buscarTarifas(id,nombre,direccion)
                     "<div><img onclick=\"preEliminarTarifa('"+descripcion+"','"+nombre+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
                     "</div>");
         }
-        cambiarPropiedad($("#loader"),"visibility","hidden");
     };
     postRequest(url,params,success);
     
@@ -285,7 +280,6 @@ function eliminarTarifa()
     {
         alertify.success("Tarifa eliminada");
         cerrarSession(response);
-        cambiarPropiedad($("#loader"),"visibility","hidden");
         resetBotones();
         buscarTarifas(ID_CLIENTE,NOMBRE_CLIENTE);
         cambiarPropiedad($("#pie-aniadir"),"display","initial");
@@ -405,7 +399,6 @@ function preEliminarTarifa(nombre,descripcion)
                     quitarclase($("#agregarT"),"oculto");
                     alertify.success("Tarifa eliminada");
                     cerrarSession(response);
-                    cambiarPropiedad($("#loader"),"visibility","hidden");
                     resetBotones();
                     buscarTarifas(ID_CLIENTE,NOMBRE_CLIENTE);
                     cambiarFilaTarifa(ID_CLIENTE,NOMBRE_CLIENTE);
@@ -423,7 +416,6 @@ function buscarTarifasAll()
     var url = urlBase + "/tarifa/GetTarifas.php";
     var success = function(response)
     {
-        cambiarPropiedad($("#loaderTarifa"),"display","none");
         cerrarSession(response);
         var tarifas = $("#lista_busqueda_tarifa_detalle");
         tarifas.html("");
@@ -448,7 +440,6 @@ function buscarTarifasAll()
                     "<div><img onclick=\"preEliminarTarifa('"+descripcion+"','"+nombre+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
                     "</div>");
         }
-        cambiarPropiedad($("#loader"),"visibility","hidden");
     };
     postRequest(url,params,success);
     

@@ -88,7 +88,7 @@ function cargarClientes()
             $("#empresa").append("<option value=\""+nombre+"\">"+nombre+"</option>");
         }
     };
-    postRequest(url,params,success,false);
+    postRequest(url,params,success);
 }
 function cargarConductores()
 {
@@ -104,7 +104,7 @@ function cargarConductores()
             $("#conductores").append("<option value=\""+id+"\">"+nombre+"</option>");
         }
     };
-    postRequest(url,params,success,false);
+    postRequest(url,params,success);
 }
 
 

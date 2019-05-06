@@ -127,7 +127,6 @@ function buscarPasajeroCliente(cliente)
                     "<div class=\"dato_pasajero\">"+papellido+"</div>"+
                     "<div class=\"dato_pasajero\">"+cc+"</div><div class=\"dir_pasajero\">"+punto+"</div></div>");
         }
-        cambiarPropiedad($("#loader"),"visibility","hidden");
     };
     postRequest(url,params,success);
 }

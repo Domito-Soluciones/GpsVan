@@ -1,6 +1,8 @@
 /* global urlBase, alertify */
+var PAGINA = 'CONTRATOS';
 
 $(document).ready(function(){
+    PAGINA_ANTERIOR = PAGINA;
     $("#buscar").click(function(){
         var op = $("#tipo").val();
         if(op !== '')
@@ -54,9 +56,8 @@ function buscarConductor()
             conductores.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"mostrarContrato('"+id+"','"+contrato+"')\">"+ titulo +"</div>");
             }
         }
-        cambiarPropiedad($("#loader"),"visibility","hidden");
     };
-    postRequest(url,params,success,false);
+    postRequest(url,params,success);
 }
 
 function buscarCliente()
@@ -90,9 +91,8 @@ function buscarCliente()
             conductores.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"mostrarContrato('"+id+"','"+contrato+"')\">"+ titulo +"</div>");
             }
         }
-        cambiarPropiedad($("#loader"),"visibility","hidden");
     };
-    postRequest(url,params,success,false);
+    postRequest(url,params,success);
 }
 
 function mostrarContrato(id,contrato)

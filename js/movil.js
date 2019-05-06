@@ -212,7 +212,6 @@ function agregarMovil()
         alertify.success("Veh&iacute;culo Agregado");
         cambiarPestaniaGeneral();
         vaciarFormulario();
-        cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
         resetFormulario();
         buscarMovil();
         buscarConductores();
@@ -347,7 +346,6 @@ function modificarMovil()
         var url = urlBase + "/movil/ModMovil.php";
         var success = function(response)
         {
-            cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
             cerrarSession(response);
             alertify.success("Veh&iacute;culo Modificado");
             resetFormulario();
@@ -396,14 +394,13 @@ function buscarMovil()
                 grupo = 'Externo';
             }
             moviles.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\">"+
-                    "<div onClick=\"abrirModificar('"+id+"')\">"+patente+"</div>"+
-                    "<div onClick=\"abrirModificar('"+id+"')\">"+nombre+"</div>"+
-                    "<div onClick=\"abrirModificar('"+id+"')\">"+marca+"</div>"+
-                    "<div onClick=\"abrirModificar('"+id+"')\">"+grupo+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+patente+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+nombre+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+marca+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+grupo+"</div>"+
                     "<div><img onclick=\"preEliminarMovil('"+patente+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
                     "</div>");
         }
-        cambiarPropiedad($("#loader"),"visibility","hidden");
     };
     postRequest(url,params,success);
 }
@@ -457,10 +454,10 @@ function buscarMovilTipo(tipo)
                 grupo = 'Externo';
             }
             moviles.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\">"+
-                    "<div onClick=\"abrirModificar('"+id+"')\">"+patente+"</div>"+
-                    "<div onClick=\"abrirModificar('"+id+"')\">"+nombre+"</div>"+
-                    "<div onClick=\"abrirModificar('"+id+"')\">"+marca+"</div>"+
-                    "<div onClick=\"abrirModificar('"+id+"')\">"+grupo+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+patente+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+nombre+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+marca+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+grupo+"</div>"+
                     "<div><img onclick=\"preEliminarMovil('"+patente+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
                     "</div>");
         }
@@ -472,13 +469,14 @@ function buscarMovilTipo(tipo)
         return;
     }
 }
-function abrirModificar(id)
+function abrirModificar(id,patente,nombre)
 {
     ID_MOVIL = id;
     AGREGAR = false;
     quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
     agregarclase($("#"+id),"fila_contenedor_activa");
     $("#lista_busqueda_movil_detalle").load("html/datos_movil.html", function( response, status, xhr ) {
+        $("#titulo_pagina_vehiculo").text(patente + " ("+nombre+")");
         iniciarPestanias();
         cambioEjecutado();
         iniciarFecha(['#venPerCir','#venRevTec','#venExt','#venSegOb','#venSegRcDm','#venSegAs','#venSegRcExceso']);
@@ -645,7 +643,6 @@ function eliminarMovil()
         alertify.success("Veh&iacute;culo eliminado");
         cerrarSession(response);
         resetFormularioEliminar(PAGINA);
-        cambiarPropiedad($("#loader"),"visibility","hidden");
         resetBotones();
         buscarMovil();
         buscarConductores();
@@ -1143,7 +1140,6 @@ function preEliminarMovil(id)
                 {
                     alertify.success("Vehículo eliminado");
                     cerrarSession(response);
-                    cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
                     resetBotones();
                     if(typeof TIPO_GRUPO === 'undefined')
                     {

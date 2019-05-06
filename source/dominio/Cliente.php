@@ -13,6 +13,7 @@ class Cliente {
     private $mailFacturacion; 
     private $contrato;
     private $grupo;
+    private $color;
     
     function getId() {
         return $this->id;
@@ -56,6 +57,10 @@ class Cliente {
 
     function getGrupo() {
         return $this->grupo;
+    }
+
+    function getColor() {
+        return $this->color;
     }
 
     function setId($id) {
@@ -102,6 +107,11 @@ class Cliente {
         $this->grupo = $grupo;
     }
 
+    function setColor($color) {
+        $this->color = $color;
+    }
+
+    
             
     public function toString() {
         return "DATOS CLIENTE: ID : ".$this->id." RAZON : ".$this->razon.

@@ -108,6 +108,7 @@ function agregarCliente()
     var mail = $("#data").val();
     var mail2 = $("#data2").val();
     var grupo = $("#grupo").val();
+    var color = $("#color").val();
     var contrato = $("#contratoOculta").val();
     var cc = $(".centro_costo");
     cc.each(
@@ -127,7 +128,7 @@ function agregarCliente()
     if(validarTipoDato())
     {
         var params = { razon : razon, tipo : tipo, rut : rut, direccion : direccion, nombre : nombre,
-                telefono : telefono, mail : mail, mail2 : mail2 , contrato : contrato, grupo : grupo, centros : CENTROS_COSTO + ""};
+                telefono : telefono, mail : mail, mail2 : mail2 , contrato : contrato, grupo : grupo,color:color, centros : CENTROS_COSTO + ""};
         var url = urlBase+"/cliente/AddCliente.php";
         var success = function(response)
         {
@@ -137,7 +138,6 @@ function agregarCliente()
             alertify.success("Cliente Agregado");
             cambiarPestaniaGeneral();
             vaciarFormulario();
-            cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
             resetFormulario();
             CENTROS_COSTO = [];
             $(".contenedor_contrato_movil").html("");
@@ -158,6 +158,7 @@ function modificarCliente()
     var mail = $("#data").val();
     var mail2 = $("#data2").val();
     var grupo = $("#grupo").val();
+    var color = $("#color").val();
     var contrato = $("#contratoOculta").val();
     var cc = $(".centro_costo");
     cc.each(
@@ -177,11 +178,10 @@ function modificarCliente()
     if(validarTipoDato())
     {
         var params = { id : id, razon : razon, tipo : tipo, rut : rut, direccion : direccion, nombre : nombre,
-            telefono : telefono, mail : mail, mail2 : mail2, contrato : contrato ,grupo : grupo, centros : CENTROS_COSTO+""};
+            telefono : telefono, mail : mail, mail2 : mail2, contrato : contrato ,grupo : grupo,color : color, centros : CENTROS_COSTO+""};
         var url = urlBase + "/cliente/ModCliente.php";
         var success = function(response)
         {
-            cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
             cerrarSession(response);
             cambiarPestaniaGeneral();
             alertify.success("Cliente Modificado");
@@ -205,7 +205,7 @@ function buscarCliente()
         grupos.html("");
         grupos.append("<div class=\"fila_contenedor\" id=\"col_0\" onClick=\"cambiarFila('0')\">Grandes Clientes</div>");
         grupos.append("<div class=\"fila_contenedor\" id=\"col_1\" onClick=\"cambiarFila('1')\">Medianos Clientes</div>");
-        grupos.append("<div class=\"fila_contenedor\" id=\"col_2\" onClick=\"cambiarFila('2')\">PequeñoClientes</div>");
+        grupos.append("<div class=\"fila_contenedor\" id=\"col_2\" onClick=\"cambiarFila('2')\">Pequeños Clientes</div>");
         clientes.html("");
         clientes.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Razon social</div><div>Tipo</div><div class=\"mini_tab\" >Grupo</div><div></div></div>");
         CLIENTES = response;
@@ -241,7 +241,6 @@ function buscarCliente()
                     "<div><img onclick=\"preEliminarCliente('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
                     "</div>");
         }
-        cambiarPropiedad($("#loader"),"visibility","hidden");
     };
     postRequest(url,params,success);
 }
@@ -322,6 +321,7 @@ function abrirModificar(id,nombre)
     NOMBRE_CLIENTE = nombre;
     //marcarFilaActiva(ID_CLIENTE);
     $("#lista_busqueda_cliente_detalle").load("html/datos_cliente.html", function( response, status, xhr ) {
+        $("#titulo_pagina_cliente").text(nombre);
         initPlacesAutoComplete();
         iniciarPestanias();
         cambioEjecutado();
@@ -475,6 +475,7 @@ function abrirModificar(id,nombre)
         $("#data").val(cliente.cliente_mail_contacto);
         $("#data2").val(cliente.cliente_mail_facturacion);
         $("#grupo").val(cliente.cliente_grupo);
+        $("#color").val(cliente.cliente_color);
         verAdjunto(cliente.cliente_contrato,'');
         var j = 0;
         Object.keys(cliente.cliente_centro_costo).forEach(function(key){
@@ -515,7 +516,6 @@ function eliminarCliente()
         alertify.success("Cliente eliminado");
         cerrarSession(response);
         resetFormularioEliminar(PAGINA);
-        cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
         resetBotones();
         buscarCliente();
     };
@@ -735,7 +735,6 @@ function preEliminarCliente(id)
                 {
                     alertify.success("Cliente eliminado");
                     cerrarSession(response);
-                    cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
                     resetBotones();
                     if(typeof TIPO_GRUPO === 'undefined')
                     {

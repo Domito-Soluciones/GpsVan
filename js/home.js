@@ -1,10 +1,11 @@
 /* global urlBase */
-
+var PAGINA = "HOME";
 var options = {};
 
 $(document).ready(function(){
-    validarServicios();
+    PAGINA_ANTERIOR = PAGINA;
     getDashBoard();
+    validarServicios();
     
     $("#servicios_pendientes_link").click(function(){
         mostrarServiciosPendientes();
@@ -83,3 +84,9 @@ function generarGraficoBarra(canvas,data,options)
 }
 
 
+    
+function abrirServicio(ids,clientes,ruta,fechas,hora,observacion)
+{
+    ASIGNANDO = true;
+    cambiarModulo('panel',{ids:ids,clientes:clientes,ruta:ruta,fechas:fechas,hora:hora,observacion:observacion});
+}

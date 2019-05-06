@@ -128,7 +128,6 @@ function agregarAgente()
             ID_AGENTE = undefined;
             cerrarSession(response);
             alertify.success("Administrador Agregado");
-            cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
             cambiarPestaniaGeneral();
             vaciarFormulario();
             resetFormulario();
@@ -185,7 +184,6 @@ function modificarAgente()
         var url = urlBase + "/agente/ModAgente.php";
         var success = function(response)
         {
-            cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
             cerrarSession(response);
             cambiarPestaniaGeneral();
             alertify.success("Administrador Modificado");
@@ -229,7 +227,6 @@ function buscarAgente()
                 agentes.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"')\">"+titulo+"</div>");
             }
         }
-        cambiarPropiedad($("#loader"),"visibility","hidden");
     };
     postRequest(url,params,success);
 }
@@ -350,7 +347,6 @@ function eliminarAgente()
         alertify.success("Administrador eliminado");
         cerrarSession(response);
         resetFormularioEliminar(PAGINA);
-        cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
         resetBotones();
         buscarAgente();
     };
