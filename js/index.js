@@ -29,7 +29,6 @@ function login(){
     var success = function(response){
         if(response.agente_id === 0)
         {
-            cambiarPropiedad($("#loader"),"visibility","hidden");
             alertify.error("Usuario y/o password no coinciden");
         }
         else if(parseInt(response.agente_id) > 0)
@@ -44,8 +43,5 @@ function login(){
             }
         }
     };
-    var error = function(){
-        alertify.error("error");
-    };
-    postRequest(url,params,success,error);
+    postRequest(url,params,success);
 }

@@ -40,7 +40,7 @@ function isTeclaTab(e){
     return false;
 }
 
-function postRequest(url,params,success)
+function postRequest(url,params,success,cargar = true)
 {
     $.ajax({
         url: url,
@@ -49,13 +49,21 @@ function postRequest(url,params,success)
         cache: false,
         async: true,
         beforeSend: function (xhr) {
-            cambiarPropiedad($("#loader"),"visibility","visible");
+            if(cargar){
+                mostrarDivLoader();
+            }
         },
         success: success,
+        complete: function (data) {
+            if(cargar){
+                eliminarDivLoader();
+            }
+        },
         error: function (resposeError)
         {
-            $("#error").text(resposeError);
-            cambiarPropiedad($("#loader"),"visibility","hidden");
+            if(cargar){
+                eliminarDivLoader();
+            }
         }
     });
 }
@@ -71,12 +79,15 @@ function getRequest(url,success,cargar = true)
         beforeSend: function (xhr) {
             if(cargar)
             {
-                cambiarPropiedad($("#loader"),"visibility","visible");
+                mostrarDivLoader();
             }
+        },
+        complete: function (data) {
+            eliminarDivLoader();
         },
         error: function (resposeError)
         {
-            cambiarPropiedad($("#loader"),"visibility","hidden");
+            eliminarDivLoader();
         }
     });
 }
@@ -329,7 +340,6 @@ function abrirFile(e,obj){
 function subirFicheroPDF(event,form,nombre,archivo,index)
 {
     ADJUNTANDO = true;
-    cambiarPropiedad($("#loaderContrato"),"visibility","visible");
     if(nombre.val() !== '' && (validarRut(nombre.val()) || validarPatente(nombre.val())))
     {
         var url = 'source/util/subirFichero.php?nombre='+nombre.val()+'&tipo=pdf&archivo='+archivo.val();
@@ -342,12 +352,11 @@ function subirFicheroPDF(event,form,nombre,archivo,index)
             contentType: false,
             processData: false,
             beforeSend: function (xhr) {
-                cambiarPropiedad($("#loader"+index),"visibility","visible");
+                mostrarDivLoader();
             },
             success: function()
             {
                 ADJUNTANDO = false;
-                cambiarPropiedad($("#loader"+index),"visibility","hidden");
                 var archivo = $("#contratoOculta"+index).val();
                 var ext = archivo.substring(archivo.length-3,archivo.length);
                 if(ext !== 'pdf'){
@@ -359,11 +368,11 @@ function subirFicheroPDF(event,form,nombre,archivo,index)
                     var enlace = "<a href=\"source/util/pdf/"+archivo+"\" target=\"_blanck\">Ver</a>";
                     $("#contenedor_contrato"+index).html(enlace);
                 } 
-                cambiarPropiedad($("#loaderContrato"),"visibility","hidden");
+                eliminarDivLoader();
             },
             error: function(response)
             {
-                cambiarPropiedad($("#loaderContrato"),"visibility","hidden");
+                eliminarDivLoader();
             }
         });
     }
@@ -830,4 +839,35 @@ function limpiarMapa()
     {
         markers[i].setMap(null);
     }
+}
+
+function eliminarDivLoader() {
+    $("#windowLoad").remove();
+ 
+}
+
+function mostrarDivLoader() {
+    eliminarDivLoader();
+    height = 20;
+    var ancho = 0;
+    var alto = 0;
+     if (window.innerWidth === undefined) ancho = window.screen.width;
+    else ancho = window.innerWidth;
+    if (window.innerHeight === undefined) alto = window.screen.height;
+    else alto = window.innerHeight;
+    var heightdivsito = alto/2 - parseInt(height)/2;
+    imgCentro = "<div style='text-align:center;height:" + alto + "px;'><div  style='color:#fff;margin-top:" + heightdivsito + "px; font-size:30px;font-weight:bold'>Cargando...</div><div id=\"loader\" class=\loader\">Loading...</div></div>";
+    div = document.createElement("div");
+    div.id = "windowLoad";
+    div.style.width = ancho + "px";
+    div.style.height = alto + "px";
+    $("body").append(div);
+    input = document.createElement("input");
+    input.id = "focusInput";
+    input.type = "text";
+    $("#windowLoad").append(input);
+    $("#focusInput").focus();
+    $("#focusInput").hide();
+    $("#windowLoad").html(imgCentro);
+ 
 }

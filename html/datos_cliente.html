@@ -1,5 +1,6 @@
 <div class="titulo_pagina">
     <img src="img/atras.svg" class="img_volver" id="volver"> Informaci&oacute;n Cliente
+    <div class="valor_titulo" id="titulo_pagina_cliente"></div>
 </div>
 <div class="contenedor-titulo">
     <div class="titulo_pagina_general" id="p_general">
@@ -100,9 +101,18 @@
             </div>
         </div>
         <div class="contenedor-fila">
+            <div class="contenedor-pre-input">
+                Color
+            </div>
+            <div class="contenedor-input recargado">
+                <input type="color" id="color">
+            </div>
+        </div>
+    </div>
+    <div class="contenedor-formulario_mapa">
+        <div class="contenedor-fila">
             <div class="contenedor-pre-input-conductor">
                 Contrato
-                <div class="loader-mini" id="loaderContrato">Loading...</div>   
             </div>
             <div class="contenedor-input recargado">
                 <input type="hidden" id="contratoOculta">
@@ -117,8 +127,6 @@
             </div>
             <div id="contenedor_contrato" class="contenedor_contrato_movil"></div>
         </div>
-    </div>
-    <div class="contenedor-formulario_mapa">
         <div class="contenedor_central pasajero_mapa oculto" id="contenedor_mapa"></div>
     </div>
 </div>
@@ -150,9 +158,6 @@
 </div>
 <div class="contenedor-info tarifa_cont_cliente contenedor_oculto" id="cont_tarifa">
     <div id="lista_busqueda_tarifa_detalle" class="lista_busqueda_extendida">
-        <div class="contenedor-loader">
-            <div class="loader" id="loaderTarifa">Loading...</div>
-        </div>
     </div>
     <div class="pie-tarifa">
         <div class="pie-left">

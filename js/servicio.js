@@ -4,8 +4,8 @@ var SERVICIOS_PASAJEROS;
 var ESTADO_SERVICIO;
 var RUTA;
 var conductores = new Map();
-var conductoresNick = new Map();
 var MOVILES = {};
+var ID_CONDUCTOR;
 var PAGINA = 'SERVICIOS';
 var CAMPOS = ["clienteServicio","rutaServicio","fechaServicio","inicioServicio","estadoServicio","movilServicio","conductorServicio"];
 var LETRAS = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
@@ -79,7 +79,6 @@ function buscarServicio()
                     "<div>"+obtenerEstadoServicio(estado)+"</div>"+
                     "<div>"+conductor+"</div></div>");
         }
-        cambiarPropiedad($("#loader"),"visibility","hidden");
     };
     postRequest(url,params,success);
 }
@@ -97,14 +96,13 @@ function cargarMoviles()
     {
         for(var i = 0 ; i < response.length ; i++)
         {
-            var conductor = response[i].movil_conductor_nombre;
-            var nick = response[i].movil_conductor_nick;
-            conductores.set(nick,conductor);
-            conductoresNick.set(conductor,nick);
+            var conductor = response[i].movil_conductor;
+            var conductorNombre = response[i].movil_conductor_nombre;
+            conductores.set(conductor,conductorNombre);
             MOVILES = response;
         }
     };
-    postRequest(url,params,success,false);
+    postRequest(url,params,success);
 }
 
 function abrirBuscador(id)
@@ -119,7 +117,7 @@ function abrirBuscador(id)
         {
             cambiarPropiedad($("#p_ruta"),"display","none");
             $("#rutaServicio").prop("readonly",true);
-            $("#tipoRutaServicio").prop("readonly",true);
+            $("#tipoRutaServicio").prop("disabled",true);
             $("#fechaServicio").prop("readonly",true);
             $("#inicioServicio").prop("readonly",true);
             $("#estadoServicio").prop("disabled",true);
@@ -165,9 +163,10 @@ function abrirBuscador(id)
         for(var i = 0 ; i < MOVILES.length; i++)
         {
             var sel = "";
-            var conductor = conductores.get(MOVILES[i].movil_conductor_nick);
+            var conductor = conductores.get(MOVILES[i].movil_conductor);
             if(MOVILES[i].movil_nombre === servicio.servicio_movil)
             {
+                ID_CONDUCTOR = MOVILES[i].movil_conductor;
                 conductorReal = conductor;
                 sel = " selected ";
             }
@@ -232,7 +231,7 @@ function modificarServicio()
     var hora = $("#inicioServicio").val();
     var estado = $("#estadoServicio").val();
     var movil = $("#movilServicio").val();
-    var conductor = conductoresNick.get($("#conductorServicio").val());
+    var conductor = ID_CONDUCTOR;
     var tarifa1 = $("#tarifaServicio").val();
     var tarifa2 = $("#tarifa2Servicio").val();
     var array = [cliente,ruta,fecha,hora,estado,movil,tarifa1,tarifa2];
@@ -249,7 +248,6 @@ function modificarServicio()
         var url = urlBase + "/servicio/ModServicio.php";
         var success = function(response)
         {
-            cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
             cerrarSession(response);
             alertify.success("Servicio Modificado");
             buscarServicio();
@@ -521,7 +519,7 @@ function cargarClientes()
             $("#lcliente").append("<option value=\""+nombre+"\">"+nombre+"</option>");
         }
     };
-    postRequest(url,params,success,false);
+    postRequest(url,params,success);
 }
 
 function cargarRutas()
@@ -545,7 +543,7 @@ function cargarRutas()
             }
         }
     };
-    postRequest(url,params,success,false);
+    postRequest(url,params,success);
 }
 
 function activarPestania(array)

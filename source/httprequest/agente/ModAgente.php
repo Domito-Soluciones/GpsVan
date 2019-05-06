@@ -12,7 +12,10 @@ $papellido = filter_input(INPUT_POST, 'papellido');
 $mapellido = filter_input(INPUT_POST, 'mapellido');
 $rut = filter_input(INPUT_POST, 'rut');
 $nick = filter_input(INPUT_POST, 'nick');
-$password = base64_encode(Cripto::encriptar(filter_input(INPUT_POST, 'password')));
+$password = '';
+if(filter_input(INPUT_POST, 'password') != ''){
+    $password = base64_encode(Cripto::encriptar(filter_input(INPUT_POST, 'password')));
+}
 $telefono = filter_input(INPUT_POST, 'telefono');
 $celular = filter_input(INPUT_POST, 'celular');
 $direccion = filter_input(INPUT_POST, 'direccion');

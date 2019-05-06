@@ -73,7 +73,6 @@ function agregarRendicion()
             cerrarSession(response);
             alertify.success("Rendición Agregada");
             vaciarFormulario();
-            cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
             resetFormulario();
         };
         postRequest(url,params,success);
@@ -100,7 +99,6 @@ function modificarRendicion()
         {
             cerrarSession(response);
             alertify.success("Rendición Modificada");
-            cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
         };
         postRequest(url,params,success);
     }
@@ -139,7 +137,6 @@ function buscarConductor()
             conductores.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"verRendiciones('"+id+"')\">"+ titulo +"</div>");
             }
         }
-        cambiarPropiedad($("#loader"),"visibility","hidden");
     };
     postRequest(url,params,success);
 }
@@ -182,7 +179,6 @@ function verRendiciones(conductor)
                     "<div><img onclick=\"preEliminarRendicion('"+id+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
                     "</div>");
         }
-        cambiarPropiedad($("#loader"),"visibility","hidden");
     };
     postRequest(url,params,success);
 }
@@ -258,7 +254,6 @@ function preEliminarRendicion(id)
                 {
                     alertify.success("Rendición eliminada");
                     cerrarSession(response);
-                    cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
                     resetBotones();
                     verRendiciones(ID_CONDUCTOR);
                     marcarFilaActiva(ID_CONDUCTOR);
@@ -275,7 +270,6 @@ function eliminarRendicion()
     {
         alertify.success("Rendición eliminada");
         cerrarSession(response);
-        cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
         resetBotones();
         verRendiciones(ID_CONDUCTOR);
         marcarFilaActiva(ID_CONDUCTOR);

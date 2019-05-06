@@ -18,6 +18,7 @@ for ($i = 0 ; $i < count($clientes); $i++)
     $clienteRut = $clientes[$i]->getRut();
     $clienteDireccion = $clientes[$i]->getDireccion();
     $clienteGrupo = $clientes[$i]->getGrupo();
+    $clienteColor = $clientes[$i]->getColor(); 
     $clienteNombreContacto = $clientes[$i]->getNombreContacto();
     $clienteFonoContacto = $clientes[$i]->getFonoContacto();
     $clienteMailContacto = $clientes[$i]->getMailContacto();
@@ -30,6 +31,7 @@ for ($i = 0 ; $i < count($clientes); $i++)
         . "\"cliente_rut\":\"".$clienteRut."\","
         . "\"cliente_direccion\":\"".$clienteDireccion."\","
         . "\"cliente_grupo\":\"".$clienteGrupo."\","
+        . "\"cliente_color\":\"".$clienteColor."\","
         . "\"cliente_nombre_contacto\":\"".$clienteNombreContacto."\","
         . "\"cliente_fono_contacto\":\"".$clienteFonoContacto."\","
         . "\"cliente_mail_contacto\":\"".$clienteMailContacto."\","

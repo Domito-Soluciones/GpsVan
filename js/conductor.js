@@ -166,7 +166,6 @@ function agregarConductor()
             alertify.success("Conductor Agregado");
             cambiarPestaniaGeneral();
             vaciarFormulario();
-            cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
             resetFormulario();
             buscarConductor();
             cambiarPropiedad($(".imagen"),"background-image","url('img/usuario-hombre.svg')");
@@ -253,7 +252,6 @@ function modificarConductor()
         var url = urlBase + "/conductor/ModConductor.php";
         var success = function(response)
         {
-            cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
             cerrarSession(response);
             cambiarPestaniaGeneral();
             alertify.success("Conductor Modificado");
@@ -318,14 +316,13 @@ function buscarConductor()
                 tipo = 'Transportista / Conductor';
             }
             conductores.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\">"+
-                    "<div onClick=\"abrirModificar('"+id+"')\">"+rut+"</div>"+
-                    "<div onClick=\"abrirModificar('"+id+"')\">"+nombre+"</div>"+
-                    "<div onClick=\"abrirModificar('"+id+"')\">"+papellido+"</div>"+
-                    "<div class=\"mini_tab\" onClick=\"abrirModificar('"+id+"')\">"+tipo+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"','"+nombre+"','"+papellido+"')\">"+rut+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"','"+nombre+"','"+papellido+"')\">"+nombre+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"','"+nombre+"','"+papellido+"')\">"+papellido+"</div>"+
+                    "<div class=\"mini_tab\" onClick=\"abrirModificar('"+id+"','"+nombre+"','"+papellido+"')\">"+tipo+"</div>"+
                     "<div><img onclick=\"preEliminarConductor('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
                     "</div>");
         }
-        cambiarPropiedad($("#loader"),"visibility","hidden");
     };
     postRequest(url,params,success);
 }
@@ -365,10 +362,10 @@ function buscarConductorGrupo(grupo)
                 tipo = 'Transportista / Conductor';
             }
             conductores.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\">"+
-                    "<div onClick=\"abrirModificar('"+id+"')\">"+rut+"</div>"+
-                    "<div onClick=\"abrirModificar('"+id+"')\">"+nombre+"</div>"+
-                    "<div onClick=\"abrirModificar('"+id+"')\">"+papellido+"</div>"+
-                    "<div class=\"mini_tab\" onClick=\"abrirModificar('"+id+"')\">"+tipo+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"','"+nombre+"','"+papellido+"')\">"+rut+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"','"+nombre+"','"+papellido+"')\">"+nombre+"</div>"+
+                    "<div onClick=\"abrirModificar('"+id+"','"+nombre+"','"+papellido+"')\">"+papellido+"</div>"+
+                    "<div class=\"mini_tab\" onClick=\"abrirModificar('"+id+"','"+nombre+"','"+papellido+"')\">"+tipo+"</div>"+
                     "<div><img onclick=\"preEliminarConductor('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
                     "</div>");
         }
@@ -402,11 +399,12 @@ function cambiarFila(id)
     }
 }
 
-function abrirModificar(id)
+function abrirModificar(id,nombre,apellido)
 {
     ID_CONDUCTOR = id;
     AGREGAR = false;
     $("#lista_busqueda_conductor_detalle").load("html/datos_conductor.html", function( response, status, xhr ) {
+        $("#titulo_pagina_conductor").text(id + " ("+nombre+" "+apellido+")");
         cargarTransportistas();
         iniciarPestanias();
         cambioEjecutado();
@@ -524,7 +522,6 @@ function eliminarConductor()
         alertify.success("Conductor eliminado");
         cerrarSession(response);
 //        resetFormularioEliminar(PAGINA);
-        cambiarPropiedad($("#loader"),"visibility","hidden");
         resetBotones();
         buscarConductor();
         $("#transportista").html("<option value=''>Seleccione</option>");
@@ -930,7 +927,7 @@ function cargarTransportistas()
             $("#transportista").append("<option value=\""+id+"\" "+sel+">"+nombre+"</option>");
         }
     };
-    postRequest(url,params,success,false);
+    postRequest(url,params,success);
 }
 
 function obtenerChecks()
@@ -1045,7 +1042,6 @@ function preEliminarConductor(id)
                 {
                     alertify.success("Conductor eliminado");
                     cerrarSession(response);
-                    cambiarPropiedad($("#loaderCentral"),"visibility","hidden");
                     resetBotones();
                     if(typeof ID_GRUPO === 'undefined')
                     {

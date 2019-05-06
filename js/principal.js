@@ -13,9 +13,9 @@ var geocoder = null;
 var autocomplete;
 var places;
 var GOOGLE_MAPS_API = "https://maps.googleapis.com/maps/api/js?";
-var servicios = new Map();
 var TIPO_SERVICIO = 0;
 var flightPath;
+var ASIGNANDO = false;
 
 $(document).ready(function(){
     TIPO_USUARIO = 'ADMIN';
@@ -149,17 +149,13 @@ function decodePolyline(encoded) {
                 {
                     enviarCorreoDesasignacion("",id);
                 }
-                if(typeof servicios.get(id) === 'undefined')
-                {
-                    alertify.success("Nuevo servicio para asignar: "+id);
-                }
                 cont.append("<div class=\"pendiente\" onclick=\"abrirServicio('"+id+"','"+cliente+"','"+ruta+"','"+fecha+"','"+hora+"','"+observacion+"')\" >"+id+" - "+cliente+"</div>");
-                servicios.set(id,id);                
             }
-        });
+            alertify.success("Hay "+response.length+": servicio(s) sin asignar");
+        },false);
     }
     
-    function enviarCorreoDesasignacion(mail,id)
+function enviarCorreoDesasignacion(mail,id)
 {
     var url = urlUtil + "/enviarMail.php";
     var asunto = "Notificación Dómito";
@@ -172,14 +168,14 @@ function decodePolyline(encoded) {
 }
 
     
-    function getLocation()
-    {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function (position) {
-                POSITION = [position.coords.latitude,position.coords.longitude];
-            }, function (error) {
-                console.log(error);
-            });
-        }
+function getLocation()
+{
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            POSITION = [position.coords.latitude,position.coords.longitude];
+        }, function (error) {
+            console.log(error);
+        });
     }
+}
 

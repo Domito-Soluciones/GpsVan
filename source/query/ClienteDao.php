@@ -25,6 +25,7 @@ class ClienteDao {
                 $cliente->setRut($row["cliente_rut"]);
                 $cliente->setDireccion($row["cliente_direccion"]);
                 $cliente->setGrupo($row["cliente_grupo"]);
+                $cliente->setColor($row["cliente_color"]);
                 $cliente->setNombreContacto($row["cliente_nombre_contacto"]);
                 $cliente->setFonoContacto($row["cliente_fono_contacto"]);
                 $cliente->setMailContacto($row["cliente_mail_contacto"]);
@@ -54,6 +55,7 @@ class ClienteDao {
                 $cliente->setRut($row["cliente_rut"]);
                 $cliente->setDireccion($row["cliente_direccion"]);
                 $cliente->setGrupo($row["cliente_grupo"]);
+                $cliente->setColor($row["cliente_color"]);
                 $cliente->setNombreContacto($row["cliente_nombre_contacto"]);
                 $cliente->setFonoContacto($row["cliente_fono_contacto"]);
                 $cliente->setMailContacto($row["cliente_mail_contacto"]);
@@ -94,6 +96,7 @@ class ClienteDao {
         $rut = $cliente->getRut();
         $direccion = $cliente->getDireccion();
         $grupo = $cliente->getGrupo();
+        $color = $cliente->getColor();
         $nombre = $cliente->getNombreContacto();
         $telefono = $cliente->getFonoContacto();
         $mail = $cliente->getMailContacto();
@@ -103,8 +106,8 @@ class ClienteDao {
         try {
             $query = "INSERT INTO tbl_cliente (cliente_razon_social,cliente_tipo,cliente_rut,"
                     . "cliente_direccion,cliente_nombre_contacto,cliente_fono_contacto,"
-                    . "cliente_mail_contacto,cliente_mail_facturacion,cliente_contrato,cliente_grupo"
-                    . ") VALUES ('$razon','$tipo','$rut','$direccion','$nombre','$telefono','$mail','$mail2','$contrato','$grupo')"; 
+                    . "cliente_mail_contacto,cliente_mail_facturacion,cliente_contrato,cliente_grupo,cliente_color"
+                    . ") VALUES ('$razon','$tipo','$rut','$direccion','$nombre','$telefono','$mail','$mail2','$contrato','$grupo','$color')"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
@@ -125,6 +128,7 @@ class ClienteDao {
         $rut = $cliente->getRut();
         $direccion = $cliente->getDireccion();
         $grupo = $cliente->getGrupo();
+        $color = $cliente->getColor();
         $nombre = $cliente->getNombreContacto();
         $telefono = $cliente->getFonoContacto();
         $mail = $cliente->getMailContacto();
@@ -134,7 +138,7 @@ class ClienteDao {
         try {
             $query = "UPDATE tbl_cliente SET cliente_razon_social = '$razon',"
                     . "cliente_tipo = '$tipo',"
-                    . "cliente_direccion = '$direccion',cliente_grupo = '$grupo', cliente_nombre_contacto = '$nombre',"
+                    . "cliente_direccion = '$direccion',cliente_grupo = '$grupo',cliente_color = '$color', cliente_nombre_contacto = '$nombre',"
                     . "cliente_fono_contacto = '$telefono',cliente_mail_contacto = '$mail',"
                     . "cliente_mail_facturacion = '$mail2', cliente_contrato = '$contrato'"
                     ." WHERE cliente_rut = '$rut'";

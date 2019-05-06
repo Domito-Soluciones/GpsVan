@@ -85,7 +85,6 @@ function buscarServicio()
                 lista_pasajero.append("<option value=\""+pasajero+"\">"+pasajero+"</option>");
             }
         }
-        cambiarPropiedad($("#loader"),"visibility","hidden");
     };
     getRequest(url,success);
 }
@@ -119,7 +118,6 @@ function cargarMovilesMapa(monitor)
 //            }
             moviles.append("<div class=\"fila_contenedor\" id=\""+patente+"\" onClick=\"animarMovil('"+patente+"')\">"+imgEstado+nombre+"</div>");
         }
-        cambiarPropiedad($("#loader"),"visibility","hidden");
     };
     postRequest(url,params,success);
 }
@@ -177,12 +175,11 @@ function moverMovilesMapa()
                 marker.setPosition(latlng);
             }
         }
-        cambiarPropiedad($("#loader"),"visibility","hidden");
     };
     getRequest(url,success,false);
 }
 
-function dibujarMarcador(id,lat,lon,nombre,servicio,conductor)
+function dibujarMarcador(id,lat,lon,nombre,servicio,conductor,color)
 {
     var myLatLng = {lat: lat, lng: lon};
     var icon = {
@@ -199,12 +196,12 @@ function dibujarMarcador(id,lat,lon,nombre,servicio,conductor)
     });
     var divServicio = "";
     var estiloMovil = " style='font-size:14px;font-weight:bold;' ";
-    if(servicio !== '0')
+    if(servicio !== '')
     {
         divServicio = "<div style='font-size:10px;font-weight:bold;'>N: "+servicio+"</div>";
         estiloMovil = " style='font-size:8px;font-weight:bold;' ";
     }
-    var contentString = "<div style='height:35px;'>"+divServicio+"<div "+estiloMovil+">"+id+"</div><div "+estiloMovil+">"+nombre+" - "+conductor+"</div>";
+    var contentString = "<div style='height:35px;color:"+color+"'>"+divServicio+"<div "+estiloMovil+">"+id+"</div><div "+estiloMovil+">"+nombre+" - "+conductor+"</div>";
     var infowindow = new google.maps.InfoWindow({
         content: contentString
     });

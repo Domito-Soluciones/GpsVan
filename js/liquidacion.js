@@ -79,7 +79,6 @@ function buscarConductor()
             conductores.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"generarLiquidacion('"+id+"','"+rut+"','"+nombre+" "+papellido+" "+ mapellido+"')\">"+ titulo +"</div>");
             }
         }
-        cambiarPropiedad($("#loader"),"visibility","hidden");
     };
     postRequest(url,params,success);
 }

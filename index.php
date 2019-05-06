@@ -55,9 +55,6 @@
                     Entrar
                 </div>
             </div>
-            <div class="contenedor-loader">
-                <div class="loader" id="loader">Loading...</div>
-            </div>
         </div>
 
     </body>
