@@ -3,6 +3,7 @@ var CAMPOS = ["valor_uf","porcentaje_afp","porcentaje_isapre","porcentaje_mutual
 
 $(document).ready(function(){
     obtenerConfiguracion();
+    cambioEjecutado();
     PAGINA_ANTERIOR = PAGINA;
     $("#guardar").click(function(){
         modificarConfiguracion();
@@ -62,6 +63,7 @@ function modificarConfiguracion()
         var success = function(response)
         {
             cerrarSession(response);
+            resetFormulario();
             alertify.success("Configuración Guardada");
         };
         postRequest(url,params,success);

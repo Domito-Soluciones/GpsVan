@@ -1,6 +1,7 @@
 /* global urlBase, alertify, PLACES_AUTOCOMPLETE_API, POSITION, ID_CLIENTE, directionsDisplay, markers, google, geocoder, map, flightPath */
 var ID_PASAJERO;
-var ID_EMPRESA;
+var ID_CLIENTE = 'todo';
+var NOMBRE_CLIENTE = '';
 var ID_RUTA;
 var PASAJEROS;
 var AGREGAR = true;
@@ -46,9 +47,12 @@ $(document).ready(function(){
                 {
                     buscarPasajero();
                 }
-                else
+                else if(ID_CLIENTE === 'todo')
                 {
-                    buscarPasajeroCliente(ID_CLIENTE);
+                    buscarPasajeroTodo();
+                }
+                else{
+                    buscarPasajeroCliente(ID_CLIENTE,NOMBRE_CLIENTE);
                 }
                 cambiarPropiedad($("#agregar"),"visibility","visible");
                 cambiarPropiedad($("#guardar"),"visibility","hidden");
@@ -151,6 +155,7 @@ function agregarPasajero()
             cerrarSession(response);
             alertify.success("Pasajero Agregado");
             cambiarPestaniaGeneral();
+            buscarPasajero();
             vaciarFormulario();
             resetFormulario();
         };
@@ -215,6 +220,7 @@ function modificarPasajero()
         {
             cerrarSession(response);
             cambiarPestaniaGeneral();
+            buscarPasajero();
             alertify.success("Pasajero Modificado");
             resetFormulario();
         };
@@ -258,17 +264,17 @@ function buscarPasajero()
     postRequest(url,params,success);
 }
 
-function buscarPasajeroCliente(cliente)
+function buscarPasajeroCliente(cliente,nombreCliente)
 {
     ID_CLIENTE = cliente;
-    marcarFilaActiva(cliente);
+    marcarFilaActiva("col_"+cliente);
     var pasajeros = $("#lista_busqueda_pasajero_detalle");
     pasajeros.html("");
     pasajeros.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div>Empresa</div></div>")
     var noHayRegistros = true;
     for(var i = 0 ; i < PASAJEROS.length; i++)
     {
-        if(PASAJEROS[i].pasajero_empresa === cliente)
+        if(PASAJEROS[i].pasajero_empresa === nombreCliente)
         {
             noHayRegistros = false;
             var id = PASAJEROS[i].pasajero_id;
@@ -282,6 +288,36 @@ function buscarPasajeroCliente(cliente)
                     "<div>"+papellido+"</div><div>"+empresa+"</div>"+
                     "<div><img onclick=\"preEliminarPasajero('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>");
         }
+    }
+    if(noHayRegistros)
+    {
+        pasajeros.append("<div class=\"mensaje_bienvenida\">No hay registros que mostrar</div>");
+        alertify.error("No hay registros que mostrar");
+        return;
+    }
+}
+
+function buscarPasajeroTodo()
+{
+    ID_CLIENTE = 'todo';
+    marcarFilaActiva('col_todo');
+    var pasajeros = $("#lista_busqueda_pasajero_detalle");
+    pasajeros.html("");
+    pasajeros.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div>Empresa</div></div>")
+    var noHayRegistros = true;
+    for(var i = 0 ; i < PASAJEROS.length; i++)
+    {
+        noHayRegistros = false;
+        var id = PASAJEROS[i].pasajero_id;
+        var rut = PASAJEROS[i].pasajero_rut;
+        var nombre = PASAJEROS[i].pasajero_nombre;
+        var papellido = PASAJEROS[i].pasajero_papellido;
+        var empresa = PASAJEROS[i].pasajero_empresa;
+        pasajeros.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"','"+rut+"','"+nombre+"','"+papellido+"')\">"+
+                "<div>"+rut+"</div>"+
+                "<div>"+nombre+"</div>"+
+                "<div>"+papellido+"</div><div>"+empresa+"</div>"+
+                "<div><img onclick=\"preEliminarPasajero('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>");
     }
     if(noHayRegistros)
     {
@@ -340,9 +376,12 @@ function abrirModificar(id,rut,nombre,apellido)
             {
                 buscarPasajero();
             }
-            else
+            else if(ID_CLIENTE === 'todo')
             {
-                buscarPasajeroCliente(ID_CLIENTE);
+                buscarPasajeroTodo();
+            }
+            else{
+                buscarPasajeroCliente(ID_CLIENTE,NOMBRE_CLIENTE);
             }
             cambiarPropiedad($("#agregar"),"visibility","visible");
         });
@@ -406,14 +445,7 @@ function eliminarPasajero()
         cerrarSession(response);
         resetFormularioEliminar(PAGINA);
         resetBotones();
-        if(typeof ID_CLIENTE === 'undefined')
-        {
-            buscarPasajero();
-        }
-        else
-        {
-            buscarPasajeroCliente(ID_CLIENTE);
-        }
+        buscarPasajero();
     };
     postRequest(url,params,success);
 }
@@ -616,6 +648,7 @@ function cargarClientes()
             if(ID_EMPRESA === response[i].cliente_razon)
             {
                 sel = " selected ";
+                cargarCentroCosto(ID_EMPRESA,'');
             }
             $("#empresa").append("<option value=\""+nombre+"\" "+sel+">"+nombre+"</option>");
         }
@@ -661,26 +694,21 @@ function buscarClientePasajero()
             alertify.error("No hay registros que mostrar");
             return;
         }
+        clientes.append("<div class=\"fila_contenedor fila_contenedor_activa\" id=\"col_todo\" onClick=\"cambiarFilaPasajero('todo','')\">Todos</div>");
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].cliente_id;
             var nombre = response[i].cliente_razon;
             var titulo = recortar(nombre);
-            if (typeof ID_CLIENTE !== "undefined" && ID_CLIENTE === id)
-            {
-                clientes.append("<div class=\"fila_contenedor fila_contenedor_activa\" id=\""+nombre+"\" onClick=\"cambirFilaPasajero('"+id+"')\">"+titulo+"</div>");
-            }
-            else
-            {
-                clientes.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"cambiarFilaPasajero('"+nombre+"')\">"+titulo+"</div>");
-            }
+            clientes.append("<div class=\"fila_contenedor fila_contenedor\" id=\"col_"+id+"\" onClick=\"cambiarFilaPasajero('"+id+"','"+nombre+"')\">"+titulo+"</div>");
         }
     };
     postRequest(url,params,success);
 }
 
-function cambiarFilaPasajero(id)
+function cambiarFilaPasajero(id,nombre)
 {
+    NOMBRE_CLIENTE = nombre;
     if(MODIFICADO)
     {
         confirmar("Cambio de tarifa",
@@ -688,7 +716,14 @@ function cambiarFilaPasajero(id)
         function()
         {
             MODIFICADO = false;
-            buscarPasajeroCliente(id);
+            if(id === 'todo')
+            {
+                buscarPasajeroTodo();
+            }
+            else
+            {
+                buscarPasajeroCliente(id,nombre);
+            }
         },
         function()
         {
@@ -697,7 +732,14 @@ function cambiarFilaPasajero(id)
     }
     else
     {
-        buscarPasajeroCliente(id);
+        if(id === 'todo')
+        {
+            buscarPasajeroTodo();
+        }
+        else
+        {
+            buscarPasajeroCliente(id,nombre);
+        }
     }
 }
 
@@ -744,14 +786,7 @@ function preEliminarPasajero(id)
                     alertify.success("Pasajero eliminado");
                     cerrarSession(response);
                     resetBotones();
-                    if(typeof ID_CLIENTE === 'undefined')
-                    {
-                        buscarPasajero();
-                    }
-                    else
-                    {
-                        buscarPasajeroCliente(ID_CLIENTE);
-                    }
+                    buscarPasajero();
                 };
                 postRequest(url,params,success);
             });

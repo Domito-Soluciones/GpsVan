@@ -8,7 +8,7 @@ var CAMPOS = ["tipo","rut","nombre","papellido","mapellido","celular","direccion
                 "vlicencia","renta","tipoContrato","afp","isapre","isapread","mutual","seguroInicio","descuento",
                 "nick","password","password2"];
 var TIPO = '';
-var ID_GRUPO;
+var ID_GRUPO = '4';
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
     buscarConductor();
@@ -53,12 +53,16 @@ $(document).ready(function(){
             obtenerChecks();
             $("#volver").click(function(){
                 if(typeof ID_GRUPO === 'undefined')
-                { 
+                {
                     buscarConductor();
                 }
-                else
+                else if(ID_GRUPO === '0' || ID_GRUPO === '1' || ID_GRUPO === '2' || ID_GRUPO === '3')
                 {
                     buscarConductorGrupo(ID_GRUPO);
+                }
+                else if(ID_GRUPO === '4')
+                {
+                    buscarConductorTodo();
                 }
                 cambiarPropiedad($("#agregar"),"visibility","visible");
                 cambiarPropiedad($("#guardar"),"visibility","hidden");
@@ -280,10 +284,11 @@ function buscarConductor()
         var conductores = $("#lista_busqueda_conductor_detalle");
         conductores.html("");
         contGrupos.html("");
-        contGrupos.append("<div class=\"fila_contenedor\" id=\"col_0\" onClick=\"cambiarFila('col_0')\">Transportista</div>");
-        contGrupos.append("<div class=\"fila_contenedor\" id=\"col_1\" onClick=\"cambiarFila('col_1')\">Conductor Interno</div>");
-        contGrupos.append("<div class=\"fila_contenedor\" id=\"col_2\" onClick=\"cambiarFila('col_2')\">Conductor Externo</div>");
-        contGrupos.append("<div class=\"fila_contenedor\" id=\"col_3\" onClick=\"cambiarFila('col_3')\">Transportista / Conductor</div>");
+        contGrupos.append("<div class=\"fila_contenedor fila_contenedor_activa\" id=\"col_4\" onClick=\"cambiarFila('4')\">Todos</div>");
+        contGrupos.append("<div class=\"fila_contenedor\" id=\"col_0\" onClick=\"cambiarFila('0')\">Transportista</div>");
+        contGrupos.append("<div class=\"fila_contenedor\" id=\"col_1\" onClick=\"cambiarFila('1')\">Conductor Interno</div>");
+        contGrupos.append("<div class=\"fila_contenedor\" id=\"col_2\" onClick=\"cambiarFila('2')\">Conductor Externo</div>");
+        contGrupos.append("<div class=\"fila_contenedor\" id=\"col_3\" onClick=\"cambiarFila('3')\">Transportista / Conductor</div>");
         CONDUCTORES = response;
         if(response.length === 0)
         {
@@ -329,8 +334,8 @@ function buscarConductor()
 
 function buscarConductorGrupo(grupo)
 {
-    ID_GRUPO = grupo.split("_")[1];
-    marcarFilaActiva(grupo);
+    ID_GRUPO = grupo;
+    marcarFilaActiva("col_"+grupo);
     var conductores = $("#lista_busqueda_conductor_detalle");
     conductores.html("");
     conductores.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div class=\"mini_tab\" >Grupo</div></div>")
@@ -377,6 +382,54 @@ function buscarConductorGrupo(grupo)
         return;
     }
 }
+function buscarConductorTodo()
+{
+    ID_GRUPO = '4';
+    marcarFilaActiva("col_4");
+    var conductores = $("#lista_busqueda_conductor_detalle");
+    conductores.html("");
+    conductores.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div class=\"mini_tab\" >Grupo</div></div>")
+    var noHayRegistros = true;
+    for(var i = 0 ; i < CONDUCTORES.length; i++)
+    {
+        noHayRegistros = false;
+        var id = CONDUCTORES[i].conductor_id;
+        var rut = CONDUCTORES[i].conductor_rut;
+        var nombre = CONDUCTORES[i].conductor_nombre;
+        var papellido = CONDUCTORES[i].conductor_papellido;            
+        var tipo = '';
+        if(CONDUCTORES[i].conductor_tipo === '0')
+        {
+            tipo = 'Transportista';
+        }
+        else if(CONDUCTORES[i].conductor_tipo === '1')
+        {
+            tipo = 'Conductor interno';
+        }
+        else if(CONDUCTORES[i].conductor_tipo === '2')
+        {
+            tipo = 'Conductor externo';
+        }
+        else if(CONDUCTORES[i].conductor_tipo === '3')
+        {
+            tipo = 'Transportista / Conductor';
+        }
+        conductores.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\">"+
+                "<div onClick=\"abrirModificar('"+id+"','"+nombre+"','"+papellido+"')\">"+rut+"</div>"+
+                "<div onClick=\"abrirModificar('"+id+"','"+nombre+"','"+papellido+"')\">"+nombre+"</div>"+
+                "<div onClick=\"abrirModificar('"+id+"','"+nombre+"','"+papellido+"')\">"+papellido+"</div>"+
+                "<div class=\"mini_tab\" onClick=\"abrirModificar('"+id+"','"+nombre+"','"+papellido+"')\">"+tipo+"</div>"+
+                "<div><img onclick=\"preEliminarConductor('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
+                "</div>");
+    }
+    if(noHayRegistros)
+    {
+        conductores.append("<div class=\"mensaje_bienvenida\">No hay registros que mostrar</div>");
+        alertify.error("No hay registros que mostrar");
+        return;
+    }
+}
+
 function cambiarFila(id)
 {
     if(MODIFICADO)
@@ -386,7 +439,12 @@ function cambiarFila(id)
         function()
         {
             MODIFICADO = false;
-            buscarConductorGrupo(id);
+            if(id === '4'){
+                buscarConductorTodo();
+            }
+            else{
+                buscarConductorGrupo(id);
+            }
         },
         function()
         {
@@ -395,7 +453,12 @@ function cambiarFila(id)
     }
     else
     {
-        buscarConductorGrupo(id);
+        if(id === '4'){
+            buscarConductorTodo();
+        }
+        else{
+            buscarConductorGrupo(id);
+        }
     }
 }
 
@@ -435,9 +498,13 @@ function abrirModificar(id,nombre,apellido)
             {
                 buscarConductor();
             }
-            else
+            else if(ID_GRUPO === '0' || ID_GRUPO === '1' || ID_GRUPO === '2' || ID_GRUPO === '3')
             {
                 buscarConductorGrupo(ID_GRUPO);
+            }
+            else if(ID_GRUPO === '4')
+            {
+                buscarConductorTodo();
             }
             cambiarPropiedad($("#agregar"),"visibility","visible");
             cambiarPropiedad($("#guardar"),"visibility","hidden");
@@ -521,7 +588,6 @@ function eliminarConductor()
     {
         alertify.success("Conductor eliminado");
         cerrarSession(response);
-//        resetFormularioEliminar(PAGINA);
         resetBotones();
         buscarConductor();
         $("#transportista").html("<option value=''>Seleccione</option>");
@@ -1043,14 +1109,8 @@ function preEliminarConductor(id)
                     alertify.success("Conductor eliminado");
                     cerrarSession(response);
                     resetBotones();
-                    if(typeof ID_GRUPO === 'undefined')
-                    {
-                        buscarConductor();
-                    }
-                    else
-                    {
-                        buscarConductorGrupo(ID_GRUPO);
-                    }
+                    buscarConductor();
+
                 };
                 postRequest(url,params,success);
             });

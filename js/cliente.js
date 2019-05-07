@@ -4,7 +4,7 @@ var AGREGAR = true;
 var PAGINA = 'CLIENTES';
 var ID_CLIENTE;
 var NOMBRE_CLIENTE;
-var TIPO_GRUPO;
+var TIPO_GRUPO = '3';
 var CENTROS_COSTO = [];
 var mapa_oculto = true;
 var clientes_tarifa = [];
@@ -57,9 +57,13 @@ $(document).ready(function(){
                 {
                     buscarCliente();
                 }
-                else
+                else if(TIPO_GRUPO === '0' || TIPO_GRUPO === '1' || TIPO_GRUPO === '2')
                 {
                     buscarClienteTipo(TIPO_GRUPO);
+                }
+                else if(TIPO_GRUPO === '3')
+                {
+                    buscarClienteTodo();
                 }
                 cambiarPropiedad($("#agregar"),"visibility","visible");
                 cambiarPropiedad($("#guardar"),"visibility","hidden");
@@ -136,9 +140,9 @@ function agregarCliente()
             NOMBRE_CLIENTE = undefined;
             cerrarSession(response);
             alertify.success("Cliente Agregado");
-            cambiarPestaniaGeneral();
             vaciarFormulario();
             resetFormulario();
+            buscarCliente();
             CENTROS_COSTO = [];
             $(".contenedor_contrato_movil").html("");
         };
@@ -182,8 +186,8 @@ function modificarCliente()
         var url = urlBase + "/cliente/ModCliente.php";
         var success = function(response)
         {
+            buscarCliente();
             cerrarSession(response);
-            cambiarPestaniaGeneral();
             alertify.success("Cliente Modificado");
             resetFormulario();
             CENTROS_COSTO = [];
@@ -203,6 +207,7 @@ function buscarCliente()
         var grupos = $("#lista_busqueda_cliente");
         var clientes = $("#lista_busqueda_cliente_detalle");
         grupos.html("");
+        grupos.append("<div class=\"fila_contenedor fila_contenedor_activa\" id=\"col_3\" onClick=\"cambiarFila('3')\">Todos</div>");
         grupos.append("<div class=\"fila_contenedor\" id=\"col_0\" onClick=\"cambiarFila('0')\">Grandes Clientes</div>");
         grupos.append("<div class=\"fila_contenedor\" id=\"col_1\" onClick=\"cambiarFila('1')\">Medianos Clientes</div>");
         grupos.append("<div class=\"fila_contenedor\" id=\"col_2\" onClick=\"cambiarFila('2')\">Pequeños Clientes</div>");
@@ -253,8 +258,14 @@ function cambiarFila(id)
         function()
         {
             MODIFICADO = false;
-            //abrirModificar(id,nombre);
-            buscarClienteTipo(id);
+            if(id === '3')
+            {
+                buscarClienteTodo();
+            }
+            else
+            {
+                buscarClienteTipo(id);
+            }
             
         },
         function()
@@ -264,8 +275,14 @@ function cambiarFila(id)
     }
     else
     {
-        //abrirModificar(id,nombre);
-        buscarClienteTipo(id);
+        if(id === '3')
+        {
+            buscarClienteTodo();
+        }
+        else
+        {
+            buscarClienteTipo(id);
+        }
     }
 }
 function buscarClienteTipo(tipo)
@@ -306,6 +323,49 @@ function buscarClienteTipo(tipo)
                     "<div><img onclick=\"preEliminarCliente('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
                     "</div>");
         }
+    }
+    if(noHayRegistros)
+    {
+        clientes.append("<div class=\"mensaje_bienvenida\">No hay registros que mostrar</div>");
+        alertify.error("No hay registros que mostrar");
+        return;
+    }
+}
+function buscarClienteTodo()
+{
+    TIPO_GRUPO = '3';
+    marcarFilaActiva("col_3");
+    var clientes = $("#lista_busqueda_cliente_detalle");
+    clientes.html("");
+    clientes.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Razon social</div><div>Tipo</div><div class=\"mini_tab\" >Grupo</div><div></div></div>");
+    var noHayRegistros = true;
+    for(var i = 0 ; i < CLIENTES.length; i++)
+    {
+        noHayRegistros = false;
+        var id = CLIENTES[i].cliente_id;
+        var rut = CLIENTES[i].cliente_rut;
+        var nombre = CLIENTES[i].cliente_razon;
+        var tipoG = CLIENTES[i].cliente_tipo;
+        var grupo = '';
+        if(CLIENTES[i].cliente_grupo === '0')
+        {
+            grupo = 'Grandes clientes';
+        }
+        else if(CLIENTES[i].cliente_grupo === '1')
+        {
+            grupo = 'Medianos clientes';
+        }
+        else if(CLIENTES[i].cliente_grupo === '2')
+        {
+            grupo = 'Pequeños clientes';
+        }
+        clientes.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\">"+
+                "<div onClick=\"abrirModificar('"+id+"','"+nombre+"')\">"+rut+"</div>"+
+                "<div onClick=\"abrirModificar('"+id+"','"+nombre+"')\">"+nombre+"</div>"+
+                "<div onClick=\"abrirModificar('"+id+"','"+nombre+"')\">"+tipoG+"</div>"+
+                "<div class=\"mini_tab\" onClick=\"abrirModificar('"+id+"','"+nombre+"')\">"+grupo+"</div>"+
+                "<div><img onclick=\"preEliminarCliente('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
+                "</div>");
     }
     if(noHayRegistros)
     {
@@ -435,9 +495,13 @@ function abrirModificar(id,nombre)
             {
                 buscarCliente();
             }
-            else
+            else if(TIPO_GRUPO === '0' || TIPO_GRUPO === '1' || TIPO_GRUPO === '2')
             {
                 buscarClienteTipo(TIPO_GRUPO);
+            }
+            else if(TIPO_GRUPO === '3')
+            {
+                buscarClienteTodo();
             }
             cambiarPropiedad($("#agregar"),"visibility","visible");
             cambiarPropiedad($("#guardar"),"visibility","hidden");
@@ -736,14 +800,7 @@ function preEliminarCliente(id)
                     alertify.success("Cliente eliminado");
                     cerrarSession(response);
                     resetBotones();
-                    if(typeof TIPO_GRUPO === 'undefined')
-                    {
-                        buscarCliente();
-                    }
-                    else
-                    {
-                        buscarClienteTipo(TIPO_GRUPO);
-                    }
+                    buscarCliente();
                 };
                 postRequest(url,params,success);
             });

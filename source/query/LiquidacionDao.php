@@ -64,7 +64,7 @@ class LiquidacionDao {
         $array = array();
         $conn = new Conexion();
         try {
-            if(count($mes) == 1)
+            if(strlen($mes) == 1)
             {
                 $mes = "0".$mes;
             }
