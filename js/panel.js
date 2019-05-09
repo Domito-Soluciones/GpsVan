@@ -666,11 +666,13 @@ function dibujarRuta()
             });
         }
     }
+    console.log("destinos array: "+destinos);
+    console.log("waypoints: "+JSON.stringify(waypoints));
     setDirections();
     directionsService.route({
         origin: origen,
         waypoints: waypoints,
-        optimizeWaypoints: true,
+        optimizeWaypoints: false,
         destination: destinoFinal,
         travelMode: 'DRIVING'
     },  function(response, status){
@@ -795,7 +797,6 @@ function drop(ev,obj) {
     let ruta = $("#truta").val();
     var total = $("#contenedor_pasajero .cont-pasajero-gral .hidden" ).length;
     $("#contenedor_pasajero .cont-pasajero-gral .hidden" ).each(function(index) {
-        console.log("recorriendo : " + $(this).val());
         pasajeros.push($(this).attr("id").split("_")[1]);
         if(ruta.indexOf("RG") !== -1)
         {
