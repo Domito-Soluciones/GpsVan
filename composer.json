@@ -1,0 +1,11 @@
+{
+    "name": "vendor/gps-van",
+    "description": "Description of project GpsVan.",
+    "authors": [
+        {
+            "name": "Jose",
+            "email": "your@email.here"
+        }
+    ],
+    "require": {}
+}
