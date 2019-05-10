@@ -371,7 +371,7 @@ select
 .buscador-asignacion-cliente-pasajero
 {
     width: calc(80% - 2px);
-    height: 100%;
+    height: calc(50%);
 }
 .buscador-pasajero
 {

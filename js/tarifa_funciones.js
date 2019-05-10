@@ -274,7 +274,7 @@ function abrirBuscador(id)
 
 function eliminarTarifa()
 {
-    var nombre = $("#descripcion").val();
+    var nombre = $("#nombre").val();
     var params = {nombre : nombre};
     var url = urlBase + "/tarifa/DelTarifa.php";
     var success = function(response)

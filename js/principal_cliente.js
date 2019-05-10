@@ -1,5 +1,8 @@
-
+var menus = new Map();
 $(document).ready(function(){
+    menus.set("HOME","home_cliente");
+    menus.set("PANEL","panel_cliente");
+    menus.set("SERVICIOS","servicios");
     TIPO_USUARIO = 'CLIENTE';
     $("#menu").load("menu.php", function( response, status, xhr ) {
         agregarclase($("#home_cliente"),"menu-activo");

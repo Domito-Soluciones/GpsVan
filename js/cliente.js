@@ -136,6 +136,7 @@ function agregarCliente()
         var url = urlBase+"/cliente/AddCliente.php";
         var success = function(response)
         {
+            ocultarMapa();
             ID_CLIENTE = undefined;
             NOMBRE_CLIENTE = undefined;
             cerrarSession(response);
@@ -186,6 +187,7 @@ function modificarCliente()
         var url = urlBase + "/cliente/ModCliente.php";
         var success = function(response)
         {
+            ocultarMapa();
             buscarCliente();
             cerrarSession(response);
             alertify.success("Cliente Modificado");

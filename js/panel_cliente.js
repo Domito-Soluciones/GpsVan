@@ -1,5 +1,5 @@
 /* global alertify, urlBase, urlUtil, POLYLINE_LAT, POLYLINE_LNG */
-
+var PAGINA = "PANEL";
 var CAMPOS = ["clientes","fechas","hora"];
 var clientesArray = [];
 var destinos = new Map();
@@ -99,6 +99,7 @@ function buscarPasajeroCliente(cliente)
     {
         cerrarSession(response);
         var pasajeros = $("#contenedor-pasajero");
+        var pasajeros2 = $("#contenedor-pasajero-elegido");
         pasajeros.html("");
         PASAJEROS = response;
         if(response.length === 0)
@@ -107,7 +108,10 @@ function buscarPasajeroCliente(cliente)
             return;
         }
         pasajeros.append("<div class=\"contenedor_central_titulo_pasajero\">"+
-                "<div class=\"check_pasajero\"><input type=\"checkbox\" id=\"check\" checked onclick=\"seleccionarTodo()\"></div>"+
+                "<div></div><div class=\"dato_pasajero\">Rut</div><div class=\"dato_pasajero\">Nombre</div>"+
+                "<div class=\"dato_pasajero\">Apellido</div><div class=\"dato_pasajero\">Centro Costo</div>"+
+                "<div class=\"dir_pasajero\">Dirección</div></div>");
+        pasajeros2.append("<div class=\"contenedor_central_titulo_pasajero\">"+
                 "<div></div><div class=\"dato_pasajero\">Rut</div><div class=\"dato_pasajero\">Nombre</div>"+
                 "<div class=\"dato_pasajero\">Apellido</div><div class=\"dato_pasajero\">Centro Costo</div>"+
                 "<div class=\"dir_pasajero\">Dirección</div></div>");
@@ -120,8 +124,7 @@ function buscarPasajeroCliente(cliente)
             var cc = response[i].pasajero_centro_costo;
             var punto = response[i].pasajero_punto_encuentro;
             destinos.set(id,punto);
-            pasajeros.append("<div class=\"fila_contenedor fila_contenedor_pasajero\">"+
-                    "<div class=\"check_pasajero\"><input type=\"checkbox\" class=\"checkPasajero\" id=\"check"+id+"\" checked></div>"+
+            pasajeros.append("<div draggable=\"true\" ondragstart=\"drag(event,$(this))\" class=\"fila_contenedor fila_contenedor_pasajero\">"+
                     "<div class=\"dato_pasajero\">"+rut+"</div>"+
                     "<div class=\"dato_pasajero\">"+nombre+"</div>"+
                     "<div class=\"dato_pasajero\">"+papellido+"</div>"+
@@ -158,4 +161,29 @@ function seleccionarTodo()
             $(this).prop("checked",false);
         }
     });
+}
+
+function allowDrop(ev) {
+    cambiarPropiedad($("#contenedor-pasajero-elegido"),"background-color","#dfe8e8");
+    ev.preventDefault();
+}
+
+function exitDrop(ev)
+{
+    cambiarPropiedad($("#contenedor-pasajero-elegido"),"background-color","whitesmoke");
+    ev.preventDefault();
+}
+
+function drag(ev,div) {
+  ev.dataTransfer.setData("text", div.html());
+}
+
+function drop(ev) {
+    if(ev.target.id === 'contenedor-pasajero-elegido')
+    {
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData("text");
+        $("#contenedor-pasajero-elegido").append("<div draggable=\"true\" ondragstart=\"drag(event,$(this))\" class=\"fila_contenedor fila_contenedor_pasajero\">"+data+"</div>");
+        cambiarPropiedad($("#contenedor-pasajero-elegido"),"background-color","whitesmoke");
+    }
 }

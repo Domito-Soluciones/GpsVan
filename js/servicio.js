@@ -63,7 +63,7 @@ function buscarServicio()
             alertify.error("No hay registros que mostrar");
             return;
         }
-        servicios.append("<div class=\"contenedor_central_titulo\"><div></div><div>ID Servicio</div><div>Empresa</div><div>Fecha</div><div>Estado</div><div>Vehículo</div></div>")
+        servicios.append("<div class=\"contenedor_central_titulo\"><div></div><div>ID Servicio</div><div>Empresa</div><div class=\"fila_fecha\">Fecha</div><div class=\"fila_oculta\">Estado</div><div class=\"fila_oculta\">Vehículo</div></div>")
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].servicio_id;
@@ -75,9 +75,9 @@ function buscarServicio()
             servicios.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\" onClick=\"abrirBuscador('"+id+"')\">"+
                     "<div>"+id+"</div>"+
                     "<div>"+cliente+"</div>"+
-                    "<div>"+fecha+" "+hora+"</div>"+
-                    "<div>"+obtenerEstadoServicio(estado)+"</div>"+
-                    "<div>"+conductor+"</div></div>");
+                    "<div class=\"fila_fecha\">"+fecha+" "+hora+"</div>"+
+                    "<div class=\"fila_oculta\">"+obtenerEstadoServicio(estado)+"</div>"+
+                    "<div class=\"fila_oculta\">"+conductor+"</div></div>");
         }
     };
     postRequest(url,params,success);

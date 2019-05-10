@@ -207,4 +207,81 @@
         display: none;
     }
     
+    .titulo_pagina_general
+    {
+        width:100%;
+    }
+    .titulo_pagina
+    {
+        font-size: 15px;
+    }
+    .contenedor-formulario    
+    {
+        padding-left: 20px;
+        width:100%;
+    }
+    .contenedor-info
+    {
+        width:100%;
+    }
+    .contenedor-pre-input,.contenedor-pre-input-conductor
+    {
+        width: 130px;
+    }
+    .contenedor_central_titulo div
+    {
+        width:28%;   
+    }
+    .fila_contenedor_servicio div
+    {
+        width: 25%;
+    }
+    .contenedor_central_titulo_pasajero div
+    {
+        width:20%;   
+    }
+    .pie-center,.pie-left
+    {
+        width: 30%;
+    }
+    .contenedor_central
+    {
+        height: calc(100% - 260px);
+    }
+    .movil_tabla div
+    {
+        width: 25%;
+    }
+    .movil_tabla_valor div
+    {
+         width: 20%;
+    }
+    
+    .titulo_pagina_pasajero
+    {
+        font-size: 12px;
+    }
+    .fila_oculta
+    {
+        display: none;
+    }
+    .contenedor_central_servicio,.contenedor_central_reporte
+    {
+        width: calc(99% - 1px);
+        margin-left: 0;
+    }
+    .fila_fecha
+    {
+        width: 31% !important;
+    }
+    .contenedor-lateral
+    {
+        height: auto;
+    }
+    .sub-cont-conf
+    {
+        width: 100%;
+    }
+    
+    
 }

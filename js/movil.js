@@ -52,7 +52,7 @@ $(document).ready(function(){
             });
         });
         cambiarPropiedad($("#guardar"),"visibility","visible");
-        cambiarPropiedad($("#cancelar"),"visibility","visible");
+        cambiarPropiedad($("#eliminar"),"visibility","hidden");
         
     });
     
@@ -382,7 +382,7 @@ function buscarMovil()
             alertify.error("No hay registros que mostrar");
             return;
         }
-        moviles.append("<div class=\"contenedor_central_titulo\"><div></div><div>Patente</div><div>Nombre</div><div>Marca</div><div>Tipo</div><div></div></div>");
+        moviles.append("<div class=\"contenedor_central_titulo movil_tabla\"><div></div><div>Patente</div><div>Nombre</div><div>Marca</div><div>Tipo</div><div></div></div>");
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].movil_id;
@@ -398,7 +398,7 @@ function buscarMovil()
             {
                 grupo = 'Externo';
             }
-            moviles.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\">"+
+            moviles.append("<div class=\"fila_contenedor fila_contenedor_servicio movil_tabla_valor\" id=\""+id+"\">"+
                     "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+patente+"</div>"+
                     "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+nombre+"</div>"+
                     "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+marca+"</div>"+
@@ -452,7 +452,7 @@ function buscarMovilTipo(tipo)
     marcarFilaActiva("col_"+tipo);
     var moviles = $("#lista_busqueda_movil_detalle");
     moviles.html("");
-    moviles.append("<div class=\"contenedor_central_titulo\"><div></div><div>Patente</div><div>Nombre</div><div>Marca</div><div>Tipo</div><div></div></div>");
+    moviles.append("<div class=\"contenedor_central_titulo movil_tabla\"><div></div><div>Patente</div><div>Nombre</div><div>Marca</div><div>Tipo</div><div></div></div>");
     var noHayRegistros = true;
     for(var i = 0 ; i < MOVILES.length; i++)
     {
@@ -472,7 +472,7 @@ function buscarMovilTipo(tipo)
             {
                 grupo = 'Externo';
             }
-            moviles.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\">"+
+            moviles.append("<div class=\"fila_contenedor fila_contenedor_servicio movil_tabla_valor\" id=\""+id+"\">"+
                     "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+patente+"</div>"+
                     "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+nombre+"</div>"+
                     "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+marca+"</div>"+
@@ -494,7 +494,7 @@ function buscarMovilTodo()
     marcarFilaActiva("col_2");
     var moviles = $("#lista_busqueda_movil_detalle");
     moviles.html("");
-    moviles.append("<div class=\"contenedor_central_titulo\"><div></div><div>Patente</div><div>Nombre</div><div>Marca</div><div>Tipo</div><div></div></div>");
+    moviles.append("<div class=\"contenedor_central_titulo movil_tabla\"><div></div><div>Patente</div><div>Nombre</div><div>Marca</div><div>Tipo</div><div></div></div>");
     var noHayRegistros = true;
     for(var i = 0 ; i < MOVILES.length; i++)
     {
@@ -512,7 +512,7 @@ function buscarMovilTodo()
         {
             grupo = 'Externo';
         }
-        moviles.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\">"+
+        moviles.append("<div class=\"fila_contenedor fila_contenedor_servicio movil_tabla_valor\" id=\""+id+"\">"+
                 "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+patente+"</div>"+
                 "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+nombre+"</div>"+
                 "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+marca+"</div>"+
