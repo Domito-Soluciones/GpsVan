@@ -98,6 +98,7 @@ function modificarRendicion()
         var success = function(response)
         {
             cerrarSession(response);
+            resetFormulario();
             alertify.success("Rendición Modificada");
         };
         postRequest(url,params,success);

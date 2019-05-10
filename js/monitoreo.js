@@ -124,6 +124,10 @@ function cargarMovilesMapa(monitor)
 
 function moverMovilesMapa()
 {
+    if(PAGINA_ANTERIOR !== 'MONITOREO')
+    {
+        return;
+    }
     var url = urlBase + "/movil/GetMoviles.php?busqueda=";
     var success = function(response)
     {

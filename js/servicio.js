@@ -249,6 +249,7 @@ function modificarServicio()
         var success = function(response)
         {
             cerrarSession(response);
+            resetFormulario();
             alertify.success("Servicio Modificado");
             buscarServicio();
         };

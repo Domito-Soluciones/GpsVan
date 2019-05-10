@@ -41,6 +41,7 @@ $(document).ready(function(){
     var center = new google.maps.LatLng(POSITION[0], POSITION[1]);
     map.panTo(center);
     init();
+    cambioEjecutado();
     if($("#ids").val() !== "")
     {
         cargarRutas();
@@ -49,7 +50,10 @@ $(document).ready(function(){
         cargarClientes();
     });
     $("#clientes").on('input',function () {
-        cargarRutas();
+        if($(this).val() !== '')
+        {
+            cargarRutas();
+        }
     });
     $("#ruta").on('input',function(){
         $("#ltruta").html("");
@@ -213,7 +217,7 @@ $(document).ready(function(){
                 origen = $("#partida").val();
                 $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+origen);
             }
-            contenedor.prepend("<div class=\"cont-pasajero-gral\" id=\"origen_empresa\"><input type=\"hidden\" id=\"hidden_origen\" class=\"hidden\" value=\""+origen+"\"><div class=\"cont-pasajero\">Origen</div><div class=\"cont-mini-pasajero\"><div>"+ origen + "</div><div>");
+            contenedor.prepend("<div class=\"cont-pasajero-gral\" id=\"origen_empresa\"><input type=\"hidden\" id=\"hidden_origen\" class=\"hidden\" value=\""+origen+"\"><div class=\"cont-pasajero\">Origen</div><div class=\"cont-mini-pasajero\"><div>"+ recortar(origen,30) + "</div><div>");
             pasajeros.splice(0, 0, "Origen");
             dibujarRuta();
         }
@@ -229,7 +233,7 @@ $(document).ready(function(){
                 $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+origen);
             }
         }
-    });
+});
     
     $("#buscaDestino").click(function(){
         agregarclase($(this),"oculto");
@@ -240,7 +244,7 @@ $(document).ready(function(){
             buscaDestino = true;
             destinos.push($("#destino").val());
             $("#contenedor_punto_destino").html("<b>Destino: </b>"+$("#destino").val());
-            contenedor.append("<div class=\"cont-pasajero-gral\" id=\"destino_empresa\"><input type=\"hidden\" id=\"hidden_destino\" class=\"hidden\" value=\""+$("#destino").val()+"\"><div class=\"cont-pasajero\">Destino</div><div class=\"cont-mini-pasajero\"><div>"+ $("#destino").val() + "</div><div>");
+            contenedor.append("<div class=\"cont-pasajero-gral\" id=\"destino_empresa\"><input type=\"hidden\" id=\"hidden_destino\" class=\"hidden\" value=\""+$("#destino").val()+"\"><div class=\"cont-pasajero\">Destino</div><div class=\"cont-mini-pasajero\"><div>"+ recortar($("#destino").val(),30) + "</div><div>");
             pasajeros.push("Destino");
             dibujarRuta();
         }
@@ -250,12 +254,19 @@ $(document).ready(function(){
                 destinos.pop();
                 pasajeros.pop();
                 $("#destino_empresa").remove();
-                $("#contenedor_punto_destino").html("<b>Destino: </b>"+destinos[destinos.length-1]);
+                if(destinos.length > 0)
+                {
+                    $("#contenedor_punto_destino").html("<b>Destino: </b>"+destinos[destinos.length-1]);
+                }
+                else
+                {
+                    $("#contenedor_punto_destino").html("<b>Destino: </b>");
+                }
                 dibujarRuta();
                 buscaDestino = false;
             }
         }
-    });
+});
     
     $("#partida").click(function(){
         quitarclase($("#buscaPartida"),"oculto");
@@ -373,7 +384,7 @@ function cargarPasajeros()
                                  +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'>"
                                  +"<div class=\"boton-chico\" onclick=\"editarPasajero('"+punto+"','punto_"+id+"','hidden_"+id+"')\"><img src=\"img/editar.svg\" width=\"12\" height=\"12\"></div>"
                                  +"<div class=\"boton-chico\" onclick=\"borrarPasajero('pasajero_"+id+"','"+nombre+"','"+punto+"','"+celular+"')\"><img src=\"img/cancelar.svg\" width=\"12\" height=\"12\"></div></div>"+
-                        "<div class=\"cont-mini-pasajero\"><div id=\"punto_"+id+"\">"+ punto + "</div><div>" + celular+"</div></div>");
+                        "<div class=\"cont-mini-pasajero\"><div id=\"punto_"+id+"\">"+ recortar(punto,30) + "</div><div>" + celular+"</div></div>");
                 pasajeros.push(id);
             }
             else if(ruta.indexOf("-ESP") !== -1)
@@ -395,7 +406,7 @@ function cargarPasajeros()
                                  +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'>"
                                  +"<div class=\"boton-chico\" onclick=\"editarPasajero('"+punto+"','punto_"+id+"','hidden_"+id+"')\"><img src=\"img/editar.svg\" width=\"12\" height=\"12\"></div>"
                                  +"<div class=\"boton-chico\" onclick=\"borrarPasajero('pasajero_"+id+"','"+nombre+"','"+punto+"','"+celular+"')\"><img src=\"img/cancelar.svg\" width=\"12\" height=\"12\"></div></div>"+
-                        "<div class=\"cont-mini-pasajero\"><div id=\"punto_"+id+"\">"+ punto + "</div><div>" + celular+"</div></div>");
+                        "<div class=\"cont-mini-pasajero\"><div id=\"punto_"+id+"\">"+ recortar(punto,30) + "</div><div>" + celular+"</div></div>");
                 pasajeros.push(id);
             }
             else
@@ -403,7 +414,7 @@ function cargarPasajeros()
                 contenedorEx.append("<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" \">"
                                  +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+punto+"\">"
                                  +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'><div class=\"boton-chico\" onclick=\"agregarPasajero('pasajero_"+id+"','"+nombre+"','"+punto+"','"+celular+"')\"><img src=\"img/flecha-arriba.svg\" width=\"12\" height=\"12\"></div></div>"+
-                        "<div class=\"cont-mini-pasajero\"><div>"+ punto + "</div><div>" + celular+"</div></div>");
+                        "<div class=\"cont-mini-pasajero\"><div>"+ recortar(punto,30) + "</div><div>" + celular+"</div></div>");
             }
         }
         if(ruta.indexOf("RG") !== -1)
@@ -453,9 +464,9 @@ function cargarPasajerosEspecial()
             contenedorDir.html("<b>Origen:</b> ");
             contenedorDes.html("<b>Destino:</b> ");                    
             contenedorEx.append("<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" \">"
-                                 +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+punto+"\">"
+                                 +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+ punto+"\">"
                                  +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'><div class=\"boton-chico\" onclick=\"agregarPasajero('pasajero_"+id+"','"+nombre+"','"+punto+"','"+celular+"')\"><img src=\"img/flecha-arriba.svg\" width=\"12\" height=\"12\"></div></div>"+
-                        "<div class=\"cont-mini-pasajero\"><div>"+ punto + "</div><div>" + celular+"</div></div>");
+                        "<div class=\"cont-mini-pasajero\"><div>"+ recortar(punto,30) + "</div><div>" + celular+"</div></div>");
         }
     };
     postRequest(url,params,success);
@@ -486,7 +497,7 @@ function cargarPasajerosBusqueda()
                 contenedorEx.append("<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" \">"
                                  +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+punto+"\">"
                                  +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'><div class=\"boton-chico\" onclick=\"agregarPasajero('pasajero_"+id+"','"+nombre+"','"+punto+"','"+celular+"')\"><img src=\"img/flecha-arriba.svg\" width=\"12\" height=\"12\"></div></div>"+
-                        "<div class=\"cont-mini-pasajero\"><div>"+ punto + "</div><div>" + celular+"</div></div>");
+                        "<div class=\"cont-mini-pasajero\"><div>"+ recortar(punto,30) + "</div><div>" + celular+"</div></div>");
         }
         
     };
@@ -521,6 +532,8 @@ function cargarMoviles()
 function cargarRutas()
 {
     var clientes = $('#clientes').val();
+    $("#ruta").val("");
+    $("#truta").val("");
     NOMBRE_CLIENTE = clientes;
     var params = {empresa : clientes};
     var url = urlBase + "/tarifa/GetTarifasEmpresa.php";
@@ -601,6 +614,7 @@ function agregarServicio(fecha)
         }
         var success = function(response)
         {
+            MODIFICADO = false;
             cerrarSession(response);
             agregarDetalleServicio(response.servicio_id);
             vaciarFormulario();
@@ -652,11 +666,13 @@ function dibujarRuta()
             });
         }
     }
+    console.log("destinos array: "+destinos);
+    console.log("waypoints: "+JSON.stringify(waypoints));
     setDirections();
     directionsService.route({
         origin: origen,
         waypoints: waypoints,
-        optimizeWaypoints: true,
+        optimizeWaypoints: false,
         destination: destinoFinal,
         travelMode: 'DRIVING'
     },  function(response, status){
@@ -880,11 +896,22 @@ function borrarPasajero(obj,nombre,punto,celular)
             $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+origen);
         }
     }
+    if(ruta.indexOf("ESP") !== -1)
+    {
+        if(destinos.length === 0)
+        {
+            $("#contenedor_punto_destino").html("<b>Destino: </b>");
+        }
+        else
+        {
+            $("#contenedor_punto_destino").html("<b>Destino: </b>"+destinos[destinos.length-1]);
+        }
+    }
     var pasajero = $("#"+obj);
     var texto = "<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" \">"
                                  +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+punto+"\">"
                                  +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'><div class=\"boton-chico\" onclick=\"agregarPasajero('pasajero_"+id+"','"+nombre+"','"+punto+"','"+celular+"')\"><img src=\"img/flecha-arriba.svg\" width=\"12\" height=\"12\"></div></div>"+
-                        "<div class=\"cont-mini-pasajero\"><div>"+ punto + "</div><div>" + celular+"</div></div>";
+                        "<div class=\"cont-mini-pasajero\"><div>"+ recortar(punto,30) + "</div><div>" + celular+"</div></div>";
     $("#contenedor_pasajero_no_asignado").append(texto);
     pasajero.remove();
     dibujarRuta();
@@ -918,6 +945,7 @@ function agregarPasajero(obj,nombre,punto,celular)
     var ruta = $('#truta').val();
     if(ruta.indexOf("RG") !== -1)
     {
+        console.log("agregando pasajero "+id);
         pasajeros.push(id);
         $("#contenedor_punto_destino").html("<b>Destino: </b>"+direccion_empresa);
         var final = destinos.pop();
@@ -950,11 +978,9 @@ function agregarPasajero(obj,nombre,punto,celular)
             else
             {
                 var destinoFinal = destinos.pop();
-                console.log("saco este "+destinoFinal);
                 $("#contenedor_punto_destino").html("<b>Destino: </b>"+destinoFinal);
                 destinos.push(punto);
                 destinos.push(destinoFinal);
-                console.log("pongo estos "+punto+" "+destinoFinal);
             }
         }
         pasajeros.push(id);
@@ -965,7 +991,7 @@ function agregarPasajero(obj,nombre,punto,celular)
                                  +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'>"
                                  +"<div class=\"boton-chico\" onclick=\"editarPasajero('"+punto+"','punto_"+id+"','hidden_"+id+"')\"><img src=\"img/editar.svg\" width=\"12\" height=\"12\"></div>"
                                  +"<div class=\"boton-chico\" onclick=\"borrarPasajero('pasajero_"+id+"','"+nombre+"','"+punto+"','"+celular+"')\"><img src=\"img/cancelar.svg\" width=\"12\" height=\"12\"></div></div>"
-                                 +"<div class=\"cont-mini-pasajero\"><div id=\"punto_"+id+"\">"+ punto + "</div><div>" + celular+"</div></div>";
+                                 +"<div class=\"cont-mini-pasajero\"><div id=\"punto_"+id+"\">"+ recortar(punto,30) + "</div><div>" + celular+"</div></div>";
     if(ruta.indexOf("RG") !== -1)
     {
         if(typeof origen === 'undefined')
@@ -1009,6 +1035,8 @@ function cambiarServicioNormal()
     cambiarPropiedad($(".buscador-pasajero"),"display","none");
     cambiarPropiedad($(".contenedor_agregar"),"display","none");
     cambiarPropiedad($(".contenedor_editar"),"display","none");
+    agregarclase($("#buscaPartida"),"oculto");
+    agregarclase($("#buscaDestino"),"oculto");
     quitarclase($("#contenedor_mapa"),"mapa_bajo");
     quitarclase($("#contenedor_mapa"),"mapa_agregar");
     quitarclase($("#contenedor_mapa"),"mapa_editar");
@@ -1040,6 +1068,8 @@ function cambiarServicioEspecial()
     quitarclase($("#contenedor_mapa"),"mapa_bajo");
     quitarclase($("#contenedor_mapa"),"mapa_agregar");
     quitarclase($("#contenedor_mapa"),"mapa_editar");
+    cambiarPropiedad($("#partida"),"background-color","#fff");
+    cambiarPropiedad($("#destino"),"background-color","#fff");
 }
 
 function activarPestania(array)
@@ -1108,7 +1138,7 @@ function editarPasajero(valor,obj,hidden)
     $("#boton_place").click(function(){
         cambiarPropiedad($(".contenedor_editar"),"display","none");
         quitarclase($("#contenedor_mapa"),"mapa_editar");
-        $("#"+obj).html($("#input_editar").val());
+        $("#"+obj).html(recortar($("#input_editar").val(),30));
         var existe = false;
         for(var i = 0; i < destinos.length; i++)
         { 
@@ -1232,6 +1262,9 @@ function abrirAddPasajero()
 
 function cerrarAddPasajero()
 {
+    $("#agregaNombre").val("");
+    $("#agregaCelular").val("");
+    $("#agregaDireccion").val("");
     cambiarPropiedad($(".contenedor_agregar"),"display","none");
     quitarclase($("#contenedor_mapa"),"mapa_agregar");   
     eliminarMarkers();

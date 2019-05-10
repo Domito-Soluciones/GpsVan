@@ -158,6 +158,7 @@ function buscarTarifas(id,nombre,direccion)
     {
         
         cambiarPropiedad($(".pie-tarifa"),"display","block");
+        cambiarPropiedad($("#guardar"),"visibility","hidden");
         cambiarPropiedad($("#eliminar2"),"visibility","hidden");
         cerrarSession(response);
         var tarifas = $("#lista_busqueda_tarifa_detalle");

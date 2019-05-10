@@ -1,5 +1,5 @@
 
-/* global MODIFICADO, alertify, PAGINA_ANTERIOR, INTERVAL_SERVICIOS, MENU_OCULTO, PLACES_AUTOCOMPLETE_API, POSITION, API_KEY, google, map, flightPath, markers */
+/* global MODIFICADO, alertify, PAGINA_ANTERIOR, INTERVAL_SERVICIOS, MENU_OCULTO, PLACES_AUTOCOMPLETE_API, POSITION, API_KEY, google, map, flightPath, markers, menus */
 var PAGINA_ANTERIOR;
 var MODIFICADO = false;
 var KEY = "DGFSGHJRTJTHWGWEJNGWI9EFN";
@@ -151,6 +151,10 @@ function quitarclase(div,clase)
 }
 
 function cambiarModulo(pagina,params = null){
+    if(pagina === menus.get(PAGINA_ANTERIOR))
+    {
+        return;
+    }
     eliminarMarkers();
     if(MODIFICADO)
     {
@@ -253,6 +257,10 @@ function resetPagina()
         ID_TARIFA = undefined;
         ID_CLIENTE = undefined;
     }
+    if(PAGINA_ANTERIOR === "CONTRATOS")
+    {
+        ID_CONDUCTOR = undefined;
+    }
 }
 
 
@@ -321,6 +329,7 @@ function resetFormulario()
 {
     MODIFICADO = false;
     cambiarPropiedad($("#agregar"),"visibility","visible");
+    cambiarPropiedad($("#guardar"),"visibility","hidden");
 }
 
 
@@ -581,6 +590,7 @@ function mostrarMapa()
     $('#map').appendTo('#contenedor_mapa');
     cambiarPropiedad($('#map'),"display","block");
 }
+
 function ocultarMapa()
 {
     $('#map').appendTo('body');
@@ -856,7 +866,7 @@ function mostrarDivLoader() {
     if (window.innerHeight === undefined) alto = window.screen.height;
     else alto = window.innerHeight;
     var heightdivsito = alto/2 - parseInt(height)/2;
-    imgCentro = "<div style='text-align:center;height:" + alto + "px;'><div  style='color:#fff;margin-top:" + heightdivsito + "px; font-size:30px;font-weight:bold'>Cargando...</div><div id=\"loader\" class=\loader\">Loading...</div></div>";
+    imgCentro = "<div style='text-align:center;height:" + alto + "px;'><div  style='color:#fff;margin-top:" + heightdivsito + "px; font-size:30px;font-weight:bold'><img width=\"50\" height=\"50\" src=\"img/loading.gif\"></div></div>";
     div = document.createElement("div");
     div.id = "windowLoad";
     div.style.width = ancho + "px";

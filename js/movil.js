@@ -3,9 +3,9 @@ var ID_MOVIL;
 var MOVILES;
 var conductores = new Map();
 var ID_CONDUCTOR;
-var TIPO_GRUPO;
+var TIPO_GRUPO = '2';
 var AGREGAR = true;
-var PAGINA = 'VEHÍCULOS';
+var PAGINA = 'VEHICULOS';
 var CAMPOS = ["patente","marca","nombre","modelo","anio","color","cantidad","clase","gps","celular","app",
     "venPerCir","venRevTec","venExt","motor","chasis",
     "segOb","venSegOb","polizaSegOb","valorSegOb","segRcDm","venSegRcDm","polizaSegRcDm","valorSegRcDm",
@@ -35,12 +35,16 @@ $(document).ready(function(){
             iniciarEventosCheck();
             $("#volver").click(function(){
                 if(typeof TIPO_GRUPO === 'undefined')
-                { 
+                {
                     buscarMovil();
                 }
-                else
+                else if(TIPO_GRUPO === '0' || TIPO_GRUPO === '1')
                 {
                     buscarMovilTipo(TIPO_GRUPO);
+                }
+                else if(TIPO_GRUPO === '2')
+                {
+                    buscarMovilTodo();
                 }
                 cambiarPropiedad($("#agregar"),"visibility","visible");
                 cambiarPropiedad($("#guardar"),"visibility","hidden");
@@ -368,6 +372,7 @@ function buscarMovil()
         var moviles = $("#lista_busqueda_movil_detalle");
         grupos.html("");
         moviles.html("");
+        grupos.append("<div class=\"fila_contenedor fila_contenedor_activa\" id=\"col_2\" onClick=\"cambiarFila('2')\">Todos</div>");
         grupos.append("<div class=\"fila_contenedor\" id=\"col_0\" onClick=\"cambiarFila('0')\">Internos</div>");
         grupos.append("<div class=\"fila_contenedor\" id=\"col_1\" onClick=\"cambiarFila('1')\">Externos</div>");
         MOVILES = response;
@@ -415,7 +420,14 @@ function cambiarFila(id)
         {
             MODIFICADO = false;
             //abrirModificar(id);
-            buscarMovilTipo(id);
+            if(id === '2')
+            {
+                buscarMovilTodo();
+            }
+            else
+            {
+                buscarMovilTipo(id);
+            }
         },
         function()
         {
@@ -424,7 +436,14 @@ function cambiarFila(id)
     }
     else
     {
-        buscarMovilTipo(id);
+        if(id === '2')
+        {
+            buscarMovilTodo();
+        }
+        else
+        {
+            buscarMovilTipo(id);
+        }
     }
 }
 function buscarMovilTipo(tipo)
@@ -469,12 +488,49 @@ function buscarMovilTipo(tipo)
         return;
     }
 }
+function buscarMovilTodo()
+{
+    TIPO_GRUPO = 2;
+    marcarFilaActiva("col_2");
+    var moviles = $("#lista_busqueda_movil_detalle");
+    moviles.html("");
+    moviles.append("<div class=\"contenedor_central_titulo\"><div></div><div>Patente</div><div>Nombre</div><div>Marca</div><div>Tipo</div><div></div></div>");
+    var noHayRegistros = true;
+    for(var i = 0 ; i < MOVILES.length; i++)
+    {
+        noHayRegistros = false;
+        var id = MOVILES[i].movil_id;
+        var patente = MOVILES[i].movil_patente;
+        var nombre = MOVILES[i].movil_nombre;
+        var marca = MOVILES[i].movil_marca;
+        var grupo = '';
+        if(MOVILES[i].movil_tipo === '0')
+        {
+            grupo = 'Interno';
+        }
+        else if(MOVILES[i].movil_tipo === '1')
+        {
+            grupo = 'Externo';
+        }
+        moviles.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\">"+
+                "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+patente+"</div>"+
+                "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+nombre+"</div>"+
+                "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+marca+"</div>"+
+                "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+grupo+"</div>"+
+                "<div><img onclick=\"preEliminarMovil('"+patente+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
+                "</div>");
+    }
+    if(noHayRegistros)
+    {
+        moviles.append("<div class=\"mensaje_bienvenida\">No hay registros que mostrar</div>");
+        alertify.error("No hay registros que mostrar");
+        return;
+    }
+}
 function abrirModificar(id,patente,nombre)
 {
     ID_MOVIL = id;
     AGREGAR = false;
-    quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
-    agregarclase($("#"+id),"fila_contenedor_activa");
     $("#lista_busqueda_movil_detalle").load("html/datos_movil.html", function( response, status, xhr ) {
         $("#titulo_pagina_vehiculo").text(patente + " ("+nombre+")");
         iniciarPestanias();
@@ -485,9 +541,13 @@ function abrirModificar(id,patente,nombre)
             {
                 buscarMovil();
             }
-            else
+            else if(TIPO_GRUPO === '0' || TIPO_GRUPO === '1')
             {
                 buscarMovilTipo(TIPO_GRUPO);
+            }
+            else if(TIPO_GRUPO === '2')
+            {
+                buscarMovilTodo();
             }
             cambiarPropiedad($("#agregar"),"visibility","visible");
             cambiarPropiedad($("#guardar"),"visibility","hidden");
@@ -1007,7 +1067,7 @@ function buscarConductores()
                 sel = " selected";
                 $("#conductores").append("<option value=\""+id+"\" "+sel+">"+id+" - "+nombre+"</option>");                
             }
-            if(typeof conductores.get(id) === 'undefined')
+            else
             {
                 $("#conductores").append("<option value=\""+id+"\" "+sel+">"+id+" - "+nombre+"</option>");                
             }
@@ -1141,14 +1201,7 @@ function preEliminarMovil(id)
                     alertify.success("Vehículo eliminado");
                     cerrarSession(response);
                     resetBotones();
-                    if(typeof TIPO_GRUPO === 'undefined')
-                    {
-                        buscarMovil();
-                    }
-                    else
-                    {
-                        buscarMovilTipo(TIPO_GRUPO);
-                    }
+                    buscarMovil();
                 };
                 postRequest(url,params,success);
             });

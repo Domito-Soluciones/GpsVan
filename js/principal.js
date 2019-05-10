@@ -16,8 +16,11 @@ var GOOGLE_MAPS_API = "https://maps.googleapis.com/maps/api/js?";
 var TIPO_SERVICIO = 0;
 var flightPath;
 var ASIGNANDO = false;
+var menus = new Map();
 
 $(document).ready(function(){
+    
+    setMenuMap();
     TIPO_USUARIO = 'ADMIN';
     $.getScript(GOOGLE_MAPS_API+"key="+API_KEY+"&callback=initMap&libraries=places",function(){
         getLocation();
@@ -147,7 +150,7 @@ function decodePolyline(encoded) {
                 var tipo = response[i].servicio_tipo;
                 if(tipo === '0')
                 {
-                    enviarCorreoDesasignacion("",id);
+//                    enviarCorreoDesasignacion("",id);
                 }
                 cont.append("<div class=\"pendiente\" onclick=\"abrirServicio('"+id+"','"+cliente+"','"+ruta+"','"+fecha+"','"+hora+"','"+observacion+"')\" >"+id+" - "+cliente+"</div>");
             }
@@ -179,3 +182,21 @@ function getLocation()
     }
 }
 
+function setMenuMap()
+{
+    menus.set("HOME","home");
+    menus.set("PANEL","panel");
+    menus.set("VEHICULOS","movil");
+    menus.set("CONDUCTORES","conductor");
+    menus.set("CLIENTES","cliente");
+    menus.set("PASAJEROS","pasajero");
+    menus.set("SERVICIOS","servicios");
+    menus.set("MONITOREO","monitoreo");
+    menus.set("REPORTES","reportes");
+    menus.set("LIQUIDACION","liquidaciones");
+    menus.set("RENDICIONES","rendiciones");
+    menus.set("CONTRATOS","contrato");
+    menus.set("TARIFAS","tarifa");
+    menus.set("AGENTES","agente");
+    menus.set("CONFIGURACION","configuracion");
+}
