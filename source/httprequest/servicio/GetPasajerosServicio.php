@@ -24,7 +24,7 @@ for ($i = 0 ; $i < count($servicios); $i++)
             . "\"servicio_pasajero\":\"".$pasajero."\","
             . "\"servicio_hora_destino\":\"".$hora."\","
             . "\"servicio_estado\":\"".$estado."\","
-            . "\"servicio_estado_cancelacion\":\"".$estadoCancelacion."\","
+            . "\"servicio_estado_cancelacion\":\"".trim($estadoCancelacion)."\","
             . "\"servicio_lat_destino\":\"".$lat."\","
             . "\"servicio_lon_destino\":\"".$lon."\","
             . "\"servicio_destino\":\"".$destino."\"}";

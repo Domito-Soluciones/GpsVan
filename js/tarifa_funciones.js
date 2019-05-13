@@ -1,5 +1,5 @@
 
-/* global urlBase, alertify, PAGINA, CAMPOS */
+/* global urlBase, alertify, PAGINA, CAMPOS, clientes_tarifa */
 
 function agregarTarifa()
 {
@@ -31,7 +31,10 @@ function agregarTarifa()
             ID_TARIFA = undefined;
             cerrarSession(response);
             alertify.success("Tarifa Agregada");
-            vaciarFormulario();
+            if(PAGINA !== 'CLIENTES')
+            {
+                vaciarFormulario();
+            }
             resetFormulario();
             buscarTarifas(ID_CLIENTE,NOMBRE_CLIENTE);
             cambiarPropiedad($("#pie-aniadir"),"display","block");
@@ -199,13 +202,13 @@ function abrirBuscador(id)
         cambiarPropiedad($("#eliminar2"),"visibility","visible");   
     }
     cambiarPropiedad($("#pie-aniadir"),"display","none");
+    agregarclase($("#agregarT"),"oculto");
+    quitarclase($("#guardarT"),"oculto");
+    quitarclase($("#eliminarT"),"oculto");
     $("#lista_busqueda_tarifa_detalle").load("html/datos_tarifa_cliente.html", function( response, status, xhr ) {
         iniciarHora([$("#hora")]);
         if(PAGINA === 'CLIENTES')
         {
-            agregarclase($("#agregarT"),"oculto");
-            quitarclase($("#guardarT"),"oculto");
-            quitarclase($("#eliminarT"),"oculto");
             cambiarPropiedad($("#titulo_tarifa"),"background-color","white");
             cambiarPropiedad($(".contenedor-pre-input"),"height","25px");
         }
@@ -253,8 +256,9 @@ function abrirBuscador(id)
                 eliminarTarifa();
             },null);
         });
-        $("#volver").click(function(){
-            if(typeof NOMBRE_CLIENTE === "undefined")
+
+        $("#volverT").click(function(){
+            if(typeof NOMBRE_CLIENTE === "undefined" || typeof ID_CLIENTE === "undefined")
             {
                 buscarTarifasAll();
                 cambiarPropiedad($("#agregar"),"visibility","hidden");
@@ -268,7 +272,6 @@ function abrirBuscador(id)
             cambiarPropiedad($("#eliminar"),"visibility","hidden");
             cambiarPropiedad($("#eliminar2"),"visibility","hidden");
         });
-        
     });
 }
 
@@ -284,6 +287,9 @@ function eliminarTarifa()
         resetBotones();
         buscarTarifas(ID_CLIENTE,NOMBRE_CLIENTE);
         cambiarPropiedad($("#pie-aniadir"),"display","initial");
+        agregarclase($("#eliminarT"),"oculto");
+        agregarclase($("#guardarT"),"oculto");
+        quitarclase($("#agregarT"),"oculto");
     };
     postRequest(url,params,success);
 }

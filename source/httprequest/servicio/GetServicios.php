@@ -60,7 +60,7 @@ for ($i = 0 ; $i < count($servicios); $i++)
         . "\"servicio_tarifa2\":\"".$servicioTarifa2."\","
         . "\"servicio_agente\":\"".$servicioAgente."\","
         . "\"servicio_estado\":\"".$servicioEstado."\","
-        . "\"servicio_observacion_adicional\":\"".$servicioObAd."\""
+        . "\"servicio_observacion_adicional\":\"".trim($servicioObAd)."\""
         . "}";
     if (($i+1) != count($servicios))
     {

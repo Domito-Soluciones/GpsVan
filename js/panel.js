@@ -19,14 +19,17 @@ var buscaPartida = false;
 var buscaDestino = false;
 
 $(document).ready(function(){
-    if((TIPO_SERVICIO === 1 || TIPO_SERVICIO === 2) && ASIGNANDO)
+    
+    if((TIPO_SERVICIO === 1) && ASIGNANDO)
     {
-        $("#ruta").val("ESP");
-        $("#truta").val("XX-ESP");
+        $("#ruta").html("<option value=\"ESP\">ESP</option>");
+        $("#truta").html("<option value=\"XX-ESP\">XX-ESP</option>");
         $("#especial").prop("checked",true);
         $("#tarifa2").prop("disabled",false);
         $("#ruta").prop("disabled",true);
         $("#truta").prop("disabled",true);
+        $("#partida").prop("disabled",false);
+        $("#destino").prop("disabled",false);
         cambiarPropiedad($(".buscador-pasajero"),"display","initial");
         agregarclase($("#contenedor_mapa"),"mapa_bajo");
         cargarPasajerosEspecial();
@@ -44,7 +47,10 @@ $(document).ready(function(){
     cambioEjecutado();
     if($("#ids").val() !== "")
     {
-        cargarRutas();
+        if(TIPO_SERVICIO !== 1)
+        {
+            cargarRutas();
+        }
     }
     $("#clientes").keyup(function () {
         cargarClientes();
@@ -52,17 +58,20 @@ $(document).ready(function(){
     $("#clientes").on('input',function () {
         if($(this).val() !== '')
         {
-            cargarRutas();
+            if(TIPO_SERVICIO !== 1)
+            {
+                cargarRutas();
+            }
         }
     });
-    $("#ruta").on('input',function(){
-        $("#ltruta").html("");
+    $("#ruta").change(function(){
+        $("#ltruta").html("<option val=\"\">Seleccione</option>");
         for(var i = 0; i < TARIFAS.length; i++)
         {
-            $("#ltruta").append("<option val=\""+TARIFAS[i].tarifa_nombre+"\">"+TARIFAS[i].tarifa_nombre+"</option>");   
+            $("#truta").append("<option val=\""+TARIFAS[i].tarifa_nombre+"\">"+TARIFAS[i].tarifa_nombre+"</option>");   
         }
     });
-    $("#truta").on('input',function () {
+    $("#truta").change(function () {
         origen = undefined;
         destinos = [];
         cambiarPropiedad($(".buscador-pasajero"),"display","initial");
@@ -95,19 +104,6 @@ $(document).ready(function(){
         }
     });
     
-    $("#vehiculos2").change(function () {
-        if($(this).val() !== "")
-        {
-            var conductor = $(this).children("option").filter(":selected").text().split(" / ")[1];
-            $("#conductores2").html("Conductor: "+conductor);
-            $("#conductor2").val(conductores.get(conductor));
-        }
-        else
-        {
-            $("#conductores2").html("");
-        }
-    });
-    
     $("#clientes").on('blur',function () {
         if(TIPO_SERVICIO === 0)
         {
@@ -121,13 +117,15 @@ $(document).ready(function(){
         }
         else
         {
-            $("#ruta").val("ESP");
-            $("#truta").val("XX-ESP");
+            $("#ruta").html("<option value=\"ESP\">ESP</option>");
+            $("#truta").html("<option value=\"XX-ESP\">XX-ESP</option>");
+            $("#ruta").prop("disabled",true);
+            $("#truta").prop("disabled",true);
             $("#partida").prop("disabled",false);
             $("#destino").prop("disabled",false);
             cambiarPropiedad($(".buscador-pasajero"),"display","initial");
             agregarclase($("#contenedor_mapa"),"mapa_bajo");
-            cargarPasajerosEspecial();
+            cargarPasajeros();
         }
     });
 
@@ -216,6 +214,10 @@ $(document).ready(function(){
                 destinos.splice(0, 0, origen);
                 origen = $("#partida").val();
                 $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+origen);
+                if(destinos.length === 1)
+                {
+                    $("#contenedor_punto_destino").html("<b>Destino: </b>"+destinos[0]);
+                }
             }
             contenedor.prepend("<div class=\"cont-pasajero-gral\" id=\"origen_empresa\"><input type=\"hidden\" id=\"hidden_origen\" class=\"hidden\" value=\""+origen+"\"><div class=\"cont-pasajero\">Origen</div><div class=\"cont-mini-pasajero\"><div>"+ recortar(origen,30) + "</div><div>");
             pasajeros.splice(0, 0, "Origen");
@@ -321,16 +323,15 @@ function cargarClientes()
 
 function cargarPasajeros()
 {
-    var id = $("#ids").val();
     var pasajero = $("#busqueda").val();
     var cliente = $('#clientes').val();
     var ruta = $('#truta').val();
     var params = {cliente : cliente, pasajero : pasajero, ruta : ''};
     var url = urlBase + "/pasajero/GetPasajerosRuta.php";
-    if(TIPO_SERVICIO === 1 || TIPO_SERVICIO === 2)
+    if(TIPO_SERVICIO === 2)
     {
-        params = {id : id};
-        url =  urlBase + "/pasajero/GetPasajerosEspecial.php";
+        params = {cliente : cliente};
+        url =  urlBase + "/pasajero/GetPasajerosCliente.php";
     }
     var success = function(response)
     {
@@ -370,11 +371,11 @@ function cargarPasajeros()
                     partidaExiste = false;
                 }
                 
-                if(ruta.indexOf("ZP") !== -1 && i === response.length-1)
-                {
-                    contenedorDes.html("<b>Destino:</b> "+punto);
-                    contenedor.append("<div class=\"cont-pasajero-gral\" id=\"destino_empresa\"><div class=\"cont-pasajero\">"+response[0].pasajero_empresa+"</div><div class=\"cont-mini-pasajero\"><div>"+ punto + "</div><div>");
-                }
+//                if(ruta.indexOf("ZP") !== -1 && i === response.length-1)
+//                {
+//                    contenedorDes.html("<b>Destino:</b> "+punto);
+//                    contenedor.append("<div class=\"cont-pasajero-gral\" id=\"destino_empresa\"><div class=\"cont-pasajero\">"+response[0].pasajero_empresa+"</div><div class=\"cont-mini-pasajero\"><div>"+ punto + "</div><div>");
+//                }
                 if(origen !== punto)
                 {
                     destinos.push(punto);
@@ -389,6 +390,8 @@ function cargarPasajeros()
             }
             else if(ruta.indexOf("-ESP") !== -1)
             {
+                $("#contenedor_punto_encuentro").html("<b>Origen: </b>");
+                $("#contenedor_punto_destino").html("<b>Destino: </b>");
                 if(ruta.indexOf("RG") !== -1 && partidaExiste)
                 {
                     origen = punto;
@@ -401,12 +404,10 @@ function cargarPasajeros()
                     contenedorDes.html("<b>Destino:</b> "+punto);   
                     contenedor.append("<div class=\"cont-pasajero-gral\"><div class=\"cont-pasajero\">"+response[0].pasajero_empresa+"</div><div class=\"cont-mini-pasajero\"><div>"+ punto + "</div><div>");
                 }
-                contenedor.append("<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" draggable=\"true\" ondragstart=\"drag(event,$(this))\" ondrop=\"drop(event,$(this))\" ondragover=\"allowDrop(event)\">"
+                contenedorEx.append("<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" \">"
                                  +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+punto+"\">"
-                                 +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'>"
-                                 +"<div class=\"boton-chico\" onclick=\"editarPasajero('"+punto+"','punto_"+id+"','hidden_"+id+"')\"><img src=\"img/editar.svg\" width=\"12\" height=\"12\"></div>"
-                                 +"<div class=\"boton-chico\" onclick=\"borrarPasajero('pasajero_"+id+"','"+nombre+"','"+punto+"','"+celular+"')\"><img src=\"img/cancelar.svg\" width=\"12\" height=\"12\"></div></div>"+
-                        "<div class=\"cont-mini-pasajero\"><div id=\"punto_"+id+"\">"+ recortar(punto,30) + "</div><div>" + celular+"</div></div>");
+                                 +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'><div class=\"boton-chico\" onclick=\"agregarPasajero('pasajero_"+id+"','"+nombre+"','"+punto+"','"+celular+"')\"><img src=\"img/flecha-arriba.svg\" width=\"12\" height=\"12\"></div></div>"+
+                        "<div class=\"cont-mini-pasajero\"><div>"+ recortar(punto,30) + "</div><div>" + celular+"</div></div>");
                 pasajeros.push(id);
             }
             else
@@ -434,10 +435,8 @@ function cargarPasajeros()
 
 function cargarPasajerosEspecial()
 {
-    var pasajero = $("#busqueda").val();
-    var cliente = $('#clientes').val();
-    var params = {cliente : cliente, pasajero : pasajero, ruta : ''};
-    var url = urlBase + "/pasajero/GetPasajerosCliente.php";
+    var params = {id : $("#ids").val()};
+    var url = urlBase + "/pasajero/GetPasajerosEspecial.php";
     var success = function(response)
     {
         if(response.length === 0)
@@ -452,22 +451,37 @@ function cargarPasajerosEspecial()
         contenedor.html("");
         contenedorEx.html("");
         contenedorDir.html("<b>Origen:</b> "+origen);
-        //contenedor.prepend("<div class=\"cont-pasajero-gral\"><div class=\"cont-pasajero\">"+response[0].pasajero_empresa+"</div><div class=\"cont-mini-pasajero\"><div>"+ origen + "</div><div>");
         pasajeros = [];
         destinos = [];
         for(var i = 0 ; i < response.length ; i++)
         {
             var id = response[i].pasajero_id;
-            var nombre = response[i].pasajero_nombre + " " + response[i].pasajero_papellido;
+            var nombre = response[i].pasajero_nombre;
             var punto = response[i].pasajero_punto_encuentro;
             var celular = response[i].pasajero_celular;
-            contenedorDir.html("<b>Origen:</b> ");
-            contenedorDes.html("<b>Destino:</b> ");                    
-            contenedorEx.append("<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" \">"
+            
+            if(i === 0)
+            {
+                origen = punto;
+                contenedorDir.html("<b>Origen:</b> "+punto);
+            }
+            else
+            {
+                destinos.push(punto);
+            }
+            if(i === response.length -1 && destinos.length > 0)
+            {
+                contenedorDes.html("<b>Destino:</b> "+punto);          
+            }             
+            contenedor.append("<div id=\"pasajero_"+id+"\"  class=\"cont-pasajero-gral\" draggable=\"true\" ondragstart=\"drag(event,$(this))\" ondrop=\"drop(event,$(this))\" ondragover=\"allowDrop(event)\">"
                                  +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+ punto+"\">"
-                                 +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'><div class=\"boton-chico\" onclick=\"agregarPasajero('pasajero_"+id+"','"+nombre+"','"+punto+"','"+celular+"')\"><img src=\"img/flecha-arriba.svg\" width=\"12\" height=\"12\"></div></div>"+
-                        "<div class=\"cont-mini-pasajero\"><div>"+ recortar(punto,30) + "</div><div>" + celular+"</div></div>");
+                                 +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'>"
+                                 +"<div class=\"boton-chico\" onclick=\"editarPasajero('"+punto+"','punto_"+id+"','hidden_"+id+"')\"><img src=\"img/editar.svg\" width=\"12\" height=\"12\"></div>"
+                                 +"<div class=\"boton-chico\" onclick=\"borrarPasajero('pasajero_"+id+"','"+nombre+"','"+punto+"','"+celular+"')\"><img src=\"img/cancelar.svg\" width=\"12\" height=\"12\"></div></div>"
+                        +"<div class=\"cont-mini-pasajero\"><div>"+ recortar(punto,30) + "</div><div>" + celular+"</div></div>");
+                pasajeros.push(id);
         }
+        dibujarRuta();
     };
     postRequest(url,params,success);
 }
@@ -498,6 +512,7 @@ function cargarPasajerosBusqueda()
                                  +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+punto+"\">"
                                  +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'><div class=\"boton-chico\" onclick=\"agregarPasajero('pasajero_"+id+"','"+nombre+"','"+punto+"','"+celular+"')\"><img src=\"img/flecha-arriba.svg\" width=\"12\" height=\"12\"></div></div>"+
                         "<div class=\"cont-mini-pasajero\"><div>"+ recortar(punto,30) + "</div><div>" + celular+"</div></div>");
+            pasajeros.push(id);
         }
         
     };
@@ -511,6 +526,7 @@ function cargarMoviles()
     var url = urlBase + "/movil/GetMoviles.php";
     var success = function(response)
     {
+        $("#vehiculos").html("<option value=\"\">Seleccione</option>");
         for(var i = 0 ; i < response.length ; i++)
         {
             var nombre = response[i].movil_nombre;
@@ -522,7 +538,6 @@ function cargarMoviles()
                 conductor = "No Definido";
             }
             $("#vehiculos").append("<option value=\""+nombre+"\">"+nombre+" / "+conductor+"</option>");
-            $("#vehiculos2").append("<option value=\""+nombre+"\">"+nombre+" / "+conductor+"</option>");
             moviles.push(nombre);
         }
     };
@@ -532,15 +547,14 @@ function cargarMoviles()
 function cargarRutas()
 {
     var clientes = $('#clientes').val();
-    $("#ruta").val("");
-    $("#truta").val("");
+    $("#ruta").html("<option value=\"\">Seleccione</option>");
+    $("#truta").html("<option value=\"\">Seleccione</option>");
     NOMBRE_CLIENTE = clientes;
     var params = {empresa : clientes};
     var url = urlBase + "/tarifa/GetTarifasEmpresa.php";
     var success = function(response)
     {
         cerrarSession(response);
-        $("#lruta").html("");
         var ruta = "";
         for(var i = 0 ; i < response.length ; i++)
         {
@@ -548,7 +562,7 @@ function cargarRutas()
             var descripcion = response[i].tarifa_descripcion;
             if(response[i].tarifa_descripcion !== ruta)
             {
-                $("#lruta").append("<option value=\""+descripcion+"\">"+descripcion+"</option>");
+                $("#ruta").append("<option value=\""+descripcion+"\">"+descripcion+"</option>");
                 ruta = response[i].tarifa_descripcion;
             }
         }
@@ -616,6 +630,10 @@ function agregarServicio(fecha)
         {
             MODIFICADO = false;
             cerrarSession(response);
+            if(TIPO_SERVICIO === 1)
+            {
+                eliminarDetalleServicio(response.servicio_id);
+            }
             agregarDetalleServicio(response.servicio_id);
             vaciarFormulario();
             origen = undefined;
@@ -666,8 +684,6 @@ function dibujarRuta()
             });
         }
     }
-    console.log("destinos array: "+destinos);
-    console.log("waypoints: "+JSON.stringify(waypoints));
     setDirections();
     directionsService.route({
         origin: origen,
@@ -710,14 +726,20 @@ function agregarDetalleServicio(idServicio)
     {
         destinos.splice(0, 0, origen);
     }
-    console.log("estos son los destinos");
     for(var i = 0; i < destinos.length;i++)
     {
         destinoFinal += destinos[i] + "%";
         pasajeroFinal += pasajeros[i] + "%";
     }
-    params = { lat : POLYLINE_LAT, lon : POLYLINE_LNG, pasajeros : pasajeroFinal ,destinos : destinoFinal, id : idServicio};
+    //params = { lat : POLYLINE_LAT, lon : POLYLINE_LNG, pasajeros : pasajeroFinal ,destinos : destinoFinal, id : idServicio};
+    params = {pasajeros : pasajeroFinal ,destinos : destinoFinal, id : idServicio};
     var url = urlBase + "/servicio/AddServicioDetalle.php";
+    postRequest(url,params,null);
+}
+function eliminarDetalleServicio(idServicio)
+{
+    params = { id : idServicio};
+    var url = urlBase + "/servicio/DelServicioDetalle.php";
     postRequest(url,params,null);
 }
 
@@ -919,6 +941,7 @@ function borrarPasajero(obj,nombre,punto,celular)
 
 function agregarPasajero(obj,nombre,punto,celular)
 {
+    nombre = nombre.replace(" ","_");
     if(validarNumero(nombre))
     {
         alertify.error("Nombre no debe ser numerico");
@@ -945,7 +968,6 @@ function agregarPasajero(obj,nombre,punto,celular)
     var ruta = $('#truta').val();
     if(ruta.indexOf("RG") !== -1)
     {
-        console.log("agregando pasajero "+id);
         pasajeros.push(id);
         $("#contenedor_punto_destino").html("<b>Destino: </b>"+direccion_empresa);
         var final = destinos.pop();
@@ -967,6 +989,7 @@ function agregarPasajero(obj,nombre,punto,celular)
         {
             $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+punto);
             origen = punto; 
+            pasajeros.push(id);
         }
         else
         {
@@ -974,16 +997,19 @@ function agregarPasajero(obj,nombre,punto,celular)
             {
                 $("#contenedor_punto_destino").html("<b>Destino: </b>"+punto);
                 destinos.push(punto);
+                pasajeros.push(id);
             }
             else
             {
                 var destinoFinal = destinos.pop();
+                var pasajeroFinal = pasajeros.pop();
                 $("#contenedor_punto_destino").html("<b>Destino: </b>"+destinoFinal);
                 destinos.push(punto);
+                pasajeros.push(id);
                 destinos.push(destinoFinal);
+                pasajeros.push(pasajeroFinal);
             }
         }
-        pasajeros.push(id);
     }
     var pasajero = $("#"+obj);
     var texto = "<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" draggable=\"true\" ondragstart=\"drag(event,$(this))\" ondrop=\"drop(event,$(this))\" ondragover=\"allowDrop(event)\">"
@@ -1139,14 +1165,18 @@ function editarPasajero(valor,obj,hidden)
         cambiarPropiedad($(".contenedor_editar"),"display","none");
         quitarclase($("#contenedor_mapa"),"mapa_editar");
         $("#"+obj).html(recortar($("#input_editar").val(),30));
+        
         var existe = false;
         for(var i = 0; i < destinos.length; i++)
-        { 
+        {
             if(destinos[i] === valor)
             {
                 existe = true;
                 $("#"+hidden).val($("#input_editar").val());
                 destinos[i] = $("#input_editar").val();
+                if(i === destinos.length-1){
+                    $("#contenedor_punto_destino").html("<b>Destino: </b>"+$("#input_editar").val());
+                }
                 break;
             }
         }

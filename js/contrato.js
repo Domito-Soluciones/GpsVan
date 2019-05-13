@@ -97,14 +97,15 @@ function buscarCliente()
 
 function mostrarContrato(id,contrato)
 {
+    cambiarPropiedad($(".mensaje_bienvenida"),"display","none");
     if(contrato === '')
     {
-        cambiarPropiedad($(".mensaje_bienvenida"),"display","block");
         var visor = "";
         $(".contenedor_contrato").html(visor);
         alertify.error("Conductor no tiene contrato adjunto");
         return;
     }
+    cambiarPropiedad($(".mensaje_bienvenida"),"display","none");
     ID_CONDUCTOR = id;
     quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
     agregarclase($("#"+id),"fila_contenedor_activa");

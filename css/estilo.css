@@ -1794,3 +1794,9 @@ select
 {
     display: inline;
 }
+
+.buscador-cliente
+{
+    display: inline;
+    float: right;
+}

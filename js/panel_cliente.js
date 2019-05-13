@@ -3,6 +3,8 @@ var PAGINA = "PANEL";
 var CAMPOS = ["clientes","fechas","hora"];
 var clientesArray = [];
 var destinos = new Map();
+var PASAJEROS_ASIGNADOS = new Map();
+var PASAJEROS_NO_ASIGNADOS = new Map();
 $(document).ready(function(){
     TIPO_USUARIO = 'CLIENTE';
     $("#menu").load("menu.php", function( response, status, xhr ) {
@@ -15,6 +17,45 @@ $(document).ready(function(){
     iniciarFecha(['#fechas']);
     iniciarHora(['#hora']);
     buscarPasajeroCliente($("#clientes").val());
+    
+    $("#busqueda").keyup(function(){
+        var pasajeros = $("#contenedor-pasajero-elegido");
+        pasajeros.html("<div class=\"contenedor_central_titulo_pasajero\">"+
+                "<div></div><div class=\"dato_pasajero\">Rut</div><div class=\"dato_pasajero\">Nombre</div>"+
+                "<div class=\"dato_pasajero\">Apellido</div><div class=\"dato_pasajero\">Centro Costo</div>"+
+                "<div class=\"dir_pasajero\">Dirección</div></div>");
+        for (var [key, value] of PASAJEROS_ASIGNADOS) {
+            if(key.toLowerCase().includes($(this).val().toLowerCase()))
+            {
+                var array = key.split("_");
+                pasajeros.append("<div id=\""+array[0]+"\" class=\"fila_contenedor fila_contenedor_pasajero\">"+
+                "<div class=\"dato_pasajero\">"+array[0]+"</div>"+
+                "<div class=\"dato_pasajero\">"+array[2]+"</div>"+
+                "<div class=\"dato_pasajero\">"+array[3]+"</div>"+
+                "<div class=\"dato_pasajero\">"+array[4]+"</div><div class=\"dir_pasajero\">"+array[5]+"</div><div onclick=\"quitar($('#"+array[0]+"'),'"+array[0]+"','"+array[1]+"','"+array[2]+"','"+array[3]+"','"+array[4]+"','"+array[5]+"')\"><img src=\"img/abajo.svg\" width=\"50\" height=\"15\"></div></div>");
+            }
+        }
+    });
+    
+    $("#busqueda1").keyup(function(){
+        var pasajeros = $("#contenedor-pasajero");
+        pasajeros.html("<div class=\"contenedor_central_titulo_pasajero\">"+
+                "<div></div><div class=\"dato_pasajero\">Rut</div><div class=\"dato_pasajero\">Nombre</div>"+
+                "<div class=\"dato_pasajero\">Apellido</div><div class=\"dato_pasajero\">Centro Costo</div>"+
+                "<div class=\"dir_pasajero\">Dirección</div></div>");
+        for (var [key, value] of PASAJEROS_NO_ASIGNADOS) {
+            if(key.toLowerCase().includes($(this).val().toLowerCase()))
+            {
+                var array = key.split("_");
+                pasajeros.append("<div id=\""+array[0]+"\" class=\"fila_contenedor fila_contenedor_pasajero\">"+
+                "<div class=\"dato_pasajero\">"+array[0]+"</div>"+
+                "<div class=\"dato_pasajero\">"+array[2]+"</div>"+
+                "<div class=\"dato_pasajero\">"+array[3]+"</div>"+
+                "<div class=\"dato_pasajero\">"+array[4]+"</div><div class=\"dir_pasajero\">"+array[5]+"</div><div onclick=\"agregar($('#"+array[0]+"'),'"+array[0]+"','"+array[1]+"','"+array[2]+"','"+array[3]+"','"+array[4]+"','"+array[5]+"')\"><img src=\"img/abajo.svg\" width=\"50\" height=\"15\"></div></div>");
+            }
+        }
+    });
+    
     
 });
 
@@ -39,16 +80,6 @@ function crearServicio()
         alertify.error("Debe seleccionar una fecha válida");
         return;
     }
-    var pasajeros = [];
-    $(".checkPasajero:checked").each(function(index)
-    {
-        pasajeros.push('');
-    });
-    if(pasajeros.length === 0)
-    {
-        alertify.error("No hay pasajeros asignados a este servicio");
-        return;
-    }
     vaciarFormulario();
     var params = {cliente : cliente, fecha : fecha, hora : hora, observaciones : observaciones, estado : 0, tarifa1 : 0,tarifa2 : 0, tipo : 1};
     var url = urlBase + "/servicio/AddServicio.php";
@@ -58,7 +89,10 @@ function crearServicio()
         alertify.success('Servicio agregado con id '+response.servicio_id);
         agregarDetalleServicio(response.servicio_id);
         enviarCorreoAsignacion("jose.sanchez.6397@gmail.com",response.servicio_id,cliente);
-        seleccionarTodo();
+        $("#contenedor-pasajero-elegido").html("<div class=\"contenedor_central_titulo_pasajero\">"+
+                "<div></div><div class=\"dato_pasajero\">Rut</div><div class=\"dato_pasajero\">Nombre</div>"+
+                "<div class=\"dato_pasajero\">Apellido</div><div class=\"dato_pasajero\">Centro Costo</div>"+
+                "<div class=\"dir_pasajero\">Dirección</div></div>");
     };
     postRequest(url,params,success);
 
@@ -101,7 +135,6 @@ function buscarPasajeroCliente(cliente)
         var pasajeros = $("#contenedor-pasajero");
         var pasajeros2 = $("#contenedor-pasajero-elegido");
         pasajeros.html("");
-        PASAJEROS = response;
         if(response.length === 0)
         {
             pasajeros.append("<div class=\"mensaje_bienvenida\">No hay registros que mostrar</div>");
@@ -114,21 +147,24 @@ function buscarPasajeroCliente(cliente)
         pasajeros2.append("<div class=\"contenedor_central_titulo_pasajero\">"+
                 "<div></div><div class=\"dato_pasajero\">Rut</div><div class=\"dato_pasajero\">Nombre</div>"+
                 "<div class=\"dato_pasajero\">Apellido</div><div class=\"dato_pasajero\">Centro Costo</div>"+
-                "<div class=\"dir_pasajero\">Dirección</div></div>");
+                "<div class=\"dir_pasajero\">Dirección</div></div><div class=\"mensaje_bienvenida\">NO HAY PASAJEROS ASIGNADOS</div>");
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].pasajero_id;
             var rut = response[i].pasajero_rut;
             var nombre = response[i].pasajero_nombre;
             var papellido = response[i].pasajero_papellido;
+            var celular = response[i].pasajero_celular;
             var cc = response[i].pasajero_centro_costo;
             var punto = response[i].pasajero_punto_encuentro;
             destinos.set(id,punto);
-            pasajeros.append("<div draggable=\"true\" ondragstart=\"drag(event,$(this))\" class=\"fila_contenedor fila_contenedor_pasajero\">"+
+            var key = rut+"_"+celular+"_"+nombre+"_"+papellido+"_"+cc+"_"+punto;
+            PASAJEROS_NO_ASIGNADOS.set(key,key);
+            pasajeros.append("<div id=\""+rut+"\" class=\"fila_contenedor fila_contenedor_pasajero\">"+
                     "<div class=\"dato_pasajero\">"+rut+"</div>"+
                     "<div class=\"dato_pasajero\">"+nombre+"</div>"+
                     "<div class=\"dato_pasajero\">"+papellido+"</div>"+
-                    "<div class=\"dato_pasajero\">"+cc+"</div><div class=\"dir_pasajero\">"+punto+"</div></div>");
+                    "<div class=\"dato_pasajero\">"+cc+"</div><div class=\"dir_pasajero\">"+punto+"</div><div onclick=\"agregar($('#"+rut+"'),'"+rut+"','"+celular+"','"+nombre+"','"+papellido+"','"+cc+"','"+punto+"')\"><img src=\"img/arriba.svg\" width=\"50\" height=\"15\"></div></div>");
         }
     };
     postRequest(url,params,success);
@@ -138,11 +174,11 @@ function agregarDetalleServicio(idServicio)
 {
     var pasajeros = "";
     var destino = "";
-    $(".checkPasajero:checked").each(function(index){
-        var id = $( this ).prop("id").split("check")[1];
-        pasajeros += id + "%";
-        destino += destinos.get(id) + "%";
-    });
+    for(var [key, value] of PASAJEROS_ASIGNADOS){
+        var datos = key.split("_");
+        pasajeros += datos[2]+"_"+datos[3]+"-"+datos[1] + "%";
+        destino += datos[5] + "%";
+    }
     var params = {pasajeros : pasajeros ,destinos : destino, id : idServicio };
     var url = urlBase + "/servicio/AddServicioDetalle.php";
     postRequest(url,params,null);
@@ -163,27 +199,33 @@ function seleccionarTodo()
     });
 }
 
-function allowDrop(ev) {
-    cambiarPropiedad($("#contenedor-pasajero-elegido"),"background-color","#dfe8e8");
-    ev.preventDefault();
+function agregar(obj,rut,celular,nombre,papellido,cc,punto) {
+    obj.remove();
+    var key = rut+"_"+celular+"_"+nombre+"_"+papellido+"_"+cc+"_"+punto;
+    PASAJEROS_NO_ASIGNADOS.delete(key);
+    PASAJEROS_ASIGNADOS.set(key,key);
+    console.log("NO : "+PASAJEROS_NO_ASIGNADOS.size);
+    console.log("SI : "+PASAJEROS_ASIGNADOS.size);
+    $(".mensaje_bienvenida").remove();
+    var pasajeros = $("#contenedor-pasajero-elegido");
+    pasajeros.append("<div id=\""+rut+"\" class=\"fila_contenedor fila_contenedor_pasajero\">"+
+                "<div class=\"dato_pasajero\">"+rut+"</div>"+
+                "<div class=\"dato_pasajero\">"+nombre+"</div>"+
+                "<div class=\"dato_pasajero\">"+papellido+"</div>"+
+                "<div class=\"dato_pasajero\">"+cc+"</div><div class=\"dir_pasajero\">"+punto+"</div><div onclick=\"quitar($('#"+rut+"'),'"+rut+"','"+celular+"','"+nombre+"','"+papellido+"','"+cc+"','"+punto+"')\"><img src=\"img/abajo.svg\" width=\"50\" height=\"15\"></div></div>");
 }
-
-function exitDrop(ev)
-{
-    cambiarPropiedad($("#contenedor-pasajero-elegido"),"background-color","whitesmoke");
-    ev.preventDefault();
-}
-
-function drag(ev,div) {
-  ev.dataTransfer.setData("text", div.html());
-}
-
-function drop(ev) {
-    if(ev.target.id === 'contenedor-pasajero-elegido')
-    {
-        ev.preventDefault();
-        var data = ev.dataTransfer.getData("text");
-        $("#contenedor-pasajero-elegido").append("<div draggable=\"true\" ondragstart=\"drag(event,$(this))\" class=\"fila_contenedor fila_contenedor_pasajero\">"+data+"</div>");
-        cambiarPropiedad($("#contenedor-pasajero-elegido"),"background-color","whitesmoke");
-    }
+function quitar(obj,rut,celular,nombre,papellido,cc,punto) {
+    obj.remove();
+    var key = rut+"_"+celular+"_"+nombre+"_"+papellido+"_"+cc+"_"+punto;
+    PASAJEROS_ASIGNADOS.delete(key);
+    PASAJEROS_NO_ASIGNADOS.set(key,key);
+    console.log("NO : "+PASAJEROS_NO_ASIGNADOS.size);
+    console.log("SI : "+PASAJEROS_ASIGNADOS.size)
+    $(".mensaje_bienvenida").remove();
+    var pasajeros = $("#contenedor-pasajero");
+    pasajeros.append("<div id=\""+rut+"\" class=\"fila_contenedor fila_contenedor_pasajero\">"+
+                "<div class=\"dato_pasajero\">"+rut+"</div>"+
+                "<div class=\"dato_pasajero\">"+nombre+"</div>"+
+                "<div class=\"dato_pasajero\">"+papellido+"</div>"+
+                "<div class=\"dato_pasajero\">"+cc+"</div><div class=\"dir_pasajero\">"+punto+"</div><div onclick=\"agregar($('#"+rut+"'),'"+rut+"','"+celular+"','"+nombre+"','"+papellido+"','"+cc+"','"+punto+"')\"><img src=\"img/arriba.svg\" width=\"50\" height=\"15\"></div></div>");
 }

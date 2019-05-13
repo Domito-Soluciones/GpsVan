@@ -15,6 +15,7 @@
     $liquidacionDao = new LiquidacionDao();
     $servicios = $liquidacionDao->getServiciosConvenio($conductor, $mes+1, $anio);
     $descuentos = $liquidacionDao->getDescuentosConductor($conductor);
+    $rendiciones = $liquidacionDao->getRendiciones($conductor,$mes+1,$anio);
     $porcentajes = $liquidacionDao->getPorcentajes();
     $totalDesc = 0;
 ?>
@@ -54,6 +55,9 @@
                 <td colspan="2">
                     Descuentos
                 </td> 
+                <td colspan="2">
+                    Rendiciones
+                </td> 
             </tr>
             <tr>
                 <td colspan="2">
@@ -91,50 +95,78 @@
                                 echo "<tr><td>GPS</td><td>$  ".$descuentos[4]."</td></tr>";
                                 echo "<tr><td>Celular</td><td>$  ".$descuentos[5]."</td></tr>";
                                 echo "<tr><td>APP</td><td>$  ".$descuentos[6]."</td></tr>";
-                                $totalDesc = $prevision + $descuentos[0] + $descuentos[1] + $descuentos[2] + $descuentos[3] + 
+                                for($j = 0; $j < count($rendiciones); $j++)
+                                {
+                                    $data = explode("%", $rendiciones[$j]);
+                                    if($data[2] == '1')
+                                    {
+                                        $totalDesc += $data[1];
+                                        echo "<tr><td>".$data[0]."</td><td>$ ".$data[1]."</td></tr>";
+                                    }
+                                }
+                                $totalDesc += $prevision + $descuentos[0] + $descuentos[1] + $descuentos[2] + $descuentos[3] + 
                                         $descuentos[4] + $descuentos[5] + $descuentos[6];
+                            }
+                        ?>
+                    </table>
+                </td>
+                <td colspan="2">
+                    <table>
+                        <?php
+                            $totalRendicion = 0;
+                            for($j = 0; $j < count($rendiciones); $j++)
+                            {
+                                $data = explode("%", $rendiciones[$j]);
+                                if($data[2] == '0')
+                                {
+                                    $totalRendicion += $data[1];
+                                    echo "<tr><td>".$data[0]."</td><td>$ ".$data[1]."</td></tr>";
+                                }
                             }
                         ?>
                     </table>
                 </td>
             </tr>
             <tr>
-                <td>
+                <td colspan="2">
                     Producci&oacute;n bruta
                 </td> 
                 <td>
-                    <?php echo $totalBruto?>
+                   $ <?php echo $totalBruto?>
                 </td>
-                <td>
+                <td colspan="2">
                     Total descuentos 
                 </td> 
                 <td>
-                    <?php echo $totalDesc ?>
+                   $ <?php echo $totalDesc ?>
                 </td>
             </tr>
             <tr>
-                <td>
+                <td colspan="2">
                     % Participaci&oacute;n 
                 </td> 
                 <td>
                     80%
                 </td> 
                 <td colspan="2">
-                    
+                    Total rendiciones 
                 </td> 
+                <td>
+                   $ <?php echo $totalRendicion ?>
+                </td>
             </tr>
             <tr>
-                <td>
+                <td colspan="2">
                     Producci&oacute;n liquida
                 </td> 
                 <td>
-                    <?php echo $totalLiquido;?>
+                   $ <?php echo $totalLiquido;?>
                 </td> 
-                <td>
+                <td colspan="2">
                     Liquido a pagar
                 </td> 
                 <td>
-                    <?php echo $totalLiquido - $totalDesc;?>
+                   $ <?php echo $totalLiquido - $totalDesc + $totalRendicion;?>
                 </td> 
             </tr>
         </table>

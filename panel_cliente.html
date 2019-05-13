@@ -36,11 +36,23 @@
                 </div>
             </div>
         </div>
-        <div id="contenedor-pasajero" class="contenedor-lateral buscador-asignacion-cliente-pasajero">
-
+        <div class="contenedor-lateral buscador-asignacion-cliente-pasajero">
+            <div class="titulo_pagina">
+                Pasajeros Asignados
+                <div class="buscador-cliente">
+                    Buscar: <input type="text" id="busqueda">                    
+                </div>
+            </div>
+            <div id="contenedor-pasajero-elegido"></div>
         </div>
-        <div id="contenedor-pasajero-elegido" class="contenedor-lateral buscador-asignacion-cliente-pasajero" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="exitDrop(event)">
-
+        <div class="contenedor-lateral buscador-asignacion-cliente-pasajero">
+            <div class="titulo_pagina">
+                Pasajeros No Asignados
+                <div class="buscador-cliente">
+                    Buscar: <input type="text" id="busqueda1">                    
+                </div>
+            </div>
+            <div id="contenedor-pasajero"></div>
         </div>
     </body>
 </html>

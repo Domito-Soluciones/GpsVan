@@ -44,7 +44,7 @@ for ($i = 0 ; $i < count($servicios); $i++)
             . "\"servicio_movil\":\"".$movil."\","
             . "\"servicio_conductor\":\"".$conductor."\","
             . "\"servicio_tarifa\":\"".$tarifa."\","
-            . "\"servicio_observacion\":\"".$observacion."\","
+            . "\"servicio_observacion\":\"".trim($observacion)."\","
             . "\"servicio_pasajero_id\":\"".$pasajeroId."\","
             . "\"servicio_pasajero_nombre\":\"".$pasajeroNombre."\","
             . "\"servicio_pasajero_celular\":\"".$pasajeroCelular."\","
