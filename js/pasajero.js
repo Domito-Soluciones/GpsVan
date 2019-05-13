@@ -249,7 +249,7 @@ function buscarPasajero()
             alertify.error("No hay registros que mostrar");
             return;
         }
-        pasajeros.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div>Empresa</div></div>")
+        pasajeros.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div class=\"col_empresa_pasajero\">Empresa</div></div>")
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].pasajero_id;
@@ -261,7 +261,7 @@ function buscarPasajero()
                     "<div onClick=\"cambiarFila('"+id+"','"+rut+"','"+nombre+"','"+papellido+"')\">"+rut+"</div>"+
                     "<div onClick=\"cambiarFila('"+id+"','"+rut+"','"+nombre+"','"+papellido+"')\">"+nombre+"</div>"+
                     "<div onClick=\"cambiarFila('"+id+"','"+rut+"','"+nombre+"','"+papellido+"')\">"+papellido+"</div>"+
-                    "<div onClick=\"cambiarFila('"+id+"','"+rut+"','"+nombre+"','"+papellido+"')\">"+empresa+"</div>"+
+                    "<div class=\"col_empresa_pasajero\" onClick=\"cambiarFila('"+id+"','"+rut+"','"+nombre+"','"+papellido+"')\">"+empresa+"</div>"+
                     "<div><img onclick=\"preEliminarPasajero('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
                     "</div>");
         }
@@ -275,7 +275,7 @@ function buscarPasajeroCliente(cliente,nombreCliente)
     marcarFilaActiva("col_"+cliente);
     var pasajeros = $("#lista_busqueda_pasajero_detalle");
     pasajeros.html("");
-    pasajeros.append("<div class=\"contenedor_central_titulo contenedor_central_titulo_pasajero\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div>Empresa</div></div>")
+    pasajeros.append("<div class=\"contenedor_central_titulo contenedor_central_titulo_pasajero\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div class=\"col_empresa_pasajero\">Empresa</div></div>")
     var noHayRegistros = true;
     for(var i = 0 ; i < PASAJEROS.length; i++)
     {
@@ -290,7 +290,8 @@ function buscarPasajeroCliente(cliente,nombreCliente)
             pasajeros.append("<div class=\"fila_contenedor fila_contenedor_servicio contenedor_central_titulo_pasajero\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"','"+rut+"','"+nombre+"','"+papellido+"')\">"+
                     "<div>"+rut+"</div>"+
                     "<div>"+nombre+"</div>"+
-                    "<div>"+papellido+"</div><div>"+empresa+"</div>"+
+                    "<div>"+papellido+"</div>"+
+                    "<div class=\"col_empresa_pasajero\">"+empresa+"</div>"+
                     "<div><img onclick=\"preEliminarPasajero('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>");
         }
     }
@@ -308,7 +309,7 @@ function buscarPasajeroTodo()
     marcarFilaActiva('col_todo');
     var pasajeros = $("#lista_busqueda_pasajero_detalle");
     pasajeros.html("");
-    pasajeros.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div>Empresa</div></div>")
+    pasajeros.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div class=\"col_empresa_pasajero\">Empresa</div></div>")
     var noHayRegistros = true;
     for(var i = 0 ; i < PASAJEROS.length; i++)
     {
@@ -321,7 +322,8 @@ function buscarPasajeroTodo()
         pasajeros.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"','"+rut+"','"+nombre+"','"+papellido+"')\">"+
                 "<div>"+rut+"</div>"+
                 "<div>"+nombre+"</div>"+
-                "<div>"+papellido+"</div><div>"+empresa+"</div>"+
+                "<div>"+papellido+"</div>"+
+                "<div class=\"col_empresa_pasajero\">"+empresa+"</div>"+
                 "<div><img onclick=\"preEliminarPasajero('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>");
     }
     if(noHayRegistros)

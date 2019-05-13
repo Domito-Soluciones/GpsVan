@@ -223,10 +223,15 @@
     .contenedor-info
     {
         width:100%;
+        overflow: auto;
     }
     .contenedor-pre-input,.contenedor-pre-input-conductor
     {
         width: 130px;
+    }
+    .contenedor-pre-input-login
+    {
+        width: 85px;
     }
     .contenedor_central_titulo div
     {
@@ -272,16 +277,19 @@
     }
     .fila_fecha
     {
-        width: 31% !important;
+        width: 41% !important;
     }
     .contenedor-lateral
     {
-        height: auto;
+        /*height: auto;*/
     }
     .sub-cont-conf
     {
         width: 100%;
     }
-    
+    .col_empresa_pasajero
+    {
+        display: none;
+    }
     
 }

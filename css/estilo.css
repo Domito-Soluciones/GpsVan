@@ -39,7 +39,7 @@ select
     cursor: pointer;
     -moz-appearance: none;
     border-radius: 5px;
-    width: 156px;
+    width: 150px;
     height: 30px;
     background: #FFFFFF url("../img/flecha-abajo.svg")no-repeat right;
     background-size: 10px;
