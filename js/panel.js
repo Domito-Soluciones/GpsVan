@@ -63,9 +63,20 @@ $(document).ready(function(){
                 cargarRutas();
             }
         }
+        else 
+        {
+            var contenedorDir = $("#contenedor_punto_encuentro");
+            var contenedorDes = $("#contenedor_punto_destino");
+            var contenedor = $("#contenedor_pasajero");
+            var contenedorEx = $("#contenedor_pasajero_no_asignado");
+            contenedor.html("");
+            contenedorEx.html("");
+            contenedorDir.html("<b>Origen: </b>");
+            contenedorDes.html("<b>Destino: </b>");
+        }
     });
     $("#ruta").change(function(){
-        $("#ltruta").html("<option val=\"\">Seleccione</option>");
+        $("#truta").html("<option val=\"\">Seleccione</option>");
         for(var i = 0; i < TARIFAS.length; i++)
         {
             $("#truta").append("<option val=\""+TARIFAS[i].tarifa_nombre+"\">"+TARIFAS[i].tarifa_nombre+"</option>");   
@@ -318,7 +329,7 @@ function cargarClientes()
             clientesArray.push(nombre);
         }
     };
-    postRequest(url,params,success);
+    postRequest(url,params,success,false);
 }
 
 function cargarPasajeros()
@@ -567,7 +578,7 @@ function cargarRutas()
             }
         }
     };
-    postRequest(url,params,success);
+    postRequest(url,params,success,false);
 }
 
 function agregarServicio(fecha)
@@ -1053,16 +1064,18 @@ function agregarPasajero(obj,nombre,punto,celular)
 function cambiarServicioNormal()
 {
     TIPO_SERVICIO = 0;
-    $("#ruta").prop("readonly",false);
-    $("#truta").prop("readonly",false);
     vaciarFormulario();
+    $("#ruta").prop("disabled",false);
+    $("#truta").prop("disabled",false);
+    $("#ruta").html("<option val=\"\">Seleccione</option>");
+    $("#truta").html("<option val=\"\">Seleccione</option>");
     borrarDirections();
     eliminarMarkers();
     cambiarPropiedad($(".buscador-pasajero"),"display","none");
     cambiarPropiedad($(".contenedor_agregar"),"display","none");
     cambiarPropiedad($(".contenedor_editar"),"display","none");
     agregarclase($("#buscaPartida"),"oculto");
-    agregarclase($("#buscaDestino"),"oculto");
+    agregarclase($("#buscaDestino"),"oculto"); 
     quitarclase($("#contenedor_mapa"),"mapa_bajo");
     quitarclase($("#contenedor_mapa"),"mapa_agregar");
     quitarclase($("#contenedor_mapa"),"mapa_editar");
@@ -1083,8 +1096,8 @@ function cambiarServicioEspecial()
     $("#tarifa2").prop("disabled",false);
     $("#tarifa2").val("");
     cambiarPropiedad($("#tarifa2"),"background-color","white");
-    $("#ruta").prop("readonly",true);
-    $("#truta").prop("readonly",true);
+    $("#ruta").prop("disabled",true);
+    $("#truta").prop("disabled",true);
     vaciarFormulario();
     borrarDirections();
     eliminarMarkers();

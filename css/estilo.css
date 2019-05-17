@@ -1800,3 +1800,16 @@ select
     display: inline;
     float: right;
 }
+
+.contenedor_sub_liquidacion
+{
+    display: inline;
+    width: 100%;
+    height: calc(100% - 1px);
+}
+
+.contenedor_produccion_liquidacion
+{
+    width: 33%;
+    height: calc(100% - 1px);
+}
