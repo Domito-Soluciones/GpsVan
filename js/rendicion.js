@@ -164,7 +164,7 @@ function verRendiciones(conductor)
             alertify.error("No hay registros que mostrar");
             return;
         }
-        rendiciones.append("<div class=\"contenedor_central_titulo\"><div></div><div>Dato</div><div>Valor</div><div>Fecha</div><div>Tipo</div><div></div></div>");
+        rendiciones.append("<div class=\"contenedor_central_titulo\"><div></div><div class=\"col_dato_rendicion\">Dato</div><div class=\"col_empresa_pasajero\">Valor</div><div class=\"col_empresa_pasajero\">Fecha</div><div>Tipo</div><div></div></div>");
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].rendicion_id;
@@ -173,9 +173,9 @@ function verRendiciones(conductor)
             var fecha = response[i].rendicion_fecha;
             var tipo = response[i].rendicion_tipo === '0' ? 'Rendición' : 'Descuento';
             rendiciones.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\">"+
-                    "<div onClick=\"abrirModificar('"+id+"')\">"+dato+"</div>"+
-                    "<div onClick=\"abrirModificar('"+id+"')\">"+valor+"</div>"+
-                    "<div onClick=\"abrirModificar('"+id+"')\">"+fecha+"</div>"+
+                    "<div class=\"col_dato_rendicion\" onClick=\"abrirModificar('"+id+"')\">"+dato+"</div>"+
+                    "<div class=\"col_empresa_pasajero\" onClick=\"abrirModificar('"+id+"')\">"+valor+"</div>"+
+                    "<div class=\"col_empresa_pasajero\" onClick=\"abrirModificar('"+id+"')\">"+fecha+"</div>"+
                     "<div onClick=\"abrirModificar('"+id+"')\">"+tipo+"</div>"+
                     "<div><img onclick=\"preEliminarRendicion('"+id+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
                     "</div>");

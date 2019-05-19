@@ -5,7 +5,7 @@ var CONDUCTORES;
 var AGREGAR = true;
 var PAGINA = 'CONDUCTORES';
 var CAMPOS = ["tipo","rut","nombre","papellido","mapellido","celular","direccion","mail","nacimiento","tipoLicencia",
-                "vlicencia","renta","tipoContrato","afp","isapre","isapread","mutual","seguroInicio","descuento",
+                "vlicencia","banco","ncuenta","tcuenta","renta","tipoContrato","afp","isapre","isapread","mutual","seguroInicio","descuento",
                 "nick","password","password2"];
 var TIPO = '';
 var ID_GRUPO = '4';
@@ -128,7 +128,7 @@ function agregarConductor()
     var password = $("#password").val();
     var password2 = $("#password2").val();
     var array = [tipo,rut,nombre,papellido,mapellido,celular,direccion,mail,nacimiento,tipoLicencia,
-                renta,contrato,vlicencia,banco,ncuenta,tcuenta,afp,isapre,isapread,mutual,seguroInicio,descuento,nick,
+        vlicencia,banco,ncuenta,tcuenta,renta,contrato,afp,isapre,isapread,mutual,seguroInicio,descuento,nick,
                 password,password2];
     var exp = obtenerExcepciones();
     if(ADJUNTANDO)
@@ -242,7 +242,7 @@ function modificarConductor()
     {
         array = [tipo,rut,nombre,papellido,mapellido,celular,direccion,mail,nacimiento,
         tipoLicencia,vlicencia,renta,contrato,afp,isapre,isapread,mutual,seguroInicio,descuento,
-        nick];   
+        nick];
     }
     var exp = obtenerExcepciones();
     if(!validarCamposOr(array,exp))
@@ -710,18 +710,18 @@ function activarPestania(array)
     {
         if(array[i] === '')
         {
-            if(i < 11)
+            if(i < 14)
             {
                 general = true;
             }
-            if(i > 10 && i < 19)
+            if(i > 13 && i < 22)
             {
                 if(!general)
                 {
                     contrato = true;
                 }
             }
-            if(i > 18)
+            if(i > 21)
             {
                 if(!general && !contrato)
                 {
@@ -729,9 +729,11 @@ function activarPestania(array)
                 }
             }
             marcarCampoError($("#"+CAMPOS[i]));
+            console.log("estan mal: "+CAMPOS[i] + " " + i+" el valor es "+array[i]);
         }
         else
         {
+            console.log("estan bien: "+CAMPOS[i] + " " + i);
             marcarCampoOk($("#"+CAMPOS[i]));
         }
     }
@@ -934,41 +936,41 @@ function obtenerExcepciones()
     var exp ='';
     if(TIPO === "0" || TIPO === "3")
     {
-        exp += '|11||13||14||15||16||18||';
+        exp += '|14||16||17||18||19||21||';
     }
     else if(TIPO === "1")
     {
-        exp += '|17||';
+        exp += '|20||';
     }
     else if(TIPO === "2")
     {
         if(!$("#checkRenta").is(":checked"))
         {
-            exp += '|10|';
+            exp += '|13|';
         }
         if(!$("#checkContrato").is(":checked"))
         {
-            exp += '|11|';
+            exp += '|14|';
         }
         if(!$("#checkAfp").is(":checked"))
         {
-            exp += '|13|';
+            exp += '|16|';
         }
         if(!$("#checkIsapre").is(":checked"))
         {
-            exp += '|14|';
+            exp += '|17|';
         }
         if(!$("#checkIsapreAd").is(":checked"))
         {
-            exp += '|15|';
+            exp += '|18|';
         }
         if(!$("#checkMutual").is(":checked"))
         {
-            exp += '|16|';
+            exp += '|19|';
         }
         if(!$("#checkDescuento").is(":checked"))
         {
-            exp += '|18|';
+            exp += '|21|';
         }
     }
     return exp;

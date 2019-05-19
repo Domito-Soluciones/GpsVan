@@ -221,6 +221,44 @@ class MovilDao {
         return $array;
     }
     
+    public function getMovilesEmpresa($busqueda)
+    {
+        $array = array();
+        $conn = new Conexion();
+        try {
+            $query = "SELECT * FROM tbl_movil left join tbl_conductor on movil_conductor = conductor_id "
+                    . "LEFT JOIN tbl_servicio ON movil_servicio = servicio_id "
+                    . "LEFT JOIN tbl_cliente ON servicio_cliente = cliente_razon_social WHERE "
+                    . "movil_patente LIKE '%".$busqueda."%' OR "
+                    . "movil_marca LIKE '%".$busqueda."%' OR "
+                    . "movil_modelo LIKE '%".$busqueda."%' OR "
+                    . "movil_nombre LIKE '%$busqueda%' OR "
+                    . "movil_anio LIKE '%$busqueda%' "
+                    . " LIMIT 20";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn));
+            while($row = mysqli_fetch_array($result)) {
+                $movil = new Movil();
+                $movil->setId($row["movil_id"]);
+                $movil->setNombre($row["movil_nombre"]);
+                $movil->setPatente($row["movil_patente"]);
+                $movil->setNombre($row["movil_nombre"]);
+                $movil->setEstado($row['movil_estado']);
+                $movil->setLat($row['movil_lat']);
+                $movil->setLon($row['movil_lon']);
+                $movil->setServicio($row['movil_servicio']);
+                $movil->setConductor($row['movil_conductor']);
+                $movil->setConductorNombre($row['conductor_nombre']." ".$row['conductor_papellido']);
+                $movil->setConductorNick($row['conductor_nick']);
+                $movil->setColorEmpresa($row['cliente_color']);
+                array_push($array, $movil);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $array;
+    }
+    
     public function getMovilesGrupo($grupo)
     {
         $array = array();

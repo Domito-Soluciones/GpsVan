@@ -54,6 +54,7 @@ class Movil {
     private $adjuntoSegRcDm;
     private $adjuntoSegAsiento;
     private $adjuntoSegRcExceso;
+    private $colorEmpresa;
     
     function getId() {
         return $this->id;
@@ -261,6 +262,10 @@ class Movil {
 
     function getAdjuntoSegRcExceso() {
         return $this->adjuntoSegRcExceso;
+    }
+
+    function getColorEmpresa() {
+        return $this->colorEmpresa;
     }
 
     function setId($id) {
@@ -471,8 +476,11 @@ class Movil {
         $this->adjuntoSegRcExceso = $adjuntoSegRcExceso;
     }
 
-    
-                
+    function setColorEmpresa($colorEmpresa) {
+        $this->colorEmpresa = $colorEmpresa;
+    }
+
+                    
     public function toString() {
         return "DATOS MOVIL: ID : ".$this->id." PATENTE : ".$this->patente.
             " MARCA : ".$this->marca." MODELO : ".$this->modelo.

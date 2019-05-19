@@ -39,7 +39,7 @@ select
     cursor: pointer;
     -moz-appearance: none;
     border-radius: 5px;
-    width: 150px;
+    width: 156px;
     height: 30px;
     background: #FFFFFF url("../img/flecha-abajo.svg")no-repeat right;
     background-size: 10px;
@@ -871,7 +871,7 @@ select
 }
 .input-monitoreo
 {
-    width: 150px;
+    width: 100%;
     /*display: inline-block;*/
 }
 .input-monitoreo .boton
@@ -1207,8 +1207,7 @@ select
     height: 40px;
     line-height: 40px;
     text-align: center;
-    margin-left: 25%;
-    width: 75%;
+    width: 100%;
     font-weight: 600;
 }
 .subtitulo_liquidacion
@@ -1218,23 +1217,21 @@ select
     height: 25px;
     line-height: 25px;
     text-align: center;
-    margin-left: 25%;
-    width: 75%;
+    width: 100%;
 }
 .datos_conductor
 {
     font-size: 14px;
     height: 25px;
     line-height: 25px;
-    margin-left: 25%;
     padding-left: 5%;
-    width: 70%;
+    width: 95%;
 }
 .titulo_tabla_liq
 {
     border: solid 1px silver;
     text-align: center;
-    width: calc(25% - 3px);
+    width: 100%;
     font-weight: bold;
     float: left;
 }
@@ -1249,7 +1246,7 @@ select
 {
     font-weight: bold;
     border: solid 1px silver;
-    width: 37%;
+    width: calc(50% - 2px);
     float: left;
 }
 .contenedor_liquidacion
@@ -1373,7 +1370,7 @@ select
 
 .contenedor_central_titulo
 {
-    width: 100%;
+    width: calc(100% - 1px);
     height: 40px;
     line-height: 40px;
     background: white;
@@ -1421,7 +1418,7 @@ select
 .fila_contenedor_servicio
 {
     padding: 0 !important;
-    width: 100% !important;
+    width: calc(100% - 1px) !important;
     margin-left: 1px;
 }
 .fila_contenedor_pasajero
@@ -1751,12 +1748,12 @@ select
 .liquidacion_item
 {
     margin-left: 10%;
-    width: 70%;
+    width: 65%;
     float:left;
 }
 .liquidacion_valor
 {
-    width:20%;
+    width:25%;
     float:left;
 }
 .detalle_total
@@ -1804,12 +1801,21 @@ select
 .contenedor_sub_liquidacion
 {
     display: inline;
-    width: 100%;
-    height: calc(100% - 1px);
+    width: 74%;
+    height: calc(100% - 15px);
+    float:left;
 }
 
 .contenedor_produccion_liquidacion
 {
+    border:solid 1px silver;
     width: 33%;
-    height: calc(100% - 1px);
+    height: calc(100% - 65px);
+    float: left;
+}
+.contendor-titulo-liq
+{
+    width: 75%;
+    margin-left: 25%;
+    height: auto;
 }

@@ -275,7 +275,7 @@ function buscarPasajeroCliente(cliente,nombreCliente)
     marcarFilaActiva("col_"+cliente);
     var pasajeros = $("#lista_busqueda_pasajero_detalle");
     pasajeros.html("");
-    pasajeros.append("<div class=\"contenedor_central_titulo contenedor_central_titulo_pasajero\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div class=\"col_empresa_pasajero\">Empresa</div></div>")
+    pasajeros.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div class=\"col_empresa_pasajero\">Empresa</div></div>")
     var noHayRegistros = true;
     for(var i = 0 ; i < PASAJEROS.length; i++)
     {
@@ -287,7 +287,7 @@ function buscarPasajeroCliente(cliente,nombreCliente)
             var nombre = PASAJEROS[i].pasajero_nombre;
             var papellido = PASAJEROS[i].pasajero_papellido;
             var empresa = PASAJEROS[i].pasajero_empresa;
-            pasajeros.append("<div class=\"fila_contenedor fila_contenedor_servicio contenedor_central_titulo_pasajero\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"','"+rut+"','"+nombre+"','"+papellido+"')\">"+
+            pasajeros.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"','"+rut+"','"+nombre+"','"+papellido+"')\">"+
                     "<div>"+rut+"</div>"+
                     "<div>"+nombre+"</div>"+
                     "<div>"+papellido+"</div>"+

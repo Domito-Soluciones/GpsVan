@@ -64,6 +64,7 @@ function buscarServicio()
         for(var j = 0 ; j < servicios_diarios.length; j++)
         {
             var servicio = servicios_diarios[j];
+            alert(servicio);
             if(servicio !== '')
             {
                 lista_servicio.append("<option value=\""+servicio+"\">"+servicio+"</option>");
@@ -112,10 +113,6 @@ function cargarMovilesMapa(monitor)
             {
                 imgEstado = "<div id=\""+patente+"-img\" class=\"img-estado-ok\"></div>";   
             }
-//            if(monitor && lat !== '0.0000000' && lon !== '0.0000000' && estado !== '0')
-//            {
-//                dibujarMarcador(patente,parseFloat(lat),parseFloat(lon),nombre,servicio);
-//            }
             moviles.append("<div class=\"fila_contenedor\" id=\""+patente+"\" onClick=\"animarMovil('"+patente+"')\">"+imgEstado+nombre+"</div>");
         }
     };
@@ -128,7 +125,7 @@ function moverMovilesMapa()
     {
         return;
     }
-    var url = urlBase + "/movil/GetMoviles.php?busqueda=";
+    var url = urlBase + "/movil/GetMovilesEmpresa.php?busqueda=";
     var success = function(response)
     {
         for(var i = 0 ; i < response.length ; i++)
@@ -140,6 +137,7 @@ function moverMovilesMapa()
             var lon = parseFloat(response[i].movil_lon);
             var conductor = response[i].movil_conductor_nombre;
             var estado = response[i].movil_estado;
+            var color = response[i].movil_cliente_color;
             if(estado === '0')
             {
                 for(var j = 0  ; j < markers.length;j++)
@@ -159,7 +157,7 @@ function moverMovilesMapa()
                 var marker = undefined;
                 if(typeof MOVILES_DIBUJADOS.get(patente) === 'undefined')
                 {
-                    marker = dibujarMarcador(patente,lat,lon,nombre,servicio,conductor);
+                    marker = dibujarMarcador(patente,lat,lon,nombre,servicio,conductor,color);
                     MOVILES_DIBUJADOS.set(patente,patente);
                     quitarclase($("#"+patente+"-img"),"img-estado-no");
                     agregarclase($("#"+patente+"-img"),"img-estado-ok");
@@ -199,13 +197,15 @@ function dibujarMarcador(id,lat,lon,nombre,servicio,conductor,color)
         idMarker: id
     });
     var divServicio = "";
+    var back = "";
     var estiloMovil = " style='font-size:14px;font-weight:bold;' ";
     if(servicio !== '')
     {
         divServicio = "<div style='font-size:10px;font-weight:bold;'>N: "+servicio+"</div>";
         estiloMovil = " style='font-size:8px;font-weight:bold;' ";
+        back = "background-color:"+color;
     }
-    var contentString = "<div style='height:35px;color:"+color+"'>"+divServicio+"<div "+estiloMovil+">"+id+"</div><div "+estiloMovil+">"+nombre+" - "+conductor+"</div>";
+    var contentString = "<div style='height:35px;"+back+"'>"+divServicio+"<div "+estiloMovil+">"+id+"</div><div "+estiloMovil+">"+nombre+" - "+conductor+"</div>";
     var infowindow = new google.maps.InfoWindow({
         content: contentString
     });
@@ -245,7 +245,7 @@ function dibujarServicio(id)
             var lat = response.movil_lat;
             var lng = response.movil_lon;
             var conductor = response.movil_conductor_nombre;
-            dibujarMarcador(patente,parseFloat(lat),parseFloat(lng),patente,id,conductor);
+            dibujarMarcador(patente,parseFloat(lat),parseFloat(lng),patente,id,conductor,'white');
         };
         getRequest(url,success);
     };

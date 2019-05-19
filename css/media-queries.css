@@ -227,7 +227,7 @@
     }
     .contenedor-pre-input,.contenedor-pre-input-conductor
     {
-        width: 130px;
+        width: 120px;
     }
     .contenedor-pre-input-login
     {
@@ -287,9 +287,41 @@
     {
         width: 100%;
     }
+    .col_dato_rendicion
+    {
+        width:33% !important;
+    }
     .col_empresa_pasajero
     {
         display: none;
     }
+    .contenedor_produccion_liquidacion
+    {
+        width:100%;
+        height: calc(100% - 230px);
+    }
+    .contenedor_sub_liquidacion
+    {
+        width: 100%;
+    }
     
+    .lista_busqueda_liq
+    {
+        height:calc(100% - 220px);
+    }
+    .contenedor-lateral-liq
+    {
+        height:calc(100% - 220px) !important;
+    }
+    .contendor-titulo-liq
+    {
+        float: left;
+        width: 100%;
+        margin-left: 0;
+    }
+    .contenedor_contrato
+    {
+        width: 100%;
+        margin-left: 0;
+    }
 }

@@ -9,6 +9,7 @@ var ID_CONDUCTOR;
 var PAGINA = 'SERVICIOS';
 var CAMPOS = ["clienteServicio","rutaServicio","fechaServicio","inicioServicio","estadoServicio","movilServicio","conductorServicio"];
 var LETRAS = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
+
 $(document).ready(function(){
     if(TIPO_USUARIO !== 'CLIENTE')
     {
@@ -28,8 +29,7 @@ $(document).ready(function(){
         buscarServicio(); 
     });
     
-    if(TIPO_USUARIO === 'CLIENTE')
-    {
+    if(TIPO_USUARIO === 'CLIENTE'){
         cambiarPropiedad($("#cont_empresa"),"display","none");
     }
 });
@@ -44,11 +44,12 @@ function buscarServicio()
     }
     var movil = $("#movil").val();
     var truta = $("#tipoRutaServicioBusca").val();
+    var estado = $("#estadoServicioBusca").val();
     var desde = $("#desde").val();
     var hdesde = $("#hdesde").val();
     var hasta = $("#hasta").val();
     var hhasta = $("#hhasta").val();
-    var params = {id : id, empresa : empresa, movil : movil, truta : truta,
+    var params = {id : id, empresa : empresa, movil : movil, truta : truta, estado: estado,
         desde : desde, hdesde : hdesde, hasta : hasta, hhasta : hhasta};
     var url = urlBase + "/servicio/GetServicios.php";
     var success = function(response)
@@ -81,11 +82,6 @@ function buscarServicio()
         }
     };
     postRequest(url,params,success);
-}
-
-function exportarServicio()
-{
-    
 }
 
 function cargarMoviles()

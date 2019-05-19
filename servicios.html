@@ -11,7 +11,7 @@
                         ID Servicio
                     </div>
                     <div class="input-monitoreo">
-                        <input type="text" id="id" >
+                        <input class="input_asignar" type="text" id="id" placeholder="Ej: 10000">
                     </div>
                 </div>
                 <div id="cont_empresa">
@@ -19,7 +19,7 @@
                         Empresa
                     </div>
                     <div class="input-monitoreo">
-                        <input type="text" id="empresa" >
+                        <input class="input_asignar" type="text" id="empresa" placeholder="Ej: Falabella">
                     </div>
                 </div>
                 <div>
@@ -27,7 +27,7 @@
                         Vehículo
                     </div>
                     <div class="input-monitoreo">
-                        <input type="text" id="auto" >
+                        <input class="input_asignar" type="text" id="auto" placeholder="Ej: M101">
                     </div>
                 </div>
                 <div>
@@ -49,10 +49,25 @@
                 </div>
                 <div>
                     <div class="cont-pre-monitor">
+                        Estado
+                    </div>
+                    <div class="input-monitoreo">
+                        <select id="estadoServicioBusca">
+                            <option value="">Seleccione</option>
+                            <option value="1">En asignación</option>
+                            <option value="3">Asignado</option>
+                            <option value="4">En Ruta</option>
+                            <option value="5">Finalizado</option>
+                            <option value="6">Cancelado</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <div class="cont-pre-monitor">
                         Fecha Desde:
                     </div>
                     <div class="input-monitoreo">
-                        <input type="text" id="desde" >
+                        <input class="input_asignar" type="text" id="desde" placeholder="Ej: 01/01/2000" >
                     </div>
                 </div>
                 <div>
@@ -60,7 +75,7 @@
                         Fecha Hasta:
                     </div>
                     <div class="input-monitoreo">
-                        <input type="text" id="hasta" >
+                        <input class="input_asignar" type="text" id="hasta" placeholder="Ej: 01/01/2010" >
                     </div>
                 </div>
                                 <div>
@@ -68,7 +83,7 @@
                         Hora Desde:
                     </div>
                     <div class="input-monitoreo">
-                        <input type="text" id="hdesde" >
+                        <input class="input_asignar" type="text" id="hdesde" placeholder="Ej: 01:00">
                     </div>
                 </div>
                 <div>
@@ -76,7 +91,7 @@
                         Hora Hasta:
                     </div>
                     <div class="input-monitoreo">
-                        <input type="text" id="hhasta" >
+                        <input class="input_asignar" type="text" id="hhasta" placeholder="Ej: 02:30">
                     </div>
                 </div>
                 <div>
