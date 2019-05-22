@@ -220,7 +220,7 @@ class ServicioDao {
             }
             $query = "SELECT * FROM tbl_servicio WHERE servicio_estado != 0 "
                     .$buscaFecha." ".$buscaId." ".$buscaEmpresa." ".$buscaConductor." ". $buscaTRuta." ".$buscaMovil." ".$buscaEstado
-                    . " ORDER BY servicio_id DESC LIMIT 30";
+                    . " ORDER BY servicio_id DESC LIMIT 500";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
             while($row = mysqli_fetch_array($result)) {

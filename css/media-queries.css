@@ -251,7 +251,7 @@
     }
     .contenedor_central
     {
-        height: calc(100% - 260px);
+        height: calc(100% - 160px);
     }
     .movil_tabla div
     {
@@ -278,10 +278,6 @@
     .fila_fecha
     {
         width: 41% !important;
-    }
-    .contenedor-lateral
-    {
-        /*height: auto;*/
     }
     .sub-cont-conf
     {
@@ -323,5 +319,15 @@
     {
         width: 100%;
         margin-left: 0;
+    }
+    .contenedor-info-agente
+    {
+        height:calc(100% - 105px);
+    }
+    
+    .contenedor_agente
+    {
+        height: calc(100% - 186px);
+        overflow: auto;
     }
 }

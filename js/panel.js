@@ -31,6 +31,10 @@ $(document).ready(function(){
         $("#partida").prop("disabled",false);
         $("#destino").prop("disabled",false);
         cambiarPropiedad($(".buscador-pasajero"),"display","initial");
+        var contenedor = $("#contenedor_pasajero");
+        var contenedorEx = $("#contenedor_pasajero_no_asignado");
+        contenedor.html("");
+        contenedorEx.html("");
         agregarclase($("#contenedor_mapa"),"mapa_bajo");
         cargarPasajerosEspecial();
         ASIGNANDO = false;
@@ -1109,6 +1113,10 @@ function cambiarServicioEspecial()
     quitarclase($("#contenedor_mapa"),"mapa_editar");
     cambiarPropiedad($("#partida"),"background-color","#fff");
     cambiarPropiedad($("#destino"),"background-color","#fff");
+    var contenedor = $("#contenedor_pasajero");
+    var contenedorEx = $("#contenedor_pasajero_no_asignado");
+    contenedor.html("");
+    contenedorEx.html("");
 }
 
 function activarPestania(array)
