@@ -1,7 +1,4 @@
 <!DOCTYPE html>
-<?php
-    include 'source/util/redireccionarHttps.php';
-?>
 <html>
     <head>
         <title>
