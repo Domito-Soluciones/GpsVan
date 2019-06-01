@@ -1,5 +1,4 @@
 <?php
-include 'source/util/redireccionarHttps.php';
 session_start(); 
 if(!isset($_SESSION['agente']))
 {
