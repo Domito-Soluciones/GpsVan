@@ -9,7 +9,7 @@ var DIRECCION_EMPRESA;
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
     buscarClienteTarifa();
-    buscarTarifasAll();
+    buscarTarifasAll(true);
     $("#agregar").click(function(){
         AGREGAR = true;
         $("#lista_busqueda_tarifa_detalle").load("html/datos_tarifa.html", function( response, status, xhr ) {

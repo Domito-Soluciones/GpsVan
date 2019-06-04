@@ -7,7 +7,7 @@ var PAGINA = 'AGENTES';
 var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","mail","perfil","clientes","nick","password","password2"];
 $(document).ready(function(){
    PAGINA_ANTERIOR = PAGINA;
-    buscarAgente();
+    buscarAgente(true);
     $("#agregar").click(function(){
         quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
         cambiarPropiedad($("#agregar"),"visibility","hidden");
@@ -75,7 +75,7 @@ $(document).ready(function(){
     });
     
     $("#busqueda").keyup(function(){
-        buscarAgente($(this).val());
+        buscarAgente();
     });
     
     $("#eliminar").click(function (){
@@ -194,7 +194,7 @@ function modificarAgente()
     }
 }
 
-function buscarAgente()
+function buscarAgente(cargar = false)
 {
     var busqueda = $("#busqueda").val();
     var params = {busqueda : busqueda};

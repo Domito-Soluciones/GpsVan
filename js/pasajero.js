@@ -15,7 +15,7 @@ $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
     limpiarMapa();
     buscarClientePasajero();
-    buscarPasajero();
+    buscarPasajero(true);
     $("#agregar").click(function(){
         quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
         cambiarPropiedad($("#agregar"),"visibility","hidden");
@@ -99,7 +99,7 @@ $(document).ready(function(){
         }
     });
     $("#busqueda").keyup(function(){
-        buscarPasajero($(this).val());
+        buscarPasajero();
     });
     
     $("#eliminar").click(function (){
@@ -233,7 +233,7 @@ function modificarPasajero()
     }
 }
 
-function buscarPasajero()
+function buscarPasajero(cargar = false)
 {
     var busqueda = $("#busqueda").val();
     var params = {busqueda : busqueda};
@@ -266,7 +266,7 @@ function buscarPasajero()
                     "</div>");
         }
     };
-    postRequest(url,params,success);
+    postRequest(url,params,success,cargar);
 }
 
 function buscarPasajeroCliente(cliente,nombreCliente)

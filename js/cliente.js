@@ -13,7 +13,7 @@ $(document).ready(function(){
     cambiarPropiedad($("#titulo_tarifa"),"background-color","white");
     PAGINA_ANTERIOR = PAGINA;
     limpiarMapa();
-    buscarCliente();
+    buscarCliente(true);
     $("#agregar").click(function(){
         quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
         cambiarPropiedad($("#agregar"),"visibility","hidden");
@@ -88,7 +88,7 @@ $(document).ready(function(){
         }
     });
     $("#busqueda").keyup(function(){
-        buscarCliente($(this).val());
+        buscarCliente();
     });
     
     $("#eliminar").click(function (){
@@ -198,7 +198,7 @@ function modificarCliente()
     }
 }
 
-function buscarCliente()
+function buscarCliente(cargar = false)
 {
     var busqueda = $("#busqueda").val();
     var params = {busqueda : busqueda,buscaCC : '1'};
@@ -249,7 +249,7 @@ function buscarCliente()
                     "</div>");
         }
     };
-    postRequest(url,params,success);
+    postRequest(url,params,success,cargar);
 }
 function cambiarFila(id)
 {

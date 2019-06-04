@@ -8,7 +8,7 @@ var ID_RENDICION;
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
     buscarConductor();
-    verRendiciones('');
+    verRendiciones('',true);
     $("#busqueda").keyup(function(){
         buscarConductor($(this).val());
     });
@@ -142,7 +142,7 @@ function buscarConductor()
     postRequest(url,params,success);
 }
 
-function verRendiciones(conductor)
+function verRendiciones(conductor,cargar = false)
 {
     ID_CONDUCTOR = conductor;
     marcarFilaActiva(conductor);
@@ -181,7 +181,7 @@ function verRendiciones(conductor)
                     "</div>");
         }
     };
-    postRequest(url,params,success);
+    postRequest(url,params,success,cargar);
 }
 
 

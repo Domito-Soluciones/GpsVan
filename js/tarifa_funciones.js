@@ -414,7 +414,7 @@ function preEliminarTarifa(nombre,descripcion)
             });
 }
 
-function buscarTarifasAll()
+function buscarTarifasAll(cargar = false)
 {
     $("#lista_busqueda_tarifa_detalle").html("");
     cambiarPropiedad($(".mensaje_bienvenida"),"display","none");
@@ -448,6 +448,6 @@ function buscarTarifasAll()
                     "</div>");
         }
     };
-    postRequest(url,params,success);
+    postRequest(url,params,success,cargar);
     
 }

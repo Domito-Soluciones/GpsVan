@@ -11,7 +11,7 @@ var TIPO = '';
 var ID_GRUPO = '4';
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
-    buscarConductor();
+    buscarConductor(true);
     $("#agregar").click(function(){
         quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
         cambiarPropiedad($("#agregar"),"visibility","hidden");
@@ -87,7 +87,7 @@ $(document).ready(function(){
         }
     });
     $("#busqueda").keyup(function(){
-        buscarConductor($(this).val());
+        buscarConductor();
     });
     
     $("#eliminar").click(function (){
@@ -272,7 +272,7 @@ function modificarConductor()
     }
 }
 
-function buscarConductor()
+function buscarConductor(cargar = false)
 {
     var busqueda = $("#busqueda").val();
     var params = {busqueda : busqueda};
@@ -329,7 +329,7 @@ function buscarConductor()
                     "</div>");
         }
     };
-    postRequest(url,params,success);
+    postRequest(url,params,success,cargar);
 }
 
 function buscarConductorGrupo(grupo)

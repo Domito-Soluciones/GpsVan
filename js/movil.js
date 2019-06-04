@@ -12,7 +12,7 @@ var CAMPOS = ["patente","marca","nombre","modelo","anio","color","cantidad","cla
     "segAs","venSegAs","polizaSegAs","valorSegAs","segRcExceso","venSegRcExceso","polizaSegRcExceso","valorSegRcExceso"];
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
-    buscarMovil();
+    buscarMovil(true);
     $("#agregar").click(function(){
         ID_CONDUCTOR = undefined;
         ID_MOVIL = undefined;
@@ -72,7 +72,7 @@ $(document).ready(function(){
     });
     
     $("#busqueda").keyup(function(){
-        buscarMovil($(this).val());
+        buscarMovil();
     });
     
     $("#eliminar").click(function (){
@@ -360,7 +360,7 @@ function modificarMovil()
     }
 }
 
-function buscarMovil()
+function buscarMovil(cargar = false)
 {
     var busqueda = $("#busqueda").val();
     var params = {busqueda : busqueda};
@@ -407,7 +407,7 @@ function buscarMovil()
                     "</div>");
         }
     };
-    postRequest(url,params,success);
+    postRequest(url,params,success,cargar);
 }
 
 function cambiarFila(id)
