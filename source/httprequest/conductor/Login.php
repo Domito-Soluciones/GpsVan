@@ -11,5 +11,5 @@ $nombre = filter_input(INPUT_POST, 'usuario');
 $password = base64_encode(Cripto::encriptar(filter_input(INPUT_POST, 'password')));
 $conductorDao = new ConductorDao();
 $id = $conductorDao->getConductor($nombre, $password);
-echo "{\"conductor_id\":".$id."}";
+echo "{\"conductor_id\":".$id.",conductor_equipo\":\"".$equipo."\"}";
 Log::write_log("LOGIN", 0);

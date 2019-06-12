@@ -244,6 +244,7 @@ class ConductorDao {
             $query = "SELECT * FROM tbl_conductor WHERE conductor_nick = '$nombre' and conductor_clave = '$clave'"; 
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query); 
+            $id[0] = 0;
             while($row = mysqli_fetch_array($result)) {
                 $id = $row["conductor_id"];
             }
