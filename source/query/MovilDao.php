@@ -436,9 +436,10 @@ class MovilDao {
         $id = 0;
         $conn = new Conexion();
         try {
-            $query = "UPDATE tbl_movil SET movil_estado = $estado,movil_equipo = '$equipo' WHERE movil_conductor = ".$conductor; 
+            $query = "UPDATE tbl_movil SET movil_estado = $estado WHERE movil_conductor = ".$conductor.";";
+            $query.= "UPDATE tbl_conductor SET conductor_equipo = '$equipo' WHERE conductor_id = ".$conductor.";";
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_multi_query($conn->conn,$query)) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);

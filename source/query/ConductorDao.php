@@ -239,14 +239,15 @@ class ConductorDao {
     public function getConductor($nombre,$clave)
     {
         $conn = new Conexion();
-        $id = 0;
+        $id = array();
         try {
             $query = "SELECT * FROM tbl_conductor WHERE conductor_nick = '$nombre' and conductor_clave = '$clave'"; 
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query); 
             $id[0] = 0;
             while($row = mysqli_fetch_array($result)) {
-                $id = $row["conductor_id"];
+                $id[0] = $row["conductor_id"];
+                $id[1] = $row["conductor_equipo"];
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
