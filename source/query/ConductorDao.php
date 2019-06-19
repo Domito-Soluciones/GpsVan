@@ -247,7 +247,7 @@ class ConductorDao {
             $id[0] = 0;
             while($row = mysqli_fetch_array($result)) {
                 $id[0] = $row["conductor_id"];
-                $id[1] = $row["conductor_equipo"];
+                $id[1] = trim($row["conductor_equipo"]);
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
