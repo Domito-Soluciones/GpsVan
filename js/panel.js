@@ -651,20 +651,16 @@ function agregarServicio(fecha)
             }
             agregarDetalleServicio(response.servicio_id);
             vaciarFormulario();
-            origen = undefined;
             borrarDirections();
-            cambiarPropiedad($(".contenedor_agregar"),"display","none");
-            cambiarPropiedad($(".contenedor_editar"),"display","none");
-            quitarclase($("#contenedor_mapa"),"mapa_agregar");
-            quitarclase($("#contenedor_mapa"),"mapa_editar");
+            resetPasajeros();
             alertify.success('Servicio agregado con id '+response.servicio_id);
-            $("#contenedor_pasajero_no_asignado").html("");
             $("#ruta").prop("disabled",false);
             $("#truta").prop("disabled",false);
             cambiarPropiedad($(".buscador-pasajero"),"display","none");
             quitarclase($("#contenedor_mapa"),"mapa_bajo");
             notificarConductor(response.servicio_id,conductor);
             notificarServicioFuturo(response.servicio_id,conductor,fecha,hora);
+            
         };
         postRequest(url,params,success);
     }
@@ -1340,4 +1336,18 @@ function sumarDias(fecha, dias){
   var monthIndex = date.getMonth()+1;
   var year = date.getFullYear();
   return day+"/"+monthIndex+"/"+year;
+}
+
+function resetPasajeros(){
+    cambiarPropiedad($(".contenedor_agregar"),"display","none");
+    cambiarPropiedad($(".contenedor_editar"),"display","none");
+    quitarclase($("#contenedor_mapa"),"mapa_agregar");
+    quitarclase($("#contenedor_mapa"),"mapa_editar");
+    $("#contenedor_pasajero").html("");
+    $("#contenedor_pasajero_no_asignado").html("");
+    $("#contenedor_punto_encuentro").html("<b>Origen: </b>");
+    $("#contenedor_punto_destino").html("<b>Destino: </b>");
+    origen = undefined;
+    destinos = [];
+    pasajeros = [];
 }
