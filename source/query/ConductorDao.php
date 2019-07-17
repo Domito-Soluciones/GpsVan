@@ -245,6 +245,7 @@ class ConductorDao {
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query); 
             $id[0] = 0;
+            $id[1] = '';
             while($row = mysqli_fetch_array($result)) {
                 $id[0] = $row["conductor_id"];
                 $id[1] = trim($row["conductor_equipo"]);

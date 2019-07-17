@@ -15,6 +15,7 @@ $(document).ready(function(){
     limpiarMapa();
     buscarCliente(true);
     $("#agregar").click(function(){
+        NOMBRE_CLIENTE = undefined;
         quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
@@ -52,6 +53,7 @@ $(document).ready(function(){
                 }
             });
             $("#volver").click(function(){
+                NOMBRE_CLIENTE = undefined;
                 ocultarMapa();
                 if(typeof TIPO_GRUPO === 'undefined')
                 {
@@ -253,6 +255,7 @@ function buscarCliente(cargar = false)
 }
 function cambiarFila(id)
 {
+    NOMBRE_CLIENTE = undefined;
     if(MODIFICADO)
     {
         confirmar("Cambio de cliente",
@@ -485,6 +488,7 @@ function abrirModificar(id,nombre)
             }
         });
         $("#volver").click(function(){
+            NOMBRE_CLIENTE = undefined;
             ocultarMapa();
             if(typeof TIPO_GRUPO === 'undefined')
             {
