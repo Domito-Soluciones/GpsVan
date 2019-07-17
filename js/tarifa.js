@@ -1,4 +1,4 @@
-/* global urlBase, alertify, NOMBRE_CLIENTE, ID_CLIENTE */
+/* global urlBase, alertify, NOMBRE_CLIENTE, ID_CLIENTE, markers, map, google, API_KEY */
 var ID_TARIFA;
 var TARIFAS;
 var AGREGAR = true;
@@ -6,6 +6,8 @@ var PAGINA = 'TARIFAS';
 var CAMPOS = ["tipo","horario","descripcion","numero","hora","nombre","valor1","valor2"];
 var clientes_tarifa = [];
 var DIRECCION_EMPRESA;
+var mapa_oculto = true;
+
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
     buscarClienteTarifa();
@@ -78,6 +80,37 @@ $(document).ready(function(){
 
             });
             
+            $("#buscaPartida").click(function(){
+                if(mapa_oculto)
+                {
+                    colocarMarcadorPlaces($("#origen"));
+                    quitarclase($("#contenedor_mapa"),"oculto");
+                    mapa_oculto = false;
+                }
+                else
+                {
+                    agregarclase($("#contenedor_mapa"),"oculto");
+                    mapa_oculto = true;
+                }
+            });
+            
+            $("#buscaDestino").click(function(){
+                if(mapa_oculto)
+                {
+                    colocarMarcadorPlaces($("#destino"));
+                    quitarclase($("#contenedor_mapa"),"oculto");
+                    mapa_oculto = false;
+                }
+                else
+                {
+                    agregarclase($("#contenedor_mapa"),"oculto");
+                    mapa_oculto = true;
+                }
+            });
+            
+            mostrarMapa();
+            
+            
         });
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
@@ -98,4 +131,36 @@ $(document).ready(function(){
         }
     });
 });
+
+function colocarMarcadorPlaces(dato)
+{
+    eliminarMarkers();
+    var marker = new google.maps.Marker({
+        position: map.getCenter(),
+        map: map
+    });
+    
+    markers.push(marker);
+
+    map.setZoom(17);
+    map.panTo(marker.position);
+    
+    google.maps.event.addListener(map, "drag", function() {
+        marker.setPosition(this.getCenter());
+        POSITION = [this.getCenter().lat(),this.getCenter().lng()];
+    });
+    
+    google.maps.event.addListener(map, "dragend", function() {
+        var punto = dato;
+        punto.val("Cargando...");
+        var query = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + POSITION[0] +','+ POSITION[1]+'&key=' + API_KEY;
+        $.getJSON(query, function (data) {
+            if (data.status === 'OK') { 
+                var zero = data.results[0];
+                var address = zero.formatted_address;
+                punto.val(address);     
+            } 
+        });
+    });
+}
 
