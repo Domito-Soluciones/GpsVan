@@ -64,7 +64,6 @@ function buscarServicio()
         for(var j = 0 ; j < servicios_diarios.length; j++)
         {
             var servicio = servicios_diarios[j];
-            alert(servicio);
             if(servicio !== '')
             {
                 lista_servicio.append("<option value=\""+servicio+"\">"+servicio+"</option>");

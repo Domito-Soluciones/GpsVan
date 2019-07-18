@@ -7,8 +7,7 @@ var CAMPOS = ["tipo","horario","descripcion","numero","hora","nombre","valor1","
 var clientes_tarifa = [];
 var DIRECCION_EMPRESA;
 var mapa_oculto = true;
-var _buscaPartida = false;
-var _buscaDestino = false;
+var input_direccion;
 
 
 $(document).ready(function(){
@@ -83,8 +82,16 @@ $(document).ready(function(){
 
             });
             
+            $("#origen").focus(function(){
+                input_direccion = $("#origen");
+            });
+            
+            $("#destino").focus(function(){
+                input_direccion = $("#destino");
+            });
+            
             $("#buscaOrigen").click(function(){
-                _buscaPartida = true;
+                input_direccion = $("#origen");
                 if(mapa_oculto)
                 {
                     colocarMarcadorPlacesTarifa();
@@ -99,7 +106,7 @@ $(document).ready(function(){
             });
             
             $("#buscaDestino").click(function(){
-                _buscaDestino = true;
+                input_direccion = $("#destino");
                 if(mapa_oculto)
                 {
                     colocarMarcadorPlacesTarifa();
