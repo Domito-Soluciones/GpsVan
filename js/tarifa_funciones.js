@@ -1,5 +1,5 @@
 
-/* global urlBase, alertify, PAGINA, CAMPOS, clientes_tarifa */
+/* global urlBase, alertify, PAGINA, CAMPOS, clientes_tarifa, google, map, markers, API_KEY */
 
 function agregarTarifa()
 {
@@ -272,6 +272,36 @@ function abrirBuscador(id)
             cambiarPropiedad($("#eliminar"),"visibility","hidden");
             cambiarPropiedad($("#eliminar2"),"visibility","hidden");
         });
+        
+        $("#buscaOrigen").click(function(){
+            if(mapa_oculto)
+            {
+                colocarMarcadorPlaces($("#origen"));
+                quitarclase($("#contenedor_mapa"),"oculto");
+                mapa_oculto = false;
+            }
+            else
+            {
+                agregarclase($("#contenedor_mapa"),"oculto");
+                mapa_oculto = true;
+            }
+        });
+
+        $("#buscaDestino").click(function(){
+            if(mapa_oculto)
+            {
+                colocarMarcadorPlaces($("#destino"));
+                quitarclase($("#contenedor_mapa"),"oculto");
+                mapa_oculto = false;
+            }
+            else
+            {
+                agregarclase($("#contenedor_mapa"),"oculto");
+                mapa_oculto = true;
+            }
+        });
+
+        mostrarMapa();
     });
 }
 
@@ -450,4 +480,36 @@ function buscarTarifasAll(cargar = false)
     };
     postRequest(url,params,success,cargar);
     
+}
+
+function colocarMarcadorPlaces(dato)
+{
+    eliminarMarkers();
+    var marker = new google.maps.Marker({
+        position: map.getCenter(),
+        map: map
+    });
+    
+    markers.push(marker);
+
+    map.setZoom(17);
+    map.panTo(marker.position);
+    
+    google.maps.event.addListener(map, "drag", function() {
+        marker.setPosition(this.getCenter());
+        POSITION = [this.getCenter().lat(),this.getCenter().lng()];
+    });
+    
+    google.maps.event.addListener(map, "dragend", function() {
+        var punto = dato;
+        punto.val("Cargando...");
+        var query = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + POSITION[0] +','+ POSITION[1]+'&key=' + API_KEY;
+        $.getJSON(query, function (data) {
+            if (data.status === 'OK') { 
+                var zero = data.results[0];
+                var address = zero.formatted_address;
+                punto.val(address);     
+            } 
+        });
+    });
 }

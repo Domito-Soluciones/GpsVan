@@ -1052,6 +1052,16 @@ select
     overflow: auto;
     color: red;
 }
+.pendiente{
+    font-size: 13px;
+}
+.pendiente img{
+    float: right;
+    margin-right: 10px;
+    margin-top: -30px;
+    display: inline;
+}
+
 .opcion_servicios
 {
     width: 150px;
@@ -1780,6 +1790,7 @@ select
 .lista_busqueda_liq
 {
     height: calc(100% - 204px);
+    overflow: auto;
 }
 
 #botonCancelar

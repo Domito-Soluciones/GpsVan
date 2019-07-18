@@ -187,7 +187,7 @@ $(document).ready(function(){
         var celular = $("#agregaCelular").val();
         if(TIPO_SERVICIO !== 0)
         {
-            if(nombre !== '' && direccion !== '')
+            if(nombre !== '')
             {
                 agregarPasajero('0',nombre,direccion,celular);
             }

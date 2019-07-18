@@ -230,7 +230,7 @@ function modificarServicio()
     var conductor = ID_CONDUCTOR;
     var tarifa1 = $("#tarifaServicio").val();
     var tarifa2 = $("#tarifa2Servicio").val();
-    var array = [cliente,ruta,fecha,hora,estado,movil,tarifa1,tarifa2];
+    var array = [cliente,ruta,fecha,hora,estado,tarifa1,tarifa2];
     var params = {id : id,cliente : cliente,ruta : ruta, truta : truta,fecha : fecha, hora : hora,
         estado : estado,movil : movil, conductor : conductor, tarifa1 : tarifa1, tarifa2 : tarifa2};
     if(!validarCamposOr(array))

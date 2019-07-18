@@ -152,7 +152,7 @@ function decodePolyline(encoded) {
                 {
 //                    enviarCorreoDesasignacion("",id);
                 }
-                cont.append("<div class=\"pendiente\" onclick=\"abrirServicio('"+id+"','"+cliente+"','"+ruta+"','"+fecha+"','"+hora+"','"+observacion+"')\" >"+id+" - "+cliente+"</div>");
+                cont.append("<div class=\"pendiente\"><div  onclick=\"abrirServicio('"+id+"','"+cliente+"','"+ruta+"','"+fecha+"','"+hora+"','"+observacion+"')\">"+id+" - "+cliente+"</div><img width=\"15\" height=\"15\" src=\"img/cancelar_rojo.svg\"></div>");
             }
             alertify.success("Hay "+response.length+": servicio(s) sin asignar");
         },false);
