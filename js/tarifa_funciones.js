@@ -1,5 +1,5 @@
 
-/* global urlBase, alertify, PAGINA, CAMPOS, clientes_tarifa, google, map, markers, API_KEY */
+/* global urlBase, alertify, PAGINA, CAMPOS, clientes_tarifa, google, map, markers, API_KEY, _buscaPartida, _buscaDestino */
 
 function agregarTarifa()
 {
@@ -276,7 +276,7 @@ function abrirBuscador(id)
         $("#buscaOrigen").click(function(){
             if(mapa_oculto)
             {
-                colocarMarcadorPlaces($("#origen"));
+                colocarMarcadorPlacesTarifa();
                 quitarclase($("#contenedor_mapa"),"oculto");
                 mapa_oculto = false;
             }
@@ -290,7 +290,7 @@ function abrirBuscador(id)
         $("#buscaDestino").click(function(){
             if(mapa_oculto)
             {
-                colocarMarcadorPlaces($("#destino"));
+                colocarMarcadorPlacesTarifa();
                 quitarclase($("#contenedor_mapa"),"oculto");
                 mapa_oculto = false;
             }
@@ -482,7 +482,7 @@ function buscarTarifasAll(cargar = false)
     
 }
 
-function colocarMarcadorPlaces(dato)
+function colocarMarcadorPlacesTarifa()
 {
     eliminarMarkers();
     var marker = new google.maps.Marker({
@@ -501,15 +501,27 @@ function colocarMarcadorPlaces(dato)
     });
     
     google.maps.event.addListener(map, "dragend", function() {
-        var punto = dato;
-        punto.val("Cargando...");
-        var query = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + POSITION[0] +','+ POSITION[1]+'&key=' + API_KEY;
-        $.getJSON(query, function (data) {
-            if (data.status === 'OK') { 
-                var zero = data.results[0];
-                var address = zero.formatted_address;
-                punto.val(address);     
-            } 
-        });
+        if(_buscaPartida){
+            $("#origen").val("Cargando...");
+            var query = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + POSITION[0] +','+ POSITION[1]+'&key=' + API_KEY;
+            $.getJSON(query, function (data) {
+                if (data.status === 'OK') { 
+                    var zero = data.results[0];
+                    var address = zero.formatted_address;
+                    $("#origen").val(address);     
+                } 
+            });
+        }
+        else if(_buscaDestino){
+            $("#destino").val("Cargando...");
+            var query = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + POSITION[0] +','+ POSITION[1]+'&key=' + API_KEY;
+            $.getJSON(query, function (data) {
+                if (data.status === 'OK') { 
+                    var zero = data.results[0];
+                    var address = zero.formatted_address;
+                    $("#destino").val(address);     
+                } 
+            });
+        }
     });
 }

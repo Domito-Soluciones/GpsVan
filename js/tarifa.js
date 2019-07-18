@@ -7,6 +7,9 @@ var CAMPOS = ["tipo","horario","descripcion","numero","hora","nombre","valor1","
 var clientes_tarifa = [];
 var DIRECCION_EMPRESA;
 var mapa_oculto = true;
+var _buscaPartida = false;
+var _buscaDestino = false;
+
 
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
@@ -81,9 +84,10 @@ $(document).ready(function(){
             });
             
             $("#buscaOrigen").click(function(){
+                _buscaPartida = true;
                 if(mapa_oculto)
                 {
-                    colocarMarcadorPlaces($("#origen"));
+                    colocarMarcadorPlacesTarifa();
                     quitarclase($("#contenedor_mapa"),"oculto");
                     mapa_oculto = false;
                 }
@@ -95,9 +99,10 @@ $(document).ready(function(){
             });
             
             $("#buscaDestino").click(function(){
+                _buscaDestino = true;
                 if(mapa_oculto)
                 {
-                    colocarMarcadorPlaces($("#destino"));
+                    colocarMarcadorPlacesTarifa();
                     quitarclase($("#contenedor_mapa"),"oculto");
                     mapa_oculto = false;
                 }
@@ -107,7 +112,7 @@ $(document).ready(function(){
                     mapa_oculto = true;
                 }
             });            
-            
+            mostrarMapa();
         });
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
