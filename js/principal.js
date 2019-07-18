@@ -1,4 +1,4 @@
-/* global google, urlBase, alertify, MENU_VISIBLE */
+/* global google, urlBase, alertify, MENU_VISIBLE, urlUtil */
 var NICK_GLOBAL;
 var map;
 var markers = [];
@@ -152,7 +152,7 @@ function decodePolyline(encoded) {
                 {
 //                    enviarCorreoDesasignacion("",id);
                 }
-                cont.append("<div class=\"pendiente\"><div  onclick=\"abrirServicio('"+id+"','"+cliente+"','"+ruta+"','"+fecha+"','"+hora+"','"+observacion+"')\">"+id+" - "+cliente+"</div><img width=\"15\" height=\"15\" src=\"img/cancelar_rojo.svg\"></div>");
+                cont.append("<div id=\""+id+"\" class=\"pendiente\"><div  onclick=\"abrirServicio('"+id+"','"+cliente+"','"+ruta+"','"+fecha+"','"+hora+"','"+observacion+"')\">"+id+" - "+cliente+"</div><img onclick=\"cancelarServicio("+id+")\" width=\"15\" height=\"15\" src=\"img/cancelar_rojo.svg\"></div>");
             }
             alertify.success("Hay "+response.length+": servicio(s) sin asignar");
         },false);
@@ -199,4 +199,18 @@ function setMenuMap()
     menus.set("TARIFAS","tarifa");
     menus.set("AGENTES","agente");
     menus.set("CONFIGURACION","configuracion");
+}
+
+function cancelarServicio(id){
+    confirmar("Cancelar servicio","Esta seguro que desea cancelar el servicio "+id+" ?",function(){
+        var params = {id : id,observacion : 'cancelado por administrador', estado : 6};
+        var url = urlBase + "/servicio/ModEstadoServicio.php";
+        var success = function(response)
+        {
+            cerrarSession(response);
+            alertify.success("Servicio Cancelado");
+            $("#"+id).remove();
+        };
+        postRequest(url,params,success);
+    },function(){});
 }
