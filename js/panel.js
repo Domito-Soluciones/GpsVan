@@ -85,6 +85,7 @@ $(document).ready(function(){
         {
             $("#truta").append("<option val=\""+TARIFAS[i].tarifa_nombre+"\">"+TARIFAS[i].tarifa_nombre+"</option>");   
         }
+        borrarServicio();
     });
     $("#truta").change(function () {
         origen = undefined;
@@ -108,6 +109,7 @@ $(document).ready(function(){
             }
         }
         cargarPasajeros();
+        borrarServicio();
     });
     
     $("#vehiculos").change(function () {
@@ -226,7 +228,7 @@ $(document).ready(function(){
             }
             else
             {
-                destinos.splice(0, 0, origen);
+                //destinos.splice(0, 0, origen);
                 origen = $("#partida").val();
                 $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+origen);
                 if(destinos.length === 1)
@@ -259,6 +261,8 @@ $(document).ready(function(){
         {
             $("#destino_empresa").remove();
             buscaDestino = true;
+            destinos.pop();
+            pasajeros.pop();
             destinos.push($("#destino").val());
             $("#contenedor_punto_destino").html("<b>Destino: </b>"+$("#destino").val());
             contenedor.append("<div class=\"cont-pasajero-gral\" id=\"destino_empresa\"><input type=\"hidden\" id=\"hidden_destino\" class=\"hidden\" value=\""+$("#destino").val()+"\"><div class=\"cont-pasajero\">Destino</div><div class=\"cont-mini-pasajero\"><div>"+ recortar($("#destino").val(),30) + "</div><div>");
@@ -267,7 +271,7 @@ $(document).ready(function(){
         }
         else
         {
-            if(buscaDestino){   
+            if(buscaDestino){
                 destinos.pop();
                 pasajeros.pop();
                 $("#destino_empresa").remove();
@@ -441,7 +445,9 @@ function cargarPasajeros()
         }
         else if(ruta.indexOf("ZP") !== -1)
         {
-            contenedorDes.html("<b>Destino:</b> "+destinos[destinos.length-1]);
+            if(destinos.length > 0){
+                contenedorDes.html("<b>Destino:</b> "+destinos[destinos.length-1]);
+            }
         }
         dibujarRuta();
     };
@@ -906,6 +912,11 @@ function borrarPasajero(obj,nombre,punto,celular)
             borrarDirections();
         }
     }
+    else{
+        origen = undefined;
+        $("#contenedor_punto_encuentro").html("<b>Origen:</b> ");
+        borrarDirections();
+    }
     for(var i = 0; i < destinos.length; i++)
     {
         if(destinos[i] === punto)
@@ -1350,4 +1361,13 @@ function resetPasajeros(){
     origen = undefined;
     destinos = [];
     pasajeros = [];
+}
+
+function borrarServicio(){
+    origen = undefined;
+    destinos = [];
+    pasajeros = [];
+    borrarDirections();
+    $("#contenedor_punto_encuentro").html("<b>Origen: </b>");
+    $("#contenedor_punto_destino").html("<b>Destino: </b>");
 }
