@@ -485,6 +485,7 @@ class ServicioDao {
                     . "LEFT JOIN tbl_cliente ON servicio_cliente = cliente_razon_social "
                     . "WHERE servicio_conductor = '$conductor' AND servicio_estado NOT IN (5,6) "
                     . "ORDER BY servicio_id DESC, servicio_pasajero_id";
+            echo $query;
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query); 
             while($row = mysqli_fetch_array($result)) {
