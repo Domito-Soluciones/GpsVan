@@ -249,7 +249,7 @@ function buscarPasajero(cargar = false)
             alertify.error("No hay registros que mostrar");
             return;
         }
-        pasajeros.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div class=\"col_empresa_pasajero\">Empresa</div></div>")
+        pasajeros.append("<div class=\"contenedor_central_titulo_pasajero\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div class=\"col_empresa_pasajero\">Empresa</div></div>")
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].pasajero_id;
@@ -257,7 +257,7 @@ function buscarPasajero(cargar = false)
             var nombre = response[i].pasajero_nombre;
             var papellido = response[i].pasajero_papellido;
             var empresa = response[i].pasajero_empresa;
-            pasajeros.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\">"+
+            pasajeros.append("<div class=\"fila_contenedor fila_contenedor_pasajero\" id=\""+id+"\">"+
                     "<div onClick=\"cambiarFila('"+id+"','"+rut+"','"+nombre+"','"+papellido+"')\">"+rut+"</div>"+
                     "<div onClick=\"cambiarFila('"+id+"','"+rut+"','"+nombre+"','"+papellido+"')\">"+nombre+"</div>"+
                     "<div onClick=\"cambiarFila('"+id+"','"+rut+"','"+nombre+"','"+papellido+"')\">"+papellido+"</div>"+
@@ -275,7 +275,7 @@ function buscarPasajeroCliente(cliente,nombreCliente)
     marcarFilaActiva("col_"+cliente);
     var pasajeros = $("#lista_busqueda_pasajero_detalle");
     pasajeros.html("");
-    pasajeros.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div class=\"col_empresa_pasajero\">Empresa</div></div>")
+    pasajeros.append("<div class=\"contenedor_central_titulo_pasajero\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div class=\"col_empresa_pasajero\">Empresa</div></div>")
     var noHayRegistros = true;
     for(var i = 0 ; i < PASAJEROS.length; i++)
     {
@@ -287,7 +287,7 @@ function buscarPasajeroCliente(cliente,nombreCliente)
             var nombre = PASAJEROS[i].pasajero_nombre;
             var papellido = PASAJEROS[i].pasajero_papellido;
             var empresa = PASAJEROS[i].pasajero_empresa;
-            pasajeros.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"','"+rut+"','"+nombre+"','"+papellido+"')\">"+
+            pasajeros.append("<div class=\"fila_contenedor fila_contenedor_pasajero\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"','"+rut+"','"+nombre+"','"+papellido+"')\">"+
                     "<div>"+rut+"</div>"+
                     "<div>"+nombre+"</div>"+
                     "<div>"+papellido+"</div>"+
@@ -309,7 +309,7 @@ function buscarPasajeroTodo()
     marcarFilaActiva('col_todo');
     var pasajeros = $("#lista_busqueda_pasajero_detalle");
     pasajeros.html("");
-    pasajeros.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div class=\"col_empresa_pasajero\">Empresa</div></div>")
+    pasajeros.append("<div class=\"contenedor_central_titulo_pasajero\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div class=\"col_empresa_pasajero\">Empresa</div></div>")
     var noHayRegistros = true;
     for(var i = 0 ; i < PASAJEROS.length; i++)
     {
@@ -319,7 +319,7 @@ function buscarPasajeroTodo()
         var nombre = PASAJEROS[i].pasajero_nombre;
         var papellido = PASAJEROS[i].pasajero_papellido;
         var empresa = PASAJEROS[i].pasajero_empresa;
-        pasajeros.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"','"+rut+"','"+nombre+"','"+papellido+"')\">"+
+        pasajeros.append("<div class=\"fila_contenedor fila_contenedor_pasajero\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"','"+rut+"','"+nombre+"','"+papellido+"')\">"+
                 "<div>"+rut+"</div>"+
                 "<div>"+nombre+"</div>"+
                 "<div>"+papellido+"</div>"+

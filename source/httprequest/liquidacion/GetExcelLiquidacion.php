@@ -83,9 +83,9 @@
                         <?php
                             if(count($servicios) > 0)
                             {
-                                $afp = $totalBruto * ($porcentajes[1] / 100);
-                                $isapre = $totalBruto * ($porcentajes[2] / 100);
-                                $mutual = $totalBruto * ($porcentajes[3] / 100);
+                                $afp = $totalBruto * (trim($porcentajes[1]) / 100);
+                                $isapre = $totalBruto * (trim($porcentajes[2]) / 100);
+                                $mutual = $totalBruto * (trim($porcentajes[3]) / 100);
                                 $prevision = round($afp) + round($isapre) + round($mutual);
                                 echo "<tr><td>Pagos Previsionales</td><td>$  ".$prevision."</td></tr>";
                                 echo "<tr><td>Seguro Obligatorio</td><td>$  ".$descuentos[0]."</td></tr>";

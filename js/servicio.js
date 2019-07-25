@@ -64,7 +64,7 @@ function buscarServicio()
             alertify.error("No hay registros que mostrar");
             return;
         }
-        servicios.append("<div class=\"contenedor_central_titulo\"><div></div><div>ID Servicio</div><div>Empresa</div><div class=\"fila_fecha\">Fecha</div><div class=\"fila_oculta\">Estado</div><div class=\"fila_oculta\">Vehículo</div></div>")
+        servicios.append("<div class=\"contenedor_central_titulo cont_servicio\"><div></div><div>ID Servicio</div><div>Empresa</div><div class=\"fila_fecha\">Fecha</div><div class=\"fila_oculta\">Estado</div><div class=\"fila_oculta\">Vehículo</div></div>")
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].servicio_id;
@@ -73,9 +73,9 @@ function buscarServicio()
             var hora = response[i].servicio_hora;
             var estado = response[i].servicio_estado;
             var conductor = response[i].servicio_movil;
-            servicios.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\" onClick=\"abrirBuscador('"+id+"')\">"+
+            servicios.append("<div class=\"fila_contenedor fila_contenedor_servicio cont_servicio\" id=\""+id+"\" onClick=\"abrirBuscador('"+id+"')\">"+
                     "<div>"+id+"</div>"+
-                    "<div>"+cliente+"</div>"+
+                    "<div class=\"fila_empresa\">"+cliente+"</div>"+
                     "<div class=\"fila_fecha\">"+fecha+" "+hora+"</div>"+
                     "<div class=\"fila_oculta\">"+obtenerEstadoServicio(estado)+"</div>"+
                     "<div class=\"fila_oculta\">"+conductor+"</div></div>");

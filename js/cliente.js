@@ -216,7 +216,7 @@ function buscarCliente(cargar = false)
         grupos.append("<div class=\"fila_contenedor\" id=\"col_1\" onClick=\"cambiarFila('1')\">Medianos Clientes</div>");
         grupos.append("<div class=\"fila_contenedor\" id=\"col_2\" onClick=\"cambiarFila('2')\">Pequeños Clientes</div>");
         clientes.html("");
-        clientes.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Razon social</div><div>Tipo</div><div class=\"mini_tab\" >Grupo</div><div></div></div>");
+        clientes.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Razon social</div><div class=\"fila_oculta\">Tipo</div><div class=\"mini_tab\" >Grupo</div><div></div></div>");
         CLIENTES = response;
         if(response.length === 0)
         {
@@ -245,8 +245,8 @@ function buscarCliente(cargar = false)
             clientes.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\">"+
                     "<div onClick=\"abrirModificar('"+id+"','"+nombre+"')\">"+rut+"</div>"+
                     "<div onClick=\"abrirModificar('"+id+"','"+nombre+"')\">"+nombre+"</div>"+
-                    "<div onClick=\"abrirModificar('"+id+"','"+nombre+"')\">"+tipo+"</div>"+
-                    "<div  class=\"mini_tab\" onClick=\"abrirModificar('"+id+"','"+nombre+"')\">"+grupo+"</div>"+
+                    "<div class=\"fila_oculta\" onClick=\"abrirModificar('"+id+"','"+nombre+"')\">"+tipo+"</div>"+
+                    "<div class=\"mini_tab\" onClick=\"abrirModificar('"+id+"','"+nombre+"')\">"+grupo+"</div>"+
                     "<div><img onclick=\"preEliminarCliente('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
                     "</div>");
         }
@@ -296,7 +296,7 @@ function buscarClienteTipo(tipo)
     marcarFilaActiva("col_"+tipo);
     var clientes = $("#lista_busqueda_cliente_detalle");
     clientes.html("");
-    clientes.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Razon social</div><div>Tipo</div><div class=\"mini_tab\" >Grupo</div><div></div></div>");
+    clientes.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Razon social</div><div class=\"fila_oculta\">Tipo</div><div class=\"mini_tab\" >Grupo</div><div></div></div>");
     var noHayRegistros = true;
     for(var i = 0 ; i < CLIENTES.length; i++)
     {
@@ -323,7 +323,7 @@ function buscarClienteTipo(tipo)
             clientes.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\">"+
                     "<div onClick=\"abrirModificar('"+id+"','"+nombre+"')\">"+rut+"</div>"+
                     "<div onClick=\"abrirModificar('"+id+"','"+nombre+"')\">"+nombre+"</div>"+
-                    "<div onClick=\"abrirModificar('"+id+"','"+nombre+"')\">"+tipoG+"</div>"+
+                    "<div class=\"fila_oculta\" onClick=\"abrirModificar('"+id+"','"+nombre+"')\">"+tipoG+"</div>"+
                     "<div class=\"mini_tab\" onClick=\"abrirModificar('"+id+"','"+nombre+"')\">"+grupo+"</div>"+
                     "<div><img onclick=\"preEliminarCliente('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
                     "</div>");
@@ -342,7 +342,7 @@ function buscarClienteTodo()
     marcarFilaActiva("col_3");
     var clientes = $("#lista_busqueda_cliente_detalle");
     clientes.html("");
-    clientes.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Razon social</div><div>Tipo</div><div class=\"mini_tab\" >Grupo</div><div></div></div>");
+    clientes.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Razon social</div><div class=\"fila_oculta\">Tipo</div><div class=\"mini_tab\" >Grupo</div><div></div></div>");
     var noHayRegistros = true;
     for(var i = 0 ; i < CLIENTES.length; i++)
     {
@@ -367,7 +367,7 @@ function buscarClienteTodo()
         clientes.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\">"+
                 "<div onClick=\"abrirModificar('"+id+"','"+nombre+"')\">"+rut+"</div>"+
                 "<div onClick=\"abrirModificar('"+id+"','"+nombre+"')\">"+nombre+"</div>"+
-                "<div onClick=\"abrirModificar('"+id+"','"+nombre+"')\">"+tipoG+"</div>"+
+                "<div class=\"fila_oculta\" onClick=\"abrirModificar('"+id+"','"+nombre+"')\">"+tipoG+"</div>"+
                 "<div class=\"mini_tab\" onClick=\"abrirModificar('"+id+"','"+nombre+"')\">"+grupo+"</div>"+
                 "<div><img onclick=\"preEliminarCliente('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
                 "</div>");
