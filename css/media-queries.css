@@ -235,15 +235,29 @@
     }
     .contenedor_central_titulo div
     {
-        width:28%;   
+        width:39%;   
+    }
+
+    .contenedor_central_titulo_pasajero div{
+        width: 25%;
+    }
+    .fila_contenedor_pasajero div{
+        width: 25%;
+    }
+    .ccc div{
+        width: 25%;
     }
     .fila_contenedor_servicio div
     {
+        width: 33%;
+    }
+    .cont_servicio div{
         width: 25%;
     }
-    .contenedor_central_titulo_pasajero div
-    {
-        width:20%;   
+    .fila_empresa{
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
     }
     .pie-center,.pie-left
     {
@@ -329,5 +343,10 @@
     {
         height: calc(100% - 186px);
         overflow: auto;
+    }
+    
+    select{
+        width: 130px;
+        background-position: 100px, 0;
     }
 }

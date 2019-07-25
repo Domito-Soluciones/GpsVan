@@ -382,7 +382,7 @@ function buscarMovil(cargar = false)
             alertify.error("No hay registros que mostrar");
             return;
         }
-        moviles.append("<div class=\"contenedor_central_titulo movil_tabla\"><div></div><div>Patente</div><div>Nombre</div><div>Marca</div><div>Tipo</div><div></div></div>");
+        moviles.append("<div class=\"contenedor_central_titulo movil_tabla\"><div></div><div>Patente</div><div>Nombre</div><div>Marca</div><div class=\"fila_oculta\">Tipo</div><div></div></div>");
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].movil_id;
@@ -402,7 +402,7 @@ function buscarMovil(cargar = false)
                     "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+patente+"</div>"+
                     "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+nombre+"</div>"+
                     "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+marca+"</div>"+
-                    "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+grupo+"</div>"+
+                    "<div class=\"fila_oculta\" onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+grupo+"</div>"+
                     "<div><img onclick=\"preEliminarMovil('"+patente+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
                     "</div>");
         }
@@ -452,7 +452,7 @@ function buscarMovilTipo(tipo)
     marcarFilaActiva("col_"+tipo);
     var moviles = $("#lista_busqueda_movil_detalle");
     moviles.html("");
-    moviles.append("<div class=\"contenedor_central_titulo movil_tabla\"><div></div><div>Patente</div><div>Nombre</div><div>Marca</div><div>Tipo</div><div></div></div>");
+    moviles.append("<div class=\"contenedor_central_titulo movil_tabla\"><div></div><div>Patente</div><div>Nombre</div><div>Marca</div><div class=\"fila_oculta\">Tipo</div><div></div></div>");
     var noHayRegistros = true;
     for(var i = 0 ; i < MOVILES.length; i++)
     {
@@ -476,7 +476,7 @@ function buscarMovilTipo(tipo)
                     "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+patente+"</div>"+
                     "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+nombre+"</div>"+
                     "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+marca+"</div>"+
-                    "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+grupo+"</div>"+
+                    "<div class=\"fila_oculta\" onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+grupo+"</div>"+
                     "<div><img onclick=\"preEliminarMovil('"+patente+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
                     "</div>");
         }
@@ -494,7 +494,7 @@ function buscarMovilTodo()
     marcarFilaActiva("col_2");
     var moviles = $("#lista_busqueda_movil_detalle");
     moviles.html("");
-    moviles.append("<div class=\"contenedor_central_titulo movil_tabla\"><div></div><div>Patente</div><div>Nombre</div><div>Marca</div><div>Tipo</div><div></div></div>");
+    moviles.append("<div class=\"contenedor_central_titulo movil_tabla\"><div></div><div>Patente</div><div>Nombre</div><div>Marca</div><div class=\"fila_oculta\">Tipo</div><div></div></div>");
     var noHayRegistros = true;
     for(var i = 0 ; i < MOVILES.length; i++)
     {
@@ -516,7 +516,7 @@ function buscarMovilTodo()
                 "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+patente+"</div>"+
                 "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+nombre+"</div>"+
                 "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+marca+"</div>"+
-                "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+grupo+"</div>"+
+                "<div class=\"fila_oculta\" onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+grupo+"</div>"+
                 "<div><img onclick=\"preEliminarMovil('"+patente+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
                 "</div>");
     }
