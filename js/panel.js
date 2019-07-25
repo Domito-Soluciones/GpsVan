@@ -26,8 +26,8 @@ $(document).ready(function(){
         $("#truta").html("<option value=\"XX-ESP\">XX-ESP</option>");
         $("#especial").prop("checked",true);
         $("#tarifa2").prop("disabled",false);
-        $("#ruta").prop("disabled",true);
-        $("#truta").prop("disabled",true);
+        $("#ruta").prop("readonly",true);
+        $("#truta").prop("readonly",true);
         $("#partida").prop("disabled",false);
         $("#destino").prop("disabled",false);
         cambiarPropiedad($(".buscador-pasajero"),"display","initial");
@@ -136,8 +136,8 @@ $(document).ready(function(){
         {
             $("#ruta").html("<option value=\"ESP\">ESP</option>");
             $("#truta").html("<option value=\"XX-ESP\">XX-ESP</option>");
-            $("#ruta").prop("disabled",true);
-            $("#truta").prop("disabled",true);
+            $("#ruta").prop("readonly",true);
+            $("#truta").prop("readonly",true);
             $("#partida").prop("disabled",false);
             $("#destino").prop("disabled",false);
             cambiarPropiedad($(".buscador-pasajero"),"display","initial");
@@ -249,7 +249,15 @@ $(document).ready(function(){
                 dibujarRuta();
                 buscaPartida = false;
                 $("#origen_empresa").remove();
-                $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+origen);
+                if(typeof origen === 'undefined'){
+                    $("#contenedor_punto_encuentro").html("<b>Origen: </b>");
+                }
+                else{
+                    $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+origen);
+                }
+            }
+            if(destinos.length < 2){
+                borrarDirections();
             }
         }
 });
@@ -286,6 +294,9 @@ $(document).ready(function(){
                 dibujarRuta();
                 buscaDestino = false;
             }
+            if(destinos.length < 2){
+                borrarDirections();
+            }        
         }
 });
     
@@ -660,8 +671,8 @@ function agregarServicio(fecha)
             borrarDirections();
             resetPasajeros();
             alertify.success('Servicio agregado con id '+response.servicio_id);
-            $("#ruta").prop("disabled",false);
-            $("#truta").prop("disabled",false);
+            $("#ruta").prop("readonly",false);
+            $("#truta").prop("readonly",false);
             cambiarPropiedad($(".buscador-pasajero"),"display","none");
             quitarclase($("#contenedor_mapa"),"mapa_bajo");
             notificarConductor(response.servicio_id,conductor);
@@ -892,7 +903,7 @@ function borrarPasajero(obj,nombre,punto,celular)
     var id = obj.split("_")[1];
     for(var i = 0; i < pasajeros.length; i++)
     {
-        console.log("estos son los pasajeros " + pasajeros );
+        console.log("estos son los pasajeros " + pasajeros.length );
         if(pasajeros[i] === id)
         {
             pasajeros.splice(i, 1);
@@ -917,8 +928,8 @@ function borrarPasajero(obj,nombre,punto,celular)
         }
     }
     else{
-        origen = undefined;
-        $("#contenedor_punto_encuentro").html("<b>Origen:</b> ");
+        //origen = undefined;
+        $("#contenedor_punto_encuentro").html("<b>Origen:</b> "+origen);
         console.log("origen es distinto que punto " + origen +" "+punto);
         borrarDirections();
     }
@@ -1089,8 +1100,8 @@ function cambiarServicioNormal()
 {
     TIPO_SERVICIO = 0;
     vaciarFormulario();
-    $("#ruta").prop("disabled",false);
-    $("#truta").prop("disabled",false);
+    $("#ruta").prop("readonly",false);
+    $("#truta").prop("readonly",false);
     $("#ruta").html("<option val=\"\">Seleccione</option>");
     $("#truta").html("<option val=\"\">Seleccione</option>");
     borrarDirections();
@@ -1120,8 +1131,8 @@ function cambiarServicioEspecial()
     $("#tarifa2").prop("disabled",false);
     $("#tarifa2").val("");
     cambiarPropiedad($("#tarifa2"),"background-color","white");
-    $("#ruta").prop("disabled",true);
-    $("#truta").prop("disabled",true);
+    $("#ruta").prop("readonly",true);
+    $("#truta").prop("readonly",true);
     vaciarFormulario();
     borrarDirections();
     eliminarMarkers();
