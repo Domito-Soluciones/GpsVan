@@ -261,8 +261,8 @@ $(document).ready(function(){
         {
             $("#destino_empresa").remove();
             buscaDestino = true;
-            destinos.pop();
-            pasajeros.pop();
+            //destinos.pop();
+            //pasajeros.pop();
             destinos.push($("#destino").val());
             $("#contenedor_punto_destino").html("<b>Destino: </b>"+$("#destino").val());
             contenedor.append("<div class=\"cont-pasajero-gral\" id=\"destino_empresa\"><input type=\"hidden\" id=\"hidden_destino\" class=\"hidden\" value=\""+$("#destino").val()+"\"><div class=\"cont-pasajero\">Destino</div><div class=\"cont-mini-pasajero\"><div>"+ recortar($("#destino").val(),30) + "</div><div>");
