@@ -17,6 +17,7 @@ var INPUT_ACTUAL;
 var CAMPOS = ["clientes","ruta","truta","fechaDesde","hora","vehiculos","tarifa1","tarifa2"];
 var buscaPartida = false;
 var buscaDestino = false;
+var soloHayPartidaDestino = true;
 
 $(document).ready(function(){
     
@@ -269,8 +270,10 @@ $(document).ready(function(){
         {
             $("#destino_empresa").remove();
             buscaDestino = true;
-            destinos.pop();
-            pasajeros.pop();
+            if(!soloHayPartidaDestino){
+                destinos.pop();
+                pasajeros.pop();
+            }
             destinos.push($("#destino").val());
             $("#contenedor_punto_destino").html("<b>Destino: </b>"+$("#destino").val());
             contenedor.append("<div class=\"cont-pasajero-gral\" id=\"destino_empresa\"><input type=\"hidden\" id=\"hidden_destino\" class=\"hidden\" value=\""+$("#destino").val()+"\"><div class=\"cont-pasajero\">Destino</div><div class=\"cont-mini-pasajero\"><div>"+ recortar($("#destino").val(),30) + "</div><div>");
@@ -677,7 +680,7 @@ function agregarServicio(fecha)
             quitarclase($("#contenedor_mapa"),"mapa_bajo");
             notificarConductor(response.servicio_id,conductor);
             notificarServicioFuturo(response.servicio_id,conductor,fecha,hora);
-            
+            soloHayPartidaDestino = true;
         };
         postRequest(url,params,success);
     }
@@ -1092,6 +1095,7 @@ function agregarPasajero(obj,nombre,punto,celular)
             
         }
     }
+    soloHayPartidaDestino = false;
     pasajero.remove();
     dibujarRuta();
 }
