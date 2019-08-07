@@ -47,6 +47,24 @@ class NotificacionDao {
         return $id;
     }
     
+    public function resetNotificacion($idServicio)
+    {
+        $id = 0;
+        $conn = new Conexion();
+        try {
+            $query = "UPDATE tbl_notificacion SET notificacion_estado = 0 WHERE notificacion_servicio = '$idServicio'"; 
+            $conn->conectar();
+            if (mysqli_query($conn->conn,$query)) {
+                $id = mysqli_insert_id($conn->conn);
+            } else {
+                echo mysqli_error($conn->conn);
+            }           
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return $id;
+    }
+    
     public function getNotificaciones($llave)
     {
         $array = array();
