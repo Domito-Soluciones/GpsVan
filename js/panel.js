@@ -27,8 +27,8 @@ $(document).ready(function(){
         $("#truta").html("<option value=\"XX-ESP\">XX-ESP</option>");
         $("#especial").prop("checked",true);
         $("#tarifa2").prop("disabled",false);
-        $("#ruta").prop("readonly",true);
-        $("#truta").prop("readonly",true);
+        $("#ruta").prop("disabled",true);
+        $("#truta").prop("disabled",true);
         $("#partida").prop("disabled",false);
         $("#destino").prop("disabled",false);
         cambiarPropiedad($(".buscador-pasajero"),"display","initial");
@@ -137,8 +137,8 @@ $(document).ready(function(){
         {
             $("#ruta").html("<option value=\"ESP\">ESP</option>");
             $("#truta").html("<option value=\"XX-ESP\">XX-ESP</option>");
-            $("#ruta").prop("readonly",true);
-            $("#truta").prop("readonly",true);
+            $("#ruta").prop("disabled",true);
+            $("#truta").prop("disabled",true);
             $("#partida").prop("disabled",false);
             $("#destino").prop("disabled",false);
             cambiarPropiedad($(".buscador-pasajero"),"display","initial");
@@ -674,8 +674,8 @@ function agregarServicio(fecha)
             borrarDirections();
             resetPasajeros();
             alertify.success('Servicio agregado con id '+response.servicio_id);
-            $("#ruta").prop("readonly",false);
-            $("#truta").prop("readonly",false);
+            $("#ruta").prop("disabled",false);
+            $("#truta").prop("disabled",false);
             cambiarPropiedad($(".buscador-pasajero"),"display","none");
             quitarclase($("#contenedor_mapa"),"mapa_bajo");
             notificarConductor(response.servicio_id,conductor);
@@ -688,6 +688,7 @@ function agregarServicio(fecha)
 
 function dibujarRuta()
 {
+    console.log("ORIGEN: "+origen+" DESTINOS: "+destinos);
     GEOCODING = false;
     if(typeof origen === 'undefined')
     {
@@ -906,7 +907,6 @@ function borrarPasajero(obj,nombre,punto,celular)
     var id = obj.split("_")[1];
     for(var i = 0; i < pasajeros.length; i++)
     {
-        console.log("estos son los pasajeros " + pasajeros.length );
         if(pasajeros[i] === id)
         {
             pasajeros.splice(i, 1);
@@ -914,17 +914,14 @@ function borrarPasajero(obj,nombre,punto,celular)
     }
     if(origen === punto)
     {
-        console.log("origen es igual a punto " + origen );
         if(destinos.length > 1)
         {
-            console.log("destinos > 1 " + destinos );
             var destFinal = destinos.shift();
             origen = destFinal;
             $("#contenedor_punto_encuentro").html("<b>Origen:</b> "+origen);
         }
         else
         {
-            console.log("destinos < 1 " + destinos );
             origen = undefined;
             $("#contenedor_punto_encuentro").html("<b>Origen:</b> ");
             borrarDirections();
@@ -933,12 +930,10 @@ function borrarPasajero(obj,nombre,punto,celular)
     else{
         //origen = undefined;
         $("#contenedor_punto_encuentro").html("<b>Origen:</b> "+origen);
-        console.log("origen es distinto que punto " + origen +" "+punto);
         borrarDirections();
     }
     for(var i = 0; i < destinos.length; i++)
     {
-        console.log("foe de destinos " + destinos[i] );
         if(destinos[i] === punto)
         {
             destinos.splice(i, 1);
@@ -962,15 +957,12 @@ function borrarPasajero(obj,nombre,punto,celular)
     }
     if(ruta.indexOf("ESP") !== -1)
     {
-        console.log("es especial ");
         if(destinos.length === 0)
         {
-             console.log("destinos es 0");
             $("#contenedor_punto_destino").html("<b>Destino: </b>");
         }
         else
         {
-            console.log("destinos no es 0");
             $("#contenedor_punto_destino").html("<b>Destino: </b>"+destinos[destinos.length-1]);
         }
     }
@@ -1043,7 +1035,7 @@ function agregarPasajero(obj,nombre,punto,celular)
             pasajeros.push(id);
         }
         
-        if(destino === '')
+        else if(destino === '')
         {
             $("#contenedor_punto_destino").html("<b>Destino: </b>"+punto);
             destinos.push(punto);
@@ -1104,8 +1096,8 @@ function cambiarServicioNormal()
 {
     TIPO_SERVICIO = 0;
     vaciarFormulario();
-    $("#ruta").prop("readonly",false);
-    $("#truta").prop("readonly",false);
+    $("#ruta").prop("disabled",false);
+    $("#truta").prop("disabled",false);
     $("#ruta").html("<option val=\"\">Seleccione</option>");
     $("#truta").html("<option val=\"\">Seleccione</option>");
     borrarDirections();
@@ -1135,8 +1127,8 @@ function cambiarServicioEspecial()
     $("#tarifa2").prop("disabled",false);
     $("#tarifa2").val("");
     cambiarPropiedad($("#tarifa2"),"background-color","white");
-    $("#ruta").prop("readonly",true);
-    $("#truta").prop("readonly",true);
+    $("#ruta").prop("disabled",true);
+    $("#truta").prop("disabled",true);
     vaciarFormulario();
     borrarDirections();
     eliminarMarkers();
