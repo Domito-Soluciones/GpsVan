@@ -248,6 +248,7 @@ function modificarServicio()
             resetFormulario();
             alertify.success("Servicio Modificado");
             buscarServicio();
+            modificarNotificacion(ID_SERVICIO);
         };
         postRequest(url,params,success);
     }
@@ -582,4 +583,10 @@ function validarTipoDato()
     }
     
    return true;
+}
+
+function modificarNotificacion(idServicio){
+    var params = {id  : idServicio};        
+    var url = urlBase + "/notificacion/ResetNotificacion.php";
+    postRequest(url,params,null);
 }
