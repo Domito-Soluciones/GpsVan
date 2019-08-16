@@ -78,7 +78,7 @@ class ServicioPasajero {
     function toString() {
         return "ServicioPasajero{" . "id=" . $this->id . ", pasajero=" . $this->pasajero . ", destino=" . $this->destino .
         ", latDestino=" . $this->latDestino . ", lonDestino=" . $this->lonDestino . ", hora=" . $this->hora . ", estado=" .
-        estado . ", estadoCancelacion=" . $this->estadoCancelacion . '}';
+        $this->estado . ", estadoCancelacion=" . $this->estadoCancelacion . '}';
     }
     
 

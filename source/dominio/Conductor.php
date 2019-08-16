@@ -285,11 +285,11 @@ class Conductor {
             
     function toString() {
         return "Conductor{" . "id=" . $this->id . ", nombre=" . $this->nombre . ", papellido=" . $this->papellido . ", mapellido=" .
-        mapellido . ", tipo=" . $this->tipo . ", rut=" . $this->rut . ", nick=" . $this->nick . ", password=" . $this->password . ", telefono=" .
-        telefono . ", celular=" . $this->celular . ", direccion=" . $this->direccion . ", mail=" . $this->mail . ", tipoLicencia=" .
-        tipoLicencia . ", banco=" . $this->banco . ", numeroCuenta=" . $this->numeroCuenta . ", tipoCuenta=" . $this->tipoCuenta .
+        $this->mapellido . ", tipo=" . $this->tipo . ", rut=" . $this->rut . ", nick=" . $this->nick . ", password=" . $this->password . ", telefono=" .
+        $this->telefono . ", celular=" . $this->celular . ", direccion=" . $this->direccion . ", mail=" . $this->mail . ", tipoLicencia=" .
+        $this->tipoLicencia . ", banco=" . $this->banco . ", numeroCuenta=" . $this->numeroCuenta . ", tipoCuenta=" . $this->tipoCuenta .
         ", vencLicencia=" . $this->vencLicencia . ", nacimiento=" . $this->nacimiento . ", renta=" . $this->renta . ", contrato=" .
-        contrato . ", afp=" . $this->afp . ", isapre=" . $this->isapre . ", isapreAd=" . $this->isapreAd . ", mutual=" . $this->mutual .
+        $this->contrato . ", afp=" . $this->afp . ", isapre=" . $this->isapre . ", isapreAd=" . $this->isapreAd . ", mutual=" . $this->mutual .
         ", seguroInicio=" . $this->seguroInicio . ", seguroRenovacion=" . $this->seguroRenovacion . ", descuento=" . $this->descuento .
         ", imagenAdjunta=" . $this->imagenAdjunta . ", contratoAdjunto=" . $this->contratoAdjunto . ", transportista=" . $this->transportista .
         ", movil=" . $this->movil . '}';

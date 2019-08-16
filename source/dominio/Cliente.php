@@ -114,8 +114,8 @@ class Cliente {
     
     function toString() {
         return "Cliente{" . "id=" . $this->id . ", razon=" . $this->razon . ", tipo=" . $this->tipo . ", rut=" . $this->rut . ", direccion=" .
-        direccion . ", nombreContacto=" . $this->nombreContacto . ", fonoContacto=" . $this->fonoContacto . ", mailContacto=" .
-        mailContacto . ", mailFacturacion=" . $this->mailFacturacion . ", contrato=" . $this->contrato . ", grupo=" . $this->grupo .
+        $this->direccion . ", nombreContacto=" . $this->nombreContacto . ", fonoContacto=" . $this->fonoContacto . ", mailContacto=" .
+        $this->mailContacto . ", mailFacturacion=" . $this->mailFacturacion . ", contrato=" . $this->contrato . ", grupo=" . $this->grupo .
         ", color=" . $this->color . '}';
     }
 }

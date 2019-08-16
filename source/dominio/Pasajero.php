@@ -186,7 +186,7 @@ class Pasajero {
     
     function toString() {
         return "Pasajero{" . "id=" . $this->id . ", nombre=" . $this->nombre . ", papellido=" . $this->papellido . ", mapellido=" .
-        mapellido . ", rut=" . $this->rut . ", nick=" . $this->nick . ", password=" . $this->password . ", telefono=" . $this->telefono .
+        $this->mapellido . ", rut=" . $this->rut . ", nick=" . $this->nick . ", password=" . $this->password . ", telefono=" . $this->telefono .
         ", celular=" . $this->celular . ", direccion=" . $this->direccion . ", punto=" . $this->punto . ", mail=" . $this->mail .
         ", cargo=" . $this->cargo . ", nivel=" . $this->nivel . ", estado=" . $this->estado . ", cliente=" . $this->cliente .
         ", centroCosto=" . $this->centroCosto . ", empresa=" . $this->empresa . ", empresaDireccion=" . $this->empresaDireccion .
