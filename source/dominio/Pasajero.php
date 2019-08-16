@@ -184,14 +184,13 @@ class Pasajero {
     }
 
     
-        public function toString() {
-        return "DATOS PASAJERO: ID : ".$this->id." NOMBRE : ".$this->nombre.
-                " PAPELLIDO : ".$this->papellido." MAPELLIDO : ".$this->mapellido.
-                " RUT : ".$this->rut." NICK : ".$this->nick." PASSWORD : ".$this->password.
-                " TELEFONO : ".$this->telefono." CELULAR : ".$this->celular.
-                " DIRECCION : ".$this->direccion." MAIL : ".$this->mail
-                ." CARGO : ". $this->cargo." NIVEL : ". $this->nivel
-                ." ESTADO : ". $this->estado." CLIENTE : ". $this->cliente
-                ." CENTRO COSTO : ". $this->centroCosto." EMPRESA : ". $this->empresa." RUTA : ". $this->ruta;
+    function toString() {
+        return "Pasajero{" . "id=" . $this->id . ", nombre=" . $this->nombre . ", papellido=" . $this->papellido . ", mapellido=" .
+        mapellido . ", rut=" . $this->rut . ", nick=" . $this->nick . ", password=" . $this->password . ", telefono=" . $this->telefono .
+        ", celular=" . $this->celular . ", direccion=" . $this->direccion . ", punto=" . $this->punto . ", mail=" . $this->mail .
+        ", cargo=" . $this->cargo . ", nivel=" . $this->nivel . ", estado=" . $this->estado . ", cliente=" . $this->cliente .
+        ", centroCosto=" . $this->centroCosto . ", empresa=" . $this->empresa . ", empresaDireccion=" . $this->empresaDireccion .
+        ", ruta=" . $this->ruta . '}';
     }
+    
 }

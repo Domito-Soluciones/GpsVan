@@ -42,4 +42,4 @@ if($cliente->getId() > 0)
     }
 }
 echo "{\"cliente_id\":\"".$cliente->getId()."\"}";
-Log::write_log("MODCLIENTE", 0);
+Log::write_log("MODCLIENTE: " .$cliente->toString(), 0);

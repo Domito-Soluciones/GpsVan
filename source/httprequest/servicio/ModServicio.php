@@ -33,4 +33,4 @@ $servicio->setTarifa2($tarifa2);
 $servicio->setObservaciones($observaciones);
 $idServicio = $servicioDao->modificarServicio($servicio);
 echo "{\"servicio_id\":\"".$idServicio."\"}";
-Log::write_log("MODSERVICIO", 0);
+Log::write_log("MODSERVICIO: ".$servicio->toString(), 0);

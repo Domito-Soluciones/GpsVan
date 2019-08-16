@@ -33,4 +33,4 @@ $tarifa->setHorario($horario);
 $tarifaDao = new TarifaDao();
 $tarifaDao->modificarTarifa($tarifa);
 echo "{\"tarifa_id\":\"".$tarifa->getId()."\"}";
-Log::write_log("MODTARIFA", 0);
+Log::write_log("MODTARIFA: ".$tarifa->toString(), 0);

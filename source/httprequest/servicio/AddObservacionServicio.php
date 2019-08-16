@@ -10,4 +10,4 @@ $observacion = filter_input(INPUT_POST, 'observacion');
 $servicioDao = new ServicioDao();
 $servicioDao->addObservacionServicio($id,$observacion);
 echo "{\"servicio_id\":\"".$id."\"}";
-Log::write_log("ADDOBSERVACIONSERVICIO", 0);
+Log::write_log("ADDOBSERVACIONSERVICIO: ".$id, 0);

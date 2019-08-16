@@ -120,6 +120,8 @@ class ServicioEspecial {
         $this->estado = $estado;
     }
 
-
+    function toString() {
+        return "ServicioEspecial{" . "id=" . $this->id . ", partida=" . $this->partida . ", destino=" . $this->destino . ", pasajero=" . $this->pasajero . ", celular=" . $this->celular . ", fecha=" . $this->fecha . ", hora=" . $this->hora . ", movil=" . $this->movil . ", conductor=" . $this->conductor . ", tarifa=" . $this->tarifa . ", observaciones=" . $this->observaciones . ", agente=" . $this->agente . ", estado=" . $this->estado . '}';
+    }
     
 }

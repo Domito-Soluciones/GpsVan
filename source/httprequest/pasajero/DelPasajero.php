@@ -9,4 +9,4 @@ $rut = filter_input(INPUT_POST, 'rut');
 $pasajeroDao = new PasajeroDao();
 $pasajeroDao->eliminarPasajero($rut);
 echo "{\"pasajero_eliminado\":\"".$rut."\"}";
-Log::write_log("DELPASAJERO", 0);
+Log::write_log("DELPASAJERO: ".$rut, 0);

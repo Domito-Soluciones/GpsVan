@@ -41,4 +41,4 @@ if($clienteId > 0)
     }
 }
 echo "{\"cliente_id\":\"".$clienteId."\"}";
-Log::write_log("ADDCLIENTE", 0);
+Log::write_log("ADDCLIENTE: " .$cliente->toString(), 0);

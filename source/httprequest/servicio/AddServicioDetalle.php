@@ -14,4 +14,4 @@ $servicioDao = new ServicioDao();
 //$servicioDao->addServicioDetalle($lat, $lon,$pasajeros,$destinos, $id);
 $servicioDao->addServicioDetalle($pasajeros,$destinos, $id);
 echo "{\"servicio_id\":\"".$id."\"}";
-Log::write_log("ADDSERVICIODETALLE", 0);
+Log::write_log("ADDSERVICIODETALLE: ".$id, 0);

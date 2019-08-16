@@ -39,4 +39,4 @@ $agente->setEmpresa($empresa);
 $agenteDao = new AgenteDao();
 $agenteDao->modificarAgente($agente);
 echo "{\"agente_id\":\"".$agente->getId()."\"}";
-Log::write_log("MODAGENTE", 0);
+Log::write_log("MODAGENTE: " .$agente->toString(), 0);

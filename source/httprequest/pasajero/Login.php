@@ -11,4 +11,4 @@ $password = base64_encode(Cripto::encriptar(filter_input(INPUT_POST, 'password')
 $pasajeroDao = new PasajeroDao();
 $id = $pasajeroDao->getUsuario($nombre, $password);
 echo "{\"id\":".$id."}";
-Log::write_log("LOGIN", 0);
+Log::write_log("LOGINPASAJERO: ".$nombre, 0);

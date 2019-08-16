@@ -4,6 +4,7 @@ class ServicioDetalle {
     private $id;
     private $lat;
     private $lon;
+    
     function getId() {
         return $this->id;
     }
@@ -28,5 +29,8 @@ class ServicioDetalle {
         $this->lon = $lon;
     }
 
-
+    function toString() {
+        return "ServicioDetalle{" . "id=" . $this->id . ", lat=" . $this->lat . ", lon=" . $this->lon . '}';
+    }
+    
 }

@@ -9,4 +9,4 @@ $rut = filter_input(INPUT_POST, 'rut');
 $conductorDao = new ConductorDao();
 $conductorDao->eliminarConductor($rut);
 echo "{\"conductor_eliminado\":\"".$rut."\"}";
-Log::write_log("DELCONDUCTOR", 0);
+Log::write_log("DELCONDUCTOR: ".$rut, 0);

@@ -9,4 +9,4 @@ $rut = filter_input(INPUT_POST, 'rut');
 $agenteDao = new AgenteDao();
 $agenteDao->eliminarAgente($rut);
 echo "{\"agente_eliminado\":\"".$rut."\"}";
-Log::write_log("DELAGENTE", 0);
+Log::write_log("DELAGENTE: " .$rut, 0);

@@ -15,4 +15,4 @@ $lon = filter_input(INPUT_POST, 'lon');
 $servicioDao = new ServicioDao();
 $servicioDao->modificarEstadoServicioPasajero($idServicio, $idPasajero,$estado,$tipo,$observacion,$lat,$lon);
 echo "{\"servicio_id\":\"".$idServicio."\"}";
-Log::write_log("MODESTADOSERVICIOPASAJERO", 0);
+Log::write_log("MODESTADOSERVICIOPASAJERO: ".$idServicio." ".$idPasajero, 0);

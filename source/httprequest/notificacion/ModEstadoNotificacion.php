@@ -10,4 +10,4 @@ $servicio = filter_input(INPUT_POST, 'servicio');
 $notificacionDao = new NotificacionDao();
 $notificacionDao->modificarEstadoNotificacion($id,$servicio);
 echo "{\"notificacion_id\":\"".$id."\"}";
-Log::write_log("MODESTADOCNOTIFICACION", 0);
+Log::write_log("MODESTADOCNOTIFICACION: ".$id, 0);

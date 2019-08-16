@@ -56,7 +56,10 @@ class Rendicion {
         $this->tipo = $tipo;
     }
 
-
+    function toString() {
+        return "Rendicion{" . "id=" . $this->id . ", conductor=" . $this->conductor . ", dato=" . $this->dato . ", valor=" . $this->valor . ", fecha=" . $this->fecha . ", tipo=" . $this->tipo . '}';
+    }
+    
 
     
 }

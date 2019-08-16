@@ -9,4 +9,4 @@ $servicioDao = new ServicioDao();
 $servicioDao->cancelarServicio($idServicio);
 echo "{\"servicio_id\":\"".$idServicio."\""
     . "}";
-Log::write_log("DELSERVICIO", 0);
+Log::write_log("DELSERVICIO: ".$idServicio, 0);

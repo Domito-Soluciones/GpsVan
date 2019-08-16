@@ -10,4 +10,4 @@ $estado = filter_input(INPUT_POST, 'estado');
 $servicioDao = new ServicioDao();
 $idServicio = $servicioDao->cambiarEstadoServicioEspecial($id, $estado);
 echo "{\"servicio_id\":\"".$idServicio."\"}";
-Log::write_log("MODESTADOSERVICIOESPECIAL", 0);
+Log::write_log("MODESTADOSERVICIOESPECIAL: ".$id." ".$estado, 0);

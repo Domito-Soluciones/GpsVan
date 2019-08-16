@@ -11,6 +11,7 @@ class Transportista {
     private $fonoContacto;
     private $mailContacto;
     private $mailFacturacion;
+    
     function getId() {
         return $this->id;
     }
@@ -83,6 +84,10 @@ class Transportista {
         $this->mailFacturacion = $mailFacturacion;
     }
 
-
+    function toString() {
+        return "Transportista{" . "id=" . $this->id . ", nombre=" . $this->nombre . ", razon=" . $this->razon . ", rut=" . $this->rut .
+        ", direccion=" . $this->direccion . ", nombreContacto=" . $this->nombreContacto . ", fonoContacto=" . $this->fonoContacto .
+        ", mailContacto=" . $this->mailContacto . ", mailFacturacion=" . $this->mailFacturacion . '}';
+    }
 
 }

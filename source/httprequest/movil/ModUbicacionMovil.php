@@ -12,4 +12,4 @@ $nombre = filter_input(INPUT_POST, 'conductor');
 $movilDao = new MovilDao();
 $movilDao->modificarUbicacion($nombre, $lat, $lon);
 echo "{\"movil_conductor\":".$nombre.",\"movil_lat\":".$lat.",\"movil_lng\":".$lon."}";
-Log::write_log("MODUBICACIONMOVIL", 0);
+Log::write_log("MODUBICACIONMOVIL: ".$nombre, 0);

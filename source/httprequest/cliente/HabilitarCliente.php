@@ -9,5 +9,5 @@ $cliente = filter_input(INPUT_POST, 'usuario');
 $clienteDao = new ClienteDao();
 $clienteDao->cambiarEstadoConductor(1, $cliente);
 echo "{\"cliente_habilitado\":\"".$cliente."\"}";
-Log::write_log("HABILITARCLIENTE", 0);
+Log::write_log("HABILITARCLIENTE: ".$cliente, 0);
 

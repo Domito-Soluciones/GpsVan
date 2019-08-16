@@ -9,4 +9,4 @@ $id = filter_input(INPUT_POST, 'id');
 $rendicionDao = new RendicionDao();
 $rendicionDao->eliminarRendicion($id);
 echo "{\"rendicion_eliminada\":\"".$id."\"}";
-Log::write_log("DELRENDICION", 0);
+Log::write_log("DELRENDICION: ".$id, 0);

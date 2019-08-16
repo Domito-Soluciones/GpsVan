@@ -48,4 +48,4 @@ $servicio->setTipo($tipo);
 $servicioDao = new ServicioDao();
 $idServicio = $servicioDao->addServicio($servicio);
 echo "{\"servicio_id\":\"".$idServicio."\"}";
-Log::write_log("ADDSERVICIO", 0);
+Log::write_log("ADDSERVICIO: ".$servicio->toString(), 0);

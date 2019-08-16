@@ -24,4 +24,4 @@ else
 {
     echo "{\"agente_id\":".$respuesta."}";
 }
-Log::write_log("LOGIN", 0);
+Log::write_log("LOGIN: " .$agente->toString(), 0);

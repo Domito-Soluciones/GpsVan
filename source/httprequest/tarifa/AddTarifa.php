@@ -31,4 +31,4 @@ $tarifa->setHorario($horario);
 $tarifaDao = new TarifaDao();
 $tarifaId = $tarifaDao->agregarTarifa($tarifa);
 echo "{\"tarifa_id\":\"".$tarifaId."\"}";
-Log::write_log("ADDTARIFA", 0);
+Log::write_log("ADDTARIFA: ".$tarifa->toString(), 0);

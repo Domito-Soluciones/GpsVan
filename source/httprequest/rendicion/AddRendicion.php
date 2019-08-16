@@ -19,4 +19,4 @@ $rendicion->setTipo($tipo);
 $rendicionDao = new RendicionDao();
 $rendicionId = $rendicionDao->agregarRendicion($rendicion);
 echo "{\"rendicion_id\":\"".$rendicionId."\"}";
-Log::write_log("ADDRENDICION", 0);
+Log::write_log("ADDRENDICION: ".$rendicion->toString(), 0);

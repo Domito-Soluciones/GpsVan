@@ -110,7 +110,12 @@ class Tarifa {
         $this->horario = $horario;
     }
 
+    function toString() {
+        return "Tarifa{" . "id=" . $this->id . ", descripcion=" . $this->descripcion . ", numero=" . $this->numero .
+        ", hora=" . $this->hora . ", nombre=" . $this->nombre . ", origen=" . $this->origen . ", destino=" . $this->destino .
+        ", valor1=" . $this->valor1 . ", valor2=" . $this->valor2 . ", cliente=" . $this->cliente . ", tipo=" . $this->tipo .
+        ", horario=" . $this->horario . '}';
+    }
 
-    
 
 }

@@ -11,5 +11,5 @@ $pasajeroDao = new PasajeroDao();
 $pasajeroDao->cambiarEstadoPasajero($estado, $usuario);
 echo "{\"pasajero_nick\":".$usuario.","
     . "\"pasajero_estado\":".$estado."}";
-Log::write_log("MODESTADOPASAJERO", 0);
+Log::write_log("MODESTADOPASAJERO: ".$usuario." ".$estado, 0);
 

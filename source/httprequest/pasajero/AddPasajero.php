@@ -40,5 +40,5 @@ $pasajero->setRuta($ruta);
 $pasajeroDao = new PasajeroDao();
 $pasajeroId = $pasajeroDao->agregarPasajero($pasajero);
 echo "{\"pasajero_id\":\"".$pasajeroId."\"}";
-Log::write_log("ADDPASAJERO", 0);
+Log::write_log("ADDPASAJERO: ".$pasajero->toString(), 0);
 

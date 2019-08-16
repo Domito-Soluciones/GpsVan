@@ -183,6 +183,13 @@ class Servicio {
         $this->tipo = $tipo;
     }
 
-
+    function toString() {
+        return "Servicio{" . "id=" . $this->id . ", cliente=" . $this->cliente . ", clienteDireccion=" . $this->clienteDireccion .
+        ", ruta=" . $this->ruta . ", truta=" . $this->truta . ", fecha=" . $this->fecha . ", hora=" . $this->hora . ", movil=" . $this->movil .
+        ", conductor=" . $this->conductor . ", movilLat=" . $this->movilLat . ", movilLon=" . $this->movilLon . ", tarifa1=" . $this->tarifa1 .
+        ", tarifa2=" . $this->tarifa2 . ", agente=" . $this->agente . ", estado=" . $this->estado . ", observaciones=" . $this->observaciones .
+        ", observacionesAdicionales=" . $this->observacionesAdicionales . ", pasajero=" . $this->pasajero . ", destino=" . $this->destino .
+        ", tipo=" . $this->tipo . '}';
+    }
 
 }

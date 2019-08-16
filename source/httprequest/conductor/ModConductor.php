@@ -68,4 +68,4 @@ $conductor->setContratoAdjunto($archivoContrato);
 $conductorDao = new ConductorDao();
 $conductorDao->modificarConductor($conductor);
 echo "{\"conductor_id\":\"".$conductor->getId()."\"}";
-Log::write_log("MODCONDUCTOR", 0);
+Log::write_log("MODCONDUCTOR: ".$conductor->toString(), 0);

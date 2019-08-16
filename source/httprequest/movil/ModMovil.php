@@ -130,4 +130,4 @@ $movil->setAdjuntoSegRcExceso($adjuntoSegExceso);
 $movilDao = new MovilDao();
 $movilDao->modificarMovil($movil);
 echo "{\"movil_id\":\"".$movil->getId()."\"}";
-Log::write_log("MODMOVIL", 0);
+Log::write_log("MODMOVIL: ".$movil->toString(), 0);

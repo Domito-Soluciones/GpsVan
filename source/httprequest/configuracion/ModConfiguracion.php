@@ -12,4 +12,4 @@ $mutual = filter_input(INPUT_POST, 'mutual');
 $configuracionDao = new ConfiguracionDao();
 $configuracionDao->modificarConfiguracion($uf,$afp,$isapre,$mutual);
 echo "{\"configuracion_estado\":\"ok\"}";
-Log::write_log("MODCONFIGURACION", 0);
+Log::write_log("MODCONFIGURACION: ".$uf." ".$afp." ".$isapre." ".$mutual, 0);

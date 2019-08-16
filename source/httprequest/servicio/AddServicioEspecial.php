@@ -36,4 +36,4 @@ $servicio->setObservaciones($observaciones);
 $servicioDao = new ServicioDao();
 $idServicio = $servicioDao->addServicioEspecial($servicio);
 echo "{\"servicio_id\":\"".$idServicio."\"}";
-Log::write_log("ADDSERVICIOESPECIAL", 0);
+Log::write_log("ADDSERVICIOESPECIAL: ".$servicio->toString(), 0);

@@ -34,4 +34,4 @@ $agente->setEmpresa($empresa);
 $agenteDao = new AgenteDao();
 $agenteId = $agenteDao->agregarAgente($agente);
 echo "{\"cliente_id\":\"".$agenteId."\"}";
-Log::write_log("ADDAGENTE", 0);
+Log::write_log("ADDAGENTE: " .$agente->toString(), 0);

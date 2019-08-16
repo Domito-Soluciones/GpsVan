@@ -13,4 +13,4 @@ $lon = filter_input(INPUT_POST, 'lon');
 $servicioDao = new ServicioDao();
 $servicioDao->cambiarDestinoPasajero($servicio,$pasajero, $destino,$lat,$lon);
 echo "{\"servicio_id\":\"".$servicio."\"}";
-Log::write_log("MODDESTINOPASAJERO", 0);
+Log::write_log("MODDESTINOPASAJERO: ".$servicio." ".$lat." ".$lon, 0);

@@ -11,4 +11,4 @@ $conductor = filter_input(INPUT_POST, 'conductor');
 $movilDao = new MovilDao();
 $movilDao->modificarServicio($conductor,$servicio);
 echo "{\"movil_conductor\":".$conductor."}";
-Log::write_log("MODSERVICIOMOVIL", 0);
+Log::write_log("MODSERVICIOMOVIL: ".$conductor, 0);

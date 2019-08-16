@@ -29,5 +29,8 @@ class Configuracion {
         $this->valor = $valor;
     }
 
+    function toString(){
+        return "Configuracion{" . "id=" . $this->id . ", dato=" . $this->dato . ", valor=" . $this->valor . '}';
+    }
 
 }

@@ -112,14 +112,11 @@ class Cliente {
     }
 
     
-            
-    public function toString() {
-        return "DATOS CLIENTE: ID : ".$this->id." RAZON : ".$this->razon.
-                " TIPO : ".$this->tipo." RUT : ".$this->rut.
-                " RUT : ".$this->rut." CLAVE : ".$this->clave." TELEFONO : ".$this->telefono.
-                " DIRECCION : ".$this->direccion." NOMBRE CONTACTO : ".$this->nombreContacto.
-                " FONO CONTACTO : ".$this->fonoContacto." MAIL CONTACTO : ".$this->mailContacto
-                ." MAIL FACTURACION : ". $this->mailFacturacion;
+    function toString() {
+        return "Cliente{" . "id=" . $this->id . ", razon=" . $this->razon . ", tipo=" . $this->tipo . ", rut=" . $this->rut . ", direccion=" .
+        direccion . ", nombreContacto=" . $this->nombreContacto . ", fonoContacto=" . $this->fonoContacto . ", mailContacto=" .
+        mailContacto . ", mailFacturacion=" . $this->mailFacturacion . ", contrato=" . $this->contrato . ", grupo=" . $this->grupo .
+        ", color=" . $this->color . '}';
     }
 }
 

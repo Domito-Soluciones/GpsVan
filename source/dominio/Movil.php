@@ -480,22 +480,23 @@ class Movil {
         $this->colorEmpresa = $colorEmpresa;
     }
 
-                    
-    public function toString() {
-        return "DATOS MOVIL: ID : ".$this->id." PATENTE : ".$this->patente.
-            " MARCA : ".$this->marca." MODELO : ".$this->modelo.
-            " NOMBRE : ".$this->nombre." ANIO : ".$this->anio." COLOR : ".$this->color.
-            " CANTIDAD : ".$this->cantidad." CLASE : ".$this->clase.
-            " VEN PER CIR : ".$this->venPerCir." VEN REV TEC : ".$this->venRevTec.
-            " VEN EXT : ". $this->venExt." KILOMETRAJE : ".$this->kilometraje.
-            " MOTOR : ". $this->motor." CHASIS : ".$this->chasis.
-            " SEG OB : ". $this->segOb." VEN SEG OB : ".$this->venSegOb.
-            " TRANSPORTISTA : ". $this->transportista." ESTADO : ".$this->estado.
-            " LATITUD : ". $this->lat." LONGITUD : ".$this->lon.
-            " ULTIMA ASIGNACION : ". $this->ultimaAsignacion." SERVICIO : ".$this->servicio.
-            " POLIZA SEG OB : ". $this->polizaSegOb." SEG RC DM : ".$this->segRcDm.
-            " VEN SEG RC DM : ". $this->venSegRcDm." POLIZA SEG RC DM : ".$this->polizaSegRcDm.
-            " CONUCTOR : ".$this->conductor->toString();
+    function toString() {
+        return "Movil{" . "id=" . $this->id . ", patente=" . $this->patente . ", marca=" . $this->marca . ", modelo=" . $this->modelo .
+        ", nombre=" . $this->nombre . ", anio=" . $this->anio . ", color=" . $this->color . ", cantidad=" . $this->cantidad . ", clase=" .
+        clase . ", conductor=" . $this->conductor . ", conductorNombre=" . $this->conductorNombre . ", conductorNick=" .
+        conductorNick . ", gps=" . $this->gps . ", celular=" . $this->celular . ", app=" . $this->app . ", tipo=" . $this->tipo .
+        ", venPerCir=" . $this->venPerCir . ", venRevTec=" . $this->venRevTec . ", venExt=" . $this->venExt . ", kilometraje=" .
+        kilometraje . ", motor=" . $this->motor . ", chasis=" . $this->chasis . ", segOb=" . $this->segOb . ", venSegOb=" .
+        venSegOb . ", transportista=" . $this->transportista . ", estado=" . $this->estado . ", lat=" . $this->lat . ", lon=" .
+        lon . ", ultimaAsignacion=" . $this->ultimaAsignacion . ", servicio=" . $this->servicio . ", polizaSegOb=" .
+        polizaSegOb . ", valorSegOb=" . $this->valorSegOb . ", segRcDm=" . $this->segRcDm . ", venSegRcDm=" . $this->venSegRcDm .
+        ", polizaSegRcDm=" . $this->polizaSegRcDm . ", valorSegRcDm=" . $this->valorSegRcDm . ", segRcExceso=" . $this->segRcExceso .
+        ", venSegRcExceso=" . $this->venSegRcExceso . ", polizaSegRcExceso=" . $this->polizaSegRcExceso . ", valorSegRcExceso=" .
+        valorSegRcExceso . ", segAs=" . $this->segAs . ", venSegAs=" . $this->venSegAs . ", polizaSegAs=" . $this->polizaSegAs .
+        ", valorSegAs=" . $this->valorSegAs . ", adjuntoPerCir=" . $this->adjuntoPerCir . ", adjuntoRevTec=" . $this->adjuntoRevTec .
+        ", adjuntoNMotor=" . $this->adjuntoNMotor . ", adjuntoSeremi=" . $this->adjuntoSeremi . ", adjuntoSegOb=" . $this->adjuntoSegOb .
+        ", adjuntoSegRcDm=" . $this->adjuntoSegRcDm . ", adjuntoSegAsiento=" . $this->adjuntoSegAsiento . ", adjuntoSegRcExceso=" .
+        adjuntoSegRcExceso . ", colorEmpresa=" . $this->colorEmpresa . '}';
     }
     
 }

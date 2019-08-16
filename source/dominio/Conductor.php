@@ -283,18 +283,15 @@ class Conductor {
     }
 
             
-        public function toString() {
-        return "DATOS CONDUCTOR: ID : ".$this->id." NOMBRE : ".$this->nombre.
-                " PAPELLIDO : ".$this->papellido." MAPELLIDO : ".$this->mapellido.
-                " RUT : ".$this->rut." NICK : ".$this->nick." PASSWORD : ".$this->password.
-                " TELEFONO : ".$this->telefono." CELULAR : ".$this->celular.
-                " DIRECCION : ".$this->direccion." MAIL : ".$this->mail.
-                " TIPO LICENCIA : ". $this->tipoLicencia." NACIMIENTO : ".$this->nacimiento.
-                " RENTA : ". $this->renta." CONTRATO : ".$this->contrato.
-                " AFP : ". $this->afp." ISAPRE : ".$this->isapre." ISAPRE AD : ".$this->isapreAd.
-                " MUTUAL : ". $this->mutual." SEGURO INICIO : ".$this->seguroInicio.
-                " DESCUENTO : ". $this->descuento." TIPO : ".$this->tipo.
-                " IMAGEN ADJUNTA : ". $this->imagenAdjunta." CONTRATO ADJUNTO : ".$this->contratoAdjunto.
-                " TRANSPORTISTA : ". $this->transportista." MOVIL : ".$this->movil;
+    function toString() {
+        return "Conductor{" . "id=" . $this->id . ", nombre=" . $this->nombre . ", papellido=" . $this->papellido . ", mapellido=" .
+        mapellido . ", tipo=" . $this->tipo . ", rut=" . $this->rut . ", nick=" . $this->nick . ", password=" . $this->password . ", telefono=" .
+        telefono . ", celular=" . $this->celular . ", direccion=" . $this->direccion . ", mail=" . $this->mail . ", tipoLicencia=" .
+        tipoLicencia . ", banco=" . $this->banco . ", numeroCuenta=" . $this->numeroCuenta . ", tipoCuenta=" . $this->tipoCuenta .
+        ", vencLicencia=" . $this->vencLicencia . ", nacimiento=" . $this->nacimiento . ", renta=" . $this->renta . ", contrato=" .
+        contrato . ", afp=" . $this->afp . ", isapre=" . $this->isapre . ", isapreAd=" . $this->isapreAd . ", mutual=" . $this->mutual .
+        ", seguroInicio=" . $this->seguroInicio . ", seguroRenovacion=" . $this->seguroRenovacion . ", descuento=" . $this->descuento .
+        ", imagenAdjunta=" . $this->imagenAdjunta . ", contratoAdjunto=" . $this->contratoAdjunto . ", transportista=" . $this->transportista .
+        ", movil=" . $this->movil . '}';
     }
 }

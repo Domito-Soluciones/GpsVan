@@ -120,6 +120,11 @@ class Agente {
         $this->empresa = $empresa;
     }
 
-
+    function toString() {
+        return "Agente{" . "id=" . $this->id . ", nombre=" . $this->nombre . ", apellidoPat=" . $this->apellidoPat . ", apellidoMat=" .
+        apellidoMat . ", rut=" . $this->rut . ", nick=" . $this->nick . ", clave=" . $this->clave . ", telefono=" . $this->telefono .
+        ", celular=" . $this->celular . ", direccion=" . $this->direccion . ", mail=" . $this->mail . ", perfil=" . $this->perfil .
+        ", empresa=" . $this->empresa . '}';
+    }
 
 }

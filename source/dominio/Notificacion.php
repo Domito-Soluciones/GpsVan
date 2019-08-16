@@ -64,5 +64,10 @@ class Notificacion {
     function setIdServicio($idServicio) {
         $this->idServicio = $idServicio;
     }
+    
+    function toString(){
+        return "Notificacion{" . "id=" . $this->id . ", texto=" . $this->texto . ", estado=" . $this->estado .
+        ", tipo=" . $this->tipo . ", llave=" . $this->llave . ", fecha=" . $this->fecha . ", idServicio=" . $this->idServicio . '}';
+    }
 
 }

@@ -24,4 +24,4 @@ $notificacion->setIdServicio($idServicio);
 $notificacionDao = new NotificacionDao();
 $notificacionId = $notificacionDao->agregarNotificacion($notificacion);
 echo "{\"notificacion_id\":\"".$notificacionId."\"}";
-Log::write_log("ADDNOTIFICACION", 0);
+Log::write_log("ADDNOTIFICACION: ".$notificacion->toString(), 0);

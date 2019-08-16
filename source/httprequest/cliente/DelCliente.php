@@ -11,4 +11,4 @@ $clienteDao = new ClienteDao();
 $clienteDao->eliminarCliente($rut);
 $clienteDao->eliminarCentroCosto($id);
 echo "{\"cliente_eliminado\":\"".$rut."\"}";
-Log::write_log("DELCLIENTE", 0);
+Log::write_log("DELCLIENTE: ".$rut, 0);

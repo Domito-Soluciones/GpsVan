@@ -11,4 +11,4 @@ $lon = filter_input(INPUT_POST, 'lon');
 $servicioDao = new ServicioDao();
 $servicioDao->addServicioDetalleReal($lat, $lon,$servicio);
 echo "{\"servicio_id\":\"".$servicio."\"}";
-Log::write_log("ADDSERVICIOdETALLEREAL", 0);
+Log::write_log("ADDSERVICIODETALLEREAL: ".$servicio." ".$lat." ".$lon, 0);

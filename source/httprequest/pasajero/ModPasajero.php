@@ -42,4 +42,4 @@ $pasajero->setRuta($ruta);
 $pasajeroDao = new PasajeroDao();
 $pasajeroDao->modificarPasajero($pasajero);
 echo "{\"pasajero_id\":\"".$pasajero->getId()."\"}";
-Log::write_log("MODPASAJERO", 0);
+Log::write_log("MODPASAJERO: ".$pasajero->toString(), 0);

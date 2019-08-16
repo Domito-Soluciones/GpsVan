@@ -11,4 +11,4 @@ $observacion = filter_input(INPUT_POST, 'observacion');
 $servicioDao = new ServicioDao();
 $idServicio = $servicioDao->cambiarEstadoServicio($id, $estado, $observacion);
 echo "{\"servicio_id\":\"".$idServicio."\"}";
-Log::write_log("MODESTADOSERVICIO", 0);
+Log::write_log("MODESTADOSERVICIO: ".$id." ".$estado." ".$observacion, 0);

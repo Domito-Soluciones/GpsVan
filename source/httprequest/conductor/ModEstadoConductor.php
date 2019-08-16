@@ -11,5 +11,5 @@ $conductorDao = new ConductorDao();
 $conductorDao->cambiarEstadoConductor($estado, $conductor);
 echo "{\"conductor_nick\":".$conductor.","
     . "\"conductor_estado\":".$estado."}";
-Log::write_log("MODESTADOCONDUCTOR", 0);
+Log::write_log("MODESTADOCONDUCTOR: conductor: ".$conductor." estado: ".$estado, 0);
 
