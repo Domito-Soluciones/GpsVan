@@ -881,3 +881,12 @@ function mostrarDivLoader() {
     $("#windowLoad").html(imgCentro);
  
 }
+
+function habilitarCampo(obj){
+    obj.prop("disabled",false);
+    cambiarPropiedad(obj,"background-color","white");
+}
+function deshabilitarCampo(obj){
+    obj.prop("disabled",true);
+    cambiarPropiedad(obj,"background-color","#e3e3e3");
+}

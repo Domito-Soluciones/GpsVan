@@ -17,9 +17,7 @@ var INPUT_ACTUAL;
 var CAMPOS = ["clientes","ruta","truta","fechaDesde","hora","vehiculos","tarifa1","tarifa2"];
 var partidaAplica = true;
 var destinoAplica = false;
-var buscaPartida = false;
 var partidaActual;
-var buscaDestino = false;
 var destinoActual;
 var soloHayPartidaDestino = true;
 $(document).ready(function(){
@@ -29,10 +27,10 @@ $(document).ready(function(){
         $("#ruta").html("<option value=\"ESP\">ESP</option>");
         $("#truta").html("<option value=\"XX-ESP\">XX-ESP</option>");
         $("#especial").prop("checked",true);
-        $("#tarifa2").prop("disabled",false);
-        $("#ruta").prop("disabled",true);
-        $("#truta").prop("disabled",true);
-        $("#partida").prop("disabled",false);
+        habilitarCampo($("#tarifa2"));
+        deshabilitarCampo($("#ruta"));
+        deshabilitarCampo($("#truta"));
+        habilitarCampo($("#partida"));
         cambiarPropiedad($(".buscador-pasajero"),"display","initial");
         var contenedor = $("#contenedor_pasajero");
         var contenedorEx = $("#contenedor_pasajero_no_asignado");
@@ -140,10 +138,10 @@ $(document).ready(function(){
         {
             $("#ruta").html("<option value=\"ESP\">ESP</option>");
             $("#truta").html("<option value=\"XX-ESP\">XX-ESP</option>");
-            $("#ruta").prop("disabled",true);
-            $("#truta").prop("disabled",true);
-            $("#partida").prop("disabled",false);
-            $("#destino").prop("disabled",true);
+            deshabilitarCampo($("#ruta"));
+            deshabilitarCampo($("#truta"));
+            deshabilitarCampo($("#destino"));
+            habilitarCampo($("#partida"));
             cambiarPropiedad($(".buscador-pasajero"),"display","initial");
             agregarclase($("#contenedor_mapa"),"mapa_bajo");
             cargarPasajeros();
@@ -219,31 +217,40 @@ $(document).ready(function(){
     });
     
     $("#buscaPartida").click(function(){
+        eliminarMarkers();
         agregarclase($(this),"oculto");
         var contenedor = $("#contenedor_pasajero");
         var partida = $("#partida").val();
         if(partida !== '' && typeof origen !== 'undefined')
         {
-            if($("#partida").val() !== partidaActual){
+            if(partida !== partidaActual){
                 origen = partida;
+                partidaActual = origen;
                 $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+origen);
                 $("#origen_empresa").html("<input type=\"hidden\" id=\"hidden_origen\" class=\"hidden\" value=\""+origen+"\"><div class=\"cont-pasajero\">Origen</div><div class=\"cont-mini-pasajero\"><div>"+ recortar(origen,30) + "</div>");
+                pasajeros.shift();
+                pasajeros.splice(0, 0, "Origen");
+                dibujarRuta();
             }
             else{
                 alertify.error("Ya se a selccionado un punto de partida");
             }
+            habilitarCampo($("#destino"));
         }
         if(partida !== '' && typeof origen === 'undefined')
         {
             origen = partida;
             $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+origen);
             contenedor.prepend("<div class=\"cont-pasajero-gral\" id=\"origen_empresa\"><input type=\"hidden\" id=\"hidden_origen\" class=\"hidden\" value=\""+origen+"\"><div class=\"cont-pasajero\">Origen</div><div class=\"cont-mini-pasajero\"><div>"+ recortar(origen,30) + "</div><div>");
+            pasajeros.push("Origen");
+            habilitarCampo($("#destino"));
         }
         else if(partida === '' && destinos.length === 0){
             origen = undefined;
             borrarDirections();
             $("#origen_empresa").remove();
             $("#contenedor_punto_encuentro").html("<b>Origen: </b>");
+            pasajeros.shift();
         }
         else if(partida === '' && destinos.length > 0){
             var aux = destinos.shift();
@@ -251,24 +258,28 @@ $(document).ready(function(){
             $("#origen_empresa").remove();
             $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+origen);
             $("#contenedor_punto_destino").html("<b>Destino: </b>");
+            pasajeros.shift();
         }
-        console.log("ORIGEN; "+origen+" DESTINOS: "+destinos);
+        console.log("PASAJEROS: "+pasajeros);
     });
     
     $("#buscaDestino").click(function(){
+        eliminarMarkers();
         agregarclase($(this),"oculto");
         var contenedor = $("#contenedor_pasajero");
-        if($("#destino").val() !== '')
+        var destino = $("#destino").val();
+        if(destino !== '')
         {
-            $("#destino_empresa").remove();
-            buscaDestino = true;
-            $("#contenedor_punto_destino").html("<b>Destino: </b>"+$("#destino").val());
-            contenedor.append("<div class=\"cont-pasajero-gral\" id=\"destino_empresa\"><input type=\"hidden\" id=\"hidden_destino\" class=\"hidden\" value=\""+$("#destino").val()+"\"><div class=\"cont-pasajero\">Destino</div><div class=\"cont-mini-pasajero\"><div>"+ recortar($("#destino").val(),30) + "</div><div>");
-            pasajeros.push("Destino");
-            destinos.push($("#destino").val());
-            dibujarRuta();
+            if(destino !== destinoActual){
+                destinoActual = destino;
+                $("#contenedor_punto_destino").html("<b>Destino: </b>"+$("#destino").val());
+                contenedor.append("<div class=\"cont-pasajero-gral\" id=\"destino_empresa\"><input type=\"hidden\" id=\"hidden_destino\" class=\"hidden\" value=\""+$("#destino").val()+"\"><div class=\"cont-pasajero\">Destino</div><div class=\"cont-mini-pasajero\"><div>"+ recortar($("#destino").val(),30) + "</div><div>");
+                pasajeros.push("Destino");
+                destinos.push(destino);
+                dibujarRuta();
+            }
         }
-        else
+        else if(destino === '')
         {
             destinos.pop();
             pasajeros.pop();
@@ -643,7 +654,7 @@ function agregarServicio(fecha)
             confirmar("Ingresar destino","Debe ingresar un punto de destino,¿desea continuar sin ingresarlo?",()=>{
                 initAddServicio(params,id,conductor,fecha,hora);
             },()=>{
-                $("#destino").attr("disabled",false);
+                habilitarCampo($("#destino"));
                 $("#destino").focus();
             });
         }
@@ -934,8 +945,8 @@ function borrarPasajero(obj,nombre,punto,celular)
         if(destinos.length === 0){
             partidaAplica = true;
             destinoAplica = false;
-            $("#partida").attr("disabled",false);
-            $("#destino").attr("disabled",true);
+            habilitarCampo($("#partida"));
+            deshabilitarCampo($("#destino"));
         }
     }
     var pasajero = $("#"+obj);
@@ -956,16 +967,16 @@ function agregarPasajero(obj,nombre,punto,celular)
     if(partida === "" && partidaAplica && TIPO_SERVICIO !== 0){
         confirmar("Ingresar origen","Debe ingresar un punto de origen,¿desea continuar sin ingresarlo?",()=>{
             partidaAplica = false;
-            $("#partida").attr("disabled",true);
+            deshabilitarCampo($("#partida"));
             destinoAplica = true;
             initAgregarPasajero(obj,nombre,punto,celular);
         },()=>{
-            $("#partida").attr("disabled",false);
+            habilitarCampo($("#partida"));
             $("#partida").focus();
         });
     }
     else if(destino !== "" && TIPO_SERVICIO !== 0){
-        alertify.error("al seleccionar un destino no se pueden agregar pasajeros");
+        alertify.error("Al seleccionar un destino no se pueden agregar pasajeros");
     }
     else{
         initAgregarPasajero(obj,nombre,punto,celular);
@@ -976,8 +987,8 @@ function cambiarServicioNormal()
 {
     TIPO_SERVICIO = 0;
     vaciarFormulario();
-    $("#ruta").prop("disabled",false);
-    $("#truta").prop("disabled",false);
+    habilitarCampo($("#ruta"));
+    habilitarCampo($("#truta"));
     $("#ruta").html("<option val=\"\">Seleccione</option>");
     $("#truta").html("<option val=\"\">Seleccione</option>");
     borrarDirections();
@@ -990,9 +1001,9 @@ function cambiarServicioNormal()
     quitarclase($("#contenedor_mapa"),"mapa_bajo");
     quitarclase($("#contenedor_mapa"),"mapa_agregar");
     quitarclase($("#contenedor_mapa"),"mapa_editar");
-    $("#tarifa2").prop("disabled",true);
-    $("#partida").prop("disabled",true);
-    $("#destino").prop("disabled",true);
+    deshabilitarCampo($("#tarifa2"));
+    deshabilitarCampo($("#partida"));
+    deshabilitarCampo($("#destino"));
     cambiarPropiedad($("#tarifa2"),"background-color","#e5e7e9");
     $("#tarifa2").val("");
 }
@@ -1002,11 +1013,11 @@ function cambiarServicioEspecial()
     destinos = [];
     pasajeros = [];
     origen = undefined;
-    $("#tarifa2").prop("disabled",false);
+    habilitarCampo($("#tarifa2"));
     $("#tarifa2").val("");
     cambiarPropiedad($("#tarifa2"),"background-color","white");
-    $("#ruta").prop("disabled",true);
-    $("#truta").prop("disabled",true);
+    deshabilitarCampo($("#ruta"));
+    deshabilitarCampo($("#truta"));
     vaciarFormulario();
     borrarDirections();
     eliminarMarkers();
@@ -1214,19 +1225,19 @@ function abrirAddPasajero()
     if(partida === "" && partidaAplica && TIPO_SERVICIO !== 0){
         confirmar("Ingresar origen","Debe ingresar un punto de origen,¿desea continuar sin ingresarlo?",()=>{
             partidaAplica = false;
-            $("#partida").attr("disabled",true);
+            deshabilitarCampo($("#partida"));
             initPlacesAutoComplete(document.getElementById('agregaDireccion'));
             cambiarPropiedad($(".contenedor_editar"),"display","none");
             cambiarPropiedad($(".contenedor_agregar"),"display","block");
             quitarclase($("#contenedor_mapa"),"mapa_editar");
             agregarclase($("#contenedor_mapa"),"mapa_agregar");
         },()=>{
-            $("#partida").attr("disabled",false);
+            habilitarCampo($("#partida"));
             $("#partida").focus();
         });
     }
     else if (destino !== "" && TIPO_SERVICIO !== 0){
-        alertify.error("al seleccionar un destino no se pueden agregar pasajeros");
+        alertify.error("Al seleccionar un destino no se pueden agregar pasajeros");
     }
     else{
         initPlacesAutoComplete(document.getElementById('agregaDireccion'));
@@ -1317,6 +1328,7 @@ function initAgregarPasajero(obj,nombre,punto,celular){
         id = nombre+"-"+celular;
     }
     var ruta = $('#truta').val();
+    alert(ruta);
     var pasajero = $("#"+obj);
     var texto = "<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" draggable=\"true\" ondragstart=\"drag(event,$(this))\" ondrop=\"drop(event,$(this))\" ondragover=\"allowDrop(event)\">"
                                  +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+punto+"\">"
@@ -1348,7 +1360,7 @@ function initAgregarPasajero(obj,nombre,punto,celular){
             $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+punto);
             origen = punto; 
             pasajeros.push(id);
-            $("#destino").attr("disabled",false);
+            habilitarCampo($("#destino"));
             destinoAplica = true;
         }
         else
@@ -1399,8 +1411,8 @@ function initAddServicio(params,id,conductor,fecha,hora){
         borrarDirections();
         resetPasajeros();
         alertify.success('Servicio agregado con id '+response.servicio_id);
-        $("#ruta").prop("disabled",false);
-        $("#truta").prop("disabled",false);
+        habilitarCampo($("#ruta"));
+        habilitarCampo($("#truta"));
         cambiarPropiedad($(".buscador-pasajero"),"display","none");
         quitarclase($("#contenedor_mapa"),"mapa_bajo");
         notificarConductor(response.servicio_id,conductor);
@@ -1408,8 +1420,10 @@ function initAddServicio(params,id,conductor,fecha,hora){
         soloHayPartidaDestino = true;
         partidaAplica = true;
         destinoAplica = false;
-        $("#partida").prop("disabled",true);
-        $("#destino").prop("disabled",true);
+        deshabilitarCampo($("#partida"));
+        deshabilitarCampo($("#destino"));
     };
     postRequest(url,params,success);
 }
+
+
