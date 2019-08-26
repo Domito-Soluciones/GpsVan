@@ -920,6 +920,18 @@ select
     width: 70% !important;
     height: 25px !important;   
 }
+.input_asignar_origen
+{
+    width: 50% !important;
+    height: 25px !important;   
+    margin-bottom: 10px;
+}
+.titulo_origen{
+    font-weight: bold;
+    margin-left: 20px;
+    width: 65px;
+    display: inline-block;
+}
 .input_asignar_editar
 {
     position: relative;
@@ -1617,8 +1629,8 @@ select
 
 .contenedor-panel
 {
-    float: left;
-    width: 50%;
+    width: 49%;
+    display: inline-block
 }
 .contenedor-panel-completo
 {
@@ -1829,4 +1841,8 @@ select
     width: 75%;
     margin-left: 25%;
     height: auto;
+}
+
+.none{
+    display: none;
 }

@@ -42,7 +42,7 @@ $(document).ready(function(){
         $("#contenido-central").load("home.html");
         getUsuario();
         getfecha();
-        setInterval(function(){getfecha();},5000);
+        setInterval(function(){getfecha();},20000);
 
         $("#menu-telefono").click(function(){
             if($("#menu-telefono").attr('src') === 'img/menu.svg')

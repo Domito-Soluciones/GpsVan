@@ -448,7 +448,7 @@ class ServicioDao {
         $array = array();
         $conn = new Conexion();
         try {
-            $query = "SELECT * FROM tbl_servicio WHERE servicio_estado NOT IN (2,3,4,5,6) ORDER BY servicio_id ";
+            $query = "SELECT * FROM tbl_servicio WHERE servicio_estado NOT IN (2,3,4,5,6) AND (servicio_movil = '' OR servicio_movil IS NULL) ORDER BY servicio_id";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query); 
             while($row = mysqli_fetch_array($result)) {

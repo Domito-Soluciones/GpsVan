@@ -25,15 +25,16 @@
                 </div>
                 <div class="contenedor-panel">
                     <div class="cont-pre-monitor">
-                        Conductor:
+                        Veh&iacute;culo
                     </div>
                     <div class="input-panel">
-                        <input type="text" id="conductorV" class="input_asignar"  placeholder="Ej: Juan Perez" readonly>     
-                        <input type="hidden" id="conductorH" >                        
+                        <select id="vehiculos" class="select_asignar">
+                            <option value="">Seleccione</option>
+                        </select>
                     </div>
                 </div>
                 <div class="contenedor-panel">
-                    <div class="cont-pre-monitor cont-destino1">
+                    <div class="cont-pre-monitor">
                         Ruta
                     </div>
                     <div class="input-panel" id="destinos">
@@ -44,10 +45,19 @@
                     </div>
                 </div>
                 <div class="contenedor-panel">
+                    <div class="cont-pre-monitor">
+                        Conductor
+                    </div>
+                    <div class="input-panel">
+                        <input type="text" id="conductorV" class="input_asignar"  placeholder="Ej: Juan Perez" readonly>
+                        <input type="hidden" id="conductorH" >                       
+                    </div>
+                </div>
+                <div class="contenedor-panel">
                     <div class="cont-pre-monitor cont-destino1">
                         Tipo Ruta
                     </div>
-                    <div class="input-panel" id="destinos">
+                    <div class="input-panel">
                         <select id="truta">
                             <option value="">Seleccione</option>
                         </select>
@@ -59,6 +69,14 @@
                     </div>
                     <div class="input-panel">
                         <input type="text" class="input_asignar" list="ltarifa1" id="tarifa1" placeholder="Ej: Tarifa 1">
+                    </div>
+                </div>
+                <div class="contenedor-panel">
+                    <div class="cont-pre-monitor">
+                        Hora
+                    </div>
+                     <div class="input-panel">
+                        <input type="text" class="input_asignar" id="hora" placeholder="Ej: 12:23:00">
                     </div>
                 </div>
                 <div class="contenedor-panel">
@@ -86,25 +104,7 @@
                          <input type="text" class="input_asignar" id="fechaHasta" placeholder="Ej: 01/01/2020">
                     </div>
                 </div>
-                <div class="contenedor-panel">
-                    <div class="cont-pre-monitor">
-                        Hora
-                    </div>
-                     <div class="input-panel">
-                        <input type="text" class="input_asignar" id="hora" placeholder="Ej: 12:23:00">
-                    </div>
-                </div>
-                <div class="contenedor-panel">
-                    <div class="cont-pre-monitor">
-                        Veh&iacute;culo
-                    </div>
-                    <div class="input-panel">
-                        <select id="vehiculos" class="select_asignar">
-                            <option value="">Seleccione</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="contenedor-panel">
+<!--                <div class="contenedor-panel">
                     <div class="cont-pre-monitor">
                         Origen
                     </div>
@@ -123,7 +123,7 @@
                         <div class="datalist-visible" id="destinol"></div>
                         <div class="boton-chico oculto" id="buscaDestino"><img src="img/guardar.svg" width="12" height="12"></div>
                     </div>
-                </div>
+                </div>-->
                 <div class="contenedor-panel-completo">
                     <div class="cont-pre-monitor">
                         Observaciones
@@ -149,6 +149,23 @@
             </div>
             <div id="contenedor_punto_destino" class="contenedor_punto_encuentro">
                 
+            </div>
+            <div id="dato_especial">
+                <div class="buscador_titulo">
+                Origen & Destino
+                </div>
+                <div class="input-panel">
+                    <div class="titulo_origen">Origen</div>
+                    <input type="text" class="input_asignar_origen" id="partida" placeholder="Ej: Av los pinos 123" disabled>
+                    <div class="datalist-visible" id="partidal"></div>
+                    <div class="boton-chico oculto" id="buscaPartida"><img src="img/guardar.svg" width="12" height="12"></div>
+                </div>
+                <div class="input-panel">
+                    <div class="titulo_origen">Destino</div>
+                    <input type="text" class="input_asignar_origen" id="destino" placeholder="Ej: Av los pinos 723" disabled>
+                    <div class="datalist-visible" id="destinol"></div>
+                    <div class="boton-chico oculto" id="buscaDestino"><img src="img/guardar.svg" width="12" height="12"></div>
+                </div>
             </div>
             <div class="buscador_titulo">
                 Pasajeros Asignados

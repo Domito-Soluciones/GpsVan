@@ -596,6 +596,18 @@ function ocultarMapa()
     $('#map').appendTo('body');
     cambiarPropiedad($('#map'),"display","none");
 }
+function mostrarSubMapa()
+{
+    $('#map').appendTo('#contenedor_mapa2');
+    cambiarPropiedad($('#map'),"display","block");
+}
+
+function ocultarSubMapa()
+{
+    $('#contenedor_mapa2 #map').appendTo('body');
+    cambiarPropiedad($('#map'),"display","none");
+}
+
 
 function salir()
 {

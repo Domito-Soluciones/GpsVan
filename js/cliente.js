@@ -9,6 +9,7 @@ var CENTROS_COSTO = [];
 var mapa_oculto = true;
 var clientes_tarifa = [];
 var CAMPOS = ["rut","razon","tipoCliente","direccion","nombreContacto","telefono","mail","mail2"];
+var input_direccion_cliente;
 $(document).ready(function(){
     cambiarPropiedad($("#titulo_tarifa"),"background-color","white");
     PAGINA_ANTERIOR = PAGINA;
@@ -468,11 +469,41 @@ function abrirModificar(id,nombre)
                     }
                 });
 
+                $("#buscaOrigen").click(function(){
+                    input_direccion_cliente = $("#origen");
+                    if(mapa_oculto)
+                    {
+                        colocarMarcadorPlacesTarifaCliente();
+                        quitarclase($("#contenedor_mapa2"),"oculto");
+                        mapa_oculto = false;
+                    }
+                    else
+                    {
+                        agregarclase($("#contenedor_mapa2"),"oculto");
+                        mapa_oculto = true;
+                    }
+                });
+                $("#buscaDestino").click(function(){
+                    input_direccion_cliente = $("#destino");
+                    if(mapa_oculto)
+                    {
+                        colocarMarcadorPlacesTarifaCliente();
+                        quitarclase($("#contenedor_mapa2"),"oculto");
+                        mapa_oculto = false;
+                    }
+                    else
+                    {
+                        agregarclase($("#contenedor_mapa2"),"oculto");
+                        mapa_oculto = true;
+                    }
+                });
+                
                 $("#volverT").click(function(){
+                    ocultarMapa();
                     buscarTarifas(ID_CLIENTE,NOMBRE_CLIENTE);
                     
                 });
-
+                mostrarSubMapa();
             });
             cambiarPropiedad($("#guardar"),"visibility","visible");
             cambiarPropiedad($("#cancelar"),"visibility","visible");
@@ -489,7 +520,7 @@ function abrirModificar(id,nombre)
         });
         $("#volver").click(function(){
             NOMBRE_CLIENTE = undefined;
-            ocultarMapa();
+            ocultarSubMapa();
             if(typeof TIPO_GRUPO === 'undefined')
             {
                 buscarCliente();
@@ -684,6 +715,8 @@ function cambiarPestaniaGeneral()
     quitarclase($("#p_general"),"dispose");
     agregarclase($("#p_ccosto"),"dispose");
     agregarclase($("#p_tarifa"),"dispose");
+    mapa_oculto = false;
+    ocultarSubMapa();
 }
 
 function cambiarPestaniaCC()
@@ -693,7 +726,9 @@ function cambiarPestaniaCC()
     cambiarPropiedad($("#cont_tarifa"),"display","none");
     quitarclase($("#p_ccosto"),"dispose");
     agregarclase($("#p_general"), "dispose");
-     agregarclase($("#p_tarifa"), "dispose");
+    agregarclase($("#p_tarifa"), "dispose");
+    mapa_oculto = false;
+    ocultarSubMapa();
 }
 function cambiarPestaniaTarifa()
 {
@@ -703,7 +738,7 @@ function cambiarPestaniaTarifa()
     quitarclase($("#p_tarifa"),"dispose");
     agregarclase($("#p_general"), "dispose");
     agregarclase($("#p_ccosto"), "dispose");
-       
+    mapa_oculto = false;
 }
 
 function agregarCentroCosto()
@@ -789,6 +824,36 @@ function colocarMarcadorPlaces()
     });
 }
 
+function colocarMarcadorPlacesTarifaCliente()
+{
+    eliminarMarkers();
+    var marker = new google.maps.Marker({
+        position: map.getCenter(),
+        map: map
+    });
+    
+    markers.push(marker);
+
+    map.setZoom(17);
+    map.panTo(marker.position);
+    
+    google.maps.event.addListener(map, "drag", function() {
+        marker.setPosition(this.getCenter());
+        POSITION = [this.getCenter().lat(),this.getCenter().lng()];
+    });
+    
+    google.maps.event.addListener(map, "dragend", function() {
+        input_direccion_cliente.val("Cargando...");
+        var query = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + POSITION[0] +','+ POSITION[1]+'&key=' + API_KEY;
+        $.getJSON(query, function (data) {
+            if (data.status === 'OK') { 
+                var zero = data.results[0];
+                var address = zero.formatted_address;
+                input_direccion_cliente.val(address);     
+            } 
+        });
+    });
+}
 function preEliminarCliente(id)
 {
     confirmar("Eliminar cliente","Esta seguro que desea eliminar al cliente "+id,
@@ -1106,6 +1171,34 @@ function abrirBuscador(id)
         $("#horario").change(function(){
             generarNombre();
         });
+        $("#buscaOrigen").click(function(){
+            input_direccion_cliente = $("#origen");
+            if(mapa_oculto)
+            {
+                colocarMarcadorPlacesTarifaCliente();
+                quitarclase($("#contenedor_mapa2"),"oculto");
+                mapa_oculto = false;
+            }
+            else
+            {
+                agregarclase($("#contenedor_mapa2"),"oculto");
+                mapa_oculto = true;
+            }
+        });
+        $("#buscaDestino").click(function(){
+            input_direccion_cliente = $("#destino");
+            if(mapa_oculto)
+            {
+                colocarMarcadorPlacesTarifaCliente();
+                quitarclase($("#contenedor_mapa2"),"oculto");
+                mapa_oculto = false;
+            }
+            else
+            {
+                agregarclase($("#contenedor_mapa2"),"oculto");
+                mapa_oculto = true;
+            }
+        });
         cargarClientes();
         $("#clientes").val(tarifa.tarifa_cliente);
         $("#tipo").val(tarifa.tarifa_tipo);
@@ -1127,11 +1220,14 @@ function abrirBuscador(id)
         });
 
         $("#volverT").click(function(){
+            ocultarSubMapa();
             buscarTarifas(ID_CLIENTE,NOMBRE_CLIENTE);
             quitarclase($("#agregar"),"oculto");
             agregarclase($("#guardarT"),"oculto");
             agregarclase($("#eliminaT"),"oculto");
         });
+        
+        mostrarSubMapa();
     });
 }
 
