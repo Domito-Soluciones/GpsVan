@@ -490,7 +490,7 @@ function buscarMovilTipo(tipo)
 }
 function buscarMovilTodo()
 {
-    TIPO_GRUPO = 2;
+    TIPO_GRUPO = '2';
     marcarFilaActiva("col_2");
     var moviles = $("#lista_busqueda_movil_detalle");
     moviles.html("");

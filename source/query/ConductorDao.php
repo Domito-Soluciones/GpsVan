@@ -96,7 +96,7 @@ class ConductorDao {
                     . "conductor_telefono = '$telefono',conductor_celular = '$celular',"
                     . "conductor_direccion = '$direccion',conductor_mail = '$mail',"
                     . "conductor_nick = '$nick',";
-                    if($conductor->getPassword() != '')
+                    if($conductor->getPassword() != 'NahoUVnwKMuivozjJ91cEw==')
                     {
                         $query .= "conductor_clave = '$password',";
                     }
