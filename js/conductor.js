@@ -296,7 +296,7 @@ function buscarConductor(cargar = false)
             alertify.error("No hay registros que mostrar");
             return;
         }
-        conductores.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div class=\"mini_tab\">Tipo</div><div></div></div>")
+        conductores.append("<div class=\"contenedor_central_titulo_conductor\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div class=\"mini_tab\">Tipo</div><div></div></div>")
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].conductor_id;
@@ -320,7 +320,7 @@ function buscarConductor(cargar = false)
             {
                 tipo = 'Transportista / Conductor';
             }
-            conductores.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\">"+
+            conductores.append("<div class=\"fila_contenedor fila_contenedor_conductor\" id=\""+id+"\">"+
                     "<div onClick=\"abrirModificar('"+id+"','"+nombre+"','"+papellido+"')\">"+rut+"</div>"+
                     "<div onClick=\"abrirModificar('"+id+"','"+nombre+"','"+papellido+"')\">"+nombre+"</div>"+
                     "<div onClick=\"abrirModificar('"+id+"','"+nombre+"','"+papellido+"')\">"+papellido+"</div>"+
@@ -338,7 +338,7 @@ function buscarConductorGrupo(grupo)
     marcarFilaActiva("col_"+grupo);
     var conductores = $("#lista_busqueda_conductor_detalle");
     conductores.html("");
-    conductores.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div class=\"mini_tab\" >Grupo</div></div>")
+    conductores.append("<div class=\"contenedor_central_titulo_conductor\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div class=\"mini_tab\" >Grupo</div></div>")
     var noHayRegistros = true;
     for(var i = 0 ; i < CONDUCTORES.length; i++)
     {
@@ -366,7 +366,7 @@ function buscarConductorGrupo(grupo)
             {
                 tipo = 'Transportista / Conductor';
             }
-            conductores.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\">"+
+            conductores.append("<div class=\"fila_contenedor fila_contenedor_conductor\" id=\""+id+"\">"+
                     "<div onClick=\"abrirModificar('"+id+"','"+nombre+"','"+papellido+"')\">"+rut+"</div>"+
                     "<div onClick=\"abrirModificar('"+id+"','"+nombre+"','"+papellido+"')\">"+nombre+"</div>"+
                     "<div onClick=\"abrirModificar('"+id+"','"+nombre+"','"+papellido+"')\">"+papellido+"</div>"+
@@ -388,7 +388,7 @@ function buscarConductorTodo()
     marcarFilaActiva("col_4");
     var conductores = $("#lista_busqueda_conductor_detalle");
     conductores.html("");
-    conductores.append("<div class=\"contenedor_central_titulo\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div class=\"mini_tab\" >Grupo</div></div>")
+    conductores.append("<div class=\"contenedor_central_titulo_conductor\"><div></div><div>Rut</div><div>Nombre</div><div>Apellido</div><div class=\"mini_tab\" >Grupo</div></div>")
     var noHayRegistros = true;
     for(var i = 0 ; i < CONDUCTORES.length; i++)
     {
@@ -414,7 +414,7 @@ function buscarConductorTodo()
         {
             tipo = 'Transportista / Conductor';
         }
-        conductores.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\">"+
+        conductores.append("<div class=\"fila_contenedor fila_contenedor_conductor\" id=\""+id+"\">"+
                 "<div onClick=\"abrirModificar('"+id+"','"+nombre+"','"+papellido+"')\">"+rut+"</div>"+
                 "<div onClick=\"abrirModificar('"+id+"','"+nombre+"','"+papellido+"')\">"+nombre+"</div>"+
                 "<div onClick=\"abrirModificar('"+id+"','"+nombre+"','"+papellido+"')\">"+papellido+"</div>"+

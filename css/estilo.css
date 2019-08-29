@@ -1398,6 +1398,14 @@ select
     background: white;
     margin-left: 1px;
 }
+.contenedor_central_titulo_conductor
+{
+    width: calc(100% - 1px);
+    height: 40px;
+    line-height: 40px;
+    background: white;
+    margin-left: 1px;
+}
 .contenedor_central_titulo_pasajero
 {
     width: 100%;
@@ -1413,6 +1421,14 @@ select
     background: white;
 }
 .contenedor_central_titulo div
+{
+    font-size: 17px;
+    color:#0099ff;
+    float: left;
+    width: 19%;
+    text-align: center;
+}
+.contenedor_central_titulo_conductor div
 {
     font-size: 17px;
     color:#0099ff;
@@ -1443,12 +1459,24 @@ select
     width: calc(100% - 1px) !important;
     margin-left: 1px;
 }
+.fila_contenedor_conductor
+{
+    padding: 0 !important;
+    width: calc(100% - 1px) !important;
+    margin-left: 1px;
+}
 .fila_contenedor_pasajero
 {
     padding: 0 !important;
     width: 100% !important;
 }
 .fila_contenedor_servicio div
+{
+    float: left;
+    width: 19%;
+    text-align: center;    
+}
+.fila_contenedor_conductor div
 {
     float: left;
     width: 19%;
