@@ -241,6 +241,9 @@
     .contenedor_central_titulo_pasajero div{
         width: 25%;
     }
+    .contenedor_central_titulo_conductor div{
+        width: 25%;
+    }
     .fila_contenedor_pasajero div{
         width: 25%;
     }
@@ -250,6 +253,10 @@
     .fila_contenedor_servicio div
     {
         width: 33%;
+    }
+    .fila_contenedor_conductor div
+    {
+        width: 25%;
     }
     .cont_servicio div{
         width: 25%;
