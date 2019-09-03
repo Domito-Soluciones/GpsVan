@@ -166,7 +166,7 @@ function buscarTarifas(id,nombre,direccion)
         var tarifas = $("#lista_busqueda_tarifa_detalle");
         tarifas.html("");
         TARIFAS = response;
-        tarifas.append("<div class=\"contenedor_central_titulo_tarifa\"><div>Nombre</div><div>Hora</div><div>Descripción</div><div>Empresa</div><div></div></div>");
+        tarifas.append("<div class=\"contenedor_central_titulo_tarifa\"><div>Nombre</div><div class=\"col_empresa_pasajero\">Hora</div><div class=\"col_empresa_pasajero\">Descripción</div><div>Empresa</div><div></div></div>");
         if(response.length === 0)
         {
             tarifas.append("<div class=\"mensaje_bienvenida\">No hay registros que mostrar</div>");
@@ -180,8 +180,8 @@ function buscarTarifas(id,nombre,direccion)
             var empresa = response[i].tarifa_cliente;
             tarifas.append("<div class=\"fila_contenedor fila_contenedor_tarifa_detalle\" id=\""+id+"\" \">"+
                     "<div onClick=\"abrirBuscador('"+id+"')\">"+nombre+"</div>"+
-                    "<div onClick=\"abrirBuscador('"+id+"')\">"+hora+"</div>"+
-                    "<div onClick=\"abrirBuscador('"+id+"')\">"+descripcion+"</div>"+
+                    "<div  class=\"col_empresa_pasajero\" onClick=\"abrirBuscador('"+id+"')\">"+hora+"</div>"+
+                    "<div  class=\"col_empresa_pasajero\" onClick=\"abrirBuscador('"+id+"')\">"+descripcion+"</div>"+
                     "<div onClick=\"abrirBuscador('"+id+"')\">"+empresa+"</div>"+
                     "<div><img onclick=\"preEliminarTarifa('"+descripcion+"','"+nombre+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
                     "</div>");
@@ -465,7 +465,7 @@ function buscarTarifasAll(cargar = false)
         var tarifas = $("#lista_busqueda_tarifa_detalle");
         tarifas.html("");
         TARIFAS = response;
-        tarifas.append("<div class=\"contenedor_central_titulo_tarifa\"><div>Nombre</div><div>Hora</div><div>Descripción</div><div>Empresa</div><div></div></div>");
+        tarifas.append("<div class=\"contenedor_central_titulo_tarifa\"><div>Nombre</div><div class=\"col_empresa_pasajero\">Hora</div><div class=\"col_empresa_pasajero\">Descripción</div><div>Empresa</div><div></div></div>");
         if(response.length === 0)
         {
             tarifas.append("<div class=\"mensaje_bienvenida\">No hay registros que mostrar</div>");
@@ -479,8 +479,8 @@ function buscarTarifasAll(cargar = false)
             var empresa = response[i].tarifa_cliente;
             tarifas.append("<div class=\"fila_contenedor fila_contenedor_tarifa_detalle\" id=\""+id+"\" \">"+
                     "<div onClick=\"abrirBuscador('"+id+"')\">"+nombre+"</div>"+
-                    "<div onClick=\"abrirBuscador('"+id+"')\">"+hora+"</div>"+
-                    "<div onClick=\"abrirBuscador('"+id+"')\">"+descripcion+"</div>"+
+                    "<div class=\"col_empresa_pasajero\" onClick=\"abrirBuscador('"+id+"')\">"+hora+"</div>"+
+                    "<div class=\"col_empresa_pasajero\" onClick=\"abrirBuscador('"+id+"')\">"+descripcion+"</div>"+
                     "<div onClick=\"abrirBuscador('"+id+"')\">"+empresa+"</div>"+
                     "<div><img onclick=\"preEliminarTarifa('"+descripcion+"','"+nombre+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
                     "</div>");

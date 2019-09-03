@@ -244,6 +244,12 @@
     .contenedor_central_titulo_conductor div{
         width: 25%;
     }
+    .contenedor_central_titulo_tarifa div{
+        width: 32%;
+    }
+    .fila_contenedor_tarifa_detalle div{
+        width: 32%;
+    }
     .fila_contenedor_pasajero div{
         width: 25%;
     }
@@ -359,15 +365,11 @@
     .contenedor-formulario_mapa
     {
         margin-left: 20px;
-        width: 300PX;
+        width: 300px;
         display: inline-block;
         float: left;
     }
     #contenedor_mapa{
         margin-top: 37px !important;
-    }
-    .map{
-        height: 300px;
-        width: 300px;
     }
 }
