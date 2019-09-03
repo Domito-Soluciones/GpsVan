@@ -16,7 +16,7 @@ class ClienteDao {
                     . "cliente_nombre_contacto LIKE '%".$busqueda."%' OR "
                     . "cliente_mail_contacto LIKE '%".$busqueda."%'";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $cliente = new Cliente();
                 $cliente->setId($row["cliente_id"]);
@@ -35,6 +35,7 @@ class ClienteDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -46,7 +47,7 @@ class ClienteDao {
         try {
             $query = "SELECT * FROM tbl_cliente WHERE cliente_grupo = '".$grupo."'";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $cliente = new Cliente();
                 $cliente->setId($row["cliente_id"]);
@@ -66,6 +67,7 @@ class ClienteDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -78,12 +80,13 @@ class ClienteDao {
             $query = "SELECT centro_costo_nombre,centro_costo_nombre FROM tbl_centro_costo WHERE"
                     . " centro_costo_cliente = '$cliente'";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn));
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 array_push($array, $row["centro_costo_nombre"]);
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -109,13 +112,14 @@ class ClienteDao {
                     . "cliente_mail_contacto,cliente_mail_facturacion,cliente_contrato,cliente_grupo,cliente_color"
                     . ") VALUES ('$razon','$tipo','$rut','$direccion','$nombre','$telefono','$mail','$mail2','$contrato','$grupo','$color')"; 
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -143,13 +147,14 @@ class ClienteDao {
                     . "cliente_mail_facturacion = '$mail2', cliente_contrato = '$contrato'"
                     ." WHERE cliente_rut = '$rut'";
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -161,13 +166,14 @@ class ClienteDao {
         try {
             $query = "DELETE FROM tbl_cliente WHERE cliente_rut = '$rut'"; 
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -179,13 +185,14 @@ class ClienteDao {
         try {
             $query = "DELETE FROM tbl_centro_costo WHERE centro_costo_cliente = '$idCliente'"; 
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -201,13 +208,14 @@ class ClienteDao {
                 $query .= "INSERT INTO tbl_centro_costo (centro_costo_nombre,centro_costo_cliente) VALUES ('$nombres[$i]','$cliente');"; 
             }
             $conn->conectar();
-            if (mysqli_multi_query($conn->conn,$query)) {
+            if (mysqli_multi_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }

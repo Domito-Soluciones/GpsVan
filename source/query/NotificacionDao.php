@@ -19,13 +19,14 @@ class NotificacionDao {
                     . "notificacion_estado,notificacion_servicio,notificacion_llave,notificacion_fecha)"
                     . " VALUES ('$texto','$tipo',0,'$servicio','$llave','$fecha')"; 
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -36,13 +37,14 @@ class NotificacionDao {
         try {
             $query = "UPDATE tbl_notificacion SET notificacion_estado = 1 WHERE notificacion_id = $idNotificacion OR notificacion_servicio = '$idServicio'"; 
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -54,13 +56,14 @@ class NotificacionDao {
         try {
             $query = "UPDATE tbl_notificacion SET notificacion_estado = 0 WHERE notificacion_servicio = '$idServicio'"; 
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -74,7 +77,7 @@ class NotificacionDao {
                     . " notificacion_estado = 0 AND "
                     . "notificacion_llave = '$llave' LIMIT 10";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $notificacion = new Notificacion();
                 $notificacion->setId($row["notificacion_id"]);
@@ -85,6 +88,7 @@ class NotificacionDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }

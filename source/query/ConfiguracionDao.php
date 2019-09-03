@@ -12,7 +12,7 @@ class ConfiguracionDao {
         try {
             $query = "SELECT * FROM tbl_configuracion";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die; 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)));  
             while($row = mysqli_fetch_array($result)) {
                 $configuracion = new Configuracion();
                 $configuracion->setId($row["configuracion_id"]);
@@ -22,6 +22,7 @@ class ConfiguracionDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -36,13 +37,14 @@ class ConfiguracionDao {
                     "UPDATE tbl_configuracion SET configuracion_valor = '$isapre' WHERE configuracion_nombre = 'porcentaje_isapre';".
                     "UPDATE tbl_configuracion SET configuracion_valor = '$mutual' WHERE configuracion_nombre = 'porcentaje_mutual';";
             $conn->conectar();
-            if (mysqli_multi_query($conn->conn,$query)) {
+            if (mysqli_multi_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }

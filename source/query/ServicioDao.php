@@ -32,13 +32,14 @@ class ServicioDao {
                     . "servicio_hora,servicio_movil,servicio_conductor,servicio_tarifa1,servicio_tarifa2,servicio_observacion,servicio_agente,servicio_estado,servicio_tipo)"
                     . " VALUES ('$cliente','$ruta','$truta','$fecha','$hora','$movil','$conductor','$tarifa1','$tarifa2','$observaciones',$agente,$estado,$tipo)";
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -65,13 +66,14 @@ class ServicioDao {
                     . "servicio_especial_estado)"
                     . " VALUES ('$partida','$destino','$pasajero',$celular,'$fecha','$hora','$movil','$conductor','$tarifa','$observaciones',$agente,1)";
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -91,13 +93,14 @@ class ServicioDao {
                 }
             }
             $conn->conectar();
-            if (mysqli_multi_query($conn->conn,$query)) {
+            if (mysqli_multi_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -109,13 +112,14 @@ class ServicioDao {
         try {
             $query = "DELETE FROM tbl_servicio_pasajero WHERE servicio_pasajero_id_servicio = '$idServicio'"; 
             $conn->conectar();
-            if (mysqli_multi_query($conn->conn,$query)) {
+            if (mysqli_multi_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -129,13 +133,14 @@ class ServicioDao {
                     . "(servicio_detalle_real_servicio,servicio_detalle_real_lat,servicio_detalle_real_lon)"
                     . " VALUES ($idServicio,'$lat','$lon');";
             $conn->conectar();
-            if (mysqli_multi_query($conn->conn,$query)) {
+            if (mysqli_multi_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -160,12 +165,13 @@ class ServicioDao {
                     . "servicio_hora = '$hora',servicio_movil = '$movil',servicio_estado = '$estado',"
                     . "servicio_conductor = '$conductor',servicio_observacion = '$observacion', servicio_tarifa1 = '$tarifa1', servicio_tarifa2 = '$tarifa2' WHERE servicio_id = ".$id; 
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -222,7 +228,7 @@ class ServicioDao {
                     .$buscaFecha." ".$buscaId." ".$buscaEmpresa." ".$buscaConductor." ". $buscaTRuta." ".$buscaMovil." ".$buscaEstado
                     . " ORDER BY servicio_id DESC LIMIT 500";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $servicio = new Servicio();
                 $servicio->setId($row["servicio_id"]);          
@@ -242,6 +248,7 @@ class ServicioDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -268,7 +275,7 @@ class ServicioDao {
             $query = "SELECT * FROM tbl_servicio WHERE servicio_estado IN (5,6) "
                     .$buscaFecha." ".$buscaConductor." ORDER BY servicio_id DESC";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $servicio = new Servicio();
                 $servicio->setId($row["servicio_id"]);          
@@ -286,6 +293,7 @@ class ServicioDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -298,7 +306,7 @@ class ServicioDao {
             $query = "SELECT * FROM tbl_servicio WHERE "
                     . "servicio_id = $id";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $servicio->setId($row["servicio_id"]);          
                 $servicio->setPartida($row["servicio_partida"]);
@@ -319,6 +327,7 @@ class ServicioDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $servicio;
     }
@@ -331,7 +340,7 @@ class ServicioDao {
             $query = "SELECT * FROM tbl_servicio_pasajero LEFT JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id WHERE "
                     . "servicio_pasajero_id_servicio = '$id' ORDER BY servicio_pasajero_id";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $servicioPasajero = new ServicioPasajero();
                 $servicioPasajero->setId($row["servicio_pasajero_id_servicio"]);          
@@ -351,6 +360,7 @@ class ServicioDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -362,7 +372,7 @@ class ServicioDao {
             $query = "SELECT * FROM tbl_servicio_detalle WHERE "
                     . "servicio_detalle_servicio = '$id'";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $servicioDetalle->setId($row["servicio_detalle_id"]);          
                 $servicioDetalle->setLat($row["servicio_detalle_lat"]);
@@ -370,6 +380,7 @@ class ServicioDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $servicioDetalle;
     }
@@ -382,12 +393,13 @@ class ServicioDao {
             
             $query = "SELECT lower(servicio_tipo) as tipo,count(*) as total FROM tbl_servicio where servicio_fecha >= '$desde 00:00:00.0' and servicio_fecha <= '$hasta 23:59:59.999' group by servicio_tipo";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $array[$row["tipo"]] = $row['total'];
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -400,12 +412,13 @@ class ServicioDao {
             
             $query = "SELECT servicio_movil,count(*) as total FROM tbl_servicio WHERE servicio_fecha >= '$desde 00:00:00.0' and servicio_fecha <= '$hasta 23:59:59.999' group by servicio_movil";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $array[$row["servicio_movil"]] = $row['total'];
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -418,7 +431,7 @@ class ServicioDao {
             $query = "SELECT * FROM tbl_servicio JOIN tbl_pasajero ON servicio_usuario = CONCAT(pasajero_nombre,' ',pasajero_papellido) "
                     . "WHERE servicio_estado = 2 AND servicio_movil = (SELECT (SELECT movil_nombre FROM tbl_movil WHERE movil_id = conductor_movil) as conductor_movil FROM tbl_conductor WHERE conductor_nick = '$usuario')";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $servicio->setId($row["servicio_id"]);          
                 $servicio->setPartida($row["servicio_partida"]);
@@ -440,6 +453,7 @@ class ServicioDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $servicio;
     }
@@ -450,7 +464,7 @@ class ServicioDao {
         try {
             $query = "SELECT * FROM tbl_servicio WHERE servicio_estado NOT IN (2,3,4,5,6) AND (servicio_movil = '' OR servicio_movil IS NULL) ORDER BY servicio_id";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $servicio = new Servicio();            
                 $servicio->setId($row["servicio_id"]);
@@ -465,6 +479,7 @@ class ServicioDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -486,7 +501,7 @@ class ServicioDao {
                     . "WHERE servicio_conductor = '$conductor' AND servicio_estado NOT IN (5,6) "
                     . "ORDER BY servicio_id DESC, servicio_pasajero_id";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $servicio = new Servicio();            
                 $servicio->setId($row["servicio_id"]);
@@ -519,6 +534,7 @@ class ServicioDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -530,7 +546,7 @@ class ServicioDao {
         try {
             $query = "SELECT * FROM tbl_servicio_especial WHERE servicio_especial_conductor = '$conductor' AND servicio_especial_estado NOT IN (4,5,6) ORDER BY servicio_especial_id desc LIMIT 20";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $servicio = new ServicioEspecial();            
                 $servicio->setId($row["servicio_especial_id"]);
@@ -549,6 +565,7 @@ class ServicioDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -569,7 +586,7 @@ class ServicioDao {
                     . "LEFT JOIN tbl_cliente ON servicio_cliente = cliente_razon_social "
                     . "WHERE servicio_id = $idServicio AND servicio_conductor = '$idConductor' AND servicio_estado IN (3,4) ORDER BY servicio_pasajero_id";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $servicio = new Servicio();            
                 $servicio->setId($row["servicio_id"]);
@@ -602,6 +619,7 @@ class ServicioDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -622,7 +640,7 @@ class ServicioDao {
                     . "JOIN tbl_cliente ON servicio_cliente = cliente_razon_social "
                     . "WHERE servicio_id = $idServicio AND servicio_estado IN (5,6) ORDER BY servicio_pasajero_id";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $servicio = new Servicio();            
                 $servicio->setId($row["servicio_id"]);
@@ -648,6 +666,7 @@ class ServicioDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -659,7 +678,7 @@ class ServicioDao {
         try {
             $query = "SELECT * FROM tbl_servicio_detalle_real WHERE servicio_detalle_real_servicio = $idServicio";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $servicioDetalle = new ServicioDetalle();
                 $servicioDetalle->setId($row["servicio_detalle_real_servicio"]);
@@ -669,18 +688,18 @@ class ServicioDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
 
-    
     public function desAsignarServicio($id,$estado)
     {
         $conn = new Conexion();
         try {
             $query = "UPDATE tbl_servicio SET servicio_movil = '',servicio_estado = $estado WHERE servicio_id = $id"; 
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 return $id;
             } else {
                 echo mysqli_error($conn->conn);
@@ -688,6 +707,7 @@ class ServicioDao {
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
     }
     public function cambiarEstadoServicio($id,$estado,$observacion)
@@ -705,7 +725,7 @@ class ServicioDao {
             }
             $query = "UPDATE tbl_servicio SET servicio_estado = '$estado' $stQuery $stObs WHERE servicio_id = $id"; 
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 return $id;
             } else {
                 echo mysqli_error($conn->conn);
@@ -713,6 +733,7 @@ class ServicioDao {
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
     }
     
@@ -722,7 +743,7 @@ class ServicioDao {
         try {
             $query = "UPDATE tbl_servicio_pasajero SET servicio_pasajero_destino = '$destino',servicio_pasajero_lat_destino = $lat,servicio_pasajero_lon_destino = $lon WHERE servicio_pasajero_id_servicio = $id AND servicio_pasajero_id_pasajero = '$pasajero'"; 
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 return $id;
             } else {
                 echo mysqli_error($conn->conn);
@@ -730,6 +751,7 @@ class ServicioDao {
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
     }
     
@@ -739,7 +761,7 @@ class ServicioDao {
         try {
             $query = "UPDATE tbl_servicio_especial SET servicio_especial_estado = '$estado' WHERE servicio_especial_id = $id"; 
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 return $id;
             } else {
                 echo mysqli_error($conn->conn);
@@ -747,6 +769,7 @@ class ServicioDao {
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
     }
     public function obtenerMovilDisponible()
@@ -756,24 +779,25 @@ class ServicioDao {
         try {          
             $query = "SELECT movil_nombre FROM tbl_movil WHERE movil_estado = 1 ORDER BY movil_ultima_asignacion DESC LIMIT 1"; 
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $movil = $row["movil_nombre"];
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $movil;
     }
     
     public function obtenerMovilServicio($nombre)
     {
-               $movil = new Movil();
+        $movil = new Movil();
         $conn = new Conexion();
         try {           
             $query = "SELECT movil_nombre, movil_lat, movil_lon FROM tbl_movil WHERE movil_nombre = '$nombre'"; 
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $movil->setNombre($row["movil_nombre"]);
                 $movil->setLat($row["movil_lat"]);
@@ -781,6 +805,7 @@ class ServicioDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $movil;
     }
@@ -792,13 +817,14 @@ class ServicioDao {
         try {
             $query = "UPDATE tbl_movil SET movil_ultima_asignacion = NOW() WHERE movil_nombre = (SELECT conductor_movil FROM tbl_conductor WHERE conductor_nick = '$idConductor')"; 
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -810,13 +836,14 @@ class ServicioDao {
         try {
             $query = "UPDATE tbl_servicio SET servicio_estado = 6 WHERE servicio_id = '$idServicio'"; 
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $idServicio;
     }
@@ -833,13 +860,14 @@ class ServicioDao {
             }
             $query = "UPDATE tbl_servicio_pasajero SET servicio_pasajero_estado = $estado,pasajero_estado_cancelado = '$observacion' ".$stLatlng." WHERE servicio_pasajero_id_servicio = $idServicio AND servicio_pasajero_id_pasajero  = '$idPasajero'";
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $idServicio;
     }
@@ -851,13 +879,14 @@ class ServicioDao {
         try {
             $query = "UPDATE tbl_servicio_pasajero SET servicio_pasajero_estado = $estado WHERE servicio_pasajero_id_servicio = $idServicio AND servicio_pasajero_estado  != 2";
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $idServicio;
     }
@@ -869,13 +898,14 @@ class ServicioDao {
         try {
             $query = "UPDATE tbl_servicio SET servicio_observacion_adicional = '$comentario' WHERE servicio_id = ".$idServicio;
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $idServicio;
     }

@@ -26,12 +26,13 @@ class LiquidacionDao {
             $hasta = $anioHasta."-".$mesHasta."-01 00:00:00";
             $query = "SELECT SUM(servicio_tarifa1) as servicio_total,servicio_cliente FROM tbl_servicio WHERE servicio_conductor = '$conductor' AND servicio_fecha >= '$desde' AND servicio_fecha < '$hasta' AND servicio_estado = 5 GROUP BY servicio_cliente";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 array_push($array, $row["servicio_cliente"]."%".$row["servicio_total"]);
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -43,7 +44,7 @@ class LiquidacionDao {
         try {
             $query = "SELECT movil_seg_ob_valor,movil_seg_rcdm_valor,movil_seg_as_valor, movil_seg_rcexceso_valor, movil_gps, movil_celular, movil_app FROM tbl_movil WHERE movil_conductor = $conductor";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 array_push($array,$row["movil_seg_ob_valor"]);
                 array_push($array,$row["movil_seg_rcdm_valor"]);
@@ -55,6 +56,7 @@ class LiquidacionDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -70,12 +72,13 @@ class LiquidacionDao {
             }
             $query = "SELECT * FROM tbl_rendicion WHERE rendicion_conductor = $conductor AND rendicion_fecha = '$mes-$anio'";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 array_push($array,$row["rendicion_dato"] ."%".$row["rendicion_valor"]."%".$row["rendicion_tipo"]);
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -87,12 +90,13 @@ class LiquidacionDao {
         try {
             $query = "SELECT configuracion_valor FROM tbl_configuracion ORDER BY configuracion_id";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 array_push($array,$row["configuracion_valor"]);
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -144,7 +148,7 @@ class LiquidacionDao {
                     .$buscaFecha." ".$buscaId." ".$buscaEmpresa." ".$buscaConductor." ".$buscaMovil." ".$buscaEstado
                     . " ORDER BY servicio_id DESC LIMIT 15";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $servicio = new Servicio();
                 $servicio->setId($row["servicio_id"]);          
@@ -162,6 +166,7 @@ class LiquidacionDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -213,7 +218,7 @@ class LiquidacionDao {
                     .$buscaFecha." ".$buscaId." ".$buscaEmpresa." ".$buscaConductor." ".$buscaMovil." ".$buscaEstado
                     . " ORDER BY servicio_id DESC";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $servicio = new Servicio();
                 $servicio->setId($row["servicio_id"]);          
@@ -225,6 +230,7 @@ class LiquidacionDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
