@@ -65,13 +65,14 @@ class MovilDao {
                     . "'$adjuntoPerCir','$adjuntoRevTec','$adjuntoNMotor','$adjuntoSeremi','$adjuntoSegOb','$adjuntoSegRcDm','$adjuntoSegAs','$adjuntoSegExceso',"
                     . "0,0,0,0,0,0,CURRENT_TIMESTAMP,0,'$tipo')";
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -134,13 +135,14 @@ class MovilDao {
                     . "movil_seremi_adjunto = '$adjuntoSeremi',movil_seg_ob_adjunto = '$adjuntoSegOb',movil_seg_rc_dm_adjunto = '$adjuntoSegRcDm',movil_seg_as_adjunto = '$adjuntoSegAs',movil_seg_exceso_adjunto = '$adjuntoSegExceso',movil_tipo = '$tipo'"
                     . " WHERE movil_patente = '$patente'";           
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -158,7 +160,7 @@ class MovilDao {
                     . "movil_anio LIKE '%$busqueda%' "
                     . " LIMIT 20";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn));
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $movil = new Movil();
                 $movil->setId($row["movil_id"]);
@@ -217,6 +219,7 @@ class MovilDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -236,7 +239,7 @@ class MovilDao {
                     . "movil_anio LIKE '%$busqueda%' "
                     . " LIMIT 20";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn));
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $movil = new Movil();
                 $movil->setId($row["movil_id"]);
@@ -255,6 +258,7 @@ class MovilDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -266,7 +270,7 @@ class MovilDao {
         try {
             $query = "SELECT * FROM tbl_movil left join tbl_conductor on movil_conductor = conductor_id WHERE movil_tipo = '$grupo'";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn));
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $movil = new Movil();
                 $movil->setId($row["movil_id"]);
@@ -325,6 +329,7 @@ class MovilDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -335,7 +340,7 @@ class MovilDao {
         try {
             $query = "SELECT * FROM tbl_movil WHERE movil_patente = '".$busqueda."' OR movil_servicio = ".$busqueda;
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $movil = new Movil();
                 $movil->setId($row["movil_id"]);
@@ -368,6 +373,7 @@ class MovilDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $movil;
     }
@@ -378,7 +384,7 @@ class MovilDao {
         try {
             $query = "SELECT * FROM tbl_movil JOIN tbl_conductor ON movil_id = conductor_movil WHERE movil_nombre = '".$movil."'";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $movil = new Movil();
                 $movil->setId($row["movil_id"]);
@@ -409,6 +415,7 @@ class MovilDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $movil;
     }
@@ -420,13 +427,14 @@ class MovilDao {
         try {
             $query = "UPDATE tbl_movil SET movil_lat = $lat, movil_lon = $lon WHERE movil_conductor = '$conductor'"; 
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -439,13 +447,14 @@ class MovilDao {
             $query = "UPDATE tbl_movil SET movil_estado = $estado WHERE movil_conductor = ".$conductor.";";
             $query.= "UPDATE tbl_conductor SET conductor_equipo = '$equipo' WHERE conductor_id = ".$conductor.";";
             $conn->conectar();
-            if (mysqli_multi_query($conn->conn,$query)) {
+            if (mysqli_multi_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -457,13 +466,14 @@ class MovilDao {
         try {
             $query = "UPDATE tbl_movil SET movil_servicio = '$servicio' WHERE movil_conductor = ".$conductor; 
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -475,13 +485,14 @@ class MovilDao {
         try {
             $query = "DELETE FROM tbl_movil WHERE movil_patente = '$patente'"; 
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }

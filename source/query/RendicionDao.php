@@ -17,13 +17,14 @@ class RendicionDao {
             $query = "INSERT INTO tbl_rendicion (rendicion_conductor,rendicion_dato,rendicion_valor,rendicion_fecha,rendicion_tipo)"
                     . " VALUES ('$conductor','$dato','$valor','$fecha','$tipo')"; 
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -38,13 +39,14 @@ class RendicionDao {
         try {
             $query = "UPDATE tbl_rendicion SET rendicion_dato = '$dato',rendicion_valor = '$valor',rendicion_tipo = '$tipo' WHERE rendicion_id = $idR"; 
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -60,7 +62,7 @@ class RendicionDao {
                 $query = "SELECT * FROM tbl_rendicion WHERE rendicion_conductor = ".$conductor." ORDER BY rendicion_id DESC LIMIT 20";   
             }
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $rendicion = new Rendicion();
                 $rendicion->setId($row["rendicion_id"]);
@@ -73,6 +75,7 @@ class RendicionDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -84,13 +87,14 @@ class RendicionDao {
         try {
             $query = "DELETE FROM tbl_rendicion WHERE rendicion_id = '$idRendicion'"; 
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }

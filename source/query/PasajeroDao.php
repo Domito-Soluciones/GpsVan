@@ -12,12 +12,13 @@ class PasajeroDao {
         try {
             $query = "SELECT * FROM tbl_pasajero WHERE pasajero_nick = '$nombre' AND pasajero_password = '$clave'"; 
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $id = $row["pasajero_id"];
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -54,6 +55,7 @@ class PasajeroDao {
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -90,13 +92,14 @@ class PasajeroDao {
                     $query .= "pasajero_cargo = '$cargo',pasajero_nivel = '0',pasajero_centro_costo = '$centro',"
                             . "pasajero_empresa = '$empresa', pasajero_ruta = '$ruta' WHERE pasajero_rut = '$rut'";   
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -115,7 +118,7 @@ class PasajeroDao {
                     . "pasajero_empresa = (SELECT cliente_id FROM tbl_cliente WHERE cliente_razon_social = '".$busqueda."') "
                     . " LIMIT 20";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $pasajero = new Pasajero();
                 $pasajero->setId($row["pasajero_id"]);
@@ -138,6 +141,7 @@ class PasajeroDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -149,7 +153,7 @@ class PasajeroDao {
         try {
             $query = "SELECT * FROM tbl_pasajero WHERE pasajero_empresa = '$cliente'";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $pasajero = new Pasajero();
                 $pasajero->setId($row["pasajero_id"]);
@@ -172,6 +176,7 @@ class PasajeroDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -188,7 +193,7 @@ class PasajeroDao {
             }
             $query = "SELECT * FROM tbl_pasajero JOIN tbl_cliente ON pasajero_empresa = cliente_razon_social WHERE pasajero_empresa = '".$cliente."' ".$buscaRuta." AND (pasajero_nombre LIKE '%$pas%' OR pasajero_papellido LIKE '%$pas%' OR pasajero_mapellido LIKE '%$pas%') ORDER BY pasajero_ruta_orden";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $pasajero = new Pasajero();
                 $pasajero->setId($row["pasajero_id"]);
@@ -212,6 +217,7 @@ class PasajeroDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -223,7 +229,7 @@ class PasajeroDao {
         try {
             $query = "SELECT * FROM tbl_servicio_pasajero WHERE servicio_pasajero_id_servicio = $idServicio";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $pasajero = new Pasajero();
                 $id = $row["servicio_pasajero_id_pasajero"];
@@ -236,6 +242,7 @@ class PasajeroDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -247,7 +254,7 @@ class PasajeroDao {
         try {
             $query = "SELECT * FROM tbl_pasajero WHERE pasajero_nick = '$nick'";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $pasajero->setId($row["pasajero_id"]);
                 $pasajero->setNombre($row["pasajero_nombre"]);
@@ -268,6 +275,7 @@ class PasajeroDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $pasajero;
     }
@@ -279,13 +287,14 @@ class PasajeroDao {
         try {
             $query = "DELETE FROM tbl_pasajero WHERE pasajero_rut = '$rut'"; 
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -297,13 +306,14 @@ class PasajeroDao {
         try {
             $query = "UPDATE tbl_pasajero SET pasajero_estado = $estado WHERE pasajero_nick = '$pasajero'"; 
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }

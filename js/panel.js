@@ -25,7 +25,6 @@ var cantidadServicios = 0;
 var cantidadServiciosAux = 0;
 
 $(document).ready(function(){
-    
     if((TIPO_SERVICIO === 1) && ASIGNANDO)
     {
         $("#ruta").html("<option value=\"ESP\">ESP</option>");
@@ -631,7 +630,7 @@ function agregarServicio(fecha)
         return;
     }
     var fechaFormat = fecha.split('/');
-    var date = new Date(fechaFormat[2]+"-"+fechaFormat[1]+"-"+fechaFormat[0]+" "+hora);
+    var date = new Date(fechaFormat[2]+"-"+fechaFormat[1]+"-"+fechaFormat[0]+" "+hora.replace(/-/g, "/"));
     var now = new Date();
     if(date < now)
     {
@@ -995,7 +994,7 @@ function agregarPasajero(obj,nombre,punto,celular)
     var partida = $("#partida").val();
     var destino = $("#destino").val();
     if(partida === "" && partidaAplica && TIPO_SERVICIO !== 0){
-        confirmar("Ingresar origen","Debe ingresar un punto de origen,¿desea continuar sin ingresarlo?",()=>{
+        confirmar("Ingresar origen","Debe ingresar un punto de origen,Â¿desea continuar sin ingresarlo?",()=>{
             partidaAplica = false;
             deshabilitarCampo($("#partida"));
             destinoAplica = true;
@@ -1253,7 +1252,7 @@ function abrirAddPasajero()
     var partida = $("#partida").val();
     var destino = $("#destino").val();
     if(partida === "" && partidaAplica && TIPO_SERVICIO !== 0){
-        confirmar("Ingresar origen","Debe ingresar un punto de origen,¿desea continuar sin ingresarlo?",()=>{
+        confirmar("Ingresar origen","Debe ingresar un punto de origen,Â¿desea continuar sin ingresarlo?",()=>{
             partidaAplica = false;
             deshabilitarCampo($("#partida"));
             initPlacesAutoComplete(document.getElementById('agregaDireccion'));

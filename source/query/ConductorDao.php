@@ -47,13 +47,14 @@ class ConductorDao {
                     . "('$nombre','$papellido','$mapellido',$tipo,'$rut','$nick','$password','$telefono','$celular','$direccion','$mail','$tipoLicencia','$vencLicencia','$banco','$ncuenta','$tcuenta',"
                     . "'$nacimiento',$renta,'$contrato','$afp','$isapre','$isapreAd','$mutual','$seguroInicio','$descuento','$transportista','$imagen','$archivoContrato')"; 
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -107,13 +108,14 @@ class ConductorDao {
                     . "conductor_descuento = '$descuento',conductor_transportista = '$transportista',conductor_imagen = '$imagen',"
                     . "conductor_contrato = '$archivoContrato' WHERE conductor_rut = '$rut'";    
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -130,7 +132,7 @@ class ConductorDao {
                     . "conductor_mapellido LIKE '%".$busqueda."%' OR "
                     . "conductor_mail LIKE '%".$busqueda."%'";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $conductor = new Conductor();
                 $conductor->setId($row["conductor_id"]);
@@ -165,6 +167,7 @@ class ConductorDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -176,7 +179,7 @@ class ConductorDao {
         try {
             $query = "SELECT * FROM tbl_conductor WHERE conductor_tipo = '".$tipo."'";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $conductor = new Conductor();
                 $conductor->setId($row["conductor_id"]);
@@ -208,6 +211,7 @@ class ConductorDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -220,7 +224,7 @@ class ConductorDao {
             $query = "SELECT conductor_id,conductor_nombre,conductor_papellido,conductor_mapellido,conductor_contrato "
                     . "FROM tbl_conductor WHERE conductor_tipo IN (0,3)";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query)  or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $conductor = new Conductor();
                 $conductor->setId($row["conductor_id"]);
@@ -232,6 +236,7 @@ class ConductorDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -252,6 +257,7 @@ class ConductorDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -268,7 +274,7 @@ class ConductorDao {
             $fecha = $hoy['year'] . "-" . $hoy['mon'] . "-" . $hoy['mday']. " 00:00:00";
             $query = "SELECT conductor_nombre,conductor_papellido,conductor_estado FROM tbl_conductor WHERE conductor_nick = '$nick'"; 
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)));  
             while($row = mysqli_fetch_array($result)) {
                 $nombre = $row["conductor_nombre"].' '.$row["conductor_papellido"];
                 $estado = $row["conductor_estado"];
@@ -278,6 +284,7 @@ class ConductorDao {
             array_push($array, $viajes);
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -289,12 +296,13 @@ class ConductorDao {
         try {
             $query = "SELECT count(*) as total,conductor_estado FROM tbl_conductor group by conductor_estado"; 
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $array[$row["conductor_estado"]] = $row["total"];
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -306,13 +314,14 @@ class ConductorDao {
         try {
             $query = "DELETE FROM tbl_conductor WHERE conductor_rut = '$rut'"; 
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -324,7 +333,7 @@ class ConductorDao {
         try {
             $query = "SELECT * FROM tbl_movil WHERE movil_transportista = 0";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $moviles = new Movil();
                 $moviles->setId($row["movil_id"]);
@@ -336,6 +345,7 @@ class ConductorDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -347,7 +357,7 @@ class ConductorDao {
         try {
             $query = "SELECT * FROM tbl_movil";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $moviles = new Movil();
                 $moviles->setId($row["movil_id"]);
@@ -359,6 +369,7 @@ class ConductorDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -371,12 +382,13 @@ class ConductorDao {
             $query = "UPDATE tbl_conductor SET conductor_estado = '$estado' WHERE conductor_nick = '$conductor'"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query)) {
-                $id = mysqli_insert_id($conn->conn);
+                $id = mysqli_insert_id($conn->conn) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }

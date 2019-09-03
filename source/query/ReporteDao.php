@@ -33,12 +33,13 @@ class ReporteDao {
             $query = "SELECT servicio_estado,count(*) as servicio_cantidad FROM tbl_servicio WHERE servicio_estado NOT IN (0,6) "
                     .$buscaFecha." ".$buscaEmpresa." ".$buscaConductor. " GROUP BY servicio_estado";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn)); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 array_push($array, $row["servicio_estado"]."%".$row["servicio_cantidad"]);
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }

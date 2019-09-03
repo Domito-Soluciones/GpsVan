@@ -12,7 +12,7 @@ class AgenteDao {
             $agente = new Agente();
             $query = "SELECT * FROM tbl_agente WHERE agente_nick = '$nombre' and agente_clave = '$clave'"; 
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query); 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $agente->setId($row["agente_id"]);
                 $agente->setNombre($row["agente_nombre"]);
@@ -30,6 +30,7 @@ class AgenteDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $agente;
     }
@@ -46,7 +47,7 @@ class AgenteDao {
                     . "agente_mapellido LIKE '%".$busqueda."%' OR "
                     . "agente_mail LIKE '%".$busqueda."%' LIMIT 20";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die; 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); ; 
             while($row = mysqli_fetch_array($result)) {
                 $agente = new Agente();
                 $agente->setId($row["agente_id"]);
@@ -65,6 +66,7 @@ class AgenteDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -75,13 +77,14 @@ class AgenteDao {
         try {
             $query = "DELETE FROM tbl_agente WHERE agente_rut = '$rut'"; 
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -108,13 +111,14 @@ class AgenteDao {
                     . "agente_celular,agente_direccion,agente_mail,agente_perfil,agente_empresa) VALUES "
                     . "('$nombre','$papellido','$mapellido','$rut','$nick','$password','$telefono','$celular','$direccion','$mail','$perfil','$empresa')"; 
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -147,13 +151,14 @@ class AgenteDao {
                     }
                     $query .= "agente_perfil = '$perfil',agente_empresa = '$empresa' WHERE agente_rut = '$rut'";           
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }

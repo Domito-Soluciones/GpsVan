@@ -12,7 +12,7 @@ class TarifaDao {
         try {
             $query = "SELECT * FROM tbl_tarifa WHERE tarifa_cliente = '".$busqueda."' LIMIT 20";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die; 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $tarifa = new Tarifa();
                 $tarifa->setId($row["tarifa_id"]);
@@ -31,6 +31,7 @@ class TarifaDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -41,7 +42,7 @@ class TarifaDao {
         try {
             $query = "SELECT * FROM tbl_tarifa WHERE tarifa_cliente = '".$empresa."'";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die; 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $tarifa = new Tarifa();
                 $tarifa->setId($row["tarifa_id"]);
@@ -60,6 +61,7 @@ class TarifaDao {
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
     }
@@ -70,13 +72,14 @@ class TarifaDao {
         try {
             $query = "DELETE FROM tbl_tarifa WHERE tarifa_nombre = '$nombre'"; 
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -101,13 +104,14 @@ class TarifaDao {
                     . "tarifa_destino,tarifa_valor1,tarifa_valor2,tarifa_cliente,tarifa_tipo,tarifa_horario) VALUES "
                     . "('$descripcion','$numero','$hora','$nombre','$origen','$destino','$valor1','$valor2','$cliente','$tipo','$horario')";
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }
@@ -133,13 +137,14 @@ class TarifaDao {
                     . " tarifa_cliente = '$cliente',tarifa_tipo = '$tipo', tarifa_horario = '$horario',"
                     . " tarifa_nombre = '$nombre' WHERE tarifa_id = $id";       
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query)) {
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
         }
         return $id;
     }

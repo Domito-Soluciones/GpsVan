@@ -356,4 +356,18 @@
         width: 130px;
         background-position: 100px, 0;
     }
+    .contenedor-formulario_mapa
+    {
+        margin-left: 20px;
+        width: 300PX;
+        display: inline-block;
+        float: left;
+    }
+    #contenedor_mapa{
+        margin-top: 37px !important;
+    }
+    .map{
+        height: 300px;
+        width: 300px;
+    }
 }
