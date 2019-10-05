@@ -81,6 +81,9 @@ $(document).ready(function(){
             contenedorEx.html("");
             contenedorDir.html("<b>Origen: </b>");
             contenedorDes.html("<b>Destino: </b>");
+            origen = undefined;
+            destinos = [];
+            dibujarRuta();
         }
     });
     
@@ -170,6 +173,14 @@ $(document).ready(function(){
         cantidadServicios = dias;
         for(var i = 0 ; i < dias; i++)
         {
+            var fechaFormat = fecha.split('/');
+            var date = new Date(fechaFormat[2]+"-"+fechaFormat[1]+"-"+fechaFormat[0]+" "+hora.replace(/-/g, "/"));
+            var now = new Date();
+            if(date < now)
+            {
+                alertify.error("Debe seleccionar una fecha válida");
+                return;
+            }
             agregarServicio(fecha);
             fecha = sumarDias(fecha,1);
         }
@@ -629,14 +640,6 @@ function agregarServicio(fecha)
         alertify.error("Ingrese todos los campos necesarios");
         return;
     }
-    var fechaFormat = fecha.split('/');
-    var date = new Date(fechaFormat[2]+"-"+fechaFormat[1]+"-"+fechaFormat[0]+" "+hora.replace(/-/g, "/"));
-    var now = new Date();
-    if(date < now)
-    {
-        alertify.error("Debe seleccionar una fecha válida");
-        return;
-    }
     if(pasajeros.length === 0)
     {
         alertify.error("No hay pasajeros asignados a este servicio");
@@ -673,6 +676,7 @@ function agregarServicio(fecha)
 
 function dibujarRuta()
 {
+    alert(origen +"  "+ destinos)
     GEOCODING = false;
     if(typeof origen === 'undefined')
     {
@@ -1367,7 +1371,12 @@ function initAgregarPasajero(obj,nombre,punto,celular){
     if(ruta.indexOf("RG") !== -1)
     {
         pasajeros.push(id);
-        $("#contenedor_punto_destino").html("<b>Destino: </b>"+direccion_empresa);
+        if(direccion_empresa !== 'undefined'){
+            $("#contenedor_punto_destino").html("<b>Destino: </b>"+direccion_empresa);
+        }
+        else{
+            $("#contenedor_punto_destino").html("<b>Destino: </b>");
+        }
         var final = destinos.pop();
         if(typeof origen !== 'undefined')
         {

@@ -24,6 +24,21 @@ $(document).ready(function(){
 //    iniciarFecha(['#fechas']);
 //    iniciarHora(['#hora']);
 //    buscarPasajeroCliente($("#clientes").val());
+
+    $("#menu-telefono").click(function(){
+        if($("#menu-telefono").attr('src') === 'img/menu.svg')
+        {
+            cambiarPropiedad($("#menu"),"display","block");
+            $("#menu-telefono").attr("src","img/cancelar.svg");
+        }
+        else
+        {
+            cambiarPropiedad($("#menu"),"display","none");
+            $("#menu-telefono").attr("src","img/menu.svg");
+        }
+    });
+
+
     
 });
 
@@ -65,3 +80,4 @@ function getDashBoard()
     };
     postRequest(url,params,success);
 }
+
