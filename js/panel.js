@@ -164,6 +164,7 @@ $(document).ready(function(){
     $("#solicitar").click(function () {
         var f1 = $("#fechaDesde").val();
         var f2 = $("#fechaHasta").val();
+        var hora = $("#hora").val();
         var dias = 1;
         if(f2 !== '')
         {
@@ -389,11 +390,6 @@ function cargarPasajeros()
         contenedor.html("");
         contenedorEx.html("");
         direccion_empresa = response[0].pasajero_empresa_direccion;
-        if(response.length === 0)
-        {
-            alertify.error("No hay pasajeros disponibles para esta ruta");
-            return;
-        }
         if(ruta.indexOf("ZP") !== -1)
         {
             origen = response[0].pasajero_empresa_direccion;
@@ -405,6 +401,9 @@ function cargarPasajeros()
         var partidaExiste = true;
         for(var i = 0 ; i < response.length ; i++)
         {
+            if(response[0].pasajero_id === ""){
+                break;
+            }
             var id = response[i].pasajero_id;
             var nombre = response[i].pasajero_nombre + " " + response[i].pasajero_papellido;
             var punto = response[i].pasajero_punto_encuentro;
