@@ -382,11 +382,6 @@ function cargarPasajeros()
     }
     var success = function(response)
     {
-        if(response.length === 0)
-        {
-            alertify.error("No hay pasajeros disponibles para esta ruta");
-            return;
-        }
         var contenedorDir = $("#contenedor_punto_encuentro");
         var contenedorDes = $("#contenedor_punto_destino");
         var contenedor = $("#contenedor_pasajero");
@@ -394,6 +389,11 @@ function cargarPasajeros()
         contenedor.html("");
         contenedorEx.html("");
         direccion_empresa = response[0].pasajero_empresa_direccion;
+        if(response.length === 0)
+        {
+            alertify.error("No hay pasajeros disponibles para esta ruta");
+            return;
+        }
         if(ruta.indexOf("ZP") !== -1)
         {
             origen = response[0].pasajero_empresa_direccion;
@@ -676,7 +676,6 @@ function agregarServicio(fecha)
 
 function dibujarRuta()
 {
-    alert(origen +"  "+ destinos)
     GEOCODING = false;
     if(typeof origen === 'undefined')
     {
@@ -1371,12 +1370,7 @@ function initAgregarPasajero(obj,nombre,punto,celular){
     if(ruta.indexOf("RG") !== -1)
     {
         pasajeros.push(id);
-        if(direccion_empresa !== 'undefined'){
-            $("#contenedor_punto_destino").html("<b>Destino: </b>"+direccion_empresa);
-        }
-        else{
-            $("#contenedor_punto_destino").html("<b>Destino: </b>");
-        }
+        $("#contenedor_punto_destino").html("<b>Destino: </b>"+direccion_empresa);
         var final = destinos.pop();
         if(typeof origen !== 'undefined')
         {

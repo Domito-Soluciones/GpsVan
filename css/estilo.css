@@ -377,7 +377,7 @@ select
 }
 .buscador-pasajero
 {
-    width: 24%;
+    width: calc(24% - 1px);
     height: 100%;
     display: none;
     min-width: 0 !important;
