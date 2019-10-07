@@ -217,7 +217,6 @@ class LiquidacionDao {
             $query = "SELECT * FROM tbl_servicio WHERE servicio_estado = 5 "
                     .$buscaFecha." ".$buscaId." ".$buscaEmpresa." ".$buscaConductor." ".$buscaMovil." ".$buscaEstado
                     . " ORDER BY servicio_id DESC";
-            echo $query;
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
