@@ -24,7 +24,7 @@ for ($i = 0 ; $i < count($servicios); $i++)
         . "\"servicio_fecha\":\"".$servicioFecha."\","
         . "\"servicio_hora\":\"".$servicioHora."\","
         . "\"servicio_tipo\":\"".$servicioTipo."\","
-        . "\"servicio_observacion\":\"".$servicioOb."\""
+        . "\"servicio_observacion\":\"".trim($servicioOb)."\""
         . "}";
 if (($i+1) != count($servicios))
     {
