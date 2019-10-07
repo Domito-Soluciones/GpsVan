@@ -586,7 +586,15 @@ function validarTipoDato()
 }
 
 function modificarNotificacion(idServicio){
-    var params = {id  : idServicio};        
+    var estado;
+    var tipo = $("#estadoServicio").val();
+    if(tipo === '4' || tipo === '5' || tipo === '6'){
+        estado = "1";
+    }
+    else if (tipo === '1' || tipo === '3'){
+        estado = "0";
+    }
+    var params = {id  : idServicio, estado : estado}; 
     var url = urlBase + "/notificacion/ResetNotificacion.php";
     postRequest(url,params,null);
 }
