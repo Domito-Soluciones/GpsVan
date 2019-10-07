@@ -389,7 +389,9 @@ function cargarPasajeros()
         var contenedorEx = $("#contenedor_pasajero_no_asignado");
         contenedor.html("");
         contenedorEx.html("");
-        direccion_empresa = response[0].pasajero_empresa_direccion;
+        if(typeof response[0] !== "undefined"){
+            direccion_empresa = response[0].pasajero_empresa_direccion;
+        }
         if(ruta.indexOf("ZP") !== -1)
         {
             origen = response[0].pasajero_empresa_direccion;
@@ -751,12 +753,10 @@ function agregarDetalleServicio(idServicio)
         pasajeroFinal += pasajeros[i] + "%";
     }
 
-    console.log(destinoFinal)
-    //params = { lat : POLYLINE_LAT, lon : POLYLINE_LNG, pasajeros : pasajeroFinal ,destinos : destinoFinal, id : idServicio};
     params = {pasajeros : pasajeroFinal ,destinos : destinoFinal, id : idServicio};
     var url = urlBase + "/servicio/AddServicioDetalle.php";
     var success = () => {
-        console.log(cantidadServiciosAux);
+        console.log(cantidadServiciosAux + " - " + cantidadServicios);
         if(cantidadServicios-1 === cantidadServiciosAux){
             vaciarFormulario();
             borrarDirections();
@@ -771,6 +771,7 @@ function agregarDetalleServicio(idServicio)
             deshabilitarCampo($("#partida"));
             deshabilitarCampo($("#destino"));
             cantidadServiciosAux = 0;
+            return;
         }
         cantidadServiciosAux++;
     };
