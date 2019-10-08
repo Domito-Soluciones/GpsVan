@@ -20,6 +20,7 @@ var destinoAplica = false;
 var partidaActual;
 var destinoActual;
 var soloHayPartidaDestino = true;
+var EMPRESA_QUITADO = false;
 
 var cantidadServicios = 0;
 var cantidadServiciosAux = 0;
@@ -185,6 +186,7 @@ $(document).ready(function(){
             agregarServicio(fecha);
             fecha = sumarDias(fecha,1);
         }
+        EMPRESA_QUITADO = false;
         
     });
 
@@ -236,6 +238,11 @@ $(document).ready(function(){
     });
     
     $("#buscaPartida").click(function(){
+        if($("#partida").val().trim() === ""){
+            agregarclase($(this),"oculto");
+            
+            return;
+        }
         eliminarMarkers();
         agregarclase($(this),"oculto");
         var contenedor = $("#contenedor_pasajero");
@@ -283,6 +290,9 @@ $(document).ready(function(){
     });
     
     $("#buscaDestino").click(function(){
+        if($("#destino").val().trim() === ""){
+            return;
+        }
         eliminarMarkers();
         agregarclase($(this),"oculto");
         var contenedor = $("#contenedor_pasajero");
@@ -739,8 +749,9 @@ function agregarDetalleServicio(idServicio)
     destinoFinal += origen + "%";
     if(TIPO_SERVICIO === 0){
         var esRecogida = $("#truta").val().indexOf("RG") !== -1;
-        if(esRecogida)
+        if(esRecogida && !EMPRESA_QUITADO)
         {
+            EMPRESA_QUITADO = true;
             destinos.pop();
         }
     }
@@ -756,7 +767,6 @@ function agregarDetalleServicio(idServicio)
     params = {pasajeros : pasajeroFinal ,destinos : destinoFinal, id : idServicio};
     var url = urlBase + "/servicio/AddServicioDetalle.php";
     var success = () => {
-        console.log(cantidadServiciosAux + " - " + cantidadServicios);
         if(cantidadServicios-1 === cantidadServiciosAux){
             vaciarFormulario();
             borrarDirections();

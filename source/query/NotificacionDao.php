@@ -76,7 +76,7 @@ class NotificacionDao {
         try {
             $query = "SELECT * FROM tbl_notificacion WHERE"
                     . " notificacion_estado = 0 AND "
-                    . "notificacion_llave = '$llave' LIMIT 10";
+                    . "notificacion_llave = '$llave'";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {

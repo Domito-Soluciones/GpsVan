@@ -9,7 +9,7 @@ class DashBoardDao {
         $array = array();
         $conn = new Conexion();
         try {
-            $query = "SELECT COUNT(*) AS movil_cantidad,movil_estado FROM tbl_movil group by movil_estado ORDER BY movil_estado;";
+            $query = "SELECT COUNT(*) AS movil_cantidad,movil_estado FROM tbl_movil group by movil_estado ORDER BY movil_estado DESC;";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
