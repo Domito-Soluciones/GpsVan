@@ -163,6 +163,9 @@ function abrirBuscador(id)
         $("#rutaServicio").val(servicio.servicio_ruta);
         $("#tipoRutaServicio").val(servicio.servicio_truta);
         $("#estadoServicio").val(servicio.servicio_estado);
+        if(servicio.servicio_estado === '5'){
+            $("#estadoServicio").prop('disabled',true);
+        }
         ESTADO_ACTUAL = servicio.servicio_estado;
         ESTADO_SERVICIO = servicio.servicio_estado;
         cargarRutas();
