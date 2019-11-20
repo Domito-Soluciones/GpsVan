@@ -291,6 +291,11 @@ $(document).ready(function(){
     
     $("#buscaDestino").click(function(){
         if($("#destino").val().trim() === ""){
+            agregarclase($(this),"oculto");
+            destinos.pop();
+            if(destinos.length === 0){
+                borrarDirections();
+            }
             return;
         }
         eliminarMarkers();
