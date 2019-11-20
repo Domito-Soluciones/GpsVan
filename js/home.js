@@ -15,6 +15,9 @@ $(document).ready(function(){
         ocultarServiciosPendientes();
     });
     
+    
+    setInterval('getDashBoard(false)',3000);
+    
 });
 
 function generarGraficoDona(canvas,data,options)
@@ -26,7 +29,7 @@ function generarGraficoDona(canvas,data,options)
     });
 }
 
-function getDashBoard()
+function getDashBoard(cargar = true)
 {
     var url = urlBase + "/estadistica/GetDashBoard.php";
     var params = {};
@@ -62,7 +65,7 @@ function getDashBoard()
             cambiarPropiedad($("#barra"+i),"width","100px");
         }
     };
-    postRequest(url,params,success);
+    postRequest(url,params,success,cargar);
 }
 
 function mostrarServiciosPendientes()

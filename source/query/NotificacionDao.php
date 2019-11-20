@@ -49,12 +49,13 @@ class NotificacionDao {
         return $id;
     }
     
-    public function resetNotificacion($idServicio)
+    public function resetNotificacion($idServicio,$estado)
     {
         $id = 0;
         $conn = new Conexion();
         try {
-            $query = "UPDATE tbl_notificacion SET notificacion_estado = 0 WHERE notificacion_servicio = '$idServicio'"; 
+            $query = "UPDATE tbl_notificacion SET notificacion_estado = $estado WHERE notificacion_servicio = '$idServicio'"; 
+            echo $query;
             $conn->conectar();
             if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
@@ -75,7 +76,7 @@ class NotificacionDao {
         try {
             $query = "SELECT * FROM tbl_notificacion WHERE"
                     . " notificacion_estado = 0 AND "
-                    . "notificacion_llave = '$llave' LIMIT 10";
+                    . "notificacion_llave = '$llave'";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {

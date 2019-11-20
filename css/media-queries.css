@@ -20,6 +20,11 @@
         width: 100%;
         height: 200px;
     }
+    .contenedor-lateral
+    {
+        width: 100%;
+        height: 200px;
+    }
     .buscador-asignacion-boton
     {
         width: 100%;
@@ -101,6 +106,7 @@
     }
     #menu
     {
+        background: whitesmoke;
         position: absolute;
         z-index: 2;
         display: none;
@@ -330,7 +336,7 @@
     
     .lista_busqueda_liq
     {
-        height:calc(100% - 220px);
+        height:calc(100% - 80px);
     }
     .contenedor-lateral-liq
     {
@@ -354,7 +360,7 @@
     
     .contenedor_agente
     {
-        height: calc(100% - 186px);
+        height: calc(100% - 114px);
         overflow: auto;
     }
     
@@ -371,5 +377,16 @@
     }
     #contenedor_mapa{
         margin-top: 37px !important;
+    }
+    .map{
+        height: 300px;
+        width: 300px;
+    }
+    .input_cliente{
+        width: 62% !important;
+    }
+    .nombre_pasajero
+    {
+        display: none;
     }
 }

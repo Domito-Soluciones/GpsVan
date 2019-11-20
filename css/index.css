@@ -2,10 +2,10 @@ html,body
 {
     width: 100%;
     height: calc(100% - 100px);
+    background-color: #434241;
 }
 .login
 {
-    background-color: white;
     width: 300px;
     height: auto;
     margin:0 auto;

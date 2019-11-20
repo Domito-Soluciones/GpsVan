@@ -169,6 +169,9 @@
     </div>
 </div>
 <div class="opcion-menu menu-salir" id="salir" onclick="salir()">
+    <div class="cont-img-menu">
+        <img class="img-menu" src="img/salir.svg">
+    </div>
     <div class="contenido-menu">
         Salir
     </div>
@@ -212,6 +215,17 @@
         </div>
         <div class="tooltip" id="tooltip_panel">
             Servicios
+        </div>
+    </div>
+    <div class="opcion-menu menu-salir" id="salir" onclick="salir()">
+        <div class="cont-img-menu">
+            <img class="img-menu" src="img/salir.svg">
+        </div>
+        <div class="contenido-menu">
+            Salir
+        </div>
+        <div class="tooltip" id="tooltip_salir">
+            Salir
         </div>
     </div>
 <?php

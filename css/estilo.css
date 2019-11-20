@@ -377,7 +377,7 @@ select
 }
 .buscador-pasajero
 {
-    width: 24%;
+    width: calc(24% - 1px);
     height: 100%;
     display: none;
     min-width: 0 !important;
@@ -550,7 +550,7 @@ select
     background-color: white;
     height: calc(100% - 52px);
     padding-top: 20px;
-    min-height: 460px;
+    /*min-height: 460px;*/
 }
 
 .contenedor-info-servicio
@@ -616,6 +616,7 @@ select
 }
 .contenedor-pre-input-login
 {
+    color:white;
     width: 85px;
 }
 .contenedor-input
@@ -954,7 +955,7 @@ select
 }
 .input_cliente
 {
-    width: 130% !important;
+    width: 90% !important;
     height: 25px !important;   
 }
 

@@ -53,6 +53,8 @@
                 </div>
             </div>
         </div>
-
+<!--        <div class="img-login">
+            <img src="img/domito.JPG">
+        </div>-->
     </body>
 </html>

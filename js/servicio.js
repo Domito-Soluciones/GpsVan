@@ -9,7 +9,8 @@ var ID_CONDUCTOR;
 var PAGINA = 'SERVICIOS';
 var CAMPOS = ["clienteServicio","rutaServicio","fechaServicio","inicioServicio","estadoServicio","movilServicio","conductorServicio"];
 var LETRAS = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
-
+var ESTADO_ACTUAL = '';
+var ESTADO_CAMBIO = false;
 $(document).ready(function(){
     if(TIPO_USUARIO !== 'CLIENTE')
     {
@@ -29,6 +30,15 @@ $(document).ready(function(){
         buscarServicio(); 
     });
     
+    $("#estadoServicio").change(()=>{
+        if(ESTADO_ACTUAL === $(this).val()){
+            ESTADO_CAMBIO = false;
+        }
+        else{
+            ESTADO_ACTUAL = $(this).val();        
+            ESTADO_CAMBIO = true;
+        }
+    });
     if(TIPO_USUARIO === 'CLIENTE'){
         cambiarPropiedad($("#cont_empresa"),"display","none");
     }
@@ -153,6 +163,10 @@ function abrirBuscador(id)
         $("#rutaServicio").val(servicio.servicio_ruta);
         $("#tipoRutaServicio").val(servicio.servicio_truta);
         $("#estadoServicio").val(servicio.servicio_estado);
+        if(servicio.servicio_estado === '5'){
+            $("#estadoServicio").prop('disabled',true);
+        }
+        ESTADO_ACTUAL = servicio.servicio_estado;
         ESTADO_SERVICIO = servicio.servicio_estado;
         cargarRutas();
         var conductorReal = "";
@@ -586,7 +600,30 @@ function validarTipoDato()
 }
 
 function modificarNotificacion(idServicio){
-    var params = {id  : idServicio};        
-    var url = urlBase + "/notificacion/ResetNotificacion.php";
+    var tipo = $("#estadoServicio").val();
+    if(ESTADO_CAMBIO){
+        var estado;
+        if(tipo === '4' || tipo === '5' || tipo === '6'){
+            estado = "1";
+        }
+        else if (tipo === '1' || tipo === '3'){
+            estado = "0";
+        }
+        var params = {id  : idServicio, estado : estado}; 
+        var url = urlBase + "/notificacion/ResetNotificacion.php";
+        postRequest(url,params,null);
+    }
+    else{
+        var llave = ID_CONDUCTOR;
+        notificarCambioServicio(idServicio,llave);
+    }
+}
+
+function notificarCambioServicio(idServicio,llave)
+{
+    var texto = "Servicio "+idServicio+" fue modificado favor revisar detalles";
+    var tipo = 2;
+    var params = {texto  : texto, tipo : tipo, llave : llave, idServicio : idServicio};        
+    var url = urlBase + "/notificacion/AddNotificacion.php";
     postRequest(url,params,null);
 }

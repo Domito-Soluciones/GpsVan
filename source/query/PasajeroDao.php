@@ -191,7 +191,11 @@ class PasajeroDao {
             {
                 $buscaRuta = " AND pasajero_ruta != '$ruta' AND pasajero_id NOT IN (".$pasajeros.") ";
             }
-            $query = "SELECT * FROM tbl_pasajero JOIN tbl_cliente ON pasajero_empresa = cliente_razon_social WHERE pasajero_empresa = '".$cliente."' ".$buscaRuta." AND (pasajero_nombre LIKE '%$pas%' OR pasajero_papellido LIKE '%$pas%' OR pasajero_mapellido LIKE '%$pas%') ORDER BY pasajero_ruta_orden";
+            $qryPass = "";
+            if($pas != ""){
+                $qryPass = " AND (pasajero_nombre LIKE '%".$pas."%' OR pasajero_papellido LIKE '%".$pas."%' OR pasajero_mapellido LIKE '%".$pas."%')";
+            }
+            $query = "SELECT * FROM tbl_cliente LEFT JOIN tbl_pasajero ON cliente_razon_social = pasajero_empresa WHERE cliente_razon_social = '".$cliente."' ".$buscaRuta." ".$qryPass." ORDER BY pasajero_ruta_orden";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
@@ -209,7 +213,7 @@ class PasajeroDao {
                 $pasajero->setMail($row["pasajero_mail"]);
                 $pasajero->setCargo($row["pasajero_cargo"]);
                 $pasajero->setNivel($row["pasajero_nivel"]);
-                $pasajero->setEmpresa($row["pasajero_empresa"]);
+                $pasajero->setEmpresa($row["cliente_razon_social"]);
                 $pasajero->setEmpresaDireccion($row["cliente_direccion"]);
                 $pasajero->setCentroCosto($row["pasajero_centro_costo"]);
                 $pasajero->setRuta($row["pasajero_ruta"]);

@@ -20,6 +20,7 @@ var destinoAplica = false;
 var partidaActual;
 var destinoActual;
 var soloHayPartidaDestino = true;
+var EMPRESA_QUITADO = false;
 
 var cantidadServicios = 0;
 var cantidadServiciosAux = 0;
@@ -81,6 +82,9 @@ $(document).ready(function(){
             contenedorEx.html("");
             contenedorDir.html("<b>Origen: </b>");
             contenedorDes.html("<b>Destino: </b>");
+            origen = undefined;
+            destinos = [];
+            dibujarRuta();
         }
     });
     
@@ -161,6 +165,7 @@ $(document).ready(function(){
     $("#solicitar").click(function () {
         var f1 = $("#fechaDesde").val();
         var f2 = $("#fechaHasta").val();
+        var hora = $("#hora").val();
         var dias = 1;
         if(f2 !== '')
         {
@@ -170,9 +175,18 @@ $(document).ready(function(){
         cantidadServicios = dias;
         for(var i = 0 ; i < dias; i++)
         {
+            var fechaFormat = fecha.split('/');
+            var date = new Date(fechaFormat[2]+"-"+fechaFormat[1]+"-"+fechaFormat[0]+" "+hora.replace(/-/g, "/"));
+            var now = new Date();
+            if(date < now)
+            {
+                alertify.error("Debe seleccionar una fecha válida");
+                return;
+            }
             agregarServicio(fecha);
             fecha = sumarDias(fecha,1);
         }
+        EMPRESA_QUITADO = false;
         
     });
 
@@ -224,6 +238,11 @@ $(document).ready(function(){
     });
     
     $("#buscaPartida").click(function(){
+        if($("#partida").val().trim() === ""){
+            agregarclase($(this),"oculto");
+            
+            return;
+        }
         eliminarMarkers();
         agregarclase($(this),"oculto");
         var contenedor = $("#contenedor_pasajero");
@@ -271,6 +290,9 @@ $(document).ready(function(){
     });
     
     $("#buscaDestino").click(function(){
+        if($("#destino").val().trim() === ""){
+            return;
+        }
         eliminarMarkers();
         agregarclase($(this),"oculto");
         var contenedor = $("#contenedor_pasajero");
@@ -371,18 +393,15 @@ function cargarPasajeros()
     }
     var success = function(response)
     {
-        if(response.length === 0)
-        {
-            alertify.error("No hay pasajeros disponibles para esta ruta");
-            return;
-        }
         var contenedorDir = $("#contenedor_punto_encuentro");
         var contenedorDes = $("#contenedor_punto_destino");
         var contenedor = $("#contenedor_pasajero");
         var contenedorEx = $("#contenedor_pasajero_no_asignado");
         contenedor.html("");
         contenedorEx.html("");
-        direccion_empresa = response[0].pasajero_empresa_direccion;
+        if(typeof response[0] !== "undefined"){
+            direccion_empresa = response[0].pasajero_empresa_direccion;
+        }
         if(ruta.indexOf("ZP") !== -1)
         {
             origen = response[0].pasajero_empresa_direccion;
@@ -394,6 +413,9 @@ function cargarPasajeros()
         var partidaExiste = true;
         for(var i = 0 ; i < response.length ; i++)
         {
+            if(response[0].pasajero_id === ""){
+                break;
+            }
             var id = response[i].pasajero_id;
             var nombre = response[i].pasajero_nombre + " " + response[i].pasajero_papellido;
             var punto = response[i].pasajero_punto_encuentro;
@@ -629,14 +651,6 @@ function agregarServicio(fecha)
         alertify.error("Ingrese todos los campos necesarios");
         return;
     }
-    var fechaFormat = fecha.split('/');
-    var date = new Date(fechaFormat[2]+"-"+fechaFormat[1]+"-"+fechaFormat[0]+" "+hora.replace(/-/g, "/"));
-    var now = new Date();
-    if(date < now)
-    {
-        alertify.error("Debe seleccionar una fecha válida");
-        return;
-    }
     if(pasajeros.length === 0)
     {
         alertify.error("No hay pasajeros asignados a este servicio");
@@ -735,8 +749,9 @@ function agregarDetalleServicio(idServicio)
     destinoFinal += origen + "%";
     if(TIPO_SERVICIO === 0){
         var esRecogida = $("#truta").val().indexOf("RG") !== -1;
-        if(esRecogida)
+        if(esRecogida && !EMPRESA_QUITADO)
         {
+            EMPRESA_QUITADO = true;
             destinos.pop();
         }
     }
@@ -749,12 +764,9 @@ function agregarDetalleServicio(idServicio)
         pasajeroFinal += pasajeros[i] + "%";
     }
 
-    console.log(destinoFinal)
-    //params = { lat : POLYLINE_LAT, lon : POLYLINE_LNG, pasajeros : pasajeroFinal ,destinos : destinoFinal, id : idServicio};
     params = {pasajeros : pasajeroFinal ,destinos : destinoFinal, id : idServicio};
     var url = urlBase + "/servicio/AddServicioDetalle.php";
     var success = () => {
-        console.log(cantidadServiciosAux);
         if(cantidadServicios-1 === cantidadServiciosAux){
             vaciarFormulario();
             borrarDirections();
@@ -769,6 +781,7 @@ function agregarDetalleServicio(idServicio)
             deshabilitarCampo($("#partida"));
             deshabilitarCampo($("#destino"));
             cantidadServiciosAux = 0;
+            return;
         }
         cantidadServiciosAux++;
     };
