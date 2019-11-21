@@ -923,6 +923,14 @@ select
     width: 70% !important;
     height: 25px !important;   
 }
+.input_asignar_precio
+{
+    width: 63% !important;
+    height: 25px !important;   
+}
+.input_precio{
+    width: 130px;
+}
 .input_asignar_origen
 {
     width: 50% !important;
