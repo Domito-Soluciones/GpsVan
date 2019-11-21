@@ -286,7 +286,7 @@ function buscarConductor(cargar = false)
         contGrupos.html("");
         contGrupos.append("<div class=\"fila_contenedor fila_contenedor_activa\" id=\"col_4\" onClick=\"cambiarFila('4')\">Todos</div>");
         contGrupos.append("<div class=\"fila_contenedor\" id=\"col_0\" onClick=\"cambiarFila('0')\">Transportista</div>");
-        contGrupos.append("<div class=\"fila_contenedor\" id=\"col_1\" onClick=\"cambiarFila('1')\">Conductor Interno</div>");
+        contGrupos.append("<div class=\"fila_contenedor\" id=\"col_1\" onClick=\"cambiarFila('1')\">Conductor Empresa</div>");
         contGrupos.append("<div class=\"fila_contenedor\" id=\"col_2\" onClick=\"cambiarFila('2')\">Conductor Externo</div>");
         contGrupos.append("<div class=\"fila_contenedor\" id=\"col_3\" onClick=\"cambiarFila('3')\">Transportista / Conductor</div>");
         CONDUCTORES = response;
@@ -310,7 +310,7 @@ function buscarConductor(cargar = false)
             }
             else if(response[i].conductor_tipo === '1')
             {
-                tipo = 'Conductor interno';
+                tipo = 'Conductor empresa';
             }
             else if(response[i].conductor_tipo === '2')
             {
@@ -356,7 +356,7 @@ function buscarConductorGrupo(grupo)
             }
             else if(CONDUCTORES[i].conductor_tipo === '1')
             {
-                tipo = 'Conductor interno';
+                tipo = 'Conductor empresa';
             }
             else if(CONDUCTORES[i].conductor_tipo === '2')
             {
@@ -404,7 +404,7 @@ function buscarConductorTodo()
         }
         else if(CONDUCTORES[i].conductor_tipo === '1')
         {
-            tipo = 'Conductor interno';
+            tipo = 'Conductor empresa';
         }
         else if(CONDUCTORES[i].conductor_tipo === '2')
         {
