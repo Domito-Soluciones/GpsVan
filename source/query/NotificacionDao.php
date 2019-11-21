@@ -73,10 +73,20 @@ class NotificacionDao {
     {
         $array = array();
         $conn = new Conexion();
+        $date = getdate();
+        $dia = $date['mday'] < 10 ? "0".$date['mday'] : $date['mday'];
+        $mes = $date['mon'] < 10 ? "0".$date['mon'] : $date['mon'];
+        $anio = $date['year'];
+        $hora = $date['hours'] < 10 ? "0".$date['hours'] : $date['hours'];
+        $minuto = $date['minutes'] < 10 ? "0".$date['minutes'] : $date['minutes'];
+        $segundo = $date['seconds'] < 10 ? "0".$date['seconds'] : $date['seconds'];
+        $fecha = $anio."-".$mes."-".$dia;
+        $time = $hora.":".$minuto.":".$segundo;
         try {
-            $query = "SELECT * FROM tbl_notificacion WHERE"
-                    . " notificacion_estado = 0 AND "
-                    . "notificacion_llave = '$llave'";
+            $query = "SELECT * FROM tbl_notificacion JOIN tbl_servicio"
+                    . " ON notificacion_servicio = servicio_id WHERE notificacion_estado = 0"
+                    . " AND notificacion_llave = '$llave' "
+                    . "AND servicio_fecha >= '$fecha' AND servicio_hora >= '$time'";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
