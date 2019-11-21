@@ -379,8 +379,8 @@
         margin-top: 37px !important;
     }
     .map{
-        height: 300px;
-        width: 300px;
+        height: 400px;
+        width: calc(100%);
     }
     .input_cliente{
         width: 62% !important;
