@@ -636,8 +636,8 @@ class ServicioDao {
                     . " FROM tbl_servicio JOIN tbl_servicio_pasajero ON"
                     . " servicio_id = servicio_pasajero_id_servicio "
                     . "JOIN tbl_movil ON servicio_movil = movil_nombre "
-                    . "JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id "
-                    . "JOIN tbl_cliente ON servicio_cliente = cliente_razon_social "
+                    . "LEFT JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id "
+                    . "LEFT JOIN tbl_cliente ON servicio_cliente = cliente_razon_social "
                     . "WHERE servicio_id = $idServicio AND servicio_estado IN (5,6) ORDER BY servicio_pasajero_id";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
