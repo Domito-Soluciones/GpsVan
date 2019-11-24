@@ -488,6 +488,15 @@ class ServicioDao {
     {
         $array = array();
         $conn = new Conexion();
+        $date = getdate();
+        $dia = $date['mday'] < 10 ? "0".$date['mday'] : $date['mday'];
+        $mes = $date['mon'] < 10 ? "0".$date['mon'] : $date['mon'];
+        $anio = $date['year'];
+        $hora = $date['hours'] < 10 ? "0".$date['hours'] : $date['hours'];
+        $minuto = $date['minutes'] < 10 ? "0".$date['minutes'] : $date['minutes'];
+        $segundo = $date['seconds'] < 10 ? "0".$date['seconds'] : $date['seconds'];
+        $fecha = $anio."-".$mes."-".$dia;
+        $time = $hora.":".$minuto.":".$segundo;
         try {
             $query = "SELECT servicio_id,servicio_cliente,servicio_ruta,servicio_truta,servicio_fecha,"
                     . "servicio_hora,servicio_conductor,servicio_estado,servicio_tarifa1,"
@@ -498,7 +507,7 @@ class ServicioDao {
                     . "JOIN tbl_movil ON servicio_movil = movil_nombre "
                     . "LEFT JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id "
                     . "LEFT JOIN tbl_cliente ON servicio_cliente = cliente_razon_social "
-                    . "WHERE servicio_conductor = '$conductor' AND servicio_estado NOT IN (5,6) "
+                    . "WHERE servicio_conductor = '$conductor' AND servicio_estado NOT IN (5,6) AND servicio_fecha >= '".$fecha."' AND servicio_hora >= '".$time."' "
                     . "ORDER BY servicio_id DESC, servicio_pasajero_id";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 

@@ -13,7 +13,7 @@ function agregarTarifa()
     var destino = $("#destino").val();
     var valor1 = $("#valor1").val();
     var valor2 = $("#valor2").val();
-    var array = [tipo,horario,descripcion,numero,hora,nombre,origen,destino,valor1,valor2];
+    var array = [tipo,horario,descripcion,numero,hora,nombre,valor1,valor2];
     if(!validarCamposOr(array))
     {
         activarPestania(array);
