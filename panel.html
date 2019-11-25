@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="stylesheet" href="css/estilo.css" type="text/css"/>
+
         <script src="js/panel.js" type="text/javascript"></script>
     </head>
     <body>
@@ -104,26 +106,6 @@
                          <input type="text" class="input_asignar" id="fechaHasta" placeholder="Ej: 01/01/2020">
                     </div>
                 </div>
-<!--                <div class="contenedor-panel">
-                    <div class="cont-pre-monitor">
-                        Origen
-                    </div>
-                    <div class="input-panel">
-                        <input type="text" class="input_asignar" id="partida" placeholder="Ej: Av los pinos 123" disabled>
-                        <div class="datalist-visible" id="partidal"></div>
-                        <div class="boton-chico oculto" id="buscaPartida"><img src="img/guardar.svg" width="12" height="12"></div>
-                    </div>
-                </div>
-                <div class="contenedor-panel">
-                    <div class="cont-pre-monitor cont-destino1">
-                        Destino
-                    </div>
-                    <div class="input-panel" id="destinos">
-                        <input type="text" class="input_asignar destino" id="destino" placeholder="Ej: Av los pinos 723" disabled>
-                        <div class="datalist-visible" id="destinol"></div>
-                        <div class="boton-chico oculto" id="buscaDestino"><img src="img/guardar.svg" width="12" height="12"></div>
-                    </div>
-                </div>-->
                 <div class="contenedor-panel-completo">
                     <div class="cont-pre-monitor">
                         Observaciones
@@ -152,19 +134,35 @@
             </div>
             <div id="dato_especial">
                 <div class="buscador_titulo">
-                Origen & Destino
+                    Datos Nuevo Pasajero
                 </div>
-                <div class="input-panel">
+                <div class="input-panel-especial">
+                    <div class="titulo_origen">Nombre</div>
+                    <input type="text" class="input_asignar_origen" id="nombre" placeholder="Ej: Juan Perez">
+                </div>
+                <div class="input-panel-especial">
+                    <div class="titulo_origen">Celular</div>
+                    <input type="text" class="input_asignar_origen" id="celular" placeholder="Ej: 955464553">
+                </div>
+                <div class="input-panel-especial">
                     <div class="titulo_origen">Origen</div>
-                    <input type="text" class="input_asignar_origen" id="partida" placeholder="Ej: Av los pinos 123" disabled>
-                    <div class="datalist-visible" id="partidal"></div>
+                    <input type="text" class="input_asignar_origen" id="partida" placeholder="Ej: Av los pinos 123">
                     <div class="boton-chico oculto" id="buscaPartida"><img src="img/guardar.svg" width="12" height="12"></div>
                 </div>
-                <div class="input-panel">
+                <div class="input-panel-especial">
                     <div class="titulo_origen">Destino</div>
-                    <input type="text" class="input_asignar_origen" id="destino" placeholder="Ej: Av los pinos 723" disabled>
-                    <div class="datalist-visible" id="destinol"></div>
+                    <input type="text" class="input_asignar_origen" id="destino" placeholder="Ej: Av los pinos 723">
                     <div class="boton-chico oculto" id="buscaDestino"><img src="img/guardar.svg" width="12" height="12"></div>
+                </div>
+                <div class="cont-btn-agregar">
+                    <div class="boton" id="addEspecial" onclick="agregarPasajeroEspecial()">
+                        <img src="img/anadir.svg" width="12" height="12">
+                        Agregar
+                    </div>
+                    <div class="boton" onclick="cancelarPasajeroEspecial()">
+                        <img src="img/cancelar.svg" width="12" height="12">
+                        Cancelar
+                    </div>
                 </div>
             </div>
             <div class="buscador_titulo">

@@ -1,6 +1,7 @@
 /* global urlBase */
 var PAGINA = "HOME";
 var options = {};
+var interval;
 
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
@@ -16,7 +17,7 @@ $(document).ready(function(){
     });
     
     
-    setInterval('getDashBoard(false)',3000);
+    interval = setInterval('getDashBoard(false)',3000);
     
 });
 
@@ -54,6 +55,7 @@ function getDashBoard(cargar = true)
             $("#pInterno").html("$ "+response.produccion_minterno);
         }
         var cont = $("#vConvenio");
+        cont.html("");
         if(response.servicio_convenios.length === 0)
         {
             cont.append("<div class=\"mensaje_bienvenida\" style=\"padding-top: 20%\">No hay datos registrados</div>");

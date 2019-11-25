@@ -8,10 +8,22 @@
             <div class="buscador barra_monitoreo">
                 <div>
                     <div class="cont-pre-monitor">
+                        Reporte
+                    </div>
+                    <div class="input-monitoreo">
+                        <select id="reporte" class="select-rep">
+                            <option value="">Seleccione</option>
+                            <option value="0">Totales Servicios</option>
+                            <option value="1">Detalle Servicios</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <div class="cont-pre-monitor">
                         Empresa
                     </div>
                     <div class="input-monitoreo">
-                        <select id="empresa"></select>
+                        <select id="empresa" class="select-rep"></select>
                     </div>
                 </div>
                 <div>
@@ -19,7 +31,7 @@
                         Conductor
                     </div>
                     <div class="input-monitoreo">
-                        <select id="conductores" ></select>
+                        <select id="conductores" class="select-rep"></select>
                     </div>
                 </div>
                 <div>
@@ -55,15 +67,15 @@
                     </div>
                 </div>
                 <div>
-                    <div class="boton boton-monitoreo" id="buscar">
+                    <div class="boton boton-monitoreo btn-rep" id="buscar">
                         <img src="img/buscar.svg" width="12" height="12">
                         Buscar
                     </div>
-                    <div class="boton btn-grande" id="exportar">
+                    <div class="boton btn-rep" id="exportar">
                         <img src="img/icon.svg" width="12" height="12">
                         Exportar Excel
                     </div>
-                    <div class="boton btn-grande" id="exportar2">
+                    <div class="boton btn-rep" id="exportar2">
                         <img src="img/icon.svg" width="12" height="12">
                         Exportar PDF
                     </div>

@@ -1,5 +1,5 @@
 
-/* global MODIFICADO, alertify, PAGINA_ANTERIOR, INTERVAL_SERVICIOS, MENU_OCULTO, PLACES_AUTOCOMPLETE_API, POSITION, API_KEY, google, map, flightPath, markers, menus */
+/* global MODIFICADO, alertify, PAGINA_ANTERIOR, INTERVAL_SERVICIOS, MENU_OCULTO, PLACES_AUTOCOMPLETE_API, POSITION, API_KEY, google, map, flightPath, markers, menus, interval */
 var PAGINA_ANTERIOR;
 var MODIFICADO = false;
 var KEY = "DGFSGHJRTJTHWGWEJNGWI9EFN";
@@ -151,6 +151,7 @@ function quitarclase(div,clase)
 }
 
 function cambiarModulo(pagina,params = null){
+    clearInterval(interval);
     if(pagina === menus.get(PAGINA_ANTERIOR))
     {
         return;

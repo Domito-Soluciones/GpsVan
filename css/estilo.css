@@ -45,7 +45,7 @@ select
     height: 30px;
     background: #FFFFFF url("../img/flecha-abajo.svg")no-repeat right;
     background-size: 10px;
-    background-position: 130px, 0;
+    background-position: 95%, 0;
     margin-top: 5px;
 }
 .button-succes
@@ -483,6 +483,23 @@ select
     cursor:pointer;
     line-height: 25px;
     display: inline-block;
+}
+.boton-grande
+{
+    color: white;
+    background-color: #a7b9bd;
+    text-align: center;
+    margin-right: 5px;
+    width: auto;
+    height: 30px;
+    vertical-align: middle;
+    border: solid 1px #0099ff;
+    border-radius: 10px;
+    cursor:pointer;
+    line-height: 30px;
+    display: inline-block;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 .boton_en_linea
 {
@@ -971,13 +988,13 @@ select
 {
     width: 70% !important;
     height: 30px !important;
-    background-position: 125px, 0 !important;
+    background-position: 95, 0 !important;
 }
 .select_asignar_cliente
 {
     width: 130% !important;
     height: 30px !important;
-    background-position: 170px, 0 !important;
+    background-position: 95%, 0 !important;
 }
 
 .textarea_asignar
@@ -1409,6 +1426,14 @@ select
     background: white;
     margin-left: 1px;
 }
+.contenedor_central_titulo_amplio
+{
+    width: calc(280% - 0px);
+    height: 40px;
+    line-height: 40px;
+    background: white;
+    margin-left: 1px;
+}
 .contenedor_central_titulo_conductor
 {
     width: calc(100% - 1px);
@@ -1437,6 +1462,14 @@ select
     color:#0099ff;
     float: left;
     width: 19%;
+    text-align: center;
+}
+.contenedor_central_titulo_amplio div
+{
+    font-size: 17px;
+    color:#0099ff;
+    float: left;
+    width: 6%;
     text-align: center;
 }
 .contenedor_central_titulo_conductor div
@@ -1470,6 +1503,12 @@ select
     width: calc(100% - 1px) !important;
     margin-left: 1px;
 }
+.fila_contenedor_servicio_reporte
+{
+    padding: 0 !important;
+    width: calc(280% - 1px) !important;
+    margin-left: 1px;
+}
 .fila_contenedor_conductor
 {
     padding: 0 !important;
@@ -1485,6 +1524,12 @@ select
 {
     float: left;
     width: 19%;
+    text-align: center;    
+}
+.fila_contenedor_servicio_reporte div
+{
+    float: left;
+    width: 6%;
     text-align: center;    
 }
 .fila_contenedor_conductor div
@@ -1664,6 +1709,10 @@ select
 .input-panel
 {
     width: 100%;
+}
+.input-panel-especial{
+    width: 100%;
+    height: 30px;
 }
 
 .contenedor-panel
@@ -1884,4 +1933,25 @@ select
 
 .none{
     display: none;
+}
+.cont-btn-agregar {
+    width: 100%;
+    height: 50px;
+    margin-left: 40px;
+}
+.select-rep{
+    width: 170px;
+}
+
+.btn-rep{
+    width: 100px;
+}
+
+.input-liquidacion{
+    width: 150px;
+    height: 20px;
+}
+.select-liquidacion{
+    width: 155px;
+    height: 30px;
 }

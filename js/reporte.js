@@ -16,7 +16,13 @@ $(document).ready(function(){
     cargarConductores();
     
     $("#buscar").click(function(){
-        buscarReporte(); 
+        let reporte = $("#reporte").val();
+        if(reporte !== ''){
+            buscarReporte(reporte); 
+        }
+        else{
+            alertify.error("Seleccione el tipo de reporte");
+        }
     });
     
     $("#exportar").click(function(){
@@ -27,8 +33,18 @@ $(document).ready(function(){
         }
         else
         {
+            let reporte = $("#reporte").val();
             var params = "empresa="+EMPRESA+"&conductor="+CONDUCTOR+"&desde="+DESDE+"&hdesde="+HDESDE+"&hasta="+HASTA+"&hhasta="+HHASTA;
-            exportar('reporte/GetExcelReporte',params);
+            if(reporte === '0'){
+                exportar('reporte/GetExcelReporteTotal',params);
+            }
+            else if(reporte === '1'){
+                exportar('reporte/GetExcelReporteDetalle',params);
+            }
+            else{
+                alertify.error("Seleccione el tipo de reporte");
+            }
+            
         }
     });
     $("#exportar2").click(function(){
@@ -40,14 +56,32 @@ $(document).ready(function(){
         else
         {
             var params = "empresa="+EMPRESA+"&conductor="+CONDUCTOR+"&desde="+DESDE+"&hdesde="+HDESDE+"&hasta="+HASTA+"&hhasta="+HHASTA;
-            window.open(urlBase+"/reporte/GetPdfReporte.php?"+params, '_blank');
+            let reporte = $("#reporte").val();
+            if(reporte === '0'){
+                window.open(urlBase+"/reporte/GetPdfReporteTotal.php?"+params, '_blank');
+            }
+            else if(reporte === '1'){
+                window.open(urlBase+"/reporte/GetPdfReporteDetalle.php?"+params, '_blank');
+            }
+            else{
+                alertify.error("Seleccione el tipo de reporte");
+            }
         }
     });
 });
 
-function buscarReporte()
+function buscarReporte(tipo)
 {
     REPORTE = '';
+    if(tipo === '0'){
+        getReporteTotal();
+    }
+    else if(tipo === '1'){
+        getReporteDetalle();
+    }
+}
+
+function getReporteTotal(){
     EMPRESA = $("#empresa").val();
     CONDUCTOR = $("#conductores").val();
     DESDE = $("#desde").val();
@@ -56,7 +90,7 @@ function buscarReporte()
     HHASTA = $("#hhasta").val();
     var params = {empresa : EMPRESA, conductor : CONDUCTOR,
         desde : DESDE, hdesde : HDESDE, hasta : HASTA, hhasta : HHASTA};
-    var url = urlBase + "/reporte/GetReporte.php";
+    var url = urlBase + "/reporte/GetReporteTotal.php";
     var success = function(response)
     {
         cerrarSession(response);
@@ -67,10 +101,53 @@ function buscarReporte()
             var realizar = response.servicio_realizar;
             var ruta = response.servicio_ruta;
             var finalizado = response.servicio_finalizado;
+            var cancelado = response.servicio_cancelado;
             reporte.append("<div class=\"fila_contenedor fila_contenedor_servicio\"><div class=\"item_reporte\">Servicio Pendiente Asignación</div><div class=\"total_reporte\">"+asignar+"</div></div>");
             reporte.append("<div class=\"fila_contenedor fila_contenedor_servicio\"><div class=\"item_reporte\">Servicio Aceptado</div><div class=\"total_reporte\">"+realizar+"</div></div>");
             reporte.append("<div class=\"fila_contenedor fila_contenedor_servicio\"><div class=\"item_reporte\">Servicio en Ruta</div><div class=\"total_reporte\">"+ruta+"</div></div>");
             reporte.append("<div class=\"fila_contenedor fila_contenedor_servicio\"><div class=\"item_reporte\">Servicio Finalizado</div><div class=\"total_reporte\">"+finalizado+"</div></div>");
+            reporte.append("<div class=\"fila_contenedor fila_contenedor_servicio\"><div class=\"item_reporte\">Servicio Cancelado</div><div class=\"total_reporte\">"+cancelado+"</div></div>");
+    };
+    postRequest(url,params,success);
+}
+
+function getReporteDetalle(){
+    EMPRESA = $("#empresa").val();
+    CONDUCTOR = $("#conductores").val();
+    DESDE = $("#desde").val();
+    HDESDE = $("#hdesde").val();
+    HASTA = $("#hasta").val();
+    HHASTA = $("#hhasta").val();
+    var params = {empresa : EMPRESA, conductor : CONDUCTOR,
+        desde : DESDE, hdesde : HDESDE, hasta : HASTA, hhasta : HHASTA};
+    var url = urlBase + "/reporte/GetReporteDetalle.php";
+    var success = function(response)
+    {
+        cerrarSession(response);
+        var reporte = $("#contenedor_central");
+        reporte.html("");
+        reporte.append("<div class=\"contenedor_central_titulo_amplio\"><div>ID</div><div>Cliente</div><div>Ruta</div><div>Tipo Ruta</div>\n\
+                            <div>Fecha</div><div>Hora</div><div>Movil</div><div>Conductor</div>\n\
+                            <div>Tarifa 1</div><div>Tarifa 2</div><div>Estado</div><div style=\"width:20%\">Observación adicional</div></div>");
+        for(var i = 0 ; i < response.length; i++){
+            let servicio = response[i];
+            let id = servicio.servicio_id;
+            let cliente = servicio.servicio_cliente;
+            let ruta = servicio.servicio_ruta;
+            let truta = servicio.servicio_truta;
+            let fecha = servicio.servicio_fecha;
+            let hora = servicio.servicio_hora;
+            let movil = servicio.servicio_movil === '' ? '-' : servicio.servicio_movil;
+            let conductor = servicio.servicio_conductor === '' ? '-' : servicio.servicio_conductor;
+            let tarifa1 = servicio.servicio_tarifa1;
+            let tarifa2 = servicio.servicio_tarifa2;
+            let estado = obtenerEstadoServicio(servicio.servicio_estado);
+            let observacion = servicio.servicio_observacion_adicional;
+            reporte.append("<div class=\"fila_contenedor fila_contenedor_servicio_reporte\"><div>"+id+"</div><div>"+cliente+"</div><div>"+ruta+"</div><div>"+truta+"</div>\n\
+                            <div>"+fecha+"</div><div>"+hora+"</div><div>"+movil+"</div><div>"+conductor+"</div>\n\
+                            <div>"+tarifa1+"</div><div>"+tarifa2+"</div><div>"+estado+"</div><div style=\"width:20%\">"+observacion+"</div></div>");
+    
+        }
     };
     postRequest(url,params,success);
 }
@@ -107,4 +184,34 @@ function cargarConductores()
     postRequest(url,params,success);
 }
 
-
+function obtenerEstadoServicio(servicio)
+{
+    if(servicio === CREADO)
+    {
+        return "Creado"; 
+    }
+    else if(servicio === EN_PROCCESO_DE_ASIGNACION)
+    {
+        return "En proceso de asignaci&oacute;n";            
+    }
+    else if(servicio === ASIGNADO)
+    {
+        return "Asignado";     
+    }
+    else if(servicio === ACEPTADO)
+    {
+        return "Aceptado";            
+    }
+    else if(servicio === EN_PROGRESO)
+    {
+        return "En Ruta";
+    }
+    else if(servicio === FINALIZADO)
+    {
+        return "Finalizado"; 
+    }
+    else if(servicio === CANCELADO)
+    {
+        return "Cancelado"; 
+    }
+}

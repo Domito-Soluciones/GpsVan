@@ -34,6 +34,7 @@
     $serviciosEnRuta = 0;
     $serviciosPorRealizar = 0;
     $serviciosPorAsignar = 0;
+    $serviciosCancelados = 0;
     for($i = 0 ; $i < count($servicios); $i++)
     {
         $aux = explode("%",$servicios[$i]);
@@ -52,6 +53,10 @@
         else if($aux[0] == '5')
         {
             $serviciosFinalizados = $aux[1];
+        }
+        else if($aux[0] == '6')
+        {
+            $serviciosCancelados = $aux[1];
         }
     }
 ?>
@@ -97,6 +102,14 @@
                 </td>
                 <td>
                     <?php echo $serviciosFinalizados?>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Servicio Cancelados
+                </td>
+                <td>
+                    <?php echo $serviciosCancelados?>
                 </td>
             </tr>
         </table>

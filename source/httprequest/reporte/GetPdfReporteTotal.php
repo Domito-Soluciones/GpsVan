@@ -33,6 +33,7 @@ include '../../log/Log.php';
     $serviciosEnRuta = 0;
     $serviciosPorRealizar = 0;
     $serviciosPorAsignar = 0;
+    $serviciosCancelados = 0;
     for($i = 0 ; $i < count($servicios); $i++)
     {
         $aux = explode("%",$servicios[$i]);
@@ -51,6 +52,10 @@ include '../../log/Log.php';
         else if($aux[0] == '5')
         {
             $serviciosFinalizados = $aux[1];
+        }
+        else if($aux[0] == '6')
+        {
+            $serviciosCancelados = $aux[1];
         }
     }
     $width = 70;
@@ -72,6 +77,9 @@ include '../../log/Log.php';
     $pdf->Ln();
     $pdf->Cell($width,$height,'Servicio Finalizado',1);
     $pdf->Cell($width,$height,$serviciosFinalizados,1);
+    $pdf->Ln();
+    $pdf->Cell($width,$height,'Servicio Cancelado',1);
+    $pdf->Cell($width,$height,$serviciosCancelados,1);
     $pdf->Ln();
     $pdf->Output();
     Log::write_log("GETPDFREPORTE", 0);
