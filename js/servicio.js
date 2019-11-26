@@ -191,8 +191,8 @@ function abrirBuscador(id)
         $("#conductorServicio").val(conductorReal.length===1?"No Definido":conductorReal);
         $("#inicioServicio").val(servicio.servicio_hora);
         $("#fechaServicio").val(servicio.servicio_fecha);
-        $("#tarifaServicio").val(servicio.servicio_tarifa1);
-        $("#tarifa2Servicio").val(servicio.servicio_tarifa2); 
+        $("#tarifaServicio").val(formatoMoneda(servicio.servicio_tarifa1));
+        $("#tarifa2Servicio").val(formatoMoneda(servicio.servicio_tarifa2)); 
         if(servicio.servicio_observacion_adicional !== '')
         {
             $("#cont_obs").html("<textarea readonly style=\"width:99%;height:400px;font-family:Arial, Helvetica, sans-serif;\">"+servicio.servicio_observacion_adicional+"</textarea>");
@@ -242,8 +242,8 @@ function modificarServicio()
     var estado = $("#estadoServicio").val();
     var movil = $("#movilServicio").val();
     var conductor = ID_CONDUCTOR;
-    var tarifa1 = $("#tarifaServicio").val();
-    var tarifa2 = $("#tarifa2Servicio").val();
+    var tarifa1 = $("#tarifaServicio").val().split('.').join('');;
+    var tarifa2 = $("#tarifa2Servicio").val().split('.').join('');;
     var array = [cliente,ruta,fecha,hora,estado,tarifa1,tarifa2];
     var params = {id : id,cliente : cliente,ruta : ruta, truta : truta,fecha : fecha, hora : hora,
         estado : estado,movil : movil, conductor : conductor, tarifa1 : tarifa1, tarifa2 : tarifa2};

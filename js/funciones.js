@@ -168,6 +168,9 @@ function cambiarModulo(pagina,params = null){
                 {
                     ocultarMapa();
                 }
+                if(pagina === 'tarifa'){
+                    ocultarSubMapa();
+                }
                 $("#contenido-central").html("");
                 $("#contenido-central").load(pagina+".html",function( response, status, xhr ) {
                     variable = undefined;
@@ -198,6 +201,9 @@ function cambiarModulo(pagina,params = null){
         if(pagina !== 'panel' || pagina !== 'monitoreo' || pagina !== 'servicio' || pagina !== 'pasajero' || pagina !== 'cliente')
         {
             ocultarMapa();
+        }
+        if(pagina === 'tarifa'){
+            ocultarSubMapa();
         }
         $("#contenido-central").html("");
         $("#contenido-central").load(pagina+".html",function( response, status, xhr ) {
@@ -588,23 +594,27 @@ function marcarCampoDisabled(campo)
 
 function mostrarMapa()
 {
+    console.log("mostrarMapa");
     $('#map').appendTo('#contenedor_mapa');
     cambiarPropiedad($('#map'),"display","block");
 }
 
 function ocultarMapa()
 {
+    console.log("ocultarMapa");
     $('#map').appendTo('body');
     cambiarPropiedad($('#map'),"display","none");
 }
 function mostrarSubMapa()
 {
+    console.log("mostrarSubMapa");
     $('#map').appendTo('#contenedor_mapa2');
     cambiarPropiedad($('#map'),"display","block");
 }
 
 function ocultarSubMapa()
 {
+    console.log("ocultarSubMapa");
     $('#contenedor_mapa2 #map').appendTo('body');
     cambiarPropiedad($('#map'),"display","none");
 }
@@ -902,4 +912,43 @@ function habilitarCampo(obj){
 function deshabilitarCampo(obj){
     obj.prop("disabled",true);
     cambiarPropiedad(obj,"background-color","#e3e3e3");
+}
+
+function formatoMoneda(cantidad){
+    if(cantidad.length < 4){
+        return cantidad;
+    }
+    if(cantidad.length === 4){
+        var mil = cantidad.substring(0,1);
+        var resto = cantidad.substring(1,4);
+        return mil+"."+resto;
+    }
+    if(cantidad.length === 5){
+        var mil = cantidad.substring(0,2);
+        var resto = cantidad.substring(2,5);
+        return mil+"."+resto;
+    }
+    if(cantidad.length === 6){
+        var mil = cantidad.substring(0,3);
+        var resto = cantidad.substring(3,6);
+        return mil+"."+resto;
+    }
+    if(cantidad.length === 7){
+        var millon = cantidad.substring(0,1);
+        var mil = cantidad.substring(1,4);
+        var resto = cantidad.substring(4,7);
+        return millon+"."+mil+"."+resto;
+    }
+    if(cantidad.length === 8){
+        var millon = cantidad.substring(0,2);
+        var mil = cantidad.substring(2,5);
+        var resto = cantidad.substring(5,8);
+        return millon+"."+mil+"."+resto;
+    }
+    if(cantidad.length === 9){
+        var millon = cantidad.substring(0,3);
+        var mil = cantidad.substring(3,6);
+        var resto = cantidad.substring(6,9);
+        return millon+"."+mil+"."+resto;
+    }
 }

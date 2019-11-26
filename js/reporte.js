@@ -139,8 +139,8 @@ function getReporteDetalle(){
             let hora = servicio.servicio_hora;
             let movil = servicio.servicio_movil === '' ? '-' : servicio.servicio_movil;
             let conductor = servicio.servicio_conductor === '' ? '-' : servicio.servicio_conductor;
-            let tarifa1 = servicio.servicio_tarifa1;
-            let tarifa2 = servicio.servicio_tarifa2;
+            let tarifa1 = formatoMoneda(servicio.servicio_tarifa1);
+            let tarifa2 = formatoMoneda(servicio.servicio_tarifa2);
             let estado = obtenerEstadoServicio(servicio.servicio_estado);
             let observacion = servicio.servicio_observacion_adicional;
             reporte.append("<div class=\"fila_contenedor fila_contenedor_servicio_reporte\"><div>"+id+"</div><div>"+cliente+"</div><div>"+ruta+"</div><div>"+truta+"</div>\n\

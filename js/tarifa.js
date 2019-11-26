@@ -68,6 +68,8 @@ $(document).ready(function(){
             });
             
             $("#volver").click(function(){
+                ocultarSubMapa();
+                ocultarMapa();
                 buscarTarifas(NOMBRE_CLIENTE,ID_CLIENTE);
                 if(typeof ID_CLIENTE === "undefined")
                 {
@@ -96,11 +98,13 @@ $(document).ready(function(){
                 {
                     colocarMarcadorPlacesTarifa();
                     quitarclase($("#contenedor_mapa"),"oculto");
+                    quitarclase($("#contenedor_mapa2"),"oculto");
                     mapa_oculto = false;
                 }
                 else
                 {
                     agregarclase($("#contenedor_mapa"),"oculto");
+                    agregarclase($("#contenedor_mapa2"),"oculto");
                     mapa_oculto = true;
                 }
             });
@@ -111,15 +115,18 @@ $(document).ready(function(){
                 {
                     colocarMarcadorPlacesTarifa();
                     quitarclase($("#contenedor_mapa"),"oculto");
+                    quitarclase($("#contenedor_mapa2"),"oculto");
                     mapa_oculto = false;
                 }
                 else
                 {
                     agregarclase($("#contenedor_mapa"),"oculto");
+                    agregarclase($("#contenedor_mapa2"),"oculto");
                     mapa_oculto = true;
                 }
-            });            
+            });    
             mostrarMapa();
+            mostrarSubMapa();
         });
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");

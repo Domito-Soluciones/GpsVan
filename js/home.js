@@ -44,15 +44,15 @@ function getDashBoard(cargar = true)
         $("#vActivos").html(response.movil_activo+"/"+total);
         if(response.produccion_diaria !== '')
         {
-            $("#pDiaria").html("$ "+response.produccion_diaria);
+            $("#pDiaria").html("$ "+formatoMoneda(response.produccion_diaria));
         }
         if(response.produccion_mensual !== '')
         {
-            $("#pMensual").html("$ "+response.produccion_mensual);
+            $("#pMensual").html("$ "+formatoMoneda(response.produccion_mensual));
         }
         if(response.produccion_minterno !== '')
         {
-            $("#pInterno").html("$ "+response.produccion_minterno);
+            $("#pInterno").html("$ "+formatoMoneda(response.produccion_minterno));
         }
         var cont = $("#vConvenio");
         cont.html("");

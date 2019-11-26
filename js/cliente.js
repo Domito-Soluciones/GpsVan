@@ -520,7 +520,7 @@ function abrirModificar(id,nombre)
         });
         $("#volver").click(function(){
             NOMBRE_CLIENTE = undefined;
-            ocultarSubMapa();
+            ocultarMapa();
             if(typeof TIPO_GRUPO === 'undefined')
             {
                 buscarCliente();
@@ -923,8 +923,8 @@ function preEliminarCliente(id)
     var nombre = $("#nombre").val();
     var origen = $("#origen").val();
     var destino = $("#destino").val();
-    var valor1 = $("#valor1").val();
-    var valor2 = $("#valor2").val();
+    var valor1 = $("#valor1").val().split('.').join('');
+    var valor2 = $("#valor2").val().split('.').join('');
     var array = [tipo,horario,descripcion,numero,hora,nombre,origen,destino,valor1,valor2];
     if(!validarCamposOr(array))
     {
@@ -965,8 +965,8 @@ function modificarTarifa()
     var nombre = $("#nombre").val();
     var origen = $("#origen").val();
     var destino = $("#destino").val();
-    var valor1 = $("#valor1").val();
-    var valor2 = $("#valor2").val();
+    var valor1 = $("#valor1").val().split('.').join('');;
+    var valor2 = $("#valor2").val().split('.').join('');;
     var array = [tipo,horario,descripcion,numero, hora,nombre,valor1,valor2];
     if(!validarCamposOr(array))
     {
@@ -1210,8 +1210,8 @@ function abrirBuscador(id)
         $("#nombre").val(tarifa.tarifa_nombre);
         $("#origen").val(tarifa.tarifa_origen);
         $("#destino").val(tarifa.tarifa_destino);
-        $("#valor1").val(tarifa.tarifa_valor1);
-        $("#valor2").val(tarifa.tarifa_valor2);
+        $("#valor1").val(formatoMoneda(tarifa.tarifa_valor1));
+        $("#valor2").val(formatoMoneda(tarifa.tarifa_valor2));
         $("#eliminar2").click(function (){
             confirmar("Eliminar tarifa","Esta seguro que desea eliminar la tarifa "+$("#descripcion").val() + " " +$("#nombre").val(),
             function(){

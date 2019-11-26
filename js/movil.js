@@ -95,9 +95,9 @@ function agregarMovil()
     var cantidad = $("#cantidad").val();
     var clase = $("#clase").val();
     var conductor = $("#conductores").val();
-    var gps = $("#gps").val();
-    var celular = $("#celular").val();
-    var app = $("#app").val();
+    var gps = $("#gps").val().split('.').join('');
+    var celular = $("#celular").split('.').join('');
+    var app = $("#app").val().split('.').join('');
     var tipo = $("#tipo").val();
     var venPerCir = $("#venPerCir").val();
     var venRevTec = $("#venRevTec").val();
@@ -236,9 +236,9 @@ function modificarMovil()
     var cantidad = $("#cantidad").val();
     var clase = $("#clase").val();
     var conductor = $("#conductores").val();
-    var gps = $("#gps").val();
-    var celular = $("#celular").val();
-    var app = $("#app").val();
+    var gps = $("#gps").val().split('.').join('');
+    var celular = $("#celular").val().split('.').join('');
+    var app = $("#app").val().split('.').join('');
     var tipo = $("#tipo").val();
     var venPerCir = $("#venPerCir").val();
     var venRevTec = $("#venRevTec").val();
@@ -570,9 +570,9 @@ function abrirModificar(id,patente,nombre)
         $("#color").val(movil.movil_color);
         $("#cantidad").val(movil.movil_cantidad);
         $("#clase").val(movil.movil_clase);
-        $("#gps").val(movil.movil_gps);
-        $("#celular").val(movil.movil_celular);
-        $("#app").val(movil.movil_app);
+        $("#gps").val(formatoMoneda(movil.movil_gps));
+        $("#celular").val(formatoMoneda(movil.movil_celular));
+        $("#app").val(formatoMoneda(movil.movil_app));
         $("#tipo").val(movil.movil_tipo);
         $("#venPerCir").val(movil.movil_ven_per_cir);
         $("#venRevTec").val(movil.movil_ven_rev_tec);

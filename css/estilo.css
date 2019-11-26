@@ -1381,7 +1381,7 @@ select
 .indicador-valor
 {
     width: 100%;
-    font-size: 60px;
+    font-size: 45px;
     text-align: center;
     height: calc(100% - 20px);
     line-height: 140px;

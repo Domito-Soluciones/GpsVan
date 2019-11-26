@@ -51,7 +51,7 @@ $(document).ready(function(){
 function agregarRendicion()
 {
     var dato = $("#dato").val();
-    var valor = $("#valor").val();
+    var valor = $("#valor").val().split('.').join('');;
     var d = new Date();
     var mes = d.getMonth() < 10 ? "0"+(d.getMonth()+1) : d.getMonth()+1;
     var anio = d.getFullYear();
@@ -82,7 +82,7 @@ function agregarRendicion()
 function modificarRendicion()
 {
     var dato = $("#dato").val();
-    var valor = $("#valor").val();
+    var valor = $("#valor").val().split('.').join('');;
     var tipo = $("#tipo").val();
     var array = [dato,valor,tipo];
     if(!validarCamposOr(array))
@@ -169,7 +169,7 @@ function verRendiciones(conductor,cargar = false)
         {
             var id = response[i].rendicion_id;
             var dato = response[i].rendicion_dato;
-            var valor = response[i].rendicion_valor;
+            var valor = formatoMoneda(response[i].rendicion_valor);
             var fecha = response[i].rendicion_fecha;
             var tipo = response[i].rendicion_tipo === '0' ? 'Rendición' : 'Descuento';
             rendiciones.append("<div class=\"fila_contenedor fila_contenedor_servicio\" id=\""+id+"\">"+
@@ -206,7 +206,7 @@ function abrirModificar(id)
             }
         }
         $("#dato").val(rendicion.rendicion_dato);
-        $("#valor").val(rendicion.rendicion_valor);
+        $("#valor").val(formatoMoneda(rendicion.rendicion_valor));
         $("#tipo").val(rendicion.rendicion_tipo);
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#eliminar"),"visibility","visible");

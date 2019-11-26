@@ -119,7 +119,7 @@ function agregarConductor()
     var contrato = $("#tipoContrato").val();
     var afp = $("#afp").val();
     var isapre = $("#isapre").val();
-    var isapread = $("#isapread").val();
+    var isapread = $("#isapread").val().split('.').join('');
     var mutual = $("#mutual").val();
     var seguroInicio = formato_fecha($("#seguroInicio").val());
     var descuento = $("#descuento").val();
@@ -205,7 +205,7 @@ function modificarConductor()
     var contrato = $("#tipoContrato").val();
     var afp = $("#afp").val();
     var isapre = $("#isapre").val();
-    var isapread = $("#isapread").val();
+    var isapread = $("#isapread").val().split('.').join('');;
     var mutual = $("#mutual").val();
     var seguroInicio = $("#seguroInicio").val();
     var descuento = $("#descuento").val();
@@ -542,7 +542,7 @@ function abrirModificar(id,nombre,apellido)
         $("#tipoContrato").val(conductor.conductor_tipo_contrato);
         $("#afp").val(conductor.conductor_afp);
         $("#isapre").val(conductor.conductor_isapre);
-        $("#isapread").val(conductor.conductor_isapre_ad);
+        $("#isapread").val(formatoMoneda(conductor.conductor_isapre_ad));
         $("#mutual").val(conductor.conductor_mutual);
         $("#seguroInicio").val(conductor.conductor_seguro_inicio);
         $("#descuento").val(conductor.conductor_descuento);

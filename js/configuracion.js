@@ -21,7 +21,7 @@ function obtenerConfiguracion()
         for(var i = 0 ; i < response.length;i++)
         {
             var dato = response[i].configuracion_dato;
-            var valor = response[i].configuracion_valor;
+            var valor = formatoMoneda(response[i].configuracion_valor);
             if(dato === 'valor_uf')
             {
                 $("#valor_uf").val(valor);
@@ -45,7 +45,7 @@ function obtenerConfiguracion()
 
 function modificarConfiguracion()
 {
-    var uf = $("#valor_uf").val();
+    var uf = $("#valor_uf").val().val().split('.').join('');;
     var afp = $("#porcentaje_afp").val();
     var isapre = $("#porcentaje_isapre").val();
     var mutual = $("#porcentaje_mutual").val();

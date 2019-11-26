@@ -11,8 +11,8 @@ function agregarTarifa()
     var nombre = $("#nombre").val();
     var origen = $("#origen").val();
     var destino = $("#destino").val();
-    var valor1 = $("#valor1").val();
-    var valor2 = $("#valor2").val();
+    var valor1 = $("#valor1").val().split('.').join('');
+    var valor2 = $("#valor2").val().split('.').join('');
     var array = [tipo,horario,descripcion,numero,hora,nombre,valor1,valor2];
     if(!validarCamposOr(array))
     {
@@ -58,8 +58,8 @@ function modificarTarifa()
     var nombre = $("#nombre").val();
     var origen = $("#origen").val();
     var destino = $("#destino").val();
-    var valor1 = $("#valor1").val();
-    var valor2 = $("#valor2").val();
+    var valor1 = $("#valor1").val().split('.').join('');
+    var valor2 = $("#valor2").val().split('.').join('');
     var array = [tipo,horario,descripcion,numero, hora,nombre,valor1,valor2];
     if(!validarCamposOr(array))
     {
@@ -244,8 +244,8 @@ function abrirBuscador(id)
         $("#nombre").val(tarifa.tarifa_nombre);
         $("#origen").val(tarifa.tarifa_origen);
         $("#destino").val(tarifa.tarifa_destino);
-        $("#valor1").val(tarifa.tarifa_valor1);
-        $("#valor2").val(tarifa.tarifa_valor2);
+        $("#valor1").val(formatoMoneda(tarifa.tarifa_valor1));
+        $("#valor2").val(formatoMoneda(tarifa.tarifa_valor2));
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
         cambiarPropiedad($("#eliminar"),"visibility","visible");
@@ -257,6 +257,7 @@ function abrirBuscador(id)
         });
 
         $("#volverT").click(function(){
+            ocultarSubMapa();
             if(typeof NOMBRE_CLIENTE === "undefined" || typeof ID_CLIENTE === "undefined")
             {
                 buscarTarifasAll();
@@ -281,16 +282,19 @@ function abrirBuscador(id)
         });
 
         $("#buscaOrigen").click(function(){
+            console.log(mapa_oculto);
             input_direccion = $("#origen");
             if(mapa_oculto)
             {
                 colocarMarcadorPlacesTarifa();
                 quitarclase($("#contenedor_mapa"),"oculto");
+                quitarclase($("#contenedor_mapa2"),"oculto");
                 mapa_oculto = false;
             }
             else
             {
                 agregarclase($("#contenedor_mapa"),"oculto");
+                agregarclase($("#contenedor_mapa2"),"oculto");
                 mapa_oculto = true;
             }
         });
@@ -301,15 +305,17 @@ function abrirBuscador(id)
             {
                 colocarMarcadorPlacesTarifa();
                 quitarclase($("#contenedor_mapa"),"oculto");
+                quitarclase($("#contenedor_mapa2"),"oculto");
                 mapa_oculto = false;
             }
             else
             {
                 agregarclase($("#contenedor_mapa"),"oculto");
+                agregarclase($("#contenedor_mapa2"),"oculto");
                 mapa_oculto = true;
             }
         });            
-        mostrarMapa();
+        mostrarSubMapa();
     });
 }
 
