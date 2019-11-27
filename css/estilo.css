@@ -1198,6 +1198,12 @@ select
     cursor: pointer;
     height:50px;
 }
+.cont-pasajero-gral-especial
+{
+    border-bottom: solid 1px silver;
+    cursor: pointer;
+    height:70px;
+}
 .cont-pasajero-gral:hover
 {
     background-color: #cccccc;

@@ -35,6 +35,14 @@
     <head>
         <meta charset="UTF-8">
         <title></title>
+        <style>
+            table{
+                border-collapse: collapse;
+            }
+            td{
+                 border:solid 1px black;
+            }
+        </style>
     </head>
     <body>
        <table>
