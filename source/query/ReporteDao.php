@@ -74,7 +74,7 @@ class ReporteDao {
                 $buscaFecha = "AND servicio_fecha BETWEEN '".$desde." ".$hdesde."' AND '".$hasta." ".$hhasta."'";
             }
             $query = "SELECT * FROM tbl_servicio WHERE servicio_estado != 0 "
-                    .$buscaFecha." ".$buscaEmpresa." ".$buscaConductor;
+                    .$buscaFecha." ".$buscaEmpresa." ".$buscaConductor." ORDER BY servicio_fecha DESC,servicio_hora DESC";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
