@@ -1325,47 +1325,48 @@ function agregarPasajeroEspecial(){
         $("#addEspecial").text("Agregar");
     }
     else {
-        var texto1 = '';
-        var texto2 = '';
-        if(partida.trim() !== ''){
-            texto1 = "<div id=\"pasajero_"+id+"_origen\" class=\"cont-pasajero-gral\" draggable=\"true\" ondragstart=\"drag(event,$(this))\" ondrop=\"drop(event,$(this))\" ondragover=\"allowDrop(event)\">"
-                +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+partida+"\">"
-                +"<div class=\"cont-pasajero\">"+nombre+" Origen</div><div style='float:right'>"
+        var cont = '';
+        if(partida.trim() !== '' || destino !== ''){
+            cont = "<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral-especial\">"
+                +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'>"
                 +"<div class=\"boton-chico\" onclick=\"editarPasajeroEspecial('"+nombre.replace(/'/g, "\\'")+"','"+celular+"','"+partida.replace(/'/g, "\\'")+"','"+id+"','origen')\"><img src=\"img/editar.svg\" width=\"12\" height=\"12\"></div>"
                 +"<div class=\"boton-chico\" onclick=\"borrarPasajero('pasajero_"+id+"_origen','"+nombre.replace(/'/g, "\\'")+"','"+partida.replace(/'/g, "\\'")+"','"+celular+"')\"><img src=\"img/cancelar.svg\" width=\"12\" height=\"12\"></div></div>"
-                +"<div class=\"cont-mini-pasajero\"><div id=\"punto_"+id+"\">"+ recortar(partida,30) + "</div><div>" + celular+"</div></div>";
+                +"<div class=\"cont-mini-pasajero\">%origen%%destino%<div>" + celular+"</div></div>";
+        }
+        else{
+            return;
+        }
+        if(partida.trim() !== ''){
+            cont.replace("%origen%","<div id=\"punto_\"+id+\"\"><b>Origen:</b> "+ recortar(partida,20) + "</div>");
+        }
+        else{
+            cont.replace("%origen%","");
         }
         if(destino.trim() !== ''){
-            texto2 = "<div id=\"pasajero_"+id+"_destino\" class=\"cont-pasajero-gral\" draggable=\"true\" ondragstart=\"drag(event,$(this))\" ondrop=\"drop(event,$(this))\" ondragover=\"allowDrop(event)\">"
-                +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+destino+"\">"
-                +"<div class=\"cont-pasajero\">"+nombre+" Destino</div><div style='float:right'>"
-                +"<div class=\"boton-chico\" onclick=\"editarPasajeroEspecial('"+nombre.replace(/'/g, "\\'")+"','"+celular+"','"+destino.replace(/'/g, "\\'")+"','"+id+"','destino')\"><img src=\"img/editar.svg\" width=\"12\" height=\"12\"></div>"
-                +"<div class=\"boton-chico\" onclick=\"borrarPasajero('pasajero_"+id+"_destino','"+nombre.replace(/'/g, "\\'")+"','"+destino.replace(/'/g, "\\'")+"','"+celular+"')\"><img src=\"img/cancelar.svg\" width=\"12\" height=\"12\"></div></div>"
-                +"<div class=\"cont-mini-pasajero\"><div id=\"punto_"+id+"\">"+ recortar(destino,30) + "</div><div>" + celular+"</div></div>";
+            cont.replace("%destino%","<div id=\"punto_\"+id+\"\"><b>Origen:</b> "+ recortar(destino,20) + "</div>");
         }
-        if(texto1 !== ''){
-            $("#contenedor_pasajero").append(texto1);
+        else{
+            cont.replace("%destino%","");
+        }
+        if(partida.trim() !== ''){
+            $("#contenedor_pasajero").append(cont);
             if(typeof origen === 'undefined'){
-                console.log("111");
                 origen = partida;
                 $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+origen);
             }
             else{
-                console.log("121");
                 destinos.push(partida);
                 $("#contenedor_punto_destino").html("<b>Destino: </b>"+partida);
             }
             pasajeros.push(nombre);
         }
-        if(texto2 !== ''){
-            $("#contenedor_pasajero").append(texto2);
+        if(destino.trim() !== ''){
+            $("#contenedor_pasajero").append(cont);
             if(typeof origen === 'undefined'){
-                console.log("131");
                 origen = destino;
                 $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+origen);
             }
             else{
-                console.log("141");
                 destinos.push(destino);
                 $("#contenedor_punto_destino").html("<b>Destino: </b>"+destino);
             }
