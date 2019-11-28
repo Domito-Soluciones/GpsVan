@@ -1196,7 +1196,7 @@ select
 {
     border-bottom: solid 1px silver;
     cursor: pointer;
-    height:50px;
+    height:70px;
 }
 .cont-pasajero-gral-especial
 {
@@ -1476,7 +1476,8 @@ select
     color:#0099ff;
     float: left;
     width: 6%;
-    text-align: center;
+    text-align: left;
+    margin-left: 20px;
 }
 .contenedor_central_titulo_conductor div
 {
@@ -1536,7 +1537,8 @@ select
 {
     float: left;
     width: 6%;
-    text-align: center;    
+    text-align: left;
+    margin-left: 20px;
 }
 .fila_contenedor_conductor div
 {

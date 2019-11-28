@@ -112,7 +112,7 @@ class ClienteDao {
                     . "cliente_mail_contacto,cliente_mail_facturacion,cliente_contrato,cliente_grupo,cliente_color"
                     . ") VALUES ('$razon','$tipo','$rut','$direccion','$nombre','$telefono','$mail','$mail2','$contrato','$grupo','$color')"; 
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
+            if (mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);

@@ -42,6 +42,9 @@
             td{
                  border:solid 1px black;
             }
+            table tr:nth-child(2n){
+                background-color: #dfe8e8;
+            }
         </style>
     </head>
     <body>

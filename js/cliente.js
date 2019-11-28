@@ -32,6 +32,14 @@ $(document).ready(function(){
                     return;
                 }
             });
+            $("#razon").blur(function (){
+             if(validarExistencia('razon',$(this).val()))
+                {
+                        alertify.error("La razón social "+$(this).val()+" ya existe");
+                $("#razon").val("");
+                    return;
+                }
+            });
             $("#agregar_cc").click(function(){
                 agregarCentroCosto();
             });
@@ -392,20 +400,22 @@ function abrirModificar(id,nombre)
         initPlacesAutoComplete();
         iniciarPestanias();
         cambioEjecutado();
-        $("#nick").blur(function (){
+        $("#rut").blur(function (){
             if(validarExistencia('rut',$(this).val()))
             {
                 alertify.error("El rut "+$(this).val()+" ya existe");
                 $("#rut").val("");
                 return;
             }
+        });
+        $("#razon").blur(function (){
             if(validarExistencia('razon',$(this).val()))
             {
-                alertify.error("La razon social "+$(this).val()+" ya existe");
+                alertify.error("La razón social "+$(this).val()+" ya existe");
                 $("#razon").val("");
                 return;
             }
-        });  
+        });
         $("#eliminarT").click(function (){
             confirmar("Eliminar tarifa","Esta seguro que desea eliminar la tarifa "+$("#descripcion").val() + " " +$("#nombre").val(),
             function(){
@@ -624,6 +634,13 @@ function validarExistencia(tipo,valor)
         if(tipo === 'rut')
         {
             if(valor === CLIENTES[i].cliente_rut)
+            {
+                return true;
+            }
+        }
+        if(tipo === 'razon')
+        {
+            if(valor === CLIENTES[i].cliente_razon)
             {
                 return true;
             }

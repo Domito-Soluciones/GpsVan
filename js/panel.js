@@ -1208,32 +1208,11 @@ function colocarMarcadorPlaces()
 
 function abrirAddPasajero()
 {
-    var partida = $("#partida").val();
-    var destino = $("#destino").val();
-    if(partida === "" && partidaAplica && TIPO_SERVICIO !== 0){
-        confirmar("Ingresar origen","Debe ingresar un punto de origen,Â¿desea continuar sin ingresarlo?",()=>{
-            partidaAplica = false;
-            deshabilitarCampo($("#partida"));
-            initPlacesAutoComplete(document.getElementById('agregaDireccion'));
-            cambiarPropiedad($(".contenedor_editar"),"display","none");
-            cambiarPropiedad($(".contenedor_agregar"),"display","block");
-            quitarclase($("#contenedor_mapa"),"mapa_editar");
-            agregarclase($("#contenedor_mapa"),"mapa_agregar");
-        },()=>{
-            habilitarCampo($("#partida"));
-            $("#partida").focus();
-        });
-    }
-    else if (destino !== "" && TIPO_SERVICIO !== 0){
-        alertify.error("Al seleccionar un destino no se pueden agregar pasajeros");
-    }
-    else{
-        initPlacesAutoComplete(document.getElementById('agregaDireccion'));
-        cambiarPropiedad($(".contenedor_editar"),"display","none");
-        cambiarPropiedad($(".contenedor_agregar"),"display","block");
-        quitarclase($("#contenedor_mapa"),"mapa_editar");
-        agregarclase($("#contenedor_mapa"),"mapa_agregar");
-    }
+    initPlacesAutoComplete(document.getElementById('agregaDireccion'));
+    cambiarPropiedad($(".contenedor_editar"),"display","none");
+    cambiarPropiedad($(".contenedor_agregar"),"display","block");
+    quitarclase($("#contenedor_mapa"),"mapa_editar");
+    agregarclase($("#contenedor_mapa"),"mapa_agregar");
 }
 
 function cerrarAddPasajero()

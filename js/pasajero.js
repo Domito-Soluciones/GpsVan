@@ -9,6 +9,7 @@ var AGREGAR = true;
 var PAGINA = 'PASAJEROS';
 var CC;
 var mapa_oculto = true;
+var input_places;
 //var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","punto","empresa","centro","nick"];
 var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","punto","empresa","centro"];
 $(document).ready(function(){
@@ -65,8 +66,32 @@ $(document).ready(function(){
                 cargarCentroCosto($(this).val(),'');
                 cargarRutas($(this).val(),'');
             });
+
+            $("#direccion").focus(function(){
+                input_direccion = $("#direccion");
+            });
+            
+            $("#punto").focus(function(){
+                input_direccion = $("#punto");
+            });
+            
+            $("#buscaDireccion").click(function(){
+                input_places = $("#direccion");
+                if(mapa_oculto)
+                {
+                    colocarMarcadorPlaces();
+                    quitarclase($("#contenedor_mapa"),"oculto");
+                    mapa_oculto = false;
+                }
+                else
+                {
+                    agregarclase($("#contenedor_mapa"),"oculto");
+                    mapa_oculto = true;
+                }
+            });
             
             $("#buscaPunto").click(function(){
+                input_places = $("#punto");
                 if(mapa_oculto)
                 {
                     colocarMarcadorPlaces();
@@ -420,7 +445,24 @@ function abrirModificar(id,rut,nombre,apellido)
         cambiarPropiedad($("#agregar"),"visibility","visible");
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#eliminar"),"visibility","visible");
+        
+        $("#buscaDireccion").click(function(){
+            input_places = $("#direccion");
+                if(mapa_oculto)
+                {
+                    colocarMarcadorPlaces();
+                    quitarclase($("#contenedor_mapa"),"oculto");
+                    mapa_oculto = false;
+                }
+                else
+                {
+                    agregarclase($("#contenedor_mapa"),"oculto");
+                    mapa_oculto = true;
+                }
+            });
+        
         $("#buscaPunto").click(function(){
+            input_places = $("#punto");
             if(mapa_oculto)
             {
                 colocarMarcadorPlaces();
@@ -765,14 +807,13 @@ function colocarMarcadorPlaces()
     });
     
     google.maps.event.addListener(map, "dragend", function() {
-        var punto = $('#punto');
-        punto.val("Cargando...");
+        input_places.val("Cargando...");
         var query = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + POSITION[0] +','+ POSITION[1]+'&key=' + API_KEY;
         $.getJSON(query, function (data) {
             if (data.status === 'OK') { 
                 var zero = data.results[0];
                 var address = zero.formatted_address;
-                punto.val(address);     
+                input_places.val(address);     
             } 
         });
     });
