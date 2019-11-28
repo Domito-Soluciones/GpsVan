@@ -1202,7 +1202,7 @@ select
 {
     border-bottom: solid 1px silver;
     cursor: pointer;
-    height:70px;
+    height:95px;
 }
 .cont-pasajero-gral:hover
 {
@@ -1960,4 +1960,9 @@ select
 .select-liquidacion{
     width: 155px;
     height: 30px;
+}
+
+.punto-especial{
+    width: 207px;
+    height: auto;
 }
