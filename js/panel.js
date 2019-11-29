@@ -540,7 +540,6 @@ function cargarRutas()
             var descripcion = response[i].tarifa_descripcion.trim();
             if(descripcion !== ruta)
             {
-                console.log(descripcion + "-"+ruta+"-");
                 $("#ruta").append("<option value=\""+descripcion+"\">"+descripcion+"</option>");
                 ruta = descripcion;
             }
@@ -595,7 +594,6 @@ function agregarServicio(fecha)
 
 function dibujarRuta()
 {
-    console.log(origen+" "+destinos);
     GEOCODING = false;
     if(typeof origen === 'undefined' || destinos.length === 0)
     {
@@ -1279,7 +1277,7 @@ function cancelarPasajeroEspecial(){
 }
 
 function agregarPasajeroEspecial(){
-    var nombre = $("#nombre").val().replace(" ","_");;
+    var nombre = $("#nombre").val().split(" ").join("_");
     var celular = $("#celular").val();
     var partida = $("#partida").val();
     var destino = $("#destino").val();
@@ -1406,7 +1404,7 @@ function agregarPasajeroEspecial(){
 
 
 function initAgregarPasajero(obj,nombre,punto,celular){
-    nombre = nombre.replace(" ","_");
+    nombre = nombre.split(" ").join("_");
     if(validarNumero(nombre))
     {
         alertify.error("Nombre no debe ser numerico");

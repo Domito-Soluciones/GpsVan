@@ -729,11 +729,9 @@ function activarPestania(array)
                 }
             }
             marcarCampoError($("#"+CAMPOS[i]));
-            console.log("estan mal: "+CAMPOS[i] + " " + i+" el valor es "+array[i]);
         }
         else
         {
-            console.log("estan bien: "+CAMPOS[i] + " " + i);
             marcarCampoOk($("#"+CAMPOS[i]));
         }
     }
