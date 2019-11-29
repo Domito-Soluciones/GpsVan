@@ -22,7 +22,7 @@
     }
     .contenedor-lateral
     {
-        width: 100%;
+        width: 100% !important;
         height: 200px;
     }
     .buscador-asignacion-boton
@@ -86,7 +86,7 @@
 @media screen and (max-width:800px ) {
     .contenido-central
     {
-        width: 100%;
+        width: 100% !important;
     }
     .fecha
     {
@@ -102,7 +102,7 @@
     }
     .menu-telefono
     {
-        display: inline;
+        display: inline !important;
     }
     #menu
     {
@@ -145,7 +145,7 @@
     }
     .menu
     {
-        width:50px;
+        width:50px !important;
     }
     .contenedor-dashboard
     {
@@ -164,8 +164,9 @@
     }
     .buscador-asignacion
     {
-        height: auto;
-        padding-bottom: 20px;
+        width: 100% !important;
+        height: auto !important;
+        padding-bottom: 20px !important;
     }
     
     .asignacion_buscador
@@ -174,16 +175,19 @@
     }
     .buscador-pasajero
     {
-        height: auto;
+        height: auto !important;
         padding-bottom: 20px;
     }
     .contenedor_agregar
     {
-        padding-left: 15px;
-        width: 100%;
-        margin-left: 0;
-        height: auto;
-        padding-bottom: 50px;
+        padding-left: 15px !important;
+        width: 100% !important;
+        margin-left: 0 !important;
+        height: auto !important;
+        padding-bottom: 50px !important;
+    }
+    .contenedor_agregar div{
+        width: 250px;
     }
     .input_asignar_agregar,.input_asignar_agregar_grande
     {
@@ -191,11 +195,11 @@
     }
     .contenedor_editar
     {
-        padding-left: 15px;
-        width: 100%;
-        margin-left: 0;
-        height: auto;
-        padding-bottom: 20px;
+        padding-left: 15px !important;
+        width: 100% !important;
+        margin-left: 0 !important;
+        height: auto !important;
+        padding-bottom: 20px !important;
     }
     .input_asignar_editar {
         width:200px;

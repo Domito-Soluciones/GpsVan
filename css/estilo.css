@@ -1783,7 +1783,7 @@ select
     width: 38%;
     margin-left: 59%;
     height: 50px;
-    background-color: #ecf0f1;
+    /*background-color: #ecf0f1;*/
     border-bottom: solid 1px silver;
 }
 .contenedor_agregar
@@ -1794,7 +1794,7 @@ select
     width: 38%;
     margin-left: 59%;
     height: 120px;
-    background-color: #ecf0f1;
+    /*background-color: #ecf0f1;*/
     border-bottom: solid 1px silver;
 }
 .contenedor_agregar div
