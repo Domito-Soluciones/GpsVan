@@ -8,20 +8,20 @@ header('Content-Type: application/json');
 $data = filter_input(INPUT_POST, 'movil');
 $movilDao = new MovilDao();
 $movil = $movilDao->getMovilConductor($data);
-$movilId = $movil->getId();
-$movilPatente = $movil->getPatente();
-$movilNombre = $movil->getNombre();
-$movilMarca = $movil->getMarca();
-$movilModelo = $movil->getModelo();
-$movilAnio = $movil->getAnio();
-$movilColor = $movil->getColor();
-$movilCantidad = $movil->getCantidad();
-$movilTransportista = $movil->getTransportista();
-$movilEstado = $movil->getEstado();
-$movilLat = $movil->getLat();
-$movilLon = $movil->getLon();
-$movilConductor = $movil->getConductor();
-$movilServicio = $movil->getServicio();
+$movilId = trim($movil->getId());
+$movilPatente = trim($movil->getPatente());
+$movilNombre = trim($movil->getNombre());
+$movilMarca = trim($movil->getMarca());
+$movilModelo = trim($movil->getModelo());
+$movilAnio = trim($movil->getAnio());
+$movilColor = trim($movil->getColor());
+$movilCantidad = trim($movil->getCantidad());
+$movilTransportista = trim($movil->getTransportista());
+$movilEstado = trim($movil->getEstado());
+$movilLat = trim($movil->getLat());
+$movilLon = trim($movil->getLon());
+$movilConductor = trim($movil->getConductor());
+$movilServicio = trim($movil->getServicio());
 echo "{\"movil_id\":\"".$movilId."\","
     . "\"movil_nombre\":\"".$movilNombre."\","
     . "\"movil_patente\":\"".$movilPatente."\","

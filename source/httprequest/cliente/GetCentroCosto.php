@@ -12,7 +12,7 @@ echo "[";
 for ($i = 0 ; $i < count($cc); $i++)
 {
     $ccNombre = $cc[$i];
-    echo "{\"cc_nombre\":\"".$ccNombre."\",\"cc_empresa\":\"".$cliente."\"}";
+    echo "{\"cc_nombre\":\"".trim($ccNombre)."\",\"cc_empresa\":\"".trim($cliente)."\"}";
     if (($i+1) != count($cc))
     {
         echo ",";

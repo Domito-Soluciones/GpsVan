@@ -9,16 +9,16 @@ $moviles = $conductorDao->getMovilesConductor();
 echo "[";
 for ($i = 0 ; $i < count($moviles); $i++)
 {
-    $movilId = $moviles[$i]->getId();
-    $movilPatente = $moviles[$i]->getPatente();
-    $movilNombre = $moviles[$i]->getNombre();
-    $movilMarca = $moviles[$i]->getMarca();
-    $movilModelo = $moviles[$i]->getModelo();
-    $movilTransportista = $moviles[$i]->getTransportista();
-    $movilEstado = $moviles[$i]->getEstado();
-    $movilLat = $moviles[$i]->getLat();
-    $movilLon = $moviles[$i]->getLon();
-    $movilServicio = $moviles[$i]->getServicio();
+    $movilId = trim($moviles[$i]->getId());
+    $movilPatente = trim($moviles[$i]->getPatente());
+    $movilNombre = trim($moviles[$i]->getNombre());
+    $movilMarca = trim($moviles[$i]->getMarca());
+    $movilModelo = trim($moviles[$i]->getModelo());
+    $movilTransportista = trim($moviles[$i]->getTransportista());
+    $movilEstado = trim($moviles[$i]->getEstado());
+    $movilLat = trim($moviles[$i]->getLat());
+    $movilLon = trim($moviles[$i]->getLon());
+    $movilServicio = trim($moviles[$i]->getServicio());
     echo "{\"movil_id\":\"".$movilId."\","
         . "\"movil_patente\":\"".$movilPatente."\","
         . "\"movil_nombre\":\"".$movilNombre."\","

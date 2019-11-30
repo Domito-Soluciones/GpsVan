@@ -11,18 +11,18 @@ $agentes = $agenteDao->getAgentes($busqueda);
 echo "[";
 for ($i = 0 ; $i < count($agentes); $i++)
 {
-    $cId = $agentes[$i]->getId();
-    $nombre = $agentes[$i]->getNombre();
-    $papellido = $agentes[$i]->getApellidoPat();
-    $mapellido = $agentes[$i]->getApellidoMat();
-    $rut = $agentes[$i]->getRut();
-    $nick = $agentes[$i]->getNick();
-    $telefono = $agentes[$i]->getTelefono();
-    $celular = $agentes[$i]->getCelular();
-    $direccion = $agentes[$i]->getDireccion();
-    $mail = $agentes[$i]->getMail();
-    $perfil = $agentes[$i]->getPerfil();
-    $empresa = $agentes[$i]->getEmpresa();
+    $cId = trim($agentes[$i]->getId());
+    $nombre = trim($agentes[$i]->getNombre());
+    $papellido = trim($agentes[$i]->getApellidoPat());
+    $mapellido = trim($agentes[$i]->getApellidoMat());
+    $rut = trim($agentes[$i]->getRut());
+    $nick = trim($agentes[$i]->getNick());
+    $telefono = trim($agentes[$i]->getTelefono());
+    $celular = trim($agentes[$i]->getCelular());
+    $direccion = trim($agentes[$i]->getDireccion());
+    $mail = trim($agentes[$i]->getMail());
+    $perfil = trim($agentes[$i]->getPerfil());
+    $empresa = trim($agentes[$i]->getEmpresa());
     echo "{\"agente_id\":\"".$cId."\","
         . "\"agente_nombre\":\"".$nombre."\","
         . "\"agente_papellido\":\"".$papellido."\","

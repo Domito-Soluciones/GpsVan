@@ -15,22 +15,22 @@ echo "[";
 for ($i = 0 ; $i < count($pasajeros); $i++)
 {
     $cId = $pasajeros[$i]->getId();
-    $nombre = $pasajeros[$i]->getNombre();
-    $papellido = $pasajeros[$i]->getPapellido();
-    $mapellido = $pasajeros[$i]->getMapellido();
-    $rut = $pasajeros[$i]->getRut();
-    $nick = $pasajeros[$i]->getNick();
-    $telefono = $pasajeros[$i]->getTelefono();
-    $celular = $pasajeros[$i]->getCelular();
-    $direccion = $pasajeros[$i]->getDireccion();
-    $punto = $pasajeros[$i]->getPunto();
-    $mail = $pasajeros[$i]->getMail();
-    $cargo = $pasajeros[$i]->getCargo();
-    $nivel = $pasajeros[$i]->getNivel();
-    $centroCosto = $pasajeros[$i]->getCentroCosto();
-    $empresa = $pasajeros[$i]->getEmpresa();
+    $nombre = trim($pasajeros[$i]->getNombre());
+    $papellido = trim($pasajeros[$i]->getPapellido());
+    $mapellido = trim($pasajeros[$i]->getMapellido());
+    $rut = trim($pasajeros[$i]->getRut());
+    $nick = trim($pasajeros[$i]->getNick());
+    $telefono = trim($pasajeros[$i]->getTelefono());
+    $celular = trim($pasajeros[$i]->getCelular());
+    $direccion = trim($pasajeros[$i]->getDireccion());
+    $punto = trim($pasajeros[$i]->getPunto());
+    $mail = trim($pasajeros[$i]->getMail());
+    $cargo = trim($pasajeros[$i]->getCargo());
+    $nivel = trim($pasajeros[$i]->getNivel());
+    $centroCosto = trim($pasajeros[$i]->getCentroCosto());
+    $empresa = trim($pasajeros[$i]->getEmpresa());
     $empresaDireccion = $pasajeros[$i]->getEmpresaDireccion();
-    $ruta = $pasajeros[$i]->getRuta();
+    $ruta = trim($pasajeros[$i]->getRuta());
     echo "{\"pasajero_id\":\"".$cId."\","
         . "\"pasajero_nombre\":\"".$nombre."\","
         . "\"pasajero_papellido\":\"".$papellido."\","

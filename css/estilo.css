@@ -1202,7 +1202,7 @@ select
 {
     border-bottom: solid 1px silver;
     cursor: pointer;
-    height:95px;
+    height:auto;
 }
 .cont-pasajero-gral:hover
 {
