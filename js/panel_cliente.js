@@ -204,8 +204,6 @@ function agregar(obj,rut,celular,nombre,papellido,cc,punto) {
     var key = rut+"_"+celular+"_"+nombre+"_"+papellido+"_"+cc+"_"+punto;
     PASAJEROS_NO_ASIGNADOS.delete(key);
     PASAJEROS_ASIGNADOS.set(key,key);
-    console.log("NO : "+PASAJEROS_NO_ASIGNADOS.size);
-    console.log("SI : "+PASAJEROS_ASIGNADOS.size);
     $(".mensaje_bienvenida").remove();
     var pasajeros = $("#contenedor-pasajero-elegido");
     pasajeros.append("<div id=\""+rut+"\" class=\"fila_contenedor fila_contenedor_pasajero\">"+
@@ -219,8 +217,6 @@ function quitar(obj,rut,celular,nombre,papellido,cc,punto) {
     var key = rut+"_"+celular+"_"+nombre+"_"+papellido+"_"+cc+"_"+punto;
     PASAJEROS_ASIGNADOS.delete(key);
     PASAJEROS_NO_ASIGNADOS.set(key,key);
-    console.log("NO : "+PASAJEROS_NO_ASIGNADOS.size);
-    console.log("SI : "+PASAJEROS_ASIGNADOS.size)
     $(".mensaje_bienvenida").remove();
     var pasajeros = $("#contenedor-pasajero");
     pasajeros.append("<div id=\""+rut+"\" class=\"fila_contenedor fila_contenedor_pasajero\">"+

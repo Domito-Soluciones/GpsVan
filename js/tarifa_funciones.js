@@ -282,7 +282,6 @@ function abrirBuscador(id)
         });
 
         $("#buscaOrigen").click(function(){
-            console.log(mapa_oculto);
             input_direccion = $("#origen");
             if(mapa_oculto)
             {

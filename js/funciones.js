@@ -594,27 +594,23 @@ function marcarCampoDisabled(campo)
 
 function mostrarMapa()
 {
-    console.log("mostrarMapa");
     $('#map').appendTo('#contenedor_mapa');
     cambiarPropiedad($('#map'),"display","block");
 }
 
 function ocultarMapa()
 {
-    console.log("ocultarMapa");
     $('#map').appendTo('body');
     cambiarPropiedad($('#map'),"display","none");
 }
 function mostrarSubMapa()
 {
-    console.log("mostrarSubMapa");
     $('#map').appendTo('#contenedor_mapa2');
     cambiarPropiedad($('#map'),"display","block");
 }
 
 function ocultarSubMapa()
 {
-    console.log("ocultarSubMapa");
     $('#contenedor_mapa2 #map').appendTo('body');
     cambiarPropiedad($('#map'),"display","none");
 }
