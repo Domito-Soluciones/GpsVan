@@ -341,7 +341,7 @@ function cargarPasajeros()
                 break;
             }
             var id = response[i].pasajero_id;
-            var nombre = response[i].pasajero_nombre + " " + response[i].pasajero_papellido;
+            var nombre = response[i].pasajero_nombre.trim() + " " + response[i].pasajero_papellido.trim();
             var punto = response[i].pasajero_punto_encuentro;
             var celular = response[i].pasajero_celular;
             if(ruta === response[i].pasajero_ruta)
@@ -949,7 +949,7 @@ function borrarPasajeroEspecial(obj,partida,destino)
 function agregarPasajero(obj,nombre,punto,celular)
 {
     if(TIPO_SERVICIO !== 0){
-        $("#nombre").val(nombre.replace("_"," "));
+        $("#nombre").val(nombre);
         $("#celular").val(celular);
         $("#partida").val(punto);
     }
@@ -1279,7 +1279,7 @@ function cancelarPasajeroEspecial(){
 }
 
 function agregarPasajeroEspecial(){
-    var nombre = $("#nombre").val().replace(" ","_");;
+    var nombre = $("#nombre").val().split(" ").join("_");
     var celular = $("#celular").val();
     var partida = $("#partida").val();
     var destino = $("#destino").val();
