@@ -164,7 +164,7 @@ select
 
 .contenido-central
 {
-    width: 96%;
+    width: 95%;
     height: calc(100% - 60px);
     float: left;
     display: inline;

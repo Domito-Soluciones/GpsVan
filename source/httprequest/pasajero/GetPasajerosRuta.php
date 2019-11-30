@@ -31,7 +31,7 @@ for ($i = 0 ; $i < count($pasajeros); $i++)
     $empresa = trim($pasajeros[$i]->getEmpresa());
     $empresaDireccion = $pasajeros[$i]->getEmpresaDireccion();
     $ruta = trim($pasajeros[$i]->getRuta());
-    echo "{\"pasajero_id\":\"".$cId."\","
+    echo "{\"pasajero_id\":\"".$cId."\"," 
         . "\"pasajero_nombre\":\"".$nombre."\","
         . "\"pasajero_papellido\":\"".$papellido."\","
         . "\"pasajero_mapellido\":\"".$mapellido."\","
