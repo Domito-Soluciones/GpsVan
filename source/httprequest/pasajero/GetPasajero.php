@@ -8,22 +8,22 @@ header('Content-Type: application/json');
 $busqueda = filter_input(INPUT_POST, 'id');
 $pasajeroDao = new PasajeroDao();
 $pasajero = $pasajeroDao->getPasajero($busqueda);
-$cId = $pasajero->getId();
-$nombre = $pasajero->getNombre();
-$papellido = $pasajero->getPapellido();
-$mapellido = $pasajero->getMapellido();
-$rut = $pasajero->getRut();
-$nick = $pasajero->getNick();
-$telefono = $pasajero->getTelefono();
-$celular = $pasajero->getCelular();
-$direccion = $pasajero->getDireccion();
-$punto = $pasajero->getPunto();
-$mail = $pasajero->getMail();
-$cargo = $pasajero->getCargo();
-$nivel = $pasajero->getNivel();
-$centroCosto = $pasajero->getCentroCosto();
-$empresa = $pasajero->getEmpresa();
-$ruta = $pasajero->getRuta();
+    $cId = $pasajeros[$i]->getId();
+    $nombre = trim($pasajeros[$i]->getNombre());
+    $papellido = trim($pasajeros[$i]->getPapellido());
+    $mapellido = trim($pasajeros[$i]->getMapellido());
+    $rut = trim($pasajeros[$i]->getRut());
+    $nick = trim($pasajeros[$i]->getNick());
+    $telefono = trim($pasajeros[$i]->getTelefono());
+    $celular = trim($pasajeros[$i]->getCelular());
+    $direccion = trim($pasajeros[$i]->getDireccion());
+    $punto = trim($pasajeros[$i]->getPunto());
+    $mail = trim($pasajeros[$i]->getMail());
+    $cargo = trim($pasajeros[$i]->getCargo());
+    $nivel = trim($pasajeros[$i]->getNivel());
+    $centroCosto = trim($pasajeros[$i]->getCentroCosto());
+    $empresa = trim($pasajeros[$i]->getEmpresa());
+    $ruta = trim($pasajeros[$i]->getRuta());
 echo "{\"pasajero_id\":\"".$cId."\","
     . "\"pasajero_nombre\":\"".$nombre."\","
     . "\"pasajero_papellido\":\"".$papellido."\","

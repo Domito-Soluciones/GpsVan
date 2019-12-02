@@ -487,12 +487,14 @@ function obtenerPasajeros()
                 estado = "Entregado";
             }
             var destino = response[i].servicio_destino;
+            if(destino !== ''){
             $("#pasajeros_contenido").append("<div class=\"fila_contenedor fila_contenedor_servicio\" onclick=\"mostrarPasajero()\">"+
                     "<div class=\"letra_pasajero\">"+LETRAS[i]+"</div>"+
                     "<div class=\"nombre_pasajero\">"+pasajero+"</div>"+
                     "<div class=\"dir_pasajero\">"+destino+"</div>"+
                     "<div class=\"dato_pasajero\">"+horaDestino+"</div>"+
                     "<div class=\"est_pasajero\">"+estado+"</div></div>");
+            }
         }
     };
     postRequest(url,params,success);

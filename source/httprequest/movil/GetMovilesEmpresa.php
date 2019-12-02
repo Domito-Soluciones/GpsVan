@@ -11,18 +11,18 @@ $moviles = $movilDao->getMovilesEmpresa($busqueda);
 echo "[";
 for ($i = 0 ; $i < count($moviles); $i++)
 {
-    $movilId = $moviles[$i]->getId();
-    $movilNombre = $moviles[$i]->getNombre();
-    $movilPatente = $moviles[$i]->getPatente();
-    $movilTransportista = $moviles[$i]->getTransportista();
-    $movilEstado = $moviles[$i]->getEstado();
-    $movilLat = $moviles[$i]->getLat();
-    $movilLon = $moviles[$i]->getLon();
-    $movilServicio = $moviles[$i]->getServicio();
-    $movilConductor= $moviles[$i]->getConductor();
-    $movilConductorNick= $moviles[$i]->getConductorNick();
-    $movilConductorNombre = $moviles[$i]->getConductorNombre();
-    $movilClienteColor = $moviles[$i]->getColorEmpresa();
+    $movilId = trim($moviles[$i]->getId());
+    $movilNombre = trim($moviles[$i]->getNombre());
+    $movilPatente = trim($moviles[$i]->getPatente());
+    $movilTransportista = trim($moviles[$i]->getTransportista());
+    $movilEstado = trim($moviles[$i]->getEstado());
+    $movilLat = trim($moviles[$i]->getLat());
+    $movilLon = trim($moviles[$i]->getLon());
+    $movilServicio = trim($moviles[$i]->getServicio());
+    $movilConductor = trim($moviles[$i]->getConductor());
+    $movilConductorNick = trim($moviles[$i]->getConductorNick());
+    $movilConductorNombre = trim($moviles[$i]->getConductorNombre());
+    $movilClienteColor = trim($moviles[$i]->getColorEmpresa());
     echo "{\"movil_id\":\"".$movilId."\","
         . "\"movil_nombre\":\"".$movilNombre."\","
         . "\"movil_patente\":\"".$movilPatente."\","

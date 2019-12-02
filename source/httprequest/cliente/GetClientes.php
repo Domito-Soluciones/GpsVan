@@ -13,7 +13,7 @@ echo "[";
 for ($i = 0 ; $i < count($clientes); $i++)
 {
     $clienteId = $clientes[$i]->getId();
-    $clienteRazon = $clientes[$i]->getRazon();
+    $clienteRazon = trim($clientes[$i]->getRazon());
     $clientetipo = $clientes[$i]->getTipo();
     $clienteRut = $clientes[$i]->getRut();
     $clienteDireccion = $clientes[$i]->getDireccion();
