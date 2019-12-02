@@ -73,7 +73,8 @@ function initMap() {
         var myOptions = {
             zoom: 11,
             center: latlng,
-            streetViewControl: false
+            streetViewControl: false,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
             //,
             //styles: json
         };
