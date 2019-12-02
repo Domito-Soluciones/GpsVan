@@ -117,88 +117,59 @@ function generarLiquidacion(id,rut,nombre)
             var cont = $("#contenido_tabla_liq_prod");
             var cont2 = $("#contenido_tabla_liq_desc");
             var cont3 = $("#contenido_tabla_liq_rend");
-            var totalBruto = 0;
-            for(var i = 0 ; i < responseLiquidacion.produccion.length;i++)
+            var totalBruto = responseLiquidacion[0].liquidacion_produccion_bruta===''?'0':responseLiquidacion[0].liquidacion_produccion_bruta;
+            var participacion = responseLiquidacion[0].liquidacion_participacion===''?'0':responseLiquidacion[0].liquidacion_participacion;
+            var totalLiquido = responseLiquidacion[0].liquidacion_produccion_liquida===''?'0':responseLiquidacion[0].liquidacion_produccion_liquida;
+            var totalDesc = responseLiquidacion[0].liquidacion_total_descuentos===''?'0':responseLiquidacion[0].liquidacion_total_descuentos;
+            var totalRend = responseLiquidacion[0].liquidacion_total_rendicion===''?'0':responseLiquidacion[0].liquidacion_total_rendicion;
+            var total = responseLiquidacion[0].liquidacion_liquido_pagar===''?'0':responseLiquidacion[0].liquidacion_liquido_pagar;
+            for(var i = 0 ; i < responseLiquidacion[0].liquidacion_produccion.length;i++)
             {
-                var produccion = responseLiquidacion.produccion[i];
-                totalBruto += parseInt(produccion.empresa_valor);
-                cont.append("<div class=\"liquidacion_item\">"+produccion.empresa_nombre + "</div>"+
-                            "<div class=\"liquidacion_valor\">$  "+produccion.empresa_valor+"</div>");
-            }
-            var porcentajes = responseLiquidacion.porcentajes;
-            var descuentos = responseLiquidacion.descuentos;
-            var rendiciones = [];
-            var descuento_ad = [];
-            for(var j = 0; j < responseLiquidacion.rendiciones.length; j++)
-            {
-                var rend = responseLiquidacion.rendiciones[j];
-                if(rend.rendicion_tipo === '0')
-                {
-                    rendiciones.push(rend.rendicion_dato+"%"+rend.rendicion_valor);
-                }
-                else if(rend.rendicion_tipo === '1')
-                {
-                    descuento_ad.push(rend.rendicion_dato+"%"+rend.rendicion_valor);
-                }
+                var produccion = responseLiquidacion[0].liquidacion_produccion[i];
+                cont.append("<div class=\"liquidacion_item\">"+produccion.detalle_item + "</div>"+
+                            "<div class=\"liquidacion_valor\">$  "+produccion.detalle_valor+"</div>");
             }
             $("#prod_bruta").html("$  "+totalBruto);
-            var totalLiquido = Math.round(totalBruto * 0.8);
+            $("#participacion").html(participacion+" %");
             $("#prod_liquida").html("$  "+totalLiquido);
-            if(responseLiquidacion.produccion.length > 0)
+            if(responseLiquidacion[0].liquidacion_produccion.length > 0)
             {
-                var afp = totalBruto * ((parseInt(porcentajes.porcentaje_afp) / 100));
-                var isapre = totalBruto * ((parseInt(porcentajes.porcentaje_isapre) / 100));
-                var mutual = totalBruto * ((parseInt(porcentajes.porcentaje_mutual) / 100));
-                var prevision = Math.round(afp) + Math.round(isapre) +Math.round(mutual);
+                var descuento = responseLiquidacion[0].liquidacion_descuento;
                 cont2.append("<div class=\"liquidacion_item\">Pagos Previsionales</div>"+
-                                "<div class=\"liquidacion_valor\">$  "+prevision+"</div>");
+                                "<div class=\"liquidacion_valor\">$  "+descuento[0].detalle_valor+"</div>");
                 cont2.append("<div class=\"liquidacion_item\">Seguro Obligatorio</div>"+
-                                "<div class=\"liquidacion_valor\">$  "+descuentos.movil_seg_ob_valor+"</div>");
+                                "<div class=\"liquidacion_valor\">$  "+descuento[1].detalle_valor+"</div>");
                 cont2.append("<div class=\"liquidacion_item\">Seguro RC+DM</div>"+
-                                "<div class=\"liquidacion_valor\">$  "+descuentos.movil_seg_rcdm_valor+"</div>");
+                                "<div class=\"liquidacion_valor\">$  "+descuento[2].detalle_valor+"</div>");
                 cont2.append("<div class=\"liquidacion_item\">Seguro Asientos</div>"+
-                                "<div class=\"liquidacion_valor\">$  "+descuentos.movil_seg_as_valor+"</div>");
+                                "<div class=\"liquidacion_valor\">$  "+descuento[3].detalle_valor+"</div>");
                 cont2.append("<div class=\"liquidacion_item\">Seguro RC Exceso</div>"+
-                                "<div class=\"liquidacion_valor\">$  "+descuentos.movil_seg_rcexceso_valor+"</div>");
+                                "<div class=\"liquidacion_valor\">$  "+descuento[4].detalle_valor+"</div>");
                 cont2.append("<div class=\"liquidacion_item\">GPS</div>"+
-                                "<div class=\"liquidacion_valor\">$  "+descuentos.movil_gps+"</div>");
+                                "<div class=\"liquidacion_valor\">$  "+descuento[5].detalle_valor+"</div>");
                 cont2.append("<div class=\"liquidacion_item\">Celular</div>"+
-                                "<div class=\"liquidacion_valor\">$  "+descuentos.movil_celular+"</div>");
+                                "<div class=\"liquidacion_valor\">$  "+descuento[6].detalle_valor+"</div>");
                 cont2.append("<div class=\"liquidacion_item\">APP</div>"+
-                                "<div class=\"liquidacion_valor\">$  "+descuentos.movil_app+"</div>");
-                var totalDesc = 0;
-                for(var k = 0; k < descuento_ad.length;k++)
+                                "<div class=\"liquidacion_valor\">$  "+descuento[7].detalle_valor+"</div>");
+                for(var k = 0; k < responseLiquidacion[0].liquidacion_descuento.length;k++)
                 {
-                    var data = descuento_ad[k].split("%");
-                    cont2.append("<div class=\"liquidacion_item\">"+data[0]+"</div>"+
-                                "<div class=\"liquidacion_valor\">$  "+data[1]+"</div>");
-                    totalDesc += parseInt(data[1]);
+                    if(k > 7){
+                        var desc =  responseLiquidacion[0].liquidacion_descuento[k];
+                        cont2.append("<div class=\"liquidacion_item\">"+desc.detalle_item+"</div>"+
+                                "<div class=\"liquidacion_valor\">$  "+desc.detalle_valor+"</div>");
+                    }
                 }
-                totalDesc += prevision + parseInt(descuentos.movil_seg_ob_valor) + parseInt(descuentos.movil_seg_rcdm_valor) + 
-                        parseInt(descuentos.movil_seg_as_valor) + parseInt(descuentos.movil_seg_rcexceso_valor) + 
-                        parseInt(descuentos.movil_gps) + parseInt(descuentos.movil_celular) + parseInt(descuentos.movil_app);
                 $("#total_desc").html("$  "+totalDesc);
-                
-                var totalRend = 0;
-                for(var k = 0; k < rendiciones.length;k++)
+               
+                for(var l = 0; l < responseLiquidacion[0].liquidacion_rendicion.length;l++)
                 {
-                    var data = rendiciones[k].split("%");
-                    cont3.append("<div class=\"liquidacion_item\">"+data[0]+"</div>"+
-                                "<div class=\"liquidacion_valor\">$  "+data[1]+"</div>");
-                    totalRend += parseInt(data[1]);
+                    var rend =  responseLiquidacion[0].liquidacion_rendicion[l];
+                    cont3.append("<div class=\"liquidacion_item\">"+rend.detalle_item+"</div>"+
+                            "<div class=\"liquidacion_valor\">$  "+rend.detalle_valor+"</div>");
                 }
-                
                 $("#total_rend").html("$  "+totalRend);
             }
-            var total = totalLiquido - totalDesc + totalRend;
-            if(isNaN(total))
-            {
-                $("#liq_pagar").html("$  0");   
-            }
-            else
-            {
-                $("#liq_pagar").html("$  "+total);
-            }
+            $("#liq_pagar").html("$  "+total);
         });
     };
     postRequest(url,params,success);
