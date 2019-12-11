@@ -3,6 +3,7 @@ include '../../util/validarPeticion.php';
 
 class Pasajero {
     private $id;
+    private $idEsp;
     private $nombre;
     private $papellido;
     private $mapellido;
@@ -25,6 +26,10 @@ class Pasajero {
     
     function getId() {
         return $this->id;
+    }
+    
+    function getIdEsp() {
+        return $this->idEsp;
     }
 
     function getNombre() {
@@ -105,6 +110,10 @@ class Pasajero {
 
     function setId($id) {
         $this->id = $id;
+    }
+    
+    function setIdEsp($idEsp) {
+        $this->idEsp = $idEsp;
     }
 
     function setNombre($nombre) {

@@ -4,24 +4,24 @@ include '../../query/ServicioDao.php';
 include '../../log/Log.php';
 
 header('Content-Type: application/json; charset=utf-8');
-$conductor = filter_input(INPUT_GET, 'conductor');
+$conductor = filter_input(INPUT_POST, 'conductor');
 $desde = '';
-if(filter_input(INPUT_GET, 'desde') != '')
+if(filter_input(INPUT_POST, 'desde') != '')
 {
-    $desde = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_GET, 'desde'))->format('Y/m/d');
+    $desde = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_POST, 'desde'))->format('Y/m/d');
 }
 else
 {
-    $desde = filter_input(INPUT_GET, 'desde');
+    $desde = filter_input(INPUT_POST, 'desde');
 }
 $hasta = '';
-if(filter_input(INPUT_GET, 'hasta') != '')
+if(filter_input(INPUT_POST, 'hasta') != '')
 {
-    $hasta = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_GET, 'hasta'))->format('Y/m/d');
+    $hasta = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_POST, 'hasta'))->format('Y/m/d');
 }
 else
 {
-    $hasta = filter_input(INPUT_GET, 'hasta');
+    $hasta = filter_input(INPUT_POST, 'hasta');
 }
 $servicioDao = new ServicioDao();
 $servicios = $servicioDao->getServiciosHistoricos($conductor,$desde,$hasta);
