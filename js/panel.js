@@ -263,6 +263,7 @@ $(document).ready(function(){
     
     setTimeout(function(){
         map.setZoom(11);
+        $("#map").trigger("dblclick");
     },1000);
     
 });

@@ -1,4 +1,5 @@
 /* global urlBase */
+var interval;
 
 $(document).ready(function(){
     getDashBoard();
