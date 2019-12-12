@@ -966,7 +966,6 @@ function agregarPasajero(obj,nombre,punto,celular)
     if(TIPO_SERVICIO !== 0){
         $("#nombre").val(nombre);
         $("#celular").val(celular);
-        alert(punto);
         $("#partida").val(punto);
     }
     else{
@@ -1335,14 +1334,12 @@ function agregarPasajeroEspecial(){
         if(indexPartida === 0){
             
             if(partida === ''){
-                console.log("partidad es vacio");
                 if(destinos.length > 0){
                     origen = destinos.shift();
                     console.log("origen es destino shift "+ origen);
                 }
             }
             else{
-                console.log("partidad no es vacio");
                 if(typeof origen === 'undefined'){
                     console.log("partidad es undefined");
                     origen = partida;
