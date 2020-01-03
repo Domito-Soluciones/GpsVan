@@ -1349,13 +1349,13 @@ function agregarPasajeroEspecial(){
                     destinos.unshift(origen);
                     origen = partida;
                 }
-                pasajeros.splice(0,1,nombre);
+                pasajeros.splice(0,1,nombre+"_par");
             }
         }
         if(indexDestino === 1){
             if(partida !== ''){
                 destinos.splice(0, 1, destino);
-                pasajeros.splice(0, 1, nombre);
+                pasajeros.splice(0, 1, nombre+"_des");
             }
             else{
                 console.log("no se hace nada");
@@ -1367,9 +1367,9 @@ function agregarPasajeroEspecial(){
         }
         if(indexPartida > 0 && indexDestino > 1){
             destinos.splice(indexPartida-1, 1, partida);
-            pasajeros.splice(indexPartida-1, 1, nombre);
+            pasajeros.splice(indexPartida-1, 1, nombre+"_par");
             destinos.splice(indexDestino-1, 1, destino);
-            pasajeros.splice(indexDestino-1, 1, nombre);
+            pasajeros.splice(indexDestino-1, 1, nombre+"_des");
         }
         indexDestinos.clear();
         indexDestinos.set(origen,0);
@@ -1426,7 +1426,7 @@ function agregarPasajeroEspecial(){
                 destinos.push(partida);
                 $("#contenedor_punto_destino").html("<b>Destino: </b>"+partida);
             }
-            pasajeros.push(id);
+            pasajeros.push(id+"_par");
         }
         else{
              $("#punto_origen_"+id).html("<div id=\"punto_"+id+"\"><b>Origen:</b></div>");
@@ -1441,7 +1441,7 @@ function agregarPasajeroEspecial(){
                 destinos.push(destino);
                 $("#contenedor_punto_destino").html("<b>Destino: </b>"+destino);
             }
-            pasajeros.push(id);
+            pasajeros.push(id+"_des");
         }
         else{
             $("#punto_destino_"+id).html("<div id=\"punto_"+id+"\"><b>Destino:</div>");
