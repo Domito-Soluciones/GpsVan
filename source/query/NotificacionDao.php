@@ -55,7 +55,6 @@ class NotificacionDao {
         $conn = new Conexion();
         try {
             $query = "UPDATE tbl_notificacion SET notificacion_estado = $estado WHERE notificacion_servicio = '$idServicio'"; 
-            echo $query;
             $conn->conectar();
             if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
