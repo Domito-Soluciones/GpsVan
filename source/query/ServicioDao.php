@@ -496,7 +496,6 @@ class ServicioDao {
         $minuto = $date['minutes'] < 10 ? "0".$date['minutes'] : $date['minutes'];
         $segundo = $date['seconds'] < 10 ? "0".$date['seconds'] : $date['seconds'];
         $fecha = $anio."-".$mes."-".$dia;
-        $time = $hora.":".$minuto.":".$segundo;
         try {
             $query = "SELECT servicio_id,servicio_cliente,servicio_ruta,servicio_truta,servicio_fecha,"
                     . "servicio_hora,servicio_conductor,servicio_estado,servicio_tarifa1,"

@@ -117,7 +117,8 @@ function agregarCliente()
     var razon = $("#razon").val();
     var tipo = $("#tipoCliente").val();
     var rut = $("#rut").val();
-    var direccion = $("#direccion").val();
+    var direccion = $("#direccion").val().replace(/'/g, "\\'");
+    alert(direccion);
     var nombre = $("#nombreContacto").val();
     var telefono = $("#telefono").val();
     var mail = $("#data").val();
@@ -168,7 +169,7 @@ function modificarCliente()
     var razon = $("#razon").val();
     var tipo = $("#tipoCliente").val();
     var rut = $("#rut").val();
-    var direccion = $("#direccion").val();
+    var direccion = $("#direccion").val().replace(/'/g, "\\'");
     var nombre = $("#nombreContacto").val();
     var telefono = $("#telefono").val();
     var mail = $("#data").val();

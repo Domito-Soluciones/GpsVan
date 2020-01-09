@@ -96,7 +96,7 @@ function agregarMovil()
     var clase = $("#clase").val();
     var conductor = $("#conductores").val();
     var gps = $("#gps").val().split('.').join('');
-    var celular = $("#celular").split('.').join('');
+    var celular = $("#celular").val().split('.').join('');
     var app = $("#app").val().split('.').join('');
     var tipo = $("#tipo").val();
     var venPerCir = $("#venPerCir").val();

@@ -32,7 +32,8 @@ class DashBoardDao {
         $anio = $date['year'];
         $fecha = $anio."-".$mes."-".$dia;
         try {
-            $query = "SELECT COUNT(*) AS servicio_cantidad,servicio_estado FROM tbl_servicio WHERE DATE_FORMAT(servicio_fecha, '%Y-%m-%d') = '$fecha' GROUP BY servicio_estado";
+            $query = "SELECT COUNT(*) AS servicio_cantidad,servicio_estado FROM tbl_servicio WHERE DATE_FORMAT(servicio_fecha, '%Y-%m-%d 00:00:00') >= '$fecha 00:00:00' GROUP BY servicio_estado";
+            
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
@@ -146,7 +147,7 @@ class DashBoardDao {
         $anio = $date['year'];
         $fecha = $anio."-".$mes."-".$dia;
         try {
-            $query = "SELECT SUM(servicio_tarifa2) AS produccion_diaria FROM tbl_servicio WHERE DATE_FORMAT(servicio_fecha, '%Y-%m-%d') = '$fecha' AND servicio_estado = 5";
+            $query = "SELECT SUM(servicio_tarifa2) AS produccion_diaria FROM tbl_servicio WHERE DATE_FORMAT(servicio_fecha, '%Y-%m-%d 00:00:00') >= '$fecha 00:00:00' AND servicio_estado = 5";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {

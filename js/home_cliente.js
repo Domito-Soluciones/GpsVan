@@ -1,11 +1,15 @@
 /* global urlBase */
+
 var interval;
+var PAGINA = "HOMEC";
 
 $(document).ready(function(){
+    PAGINA_ANTERIOR = PAGINA;
     getDashBoard();
+    interval = setInterval('getDashBoard(false)',3000);
 });
 
-function getDashBoard()
+function getDashBoard(cargar = true)
 {
     var cliente = $("#clientes").val();
     var url = urlBase + "/estadistica/GetDashBoardCliente.php";
@@ -18,6 +22,8 @@ function getDashBoard()
         $("#sAsignar").html(response.servicio_asignar);
         var cont = $("#vCantCC");
         var cont2 = $("#vGanCC");
+        cont.html("");
+        cont2.html("");
         if(response.servicio_cc.length === 0)
         {
             cont.append("<div class=\"mensaje_bienvenida\" style=\"padding-top: 20%\">No hay datos registrados</div>");
@@ -39,7 +45,7 @@ function getDashBoard()
             cambiarPropiedad($("#barra2"+i),"width","100px");
         }
     };
-    postRequest(url,params,success);
+    postRequest(url,params,success,cargar);
 }
 
 

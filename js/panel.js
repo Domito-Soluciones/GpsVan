@@ -714,11 +714,11 @@ function eliminarDetalleServicio(idServicio)
     postRequest(url,params,null);
 }
 
-function notificarConductor(idServicio,llave)
+function notificarConductor(idServicio,llave,fecha,hora)
 {
     var texto = "Nuevo servicio asignado con id: "+idServicio;
     var tipo = 0;
-    var params = {texto  : texto, tipo : tipo, llave : llave, idServicio : idServicio};        
+    var params = {texto  : texto, tipo : tipo, llave : llave, idServicio : idServicio, fecha : fecha, hora : hora};        
     var url = urlBase + "/notificacion/AddNotificacion.php";
     postRequest(url,params,null);
 }
@@ -1541,7 +1541,7 @@ function initAddServicio(params,id,conductor,fecha,hora){
         }
         agregarDetalleServicio(response.servicio_id);
         alertify.success('Servicio agregado con id '+response.servicio_id);
-        notificarConductor(response.servicio_id,conductor);
+        notificarConductor(response.servicio_id,conductor,fecha,hora);
         notificarServicioFuturo(response.servicio_id,conductor,fecha,hora);
     };
     postRequest(url,params,success);

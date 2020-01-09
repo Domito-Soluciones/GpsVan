@@ -1,11 +1,12 @@
 /* global alertify, urlBase, urlUtil, POLYLINE_LAT, POLYLINE_LNG */
-var PAGINA = "PANEL";
+var PAGINA = "PANELC";
 var CAMPOS = ["clientes","fechas","hora"];
 var clientesArray = [];
 var destinos = new Map();
 var PASAJEROS_ASIGNADOS = new Map();
 var PASAJEROS_NO_ASIGNADOS = new Map();
 $(document).ready(function(){
+    PAGINA_ANTERIOR = PAGINA;
     TIPO_USUARIO = 'CLIENTE';
     $("#menu").load("menu.php", function( response, status, xhr ) {
         agregarclase($("#panel_cliente"),"menu-activo");
@@ -174,10 +175,12 @@ function agregarDetalleServicio(idServicio)
 {
     var pasajeros = "";
     var destino = "";
+    var i = 0;
     for(var [key, value] of PASAJEROS_ASIGNADOS){
         var datos = key.split("_");
-        pasajeros += datos[2]+"_"+datos[3]+"-"+datos[1] + "%";
+        pasajeros += datos[2]+"_"+datos[3]+"-"+datos[1] + "_par" + "%";
         destino += datos[5] + "%";
+        i++;
     }
     var params = {pasajeros : pasajeros ,destinos : destino, id : idServicio };
     var url = urlBase + "/servicio/AddServicioDetalle.php";
