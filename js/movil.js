@@ -86,25 +86,25 @@ $(document).ready(function(){
 
 function agregarMovil()
 {
-    var patente = $("#patente").val();
-    var marca = $("#marca").val();
-    var nombre = $("#nombre").val();
-    var modelo = $("#modelo").val();
-    var anio = $("#anio").val();
-    var color = $("#color").val();
-    var cantidad = $("#cantidad").val();
-    var clase = $("#clase").val();
-    var conductor = $("#conductores").val();
-    var gps = $("#gps").val().split('.').join('');
-    var celular = $("#celular").val().split('.').join('');
-    var app = $("#app").val().split('.').join('');
-    var tipo = $("#tipo").val();
-    var venPerCir = $("#venPerCir").val();
-    var venRevTec = $("#venRevTec").val();
-    var venExt = $("#venExt").val();
-    var kilo = $("#kilo").val() === '' ? '0' : $("#kilo").val();
-    var motor = $("#motor").val();
-    var chasis = $("#chasis").val();
+    var patente = formatearCadena($("#patente").val());
+    var marca = formatearCadena($("#marca").val());
+    var nombre = formatearCadena($("#nombre").val());
+    var modelo = formatearCadena($("#modelo").val());
+    var anio = formatearCadena($("#anio").val());
+    var color = formatearCadena($("#color").val());
+    var cantidad = formatearCadena($("#cantidad").val());
+    var clase = formatearCadena($("#clase").val());
+    var conductor = formatearCadena($("#conductores").val());
+    var gps = formatearCadena($("#gps").val().split('.').join(''));
+    var celular = formatearCadena($("#celular").val().split('.').join(''));
+    var app = formatearCadena($("#app").val().split('.').join(''));
+    var tipo = formatearCadena($("#tipo").val());
+    var venPerCir = formatearCadena($("#venPerCir").val());
+    var venRevTec = formatearCadena($("#venRevTec").val());
+    var venExt = formatearCadena($("#venExt").val());
+    var kilo = formatearCadena($("#kilo").val() === '' ? '0' : $("#kilo").val());
+    var motor = formatearCadena($("#motor").val());
+    var chasis = formatearCadena($("#chasis").val());
     var segOb;
     if($("#SegObSi").is(':checked'))
     {
@@ -118,9 +118,9 @@ function agregarMovil()
     {
         segOb = 'EXT';
     }
-    var venSegOb = $("#venSegOb").val();
-    var polizaSegOb = $("#polizaSegOb").val();
-    var valorSegOb = $("#valorSegOb").val();
+    var venSegOb = formatearCadena($("#venSegOb").val());
+    var polizaSegOb = formatearCadena($("#polizaSegOb").val());
+    var valorSegOb = formatearCadena($("#valorSegOb").val());
     var segRcDm;
     if($("#SegRcDmSi").is(':checked'))
     {
@@ -134,9 +134,9 @@ function agregarMovil()
     {
         segRcDm = 'EXT';
     }
-    var venSegRcDm = $("#venSegRcDm").val();
-    var polizaSegRcDm = $("#polizaSegRcDm").val();
-    var valorSegRcDm =  $("#valorSegRcDm").val();
+    var venSegRcDm = formatearCadena($("#venSegRcDm").val());
+    var polizaSegRcDm = formatearCadena($("#polizaSegRcDm").val());
+    var valorSegRcDm =  formatearCadena($("#valorSegRcDm").val());
     var segAs;
     if($("#SegAsSi").is(':checked'))
     {
@@ -150,9 +150,9 @@ function agregarMovil()
     {
         segAs = 'EXT';
     }
-    var venSegAs = $("#venSegAs").val();
-    var polizaSegAs = $("#polizaSegAs").val();
-    var valorSegAs =  $("#valorSegAs").val();
+    var venSegAs = formatearCadena($("#venSegAs").val());
+    var polizaSegAs = formatearCadena($("#polizaSegAs").val());
+    var valorSegAs =  formatearCadena($("#valorSegAs").val());
     var segRcExceso;
     if($("#SegRcExcesoSi").is(':checked'))
     {
@@ -166,9 +166,9 @@ function agregarMovil()
     {
         segRcExceso = 'EXT';
     }
-    var venSegRcExceso = $("#venSegRcExceso").val();
-    var polizaSegRcExceso = $("#polizaSegRcExceso").val();
-    var valorSegRcExceso =  $("#valorSegRcExceso").val();
+    var venSegRcExceso = formatearCadena($("#venSegRcExceso").val());
+    var polizaSegRcExceso = formatearCadena($("#polizaSegRcExceso").val());
+    var valorSegRcExceso =  formatearCadena($("#valorSegRcExceso").val());
     var array = [patente,marca,nombre,modelo,anio,color,cantidad,clase,gps,celular,app,
         venPerCir,venRevTec,venExt,motor,chasis,
         segOb,venSegOb,polizaSegOb,valorSegOb,segRcDm,venSegRcDm,polizaSegRcDm,valorSegRcDm,
@@ -227,25 +227,25 @@ function agregarMovil()
 function modificarMovil()
 {
     var id = ID_MOVIL;
-    var patente = $("#patente").val();
-    var marca = $("#marca").val();
-    var nombre = $("#nombre").val();
-    var modelo = $("#modelo").val();
-    var anio = $("#anio").val();
-    var color = $("#color").val();
-    var cantidad = $("#cantidad").val();
-    var clase = $("#clase").val();
-    var conductor = $("#conductores").val();
-    var gps = $("#gps").val().split('.').join('');
-    var celular = $("#celular").val().split('.').join('');
-    var app = $("#app").val().split('.').join('');
-    var tipo = $("#tipo").val();
-    var venPerCir = $("#venPerCir").val();
-    var venRevTec = $("#venRevTec").val();
-    var venExt = $("#venExt").val();
-    var kilo = $("#kilo").val() === '' ? '0' : $("#kilo").val();
-    var motor = $("#motor").val();
-    var chasis = $("#chasis").val();
+    var patente = formatearCadena($("#patente").val());
+    var marca = formatearCadena($("#marca").val());
+    var nombre = formatearCadena($("#nombre").val());
+    var modelo = formatearCadena($("#modelo").val());
+    var anio = formatearCadena($("#anio").val());
+    var color = formatearCadena($("#color").val());
+    var cantidad = formatearCadena($("#cantidad").val());
+    var clase = formatearCadena($("#clase").val());
+    var conductor = formatearCadena($("#conductores").val());
+    var gps = formatearCadena($("#gps").val().split('.').join(''));
+    var celular = formatearCadena($("#celular").val().split('.').join(''));
+    var app = formatearCadena($("#app").val().split('.').join(''));
+    var tipo = formatearCadena($("#tipo").val());
+    var venPerCir = formatearCadena($("#venPerCir").val());
+    var venRevTec = formatearCadena($("#venRevTec").val());
+    var venExt = formatearCadena($("#venExt").val());
+    var kilo = formatearCadena($("#kilo").val() === '' ? '0' : $("#kilo").val());
+    var motor = formatearCadena($("#motor").val());
+    var chasis = formatearCadena($("#chasis").val());
     var segOb;
     if($("#SegObSi").is(':checked'))
     {
@@ -259,9 +259,9 @@ function modificarMovil()
     {
         segOb = 'EXT';
     }
-    var venSegOb = $("#venSegOb").val();
-    var polizaSegOb = $("#polizaSegOb").val();
-    var valorSegOb = $("#valorSegOb").val();
+    var venSegOb = formatearCadena($("#venSegOb").val());
+    var polizaSegOb = formatearCadena($("#polizaSegOb").val());
+    var valorSegOb = formatearCadena($("#valorSegOb").val());
     var segRcDm;
     if($("#SegRcDmSi").is(':checked'))
     {
@@ -275,9 +275,9 @@ function modificarMovil()
     {
         segRcDm = 'EXT';
     }
-    var venSegRcDm = $("#venSegRcDm").val();
-    var polizaSegRcDm = $("#polizaSegRcDm").val();
-    var valorSegRcDm = $("#valorSegRcDm").val();
+    var venSegRcDm = formatearCadena($("#venSegRcDm").val());
+    var polizaSegRcDm = formatearCadena($("#polizaSegRcDm").val());
+    var valorSegRcDm = formatearCadena($("#valorSegRcDm").val());
     var segAs;
     if($("#SegAsSi").is(':checked'))
     {
@@ -291,9 +291,9 @@ function modificarMovil()
     {
         segAs = 'EXT';
     }
-    var venSegAs = $("#venSegAs").val();
-    var polizaSegAs = $("#polizaSegAs").val();
-    var valorSegAs = $("#valorSegAs").val();
+    var venSegAs = formatearCadena($("#venSegAs").val());
+    var polizaSegAs = formatearCadena($("#polizaSegAs").val());
+    var valorSegAs = formatearCadena($("#valorSegAs").val());
     var segRcExceso;
     if($("#SegRcExcesoSi").is(':checked'))
     {
@@ -307,9 +307,9 @@ function modificarMovil()
     {
         segRcExceso = 'EXT';
     }
-    var venSegRcExceso = $("#venSegRcExceso").val();
-    var polizaSegRcExceso = $("#polizaSegRcExceso").val();
-    var valorSegRcExceso =  $("#valorSegRcExceso").val();
+    var venSegRcExceso = formatearCadena($("#venSegRcExceso").val());
+    var polizaSegRcExceso = formatearCadena($("#polizaSegRcExceso").val());
+    var valorSegRcExceso =  formatearCadena($("#valorSegRcExceso").val());
     var array = [patente,marca,nombre,modelo,anio,color,cantidad,clase,gps,celular,app,
         venPerCir,venRevTec,venExt,motor,chasis,
         segOb,venSegOb,polizaSegOb,valorSegOb,segRcDm,venSegRcDm,polizaSegRcDm,valorSegRcDm,

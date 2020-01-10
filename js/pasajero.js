@@ -137,22 +137,22 @@ $(document).ready(function(){
 
 function agregarPasajero()
 {
-    var rut = $("#rut").val();
-    var nombre = $("#nombre").val();
-    var papellido = $("#papellido").val();
-    var mapellido = $("#mapellido").val();
-    var telefono = $("#aparato").val();
-    var celular = $("#celular").val();
-    var direccion = $("#direccion").val();
-    var punto = $("#punto").val();
-    var mail = $("#mail").val();
+    var rut = formatearCadena($("#rut").val());
+    var nombre = formatearCadena($("#nombre").val());
+    var papellido = formatearCadena($("#papellido").val());
+    var mapellido = formatearCadena($("#mapellido").val());
+    var telefono = formatearCadena($("#aparato").val());
+    var celular = formatearCadena($("#celular").val());
+    var direccion = formatearCadena($("#direccion").val());
+    var punto = formatearCadena($("#punto").val());
+    var mail = formatearCadena($("#mail").val());
 //    var nick = $("#nick").val();
 //    var password = $("#password").val();
 //    var password2 = $("#password2").val();
-    var cargo = $("#cargo").val();
-    var centro = $("#centro").val();
-    var empresa = $("#empresa").val();
-    var ruta = $("#ruta").val();
+    var cargo = formatearCadena($("#cargo").val());
+    var centro = formatearCadena($("#centro").val());
+    var empresa = formatearCadena($("#empresa").val());
+    var ruta = formatearCadena($("#ruta").val());
     //var array = [nombre,papellido,mapellido,rut,celular,direccion,punto,empresa,centro,nick,password,password2];
     var array = [nombre,papellido,mapellido,rut,celular,direccion,punto,empresa,centro];
     if(!validarCamposOr(array))
@@ -195,22 +195,22 @@ function agregarPasajero()
 function modificarPasajero()
 {
     var id = ID_PASAJERO;
-    var rut = $("#rut").val();
-    var nombre = $("#nombre").val();
-    var papellido = $("#papellido").val();
-    var mapellido = $("#mapellido").val();
-    var telefono = $("#aparato").val();
-    var celular = $("#celular").val();
-    var direccion = $("#direccion").val();
-    var punto = $("#punto").val();
-    var mail = $("#mail").val();
+    var rut = formatearCadena($("#rut").val());
+    var nombre = formatearCadena($("#nombre").val());
+    var papellido = formatearCadena($("#papellido").val());
+    var mapellido = formatearCadena($("#mapellido").val());
+    var telefono = formatearCadena($("#aparato").val());
+    var celular = formatearCadena($("#celular").val());
+    var direccion = formatearCadena($("#direccion").val());
+    var punto = formatearCadena($("#punto").val());
+    var mail = formatearCadena($("#mail").val());
 //    var nick = $("#nick").val();
 //    var password = $("#password").val();
 //    var password2 = $("#password2").val();
-    var cargo = $("#cargo").val();
-    var centro = $("#centro").val();
-    var empresa = $("#empresa").val();
-    var ruta = $("#ruta").val();
+    var cargo = formatearCadena($("#cargo").val());
+    var centro = formatearCadena($("#centro").val());
+    var empresa = formatearCadena($("#empresa").val());
+    var ruta = formatearCadena($("#ruta").val());
     var array;
     var params = {id : id, nombre : nombre, papellido : papellido, mapellido : mapellido,
         rut : rut, telefono : telefono, celular : celular,

@@ -947,4 +947,8 @@ function formatoMoneda(cantidad){
         var resto = cantidad.substring(6,9);
         return millon+"."+mil+"."+resto;
     }
+    
+    function formatearCadena(cadena){
+        return cadena.replace(/'/g, "\\'");
+    }
 }

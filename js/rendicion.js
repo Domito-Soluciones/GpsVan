@@ -50,13 +50,13 @@ $(document).ready(function(){
 
 function agregarRendicion()
 {
-    var dato = $("#dato").val();
-    var valor = $("#valor").val().split('.').join('');;
+    var dato = formatearCadena($("#dato").val());
+    var valor = formatearCadena($("#valor").val().split('.').join(''));
     var d = new Date();
     var mes = d.getMonth() < 10 ? "0"+(d.getMonth()+1) : d.getMonth()+1;
     var anio = d.getFullYear();
     var fecha = mes+"-"+anio;
-    var tipo = $("#tipo").val();
+    var tipo = formatearCadena($("#tipo").val());
     var array = [dato,valor];
     if(!validarCamposOr(array))
     {
@@ -81,9 +81,9 @@ function agregarRendicion()
 
 function modificarRendicion()
 {
-    var dato = $("#dato").val();
-    var valor = $("#valor").val().split('.').join('');;
-    var tipo = $("#tipo").val();
+    var dato = formatearCadena($("#dato").val());
+    var valor = formatearCadena($("#valor").val().split('.').join(''));
+    var tipo = formatearCadena($("#tipo").val());
     var array = [dato,valor,tipo];
     if(!validarCamposOr(array))
     {

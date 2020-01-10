@@ -2,17 +2,17 @@
 /* global urlBase, alertify, PAGINA, CAMPOS, clientes_tarifa, google, map, markers, API_KEY, _buscaPartida, _buscaDestino */
 function agregarTarifa()
 {
-    var cliente = $("#clientes").val();
-    var tipo = $("#tipo").val();
-    var horario = $("#horario").val();
-    var hora = $("#hora").val();
-    var numero = $("#numero").val();
-    var descripcion = $("#descripcion").val();
-    var nombre = $("#nombre").val();
-    var origen = $("#origen").val();
-    var destino = $("#destino").val();
-    var valor1 = $("#valor1").val().split('.').join('');
-    var valor2 = $("#valor2").val().split('.').join('');
+    var cliente = formatearCadena($("#clientes").val());
+    var tipo = formatearCadena($("#tipo").val());
+    var horario = formatearCadena($("#horario").val());
+    var hora = formatearCadena($("#hora").val());
+    var numero = formatearCadena($("#numero").val());
+    var descripcion = formatearCadena($("#descripcion").val());
+    var nombre = formatearCadena($("#nombre").val());
+    var origen = formatearCadena($("#origen").val());
+    var destino = formatearCadena($("#destino").val());
+    var valor1 = formatearCadena($("#valor1").val().split('.').join(''));
+    var valor2 = formatearCadena($("#valor2").val().split('.').join(''));
     var array = [tipo,horario,descripcion,numero,hora,nombre,valor1,valor2];
     if(!validarCamposOr(array))
     {
@@ -49,17 +49,17 @@ function agregarTarifa()
 function modificarTarifa()
 {
     var id = ID_TARIFA;
-    var cliente = $("#clientes").val();;
-    var tipo = $("#tipo").val();
-    var horario = $("#horario").val();
-    var descripcion = $("#descripcion").val();
-    var hora = $("#hora").val();
-    var numero = $("#numero").val();
-    var nombre = $("#nombre").val();
-    var origen = $("#origen").val();
-    var destino = $("#destino").val();
-    var valor1 = $("#valor1").val().split('.').join('');
-    var valor2 = $("#valor2").val().split('.').join('');
+    var cliente = formatearCadena($("#clientes").val());
+    var tipo = formatearCadena($("#tipo").val());
+    var horario = formatearCadena($("#horario").val());
+    var hora = formatearCadena($("#hora").val());
+    var numero = formatearCadena($("#numero").val());
+    var descripcion = formatearCadena($("#descripcion").val());
+    var nombre = formatearCadena($("#nombre").val());
+    var origen = formatearCadena($("#origen").val());
+    var destino = formatearCadena($("#destino").val());
+    var valor1 = formatearCadena($("#valor1").val().split('.').join(''));
+    var valor2 = formatearCadena($("#valor2").val().split('.').join(''));
     var array = [tipo,horario,descripcion,numero, hora,nombre,valor1,valor2];
     if(!validarCamposOr(array))
     {

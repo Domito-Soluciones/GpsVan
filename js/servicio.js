@@ -234,16 +234,16 @@ function abrirBuscador(id)
 function modificarServicio()
 {
     var id = ID_SERVICIO;
-    var cliente = $("#clienteServicio").val();
-    var ruta = $("#rutaServicio").val();
-    var truta = $("#tipoRutaServicio").val();
-    var fecha = $("#fechaServicio").val();
-    var hora = $("#inicioServicio").val();
-    var estado = $("#estadoServicio").val();
-    var movil = $("#movilServicio").val();
+    var cliente = formatearCadena($("#clienteServicio").val());
+    var ruta = formatearCadena($("#rutaServicio").val());
+    var truta = formatearCadena($("#tipoRutaServicio").val());
+    var fecha = formatearCadena($("#fechaServicio").val());
+    var hora = formatearCadena($("#inicioServicio").val());
+    var estado = formatearCadena($("#estadoServicio").val());
+    var movil = formatearCadena($("#movilServicio").val());
     var conductor = ID_CONDUCTOR;
-    var tarifa1 = $("#tarifaServicio").val().split('.').join('');;
-    var tarifa2 = $("#tarifa2Servicio").val().split('.').join('');;
+    var tarifa1 = formatearCadena($("#tarifaServicio").val().split('.').join(''));
+    var tarifa2 = formatearCadena($("#tarifa2Servicio").val().split('.').join(''));
     var array = [cliente,ruta,fecha,hora,estado,tarifa1,tarifa2];
     var params = {id : id,cliente : cliente,ruta : ruta, truta : truta,fecha : fecha, hora : hora,
         estado : estado,movil : movil, conductor : conductor, tarifa1 : tarifa1, tarifa2 : tarifa2};

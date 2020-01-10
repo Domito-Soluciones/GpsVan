@@ -114,17 +114,16 @@ $(document).ready(function(){
 
 function agregarCliente()
 {
-    var razon = $("#razon").val();
-    var tipo = $("#tipoCliente").val();
-    var rut = $("#rut").val();
-    var direccion = $("#direccion").val().replace(/'/g, "\\'");
-    alert(direccion);
-    var nombre = $("#nombreContacto").val();
-    var telefono = $("#telefono").val();
-    var mail = $("#data").val();
-    var mail2 = $("#data2").val();
-    var grupo = $("#grupo").val();
-    var color = $("#color").val();
+    var razon = formatearCadena($("#razon").val());
+    var tipo = formatearCadena($("#tipoCliente").val());
+    var rut = formatearCadena($("#rut").val());
+    var direccion = formatearCadena($("#direccion").val());
+    var nombre = formatearCadena($("#nombreContacto").val());
+    var telefono = formatearCadena($("#telefono").val());
+    var mail = formatearCadena($("#data").val());
+    var mail2 = formatearCadena($("#data2").val());
+    var grupo = formatearCadena($("#grupo").val());
+    var color = formatearCadena($("#color").val());
     var contrato = $("#contratoOculta").val();
     var cc = $(".centro_costo");
     cc.each(
@@ -166,16 +165,16 @@ function agregarCliente()
 function modificarCliente()
 {
     var id = ID_CLIENTE;
-    var razon = $("#razon").val();
-    var tipo = $("#tipoCliente").val();
-    var rut = $("#rut").val();
-    var direccion = $("#direccion").val().replace(/'/g, "\\'");
-    var nombre = $("#nombreContacto").val();
-    var telefono = $("#telefono").val();
-    var mail = $("#data").val();
-    var mail2 = $("#data2").val();
-    var grupo = $("#grupo").val();
-    var color = $("#color").val();
+    var razon = formatearCadena($("#razon").val());
+    var tipo = formatearCadena($("#tipoCliente").val());
+    var rut = formatearCadena($("#rut").val());
+    var direccion = formatearCadena($("#direccion").val());
+    var nombre = formatearCadena($("#nombreContacto").val());
+    var telefono = formatearCadena($("#telefono").val());
+    var mail = formatearCadena($("#data").val());
+    var mail2 = formatearCadena($("#data2").val());
+    var grupo = formatearCadena($("#grupo").val());
+    var color = formatearCadena($("#color").val());
     var contrato = $("#contratoOculta").val();
     var cc = $(".centro_costo");
     cc.each(

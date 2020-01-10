@@ -90,19 +90,19 @@ $(document).ready(function(){
 
 function agregarAgente()
 {
-    var rut = $("#rut").val();
-    var nombre = $("#nombre").val();
-    var papellido = $("#papellido").val();
-    var mapellido = $("#mapellido").val();
-    var telefono = $("#telefono").val();
-    var celular = $("#celular").val();
-    var direccion = $("#direccion").val();
-    var mail = $("#mail").val();
-    var nick = $("#nick").val();
-    var password = $("#password").val();
-    var password2 = $("#password2").val();
-    var perfil = $("#perfil").val();
-    var empresa = $("#clientes").val();
+    var rut = formatearCadena($("#rut").val());
+    var nombre = formatearCadena($("#nombre").val());
+    var papellido = formatearCadena($("#papellido").val());
+    var mapellido = formatearCadena($("#mapellido").val());
+    var telefono = formatearCadena($("#telefono").val());
+    var celular = formatearCadena($("#celular").val());
+    var direccion = formatearCadena($("#direccion").val());
+    var mail = formatearCadena($("#mail").val());
+    var nick = formatearCadena($("#nick").val());
+    var password = formatearCadena($("#password").val());
+    var password2 = formatearCadena($("#password2").val());
+    var perfil = formatearCadena($("#perfil").val());
+    var empresa = formatearCadena($("#clientes").val());
     var array = [rut,nombre,papellido,mapellido,celular,direccion,mail,perfil,empresa,nick,password,password2];
     if(!validarCamposOr(array))
     {
@@ -140,19 +140,19 @@ function agregarAgente()
 function modificarAgente()
 {
     var id = ID_AGENTE;
-    var rut = $("#rut").val();
-    var nombre = $("#nombre").val();
-    var papellido = $("#papellido").val();
-    var mapellido = $("#mapellido").val();
-    var telefono = $("#telefono").val();
-    var celular = $("#celular").val();
-    var direccion = $("#direccion").val();
-    var mail = $("#mail").val();
-    var nick = $("#nick").val();
-    var password = $("#password").val();
-    var password2 = $("#password2").val();
-    var perfil = $("#perfil").val();
-    var empresa = $("#clientes").val();
+    var rut = formatearCadena($("#rut").val());
+    var nombre = formatearCadena($("#nombre").val());
+    var papellido = formatearCadena($("#papellido").val());
+    var mapellido = formatearCadena($("#mapellido").val());
+    var telefono = formatearCadena($("#telefono").val());
+    var celular = formatearCadena($("#celular").val());
+    var direccion = formatearCadena($("#direccion").val());
+    var mail = formatearCadena($("#mail").val());
+    var nick = formatearCadena($("#nick").val());
+    var password = formatearCadena($("#password").val());
+    var password2 = formatearCadena($("#password2").val());
+    var perfil = formatearCadena($("#perfil").val());
+    var empresa = formatearCadena($("#clientes").val());
     var array;
     var params = {id : id,nombre: nombre,papellido :papellido, mapellido : mapellido, rut : rut,
             nick: nick, telefono: telefono, celular : celular,
