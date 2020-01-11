@@ -170,6 +170,7 @@ function cambiarModulo(pagina,params = null){
                 }
                 if(pagina === 'tarifa'){
                     ocultarSubMapa();
+                    ocultarMapa();
                 }
                 $("#contenido-central").html("");
                 $("#contenido-central").load(pagina+".html",function( response, status, xhr ) {
@@ -204,6 +205,7 @@ function cambiarModulo(pagina,params = null){
         }
         if(pagina === 'tarifa'){
             ocultarSubMapa();
+            ocultarMapa();
         }
         $("#contenido-central").html("");
         $("#contenido-central").load(pagina+".html",function( response, status, xhr ) {

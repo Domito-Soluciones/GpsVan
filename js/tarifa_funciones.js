@@ -74,6 +74,7 @@ function modificarTarifa()
         var url = urlBase + "/tarifa/ModTarifa.php";
         var success = function(response)
         {
+            ocultarMapa();
             cerrarSession(response);
             alertify.success("Tarifa Modificada");
             resetFormulario();
@@ -258,6 +259,7 @@ function abrirBuscador(id)
 
         $("#volverT").click(function(){
             ocultarSubMapa();
+            ocultarMapa();
             if(typeof NOMBRE_CLIENTE === "undefined" || typeof ID_CLIENTE === "undefined")
             {
                 buscarTarifasAll();
@@ -315,6 +317,7 @@ function abrirBuscador(id)
             }
         });            
         mostrarSubMapa();
+        mostrarMapa();
     });
 }
 
