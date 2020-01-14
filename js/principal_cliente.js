@@ -1,6 +1,8 @@
 
 /* global API_KEY, GOOGLE_MAPS_API */
 
+var POSITION = [-33.440616, -70.6514212];
+
 var menus = new Map();
 $(document).ready(function(){
     menus.set("HOMEC","home_cliente");
@@ -42,46 +44,23 @@ $(document).ready(function(){
         });
     });
 
-
+    
     
 });
 
-function getDashBoard()
-{
-    var url = urlBase + "/estadistica/GetDashBoard.php";
-    var params = {};
-    var success = function(response)
-    {
-        $("#sFinalizado").html(response.servicio_finalizado);
-        $("#sRuta").html(response.servicio_ruta);
-        $("#sRealizar").html(response.servicio_realizar);
-        $("#sAsignar").html(response.servicio_asignar);
-        var total = parseInt(response.movil_activo)+parseInt(response.movil_inactivo);
-        $("#vActivos").html(response.movil_activo+"/"+total);
-        if(response.produccion_diaria !== '')
-        {
-            $("#pDiaria").html("$ "+response.produccion_diaria);
-        }
-        if(response.produccion_mensual !== '')
-        {
-            $("#pMensual").html("$ "+response.produccion_mensual);
-        }
-        if(response.produccion_minterno !== '')
-        {
-            $("#pInterno").html("$ "+response.produccion_minterno);
-        }
-        var cont = $("#vConvenio");
-        if(response.servicio_convenios.length === 0)
-        {
-            cont.append("<div class=\"mensaje_bienvenida\" style=\"padding-top: 20%\">No hay datos registrados</div>");
-        }
-        for(var i = 0 ; i < response.servicio_convenios.length;i++)
-        {
-            var aux = response.servicio_convenios[i];
-            cont.append("<div><div class=\"titulo_barra\">"+aux.convenio_nombre+"</div><div class=\"barra\" id=\"barra"+i+"\"></div><div class=\"fin_barra\">"+aux.convenio_cantidad+"</div></div>");
-            cambiarPropiedad($("#barra"+i),"width","100px");
-        }
-    };
-    postRequest(url,params,success);
-}
 
+function initMap() {
+    //$.getJSON("js/map/map_style.json", function(json) {
+        var latlng = new google.maps.LatLng(POSITION[0], POSITION[1]);
+        var myOptions = {
+            zoom: 11,
+            center: latlng,
+            streetViewControl: false,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+            //,
+            //styles: json
+        };
+        map = new google.maps.Map(document.getElementById("map"), myOptions);
+        geocoder = new google.maps.Geocoder();
+    //});
+}

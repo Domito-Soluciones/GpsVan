@@ -22,7 +22,8 @@ $(document).ready(function(){
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
         $("#lista_busqueda_pasajero_detalle").load("html/datos_pasajero.html", function( response, status, xhr ) {
-            initPlacesAutoComplete();
+            initPlacesAutoComplete(document.getElementById("direccion"));
+            initPlacesAutoComplete(document.getElementById("punto"));
             cargarClientes();
             cargarCentroCosto(ID_EMPRESA,'');
             cargarRutas(ID_EMPRESA,'');
@@ -836,12 +837,28 @@ function preEliminarPasajero(id)
             });
 }
 
-    function initPlacesAutoComplete() {
-        autocomplete = new google.maps.places.Autocomplete(document.getElementById('punto'),
-        {componentRestrictions:{'country': 'cl'}});
-        places = new google.maps.places.PlacesService(map);
-        autocomplete.addListener('place_changed', onPlaceChanged);
-    }
+function initPlacesAutoComplete(input) {
+    var autocomplete = new google.maps.places.Autocomplete(input,
+    {componentRestrictions:{'country': 'cl'}});
+    places = new google.maps.places.PlacesService(map);
+    autocomplete.addListener('place_changed', function(){
+        input_places = input.id;
+        if(input.id === 'direccion')
+        {
+            quitarclase($("#buscaDireccion"),"oculto");
+        }
+        else if(input.id === 'punto')
+        {
+            quitarclase($("#buscaPunto"),"oculto");
+        }
+        var place = autocomplete.getPlace();
+        if (place.geometry) {
+            map.panTo(place.geometry.location);
+            map.setZoom(15);
+            colocarMarcadorPlaces();
+        }
+    });
+}
     
     function onPlaceChanged()
     {

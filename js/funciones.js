@@ -173,7 +173,7 @@ function cambiarModulo(pagina,params = null){
                 MODIFICADO = false;
                 quitarclase($(".opcion-menu"),"menu-activo");
                 agregarclase($("#"+pagina),"menu-activo");
-                if(pagina !== 'panel' || pagina !== 'monitoreo' || pagina !== 'servicio' || pagina !== 'pasajero' || pagina !== 'cliente')
+                if(pagina !== 'panel' || pagina !== 'monitoreo' || pagina !== 'servicio' || pagina !== 'pasajero' || pagina !== 'cliente' || pagina !== 'panel_cliente')
                 {
                     ocultarMapa();
                 }
@@ -184,7 +184,7 @@ function cambiarModulo(pagina,params = null){
                 $("#contenido-central").html("");
                 $("#contenido-central").load(pagina+".html",function( response, status, xhr ) {
                     variable = undefined;
-                    if(pagina === 'panel' || pagina === 'monitoreo')
+                    if(pagina === 'panel' || pagina === 'monitoreo' || pagina === 'panel_cliente')
                     {
                         if(pagina === 'panel' && params !== null)
                         {
@@ -208,7 +208,7 @@ function cambiarModulo(pagina,params = null){
     {
         quitarclase($(".opcion-menu"),"menu-activo");
         agregarclase($("#"+pagina),"menu-activo");
-        if(pagina !== 'panel' || pagina !== 'monitoreo' || pagina !== 'servicio' || pagina !== 'pasajero' || pagina !== 'cliente')
+        if(pagina !== 'panel' || pagina !== 'monitoreo' || pagina !== 'servicio' || pagina !== 'pasajero' || pagina !== 'cliente' || pagina !== 'panel_cliente')
         {
             ocultarMapa();
         }
@@ -219,7 +219,7 @@ function cambiarModulo(pagina,params = null){
         $("#contenido-central").html("");
         $("#contenido-central").load(pagina+".html",function( response, status, xhr ) {
             variable = undefined;
-            if(pagina === 'panel' || pagina === 'monitoreo')
+            if(pagina === 'panel' || pagina === 'monitoreo' || pagina === 'panel_cliente')
             {
                 if(pagina === 'panel' && params !== null)
                 {
