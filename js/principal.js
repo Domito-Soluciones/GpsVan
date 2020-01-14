@@ -1,18 +1,10 @@
 /* global google, urlBase, alertify, MENU_VISIBLE, urlUtil */
 var NICK_GLOBAL;
 var map;
-var markers = [];
 var POLYLINE;
 var POLYLINE_LAT = '';
 var POLYLINE_LNG = '';
 var POSITION = [-33.440616, -70.6514212];
-var API_KEY = "AIzaSyDcQylEsZAzuEw3EHBdWbsDAynXvU2Ljzs";
-var directionsService = null;
-var directionsDisplay = null;
-var geocoder = null;
-var autocomplete;
-var places;
-var GOOGLE_MAPS_API = "https://maps.googleapis.com/maps/api/js?";
 var TIPO_SERVICIO = 0;
 var flightPath;
 var ASIGNANDO = false;

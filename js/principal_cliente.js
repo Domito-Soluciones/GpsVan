@@ -1,4 +1,6 @@
 
+/* global API_KEY, GOOGLE_MAPS_API */
+
 var menus = new Map();
 $(document).ready(function(){
     menus.set("HOMEC","home_cliente");
