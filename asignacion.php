@@ -61,5 +61,8 @@ else if($_SESSION['tipo'] == '0')
         <div id="contenido-central" class="contenido-central">
             
         </div>
+        <div class="map" id="map">
+            <!--aqui va el mapa-->
+        </div>
     </body>
 </html>

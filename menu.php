@@ -217,6 +217,17 @@
             Servicios
         </div>
     </div>
+    <div class="opcion-menu" id="monitoreo" onclick="cambiarModulo('monitoreo')">
+        <div class="cont-img-menu">
+            <img class="img-menu" src="img/monitorear.svg">
+        </div>
+        <div class="contenido-menu">
+            Monitoreo
+        </div>
+        <div class="tooltip" id="tooltip_monitoreo">
+            Monitoreo
+        </div>
+    </div>
     <div class="opcion-menu menu-salir" id="salir" onclick="salir()">
         <div class="cont-img-menu">
             <img class="img-menu" src="img/salir.svg">

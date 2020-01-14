@@ -4,6 +4,8 @@ var PAGINA_ANTERIOR;
 var MODIFICADO = false;
 var KEY = "DGFSGHJRTJTHWGWEJNGWI9EFN";
 var urlBase= "source/httprequest";
+var GOOGLE_MAPS_API = "https://maps.googleapis.com/maps/api/js?";
+var API_KEY = "AIzaSyDcQylEsZAzuEw3EHBdWbsDAynXvU2Ljzs";
 var urlUtil= "source/util";
 var ADJUNTANDO = false;
 var CREADO = "0";

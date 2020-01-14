@@ -1,41 +1,43 @@
+
 var menus = new Map();
 $(document).ready(function(){
     menus.set("HOMEC","home_cliente");
     menus.set("PANELC","panel_cliente");
     menus.set("SERVICIOS","servicios");
     TIPO_USUARIO = 'CLIENTE';
-    $("#menu").load("menu.php", function( response, status, xhr ) {
-        agregarclase($("#home_cliente"),"menu-activo");
+    $.getScript(GOOGLE_MAPS_API+"key="+API_KEY+"&callback=initMap&libraries=places",function(){
+        $("#menu").load("menu.php", function( response, status, xhr ) {
+            agregarclase($("#home_cliente"),"menu-activo");
+        });
     
-    });
-    
-    $("#contenido-central").load("home_cliente.html");
+        $("#contenido-central").load("home_cliente.html");
 
-    getUsuario();
-    getfecha();
-//    setInterval(function(){getfecha();},5000);
-    $("#enlace-salir").click(function() {
-        salir();
-    });
-    
-//    $("#solicitar").click(function(){
-//        crearServicio();
-//    });
-//    iniciarFecha(['#fechas']);
-//    iniciarHora(['#hora']);
-//    buscarPasajeroCliente($("#clientes").val());
+        getUsuario();
+        getfecha();
+    //    setInterval(function(){getfecha();},5000);
+        $("#enlace-salir").click(function() {
+            salir();
+        });
 
-    $("#menu-telefono").click(function(){
-        if($("#menu-telefono").attr('src') === 'img/menu.svg')
-        {
-            cambiarPropiedad($("#menu"),"display","block");
-            $("#menu-telefono").attr("src","img/cancelar.svg");
-        }
-        else
-        {
-            cambiarPropiedad($("#menu"),"display","none");
-            $("#menu-telefono").attr("src","img/menu.svg");
-        }
+    //    $("#solicitar").click(function(){
+    //        crearServicio();
+    //    });
+    //    iniciarFecha(['#fechas']);
+    //    iniciarHora(['#hora']);
+    //    buscarPasajeroCliente($("#clientes").val());
+
+        $("#menu-telefono").click(function(){
+            if($("#menu-telefono").attr('src') === 'img/menu.svg')
+            {
+                cambiarPropiedad($("#menu"),"display","block");
+                $("#menu-telefono").attr("src","img/cancelar.svg");
+            }
+            else
+            {
+                cambiarPropiedad($("#menu"),"display","none");
+                $("#menu-telefono").attr("src","img/menu.svg");
+            }
+        });
     });
 
 

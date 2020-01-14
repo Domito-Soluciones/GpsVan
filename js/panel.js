@@ -28,6 +28,9 @@ var cantidadServicios = 0;
 var cantidadServiciosAux = 0;
 
 $(document).ready(function(){
+    window.onbeforeunload = function() {
+        return "¿Desea recargar la página web?";
+    };
     if((TIPO_SERVICIO === 1) && ASIGNANDO)
     {
         $("#ruta").html("<option value=\"ESP\">ESP</option>");
