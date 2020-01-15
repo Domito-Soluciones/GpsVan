@@ -1,4 +1,4 @@
-/* global urlBase, google, alertify, flightPath, markers, map, directionsDisplay, POLYLINE, POSITION */
+/* global urlBase, google, alertify, flightPath, markers, map, directionsDisplay, POLYLINE, POSITION, TIPO_USUARIO */
 var servicios_diarios = [];
 var moviles_diarios = [];
 var pasajeros_diarios = [];
@@ -33,7 +33,15 @@ function buscarServicio()
     var movil = $("#movil").val();
     var pasajero = $("#pasajero").val();
     var busqueda = servicio + movil + pasajero;
-    var url = urlBase + "/servicio/GetServicios.php?busqueda="+busqueda;
+    var url;
+    if(TIPO_USUARIO === 'CLIENTE')
+    {
+        var empresa = $("#clientes").val();
+        url = urlBase + "/servicio/GetServicios.php?empresa="+empresa;
+    }
+    else{
+        url = urlBase + "/servicio/GetServicios.php?busqueda="+busqueda;
+    }
     var success = function(response)
     {
         cerrarSession(response);
