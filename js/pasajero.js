@@ -387,10 +387,11 @@ function abrirModificar(id,rut,nombre,apellido)
     AGREGAR = false;
     $("#lista_busqueda_pasajero_detalle").load("html/datos_pasajero.html", function( response, status, xhr ) {
         $("#titulo_pagina_pasajero").text(rut+" ("+nombre+" "+apellido+")");
-        initPlacesAutoComplete();
         iniciarPestanias();
         cambioEjecutado();
         cargarClientes();
+        initPlacesAutoComplete(document.getElementById("direccion"));
+        initPlacesAutoComplete(document.getElementById("punto"));
 //        $("#nick").blur(function (){
 //            if(validarExistencia('nick',$(this).val()))
 //            {
