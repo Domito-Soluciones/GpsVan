@@ -28,6 +28,7 @@
         $hasta = filter_input(INPUT_GET, 'hasta');
     }
     $hhasta = filter_input(INPUT_GET, 'hhasta');
+    $tipo = filter_input(INPUT_GET, 'tipo');
     $reporteDao = new ReporteDao();
     $servicios = $reporteDao->getServiciosDetalle($empresa,$conductor,$desde,$hdesde,$hasta,$hhasta);
 ?>
@@ -58,8 +59,19 @@
                 <td>Hora</td>
                 <td>Movil</td>
                 <td>Conductor</td>
+                <?php
+                if($tipo == 'CLIENTE'){
+                ?>
+                    <td>Tarifa </td>
+                <?php
+                }
+                else{
+                ?>
                 <td>Tarifa 1</td>
                 <td>Tarifa 2</td>
+                <?php
+                }
+                ?>
                 <td>Estado</td>
                 <td>Observación adicional</td>
             </tr>
@@ -86,10 +98,15 @@
                 . "<td>".$servicioFecha."</td>"
                 . "<td>".$servicioHora."</td>"
                 . "<td>".$servicioMovil."</td>"
-                . "<td>".$servicioConductor."</td>"
-                . "<td>".$servicioTarifa1."</td>"
-                . "<td>".$servicioTarifa2."</td>"
-                . "<td>".$servicioEstado."</td>"
+                . "<td>".$servicioConductor."</td>";
+                if($tipo == 'CLIENTE'){
+                    echo "<td>".$servicioTarifa2."</td>";
+                }
+                else{
+                    echo "<td>".$servicioTarifa1."</td>"
+                    . "<td>".$servicioTarifa2."</td>";
+                }       
+                echo "<td>".$servicioEstado."</td>"
                 . "<td>".$servicioObAd."</td>"
                 . "</tr>";
             }

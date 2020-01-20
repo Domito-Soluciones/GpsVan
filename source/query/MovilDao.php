@@ -253,6 +253,7 @@ class MovilDao {
                 $movil->setConductor($row['movil_conductor']);
                 $movil->setConductorNombre($row['conductor_nombre']." ".$row['conductor_papellido']);
                 $movil->setConductorNick($row['conductor_nick']);
+                $movil->setNombreEmpresa($row['cliente_razon_social']);
                 $movil->setColorEmpresa($row['cliente_color']);
                 array_push($array, $movil);
             }

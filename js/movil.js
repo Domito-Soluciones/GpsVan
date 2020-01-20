@@ -28,7 +28,6 @@ $(document).ready(function(){
                 if(validarExistencia('patente',$(this).val()))
                 {
                     alertify.error("La patente "+$(this).val()+" ya existe");
-                    $("#patente").val("");
                     return;
                 }
             });
@@ -86,7 +85,7 @@ $(document).ready(function(){
 
 function agregarMovil()
 {
-    var patente = formatearCadena($("#patente").val());
+    var patente = formatearCadena($("#patente").val().toUpperCase());
     var marca = formatearCadena($("#marca").val());
     var nombre = formatearCadena($("#nombre").val());
     var modelo = formatearCadena($("#modelo").val());
@@ -227,7 +226,7 @@ function agregarMovil()
 function modificarMovil()
 {
     var id = ID_MOVIL;
-    var patente = formatearCadena($("#patente").val());
+    var patente = formatearCadena($("#patente").val().toUpperCase());
     var marca = formatearCadena($("#marca").val());
     var nombre = formatearCadena($("#nombre").val());
     var modelo = formatearCadena($("#modelo").val());

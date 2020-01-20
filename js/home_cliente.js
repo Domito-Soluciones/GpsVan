@@ -2,7 +2,7 @@
 
 var interval;
 var PAGINA = "HOMEC";
-
+var CLIENTE;
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
     getDashBoard();
@@ -12,6 +12,7 @@ $(document).ready(function(){
 function getDashBoard(cargar = true)
 {
     var cliente = $("#clientes").val();
+    CLIENTE = cliente;
     var url = urlBase + "/estadistica/GetDashBoardCliente.php";
     var params = {cliente: cliente};
     var success = function(response)

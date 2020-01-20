@@ -39,6 +39,7 @@ function login(){
             }
             else
             {
+                CLIENTE = response.agente_empresa;
                 redireccionar("asignacion.php");
             }
         }

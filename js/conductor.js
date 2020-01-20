@@ -24,7 +24,6 @@ $(document).ready(function(){
                 if(validarExistencia('rut',$(this).val()))
                 {
                     alertify.error("El rut "+$(this).val()+" ya existe");
-                    $("#rut").val("");
                     return;
                 }
             });

@@ -1,17 +1,19 @@
-/* global alertify, urlBase, urlUtil, POLYLINE_LAT, POLYLINE_LNG, map, google, markers */
+/* global alertify, urlBase, urlUtil, POLYLINE_LAT, POLYLINE_LNG, map, google, markers, directionsService, directionsDisplay */
 var PAGINA = "PANELC";
-var CAMPOS = ["clientes","fechas","hora"];
+var CAMPOS = ["nombres","celulars","origens","destinos","clientes","fechas","hora"];
 var clientesArray = [];
 var destinos = new Map();
 var PASAJEROS_ASIGNADOS = new Map();
 var PASAJEROS_NO_ASIGNADOS = new Map();
 var INPUT_ACTUAL;
+var directionsService;
+
 $(document).ready(function(){
+    directionsService = new google.maps.DirectionsService();
     PAGINA_ANTERIOR = PAGINA;
     TIPO_USUARIO = 'CLIENTE';
     $("#menu").load("menu.php", function( response, status, xhr ) {
         agregarclase($("#panel_cliente"),"menu-activo");
-    
     });
     $("#solicitar").click(function(){
         crearServicio();
@@ -29,11 +31,13 @@ $(document).ready(function(){
     $("#buscaPartida").click(function(){
         eliminarMarkers();
         agregarclase($(this),"oculto");
+        dibujarRuta();
     });
     
     $("#buscaDestino").click(function(){
         eliminarMarkers();
-        agregarclase($(this),"oculto");    
+        agregarclase($(this),"oculto");   
+        dibujarRuta();
     });
     //buscarPasajeroCliente($("#clientes").val());
     initPlacesAutoComplete(document.getElementById("origens"));
@@ -83,10 +87,14 @@ $(document).ready(function(){
 function crearServicio()
 {
     var cliente = $("#clientes").val();
+    var nombre = $("#nombres").val();
+    var celular = $("#celulars").val();
+    var origen = $("#origens").val();
+    var destino = $("#destinos").val();
     var fecha = $("#fechas").val();
     var hora = $("#hora").val();
     var observaciones = $("#observacion").val();
-    var array = [cliente,fecha,hora];
+    var array = [nombre,celular,origen,destino,cliente,fecha,hora];
     if(!validarCamposOr(array))
     {
         activarPestania(array);
@@ -108,7 +116,7 @@ function crearServicio()
     {
         cerrarSession(response);
         alertify.success('Servicio agregado con id '+response.servicio_id);
-        agregarDetalleServicio(response.servicio_id);
+        agregarDetalleServicio(response.servicio_id,nombre,celular,origen,destino);
         enviarCorreoAsignacion("jose.sanchez.6397@gmail.com",response.servicio_id,cliente);
         $("#contenedor-pasajero-elegido").html("<div class=\"contenedor_central_titulo_pasajero\">"+
                 "<div></div><div class=\"dato_pasajero\">Rut</div><div class=\"dato_pasajero\">Nombre</div>"+
@@ -191,20 +199,20 @@ function enviarCorreoAsignacion(mail,id,cliente)
 //    postRequest(url,params,success);
 //}
 
-function agregarDetalleServicio(idServicio)
+function agregarDetalleServicio(idServicio,nombre,celular,origen,destino)
 {
     var pasajeros = "";
-    var destino = "";
+    var destinos = "";
     var i = 0;
-    for(var [key, value] of PASAJEROS_ASIGNADOS){
-        var datos = key.split("_");
-        pasajeros += datos[2]+"_"+datos[3]+"-"+datos[1] + "_par" + "%";
-        destino += datos[5] + "%";
-        i++;
-    }
-    var params = {pasajeros : pasajeros ,destinos : destino, id : idServicio };
+
+    pasajeros += nombre+"-"+celular+"_par" + "%";
+    pasajeros += nombre+"-"+celular+"_des" + "%";
+    destinos += origen + "%";
+    destinos += destino + "%";
+    var params = {pasajeros : pasajeros ,destinos : destinos, id : idServicio };
     var url = urlBase + "/servicio/AddServicioDetalle.php";
     postRequest(url,params,null);
+    borrarDirections();
 }
 
 function seleccionarTodo()
@@ -315,6 +323,41 @@ function colocarMarcadorPlaces()
                     }
                 } 
             });
+        }
+    });
+}
+function dibujarRuta()
+{
+    GEOCODING = false;
+    var origen = $("#origens").val();
+    var destino = $("#destinos").val();
+    if(origen === '' || destino === '')
+    {
+        return;
+    }
+    eliminarMarkers();
+    setDirections();
+    directionsService.route({
+        origin: origen,
+        optimizeWaypoints: false,
+        destination: destino,
+        travelMode: 'DRIVING'
+    },  function(response, status){
+        if(status === 'OK')
+        {
+            directionsDisplay.setDirections(response);
+            var points = response.routes[0].overview_polyline;
+            var polyline = decodePolyline(points);
+            POLYLINE_LAT = '';
+            POLYLINE_LNG = '';
+            polyline.forEach(function(latLng) {
+                POLYLINE_LAT+= latLng.lat + ",";
+                POLYLINE_LNG += latLng.lng + ",";
+            });
+        }
+        else if(status === 'NOT_FOUND')
+        {
+            alertify.error("Ruta no encontrada");
         }
     });
 }

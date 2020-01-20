@@ -28,15 +28,13 @@ $(document).ready(function(){
                 if(validarExistencia('rut',$(this).val()))
                 {
                     alertify.error("El rut "+$(this).val()+" ya existe");
-                    $("#rut").val("");
                     return;
                 }
             });
             $("#razon").blur(function (){
-             if(validarExistencia('razon',$(this).val()))
+                if(validarExistencia('razon',$(this).val()))
                 {
-                        alertify.error("La razón social "+$(this).val()+" ya existe");
-                $("#razon").val("");
+                    alertify.error("La razón social "+$(this).val()+" ya existe");
                     return;
                 }
             });
@@ -404,7 +402,6 @@ function abrirModificar(id,nombre)
             if(validarExistencia('rut',$(this).val()))
             {
                 alertify.error("El rut "+$(this).val()+" ya existe");
-                $("#rut").val("");
                 return;
             }
         });
@@ -412,7 +409,6 @@ function abrirModificar(id,nombre)
             if(validarExistencia('razon',$(this).val()))
             {
                 alertify.error("La razón social "+$(this).val()+" ya existe");
-                $("#razon").val("");
                 return;
             }
         });
@@ -461,7 +457,6 @@ function abrirModificar(id,nombre)
                     if(validarExistencia('nombre',$(this).val()))
                     {
                         alertify.error("El nombre "+$(this).val()+" ya existe");
-                        $("#nombre").val("");
                         return;
                     }
                 });

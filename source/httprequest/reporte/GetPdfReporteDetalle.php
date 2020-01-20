@@ -27,6 +27,7 @@ include '../../log/Log.php';
         $hasta = filter_input(INPUT_GET, 'hasta');
     }
     $hhasta = filter_input(INPUT_GET, 'hhasta');
+    $tipo = filter_input(INPUT_GET, 'tipo');
     $reporteDao = new ReporteDao();
     $servicios = $reporteDao->getServiciosDetalle($empresa,$conductor,$desde,$hdesde,$hasta,$hhasta);
     
@@ -44,8 +45,13 @@ include '../../log/Log.php';
     $pdf->Cell($width,$height,'Hora',1);
 //    $pdf->Cell($width,$height,'Movil',1);
 //    $pdf->Cell($width,$height,'Conductor',1);
-    $pdf->Cell($widthB,$height,'Tarifa 1',1);
-    $pdf->Cell($widthB,$height,'Tarifa 2',1);
+    if($tipo == 'CLIENTE'){
+        $pdf->Cell($widthB,$height,'Tarifa',1);
+    }
+    else{
+        $pdf->Cell($widthB,$height,'Tarifa 1',1);
+        $pdf->Cell($widthB,$height,'Tarifa 2',1);
+    }
     $pdf->Cell($widthB,$height,'Estado',1);
 //    $pdf->Cell($width,$height,'Observacion adicional',1);
     $pdf->Ln();
@@ -73,8 +79,13 @@ include '../../log/Log.php';
         $pdf->Cell($width,$height,$servicioHora,1);
 //        $pdf->Cell($width,$height,$servicioMovil,1);
 //        $pdf->Cell($width,$height,$servicioConductor,1);
-        $pdf->Cell($widthB,$height,$servicioTarifa1,1);
-        $pdf->Cell($widthB,$height,$servicioTarifa2,1);
+        if($tipo == 'CLIENTE'){
+            $pdf->Cell($widthB,$height,$servicioTarifa1,1);
+        }
+        else{
+            $pdf->Cell($widthB,$height,$servicioTarifa1,1);
+            $pdf->Cell($widthB,$height,$servicioTarifa2,1);
+        }
         $pdf->Cell($widthB,$height,$servicioEstado,1);
 //        $pdf->Cell($width,$height,$servicioObAd,1);
         $pdf->Ln();

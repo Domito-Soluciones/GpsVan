@@ -443,7 +443,7 @@ function cargarPasajerosEspecial()
             var nombre = response[i].pasajero_nombre;
             var punto = response[i].pasajero_punto_encuentro;
             var celular = response[i].pasajero_celular;
-            
+            console.log(id+" "+nombre+" "+punto+" "+celular);
             if(i === 0)
             {
                 origen = punto;

@@ -11,6 +11,12 @@ var CAMPOS = ["clienteServicio","rutaServicio","fechaServicio","inicioServicio",
 var LETRAS = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
 var ESTADO_ACTUAL = '';
 var ESTADO_CAMBIO = false;
+var REPORTE;
+var EMPRESA;
+var DESDE;
+var HDESDE;
+var HASTA;
+var HHASTA;
 $(document).ready(function(){
     if(TIPO_USUARIO !== 'CLIENTE')
     {
@@ -22,9 +28,6 @@ $(document).ready(function(){
     iniciarHora([$("#hdesde"),$("#hhasta")]);
     buscarServicio();
     cargarMoviles();
-    $("#exportar").click(function(){
-        exportarServicio(); 
-    });
     
     $("#buscar").click(function(){
         buscarServicio(); 
@@ -42,10 +45,36 @@ $(document).ready(function(){
     if(TIPO_USUARIO === 'CLIENTE'){
         cambiarPropiedad($("#cont_empresa"),"display","none");
     }
+    
+    $("#exportar").click(function(){
+        if(typeof REPORTE === "undefined")
+        {
+            alertify.error("No hay datos para exportar");
+            return;
+        }
+        else
+        {
+            var params = "empresa="+EMPRESA+"&desde="+DESDE+"&hdesde="+HDESDE+"&hasta="+HASTA+"&hhasta="+HHASTA+"&tipo="+TIPO_USUARIO;
+            exportar('reporte/GetExcelReporteDetalle',params);
+        }
+    });
+    $("#exportar2").click(function(){
+        if(typeof REPORTE === "undefined")
+        {
+            alertify.error("No hay datos para exportar");
+            return;
+        }
+        else
+        {
+            var params = "empresa="+EMPRESA+"&desde="+DESDE+"&hdesde="+HDESDE+"&hasta="+HASTA+"&hhasta="+HHASTA+"&tipo="+TIPO_USUARIO;
+            window.open(urlBase+"/reporte/GetPdfReporteDetalle.php?"+params, '_blank');
+        }
+    });
 });
 
 function buscarServicio()
 {
+    REPORTE = '';
     var id = $("#id").val();
     var empresa = $("#empresa").val();
     if(TIPO_USUARIO === 'CLIENTE')
@@ -59,6 +88,11 @@ function buscarServicio()
     var hdesde = $("#hdesde").val();
     var hasta = $("#hasta").val();
     var hhasta = $("#hhasta").val();
+    EMPRESA = empresa;
+    DESDE = desde;
+    HDESDE = hdesde;
+    HASTA = hasta;
+    HHASTA = hhasta;
     var params = {id : id, empresa : empresa, movil : movil, truta : truta, estado: estado,
         desde : desde, hdesde : hdesde, hasta : hasta, hhasta : hhasta};
     var url = urlBase + "/servicio/GetServicios.php";

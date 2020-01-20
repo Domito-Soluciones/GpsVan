@@ -54,6 +54,7 @@ class Movil {
     private $adjuntoSegRcDm;
     private $adjuntoSegAsiento;
     private $adjuntoSegRcExceso;
+    private $nombreEmpresa;
     private $colorEmpresa;
     
     function getId() {
@@ -264,6 +265,10 @@ class Movil {
         return $this->adjuntoSegRcExceso;
     }
 
+    function getNombreEmpresa() {
+        return $this->nombreEmpresa;
+    }
+    
     function getColorEmpresa() {
         return $this->colorEmpresa;
     }
@@ -475,7 +480,11 @@ class Movil {
     function setAdjuntoSegRcExceso($adjuntoSegRcExceso) {
         $this->adjuntoSegRcExceso = $adjuntoSegRcExceso;
     }
-
+    
+    function setNombreEmpresa($nombreEmpresa) {
+        $this->nombreEmpresa = $nombreEmpresa;
+    }
+    
     function setColorEmpresa($colorEmpresa) {
         $this->colorEmpresa = $colorEmpresa;
     }

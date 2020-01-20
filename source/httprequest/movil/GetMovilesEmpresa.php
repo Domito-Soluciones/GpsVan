@@ -22,6 +22,7 @@ for ($i = 0 ; $i < count($moviles); $i++)
     $movilConductor = trim($moviles[$i]->getConductor());
     $movilConductorNick = trim($moviles[$i]->getConductorNick());
     $movilConductorNombre = trim($moviles[$i]->getConductorNombre());
+    $movilClienteNombre = trim($moviles[$i]->getNombreEmpresa());
     $movilClienteColor = trim($moviles[$i]->getColorEmpresa());
     echo "{\"movil_id\":\"".$movilId."\","
         . "\"movil_nombre\":\"".$movilNombre."\","
@@ -33,6 +34,7 @@ for ($i = 0 ; $i < count($moviles); $i++)
         . "\"movil_conductor\":\"".$movilConductor."\","
         . "\"movil_conductor_nombre\":\"".$movilConductorNombre."\","
         . "\"movil_conductor_nick\":\"".$movilConductorNick."\","
+        . "\"movil_cliente_nombre\":\"".$movilClienteNombre."\","
         . "\"movil_cliente_color\":\"".$movilClienteColor."\""
         . "}";
     if (($i+1) != count($moviles))

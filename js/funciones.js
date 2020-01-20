@@ -348,6 +348,7 @@ function resetFormulario()
     MODIFICADO = false;
     cambiarPropiedad($("#agregar"),"visibility","visible");
     cambiarPropiedad($("#guardar"),"visibility","hidden");
+    cambiarPropiedad($("#eliminar"),"visibility","hidden");
 }
 
 
@@ -538,11 +539,11 @@ function validarNumero(numero)
 
 function validarPatente(patente)
 {
-    if (/^[A-Z?]{4}-\d{2}$/.test(patente))
+    if (/^[A-Z?]{4}-\d{2}$/.test(patente.toUpperCase()))
     {
         return true;
     }
-    if (/^[A-Z?]{2}-\d{3}$/.test(patente)){
+    if (/^[A-Z?]{2}-\d{3}$/.test(patente.toUpperCase())){
         return true;
     }
     return false;

@@ -169,6 +169,9 @@ class ServicioDao {
             } else {
                 echo mysqli_error($conn->conn);
             }           
+            if($estado == '5' || $estado == '6'){
+                ServicioDao::actualizarServicioMovil($movil);
+            }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
             Log::write_error_log($exc->getTraceAsString());
@@ -821,6 +824,24 @@ class ServicioDao {
         $conn = new Conexion();
         try {
             $query = "UPDATE tbl_movil SET movil_ultima_asignacion = NOW() WHERE movil_nombre = (SELECT conductor_movil FROM tbl_conductor WHERE conductor_nick = '$idConductor')"; 
+            $conn->conectar();
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
+                $id = mysqli_insert_id($conn->conn);
+            } else {
+                echo mysqli_error($conn->conn);
+            }           
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
+        }
+        return $id;
+    }
+    public static function actualizarServicioMovil($idMovil)
+    {
+         $id = 0;
+        $conn = new Conexion();
+        try {
+            $query = "UPDATE tbl_movil SET movil_servicio = '' WHERE movil_nombre = '$idMovil'"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);

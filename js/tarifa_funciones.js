@@ -206,6 +206,8 @@ function abrirBuscador(id)
     quitarclase($("#guardarT"),"oculto");
     quitarclase($("#eliminarT"),"oculto");
     $("#lista_busqueda_tarifa_detalle").load("html/datos_tarifa_cliente.html", function( response, status, xhr ) {
+        initPlacesAutoComplete(document.getElementById("origen"));
+        initPlacesAutoComplete(document.getElementById("destino"));
         iniciarHora([$("#hora")]);
         if(PAGINA === 'CLIENTES')
         {

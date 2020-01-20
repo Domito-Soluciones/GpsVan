@@ -1,4 +1,4 @@
-/* global urlBase, google, alertify, flightPath, markers, map, directionsDisplay, POLYLINE, POSITION, TIPO_USUARIO */
+/* global urlBase, google, alertify, flightPath, markers, map, directionsDisplay, POLYLINE, POSITION, TIPO_USUARIO, NOMBRE_CLIENTE, CLIENTE */
 var servicios_diarios = [];
 var moviles_diarios = [];
 var pasajeros_diarios = [];
@@ -33,15 +33,7 @@ function buscarServicio()
     var movil = $("#movil").val();
     var pasajero = $("#pasajero").val();
     var busqueda = servicio + movil + pasajero;
-    var url;
-    if(TIPO_USUARIO === 'CLIENTE')
-    {
-        var empresa = $("#clientes").val();
-        url = urlBase + "/servicio/GetServicios.php?empresa="+empresa;
-    }
-    else{
-        url = urlBase + "/servicio/GetServicios.php?busqueda="+busqueda;
-    }
+    var url = urlBase + "/servicio/GetServicios.php?busqueda="+busqueda;
     var success = function(response)
     {
         cerrarSession(response);
@@ -101,7 +93,14 @@ function cargarMovilesMapa(monitor)
 {
     var busqueda = $("#busqueda").val();
     var params = {busqueda : busqueda};
-    var url = urlBase + "/movil/GetMoviles.php";
+    var url;
+    if(TIPO_USUARIO === 'CLIENTE')
+    {
+        url = urlBase + "/movil/GetMovilesEmpresa.php";
+    }
+    else{
+        url = urlBase + "/movil/GetMoviles.php";
+    }
     var success = function(response)
     {
         var moviles = $("#lista_busqueda_monitoreo");
@@ -111,16 +110,34 @@ function cargarMovilesMapa(monitor)
             var patente = response[i].movil_patente;
             var nombre = response[i].movil_nombre;
             var estado = response[i].movil_estado;
-            var imgEstado = '';
-            if(estado === '0')
-            {
-                imgEstado = "<div id=\""+patente+"-img\" class=\"img-estado-no\"></div>";
+            var empresa = response[i].movil_cliente_nombre;
+            if(TIPO_USUARIO === 'CLIENTE'){
+                if(CLIENTE === empresa){
+                    var imgEstado = '';
+                    if(estado === '0')
+                    {
+                        imgEstado = "<div id=\""+patente+"-img\" class=\"img-estado-no\"></div>";
+                    }
+                    else
+                    {
+                        imgEstado = "<div id=\""+patente+"-img\" class=\"img-estado-ok\"></div>";   
+                    }
+                    moviles.append("<div class=\"fila_contenedor\" id=\""+patente+"\" onClick=\"animarMovil('"+patente+"')\">"+imgEstado+nombre+"</div>");
+                }
             }
-            else
-            {
-                imgEstado = "<div id=\""+patente+"-img\" class=\"img-estado-ok\"></div>";   
-            }
-            moviles.append("<div class=\"fila_contenedor\" id=\""+patente+"\" onClick=\"animarMovil('"+patente+"')\">"+imgEstado+nombre+"</div>");
+            else{
+                var imgEstado = '';
+                if(estado === '0')
+                {
+                    imgEstado = "<div id=\""+patente+"-img\" class=\"img-estado-no\"></div>";
+                }
+                else
+                {
+                    imgEstado = "<div id=\""+patente+"-img\" class=\"img-estado-ok\"></div>";   
+                }
+                moviles.append("<div class=\"fila_contenedor\" id=\""+patente+"\" onClick=\"animarMovil('"+patente+"')\">"+imgEstado+nombre+"</div>");
+            
+            }    
         }
     };
     postRequest(url,params,success);
@@ -135,6 +152,7 @@ function moverMovilesMapa()
     var url = urlBase + "/movil/GetMovilesEmpresa.php?busqueda=";
     var success = function(response)
     {
+        var vacio = true;
         for(var i = 0 ; i < response.length ; i++)
         {
             var patente = response[i].movil_patente;
@@ -145,44 +163,20 @@ function moverMovilesMapa()
             var conductor = response[i].movil_conductor_nombre;
             var estado = response[i].movil_estado;
             var color = response[i].movil_cliente_color;
-            if(estado === '0')
-            {
-                for(var j = 0  ; j < markers.length;j++)
-                {           
-                    if(markers[j].get("idMarker") === patente)
-                    {
-                        quitarclase($("#"+patente+"-img"),"img-estado-ok");
-                        agregarclase($("#"+patente+"-img"),"img-estado-no");
-                        markers[j].setMap(null);
-                        MOVILES_DIBUJADOS.delete(patente);
-                        break;
-                    }
+            var empresa = response[i].movil_cliente_nombre;
+            if(TIPO_USUARIO === 'CLIENTE'){
+                if(CLIENTE === empresa){
+                    vacio = false;
+                    moverMovil(patente,nombre,estado,lat,lon,servicio,conductor,color);
                 }
+                
             }
-            else
-            {
-                var marker = undefined;
-                if(typeof MOVILES_DIBUJADOS.get(patente) === 'undefined')
-                {
-                    marker = dibujarMarcador(patente,lat,lon,nombre,servicio,conductor,color);
-                    MOVILES_DIBUJADOS.set(patente,patente);
-                    quitarclase($("#"+patente+"-img"),"img-estado-no");
-                    agregarclase($("#"+patente+"-img"),"img-estado-ok");
-                }
-                else
-                {
-                    for(var j = 0  ; j < markers.length;j++)
-                    {           
-                        if(markers[j].get("idMarker") === patente)
-                        {
-                            marker = markers[j];
-                            break;
-                        }
-                    }
-                }
-                var latlng = new google.maps.LatLng(parseFloat(lat), parseFloat(lon));
-                marker.setPosition(latlng);
+            else{
+                moverMovil(patente,nombre,estado,lat,lon,servicio,conductor,color);
             }
+        }
+        if(TIPO_USUARIO === 'CLIENTE' && vacio){
+            alertify.success("No hay servicios en ruta");
         }
     };
     getRequest(url,success,false);
@@ -274,4 +268,45 @@ function animarMovil(patente)
         }
     } 
     
+}
+
+function moverMovil(patente,nombre,estado,lat,lon,servicio,conductor,color){
+    if(estado === '0')
+    {
+        for(var j = 0  ; j < markers.length;j++)
+        {           
+            if(markers[j].get("idMarker") === patente)
+            {
+                quitarclase($("#"+patente+"-img"),"img-estado-ok");
+                agregarclase($("#"+patente+"-img"),"img-estado-no");
+                markers[j].setMap(null);
+                MOVILES_DIBUJADOS.delete(patente);
+                break;
+            }
+        }
+    }
+    else
+    {
+        var marker = undefined;
+        if(typeof MOVILES_DIBUJADOS.get(patente) === 'undefined')
+        {
+            marker = dibujarMarcador(patente,lat,lon,nombre,servicio,conductor,color);
+            MOVILES_DIBUJADOS.set(patente,patente);
+            quitarclase($("#"+patente+"-img"),"img-estado-no");
+            agregarclase($("#"+patente+"-img"),"img-estado-ok");
+        }
+        else
+        {
+            for(var j = 0  ; j < markers.length;j++)
+            {           
+                if(markers[j].get("idMarker") === patente)
+                {
+                    marker = markers[j];
+                    break;
+                }
+            }
+        }
+        var latlng = new google.maps.LatLng(parseFloat(lat), parseFloat(lon));
+        marker.setPosition(latlng);
+    }
 }
