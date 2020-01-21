@@ -2,7 +2,7 @@
 var PAGINA = "HOME";
 var options = {};
 var interval;
-
+var colores = ["red","blue","green","yellow","pink","brown","purple","yellowgreen"];
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
     getDashBoard();
@@ -55,41 +55,39 @@ function getDashBoard(cargar = true)
             $("#pInterno").html("$ "+formatoMoneda(response.produccion_minterno));
         }
         var cont = $("#vConvenio");
-        cont.html("");
         if(response.servicio_convenios.length === 0)
         {
+            cont.html("");
             cont.append("<div class=\"mensaje_bienvenida\" style=\"padding-top: 20%\">No hay datos registrados</div>");
         }
-        var canvas = $("#canvasConvenio");
-        var data = {
-            labels: [
-                "Saudi Arabia",
-                "Russia",
-                "Iraq",
-                "United Arab Emirates",
-                "Canada"
-            ],
-            datasets: [
-                {
-                    data: [133.3, 86.2, 52.2, 51.2, 50.2],
-                    backgroundColor: [
-                        "#FF6384",
-                        "#63FF84",
-                        "#84FF63",
-                        "#8463FF",
-                        "#6384FF"
-                    ]
-                    }]
-        };
-        var options = [];
-        crearGraficoTorta(canvas,data,options);
-//        for(var i = 0 ; i < response.servicio_convenios.length;i++)
-//        {
-//            var aux = response.servicio_convenios[i];
-//            cont.append("<div><div class=\"titulo_barra\">"+aux.convenio_nombre+"</div><div class=\"barra\" id=\"barra"+i+"\"></div><div class=\"fin_barra\">"+aux.convenio_cantidad+"</div></div>");
-//            cambiarPropiedad($("#barra"+i),"width","100px");
-//        }
-    };
+        else
+        {
+            var ctx = document.getElementById("canvasConvenio");
+            var labelAux = [];
+            var dataAux = [];
+            for(var i = 0 ; i < response.servicio_convenios.length;i++)
+            {
+                var aux = response.servicio_convenios[i];
+                labelAux.push(aux.convenio_nombre);
+                dataAux.push(aux.convenio_cantidad);
+            }
+            new Chart(ctx, {
+                  type: 'pie',
+                  data: {
+                      labels: labelAux,
+                      datasets: [{
+                          backgroundColor: colores,
+                          data: dataAux
+                      }]
+                  },
+                  options: {
+                    animation: false,
+                    maintainAspectRatio: false,
+                    responsive: true
+                  }      
+            });
+        }
+    }
     postRequest(url,params,success,cargar);
 }
 
@@ -117,12 +115,4 @@ function abrirServicio(ids,clientes,ruta,fechas,hora,observacion)
 {
     ASIGNANDO = true;
     cambiarModulo('panel',{ids:ids,clientes:clientes,ruta:ruta,fechas:fechas,hora:hora,observacion:observacion});
-}
-
-function crearGraficoTorta(canvas,data,options){
-    new Chart(canvas, {
-        type: 'pie',
-        data: data,
-        options: options
-    });
 }
