@@ -36,22 +36,22 @@ for ($i = 0 ; $i < count($clientes); $i++)
         . "\"cliente_fono_contacto\":\"".$clienteFonoContacto."\","
         . "\"cliente_mail_contacto\":\"".$clienteMailContacto."\","
         . "\"cliente_mail_facturacion\":\"".$clienteMailFacturacion."\","
-        . "\"cliente_contrato\":\"".$clienteContrato."\","
-        . "\"cliente_centro_costo\": {";
-        if($buscaCC == '1')
-        {
-            $centrosCosto = $clienteDao->getCentrosCosto($clienteRazon);
-            for($j = 0; $j < count($centrosCosto) ; $j++)
-            {
-                echo "\"centro_costo_".$j."\":\"".$centrosCosto[$j]."\"";
-                if (($j+1) != count($centrosCosto))
-                {
-                    echo ",";
-                }
-            }
-        }
+        . "\"cliente_contrato\":\"".$clienteContrato."\"";
+//        . "\"cliente_centro_costo\": {";
+//        if($buscaCC == '1')
+//        {
+//            $centrosCosto = $clienteDao->getCentrosCosto($clienteRazon);
+//            for($j = 0; $j < count($centrosCosto) ; $j++)
+//            {
+//                echo "\"centro_costo_".$j."\":\"".$centrosCosto[$j]."\"";
+//                if (($j+1) != count($centrosCosto))
+//                {
+//                    echo ",";
+//                }
+//            }
+//        }
             echo "}";
-        echo "}";
+//        echo "}";
     if (($i+1) != count($clientes))
     {
         echo ",";

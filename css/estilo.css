@@ -1739,7 +1739,7 @@ select
 .pasajero_mapa
 {
     width:100%;
-    height: 450px;
+    height: 375px;
 }
 
 .recargado
@@ -1852,6 +1852,11 @@ select
 .cont-tarifa
 {
     height: calc(100% - 82px);
+}
+
+.cont-tarifa-cliente
+{
+    height: calc(100% - 35px);
 }
 
 #contenido_tabla_liq_prod,#contenido_tabla_liq_desc,#contenido_tabla_liq_rend

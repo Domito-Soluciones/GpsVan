@@ -544,18 +544,18 @@ function abrirModificar(id,nombre)
         });
         
         $("#buscaPunto").click(function(){
-                if(mapa_oculto)
-                {
-                    colocarMarcadorPlaces();
-                    quitarclase($("#contenedor_mapa"),"oculto");
-                    mapa_oculto = false;
-                }
-                else
-                {
-                    agregarclase($("#contenedor_mapa"),"oculto");
-                    mapa_oculto = true;
-                }
-            });
+            if(mapa_oculto)
+            {
+                colocarMarcadorPlaces();
+                quitarclase($("#contenedor_mapa"),"oculto");
+                mapa_oculto = false;
+            }
+            else
+            {
+                agregarclase($("#contenedor_mapa"),"oculto");
+                mapa_oculto = true;
+            }
+        });
         var cliente;
         for(var i = 0 ; i < CLIENTES.length; i++)
         {
@@ -577,19 +577,6 @@ function abrirModificar(id,nombre)
         $("#grupo").val(cliente.cliente_grupo);
         $("#color").val(cliente.cliente_color);
         verAdjunto(cliente.cliente_contrato,'');
-        var j = 0;
-        Object.keys(cliente.cliente_centro_costo).forEach(function(key){
-        var value = cliente.cliente_centro_costo[key];
-            if(j === 0)
-            {
-                $("#centros").val(value);
-            }
-            else if(j > 0)
-            {
-                agregarCentroCostoValor(j+1,value);
-            }
-            j++;
-        });
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#cancelar"),"visibility","visible");
         cambiarPropiedad($("#eliminar"),"visibility","visible");
@@ -712,6 +699,7 @@ function iniciarPestanias()
     });
     $("#p_ccosto").click(function(){
         cambiarPestaniaCC();
+        buscarCentrosCosto(NOMBRE_CLIENTE);
     });
     $("#p_tarifa").click(function(){
         cambiarPestaniaTarifa();
@@ -767,6 +755,9 @@ function agregarCentroCosto()
 
 function agregarCentroCostoValor(i,val)
 {
+    $("#cont-pre-cc-"+i).remove();
+    $("#cont-cc-"+i).remove();
+    $("#centros"+i).remove();
     $("#centro_costo").append("<div class=\"contenedor-pre-input\" id=\"cont-pre-cc-"+i+"\">Centro Costo "+i+" (*)</div>"+
             "<div class=\"contenedor-input\" id=\"cont-cc-"+i+"\"><input class=\"centro_costo\" type=\"text\" id=\"centros"+i+"\" value=\""+val+"\" placeholder=\"Ej: Principal\" maxlength=\"40\">");
 }
@@ -1082,6 +1073,25 @@ function buscarTarifas(id,nombre)
                     "<div onClick=\"abrirBuscador('"+id+"')\">"+empresa+"</div>"+
                     "<div><img onclick=\"preEliminarTarifa('"+descripcion+"','"+nombre+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
                     "</div>");
+        }
+    };
+    postRequest(url,params,success);
+    
+}
+
+function buscarCentrosCosto(cliente)
+{
+    var params = {cliente : cliente};
+    var url = urlBase + "/cliente/GetCentroCosto.php";
+    var success = function(response)
+    { 
+        $("#centros").val(response[0].cc_nombre);
+        for(var i = 0; i < response.length ; i++){
+            var value = response[i].cc_nombre;
+            if(i > 0)
+            {
+                agregarCentroCostoValor(i+1,value);
+            }
         }
     };
     postRequest(url,params,success);
