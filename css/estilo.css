@@ -1396,7 +1396,7 @@ select
 {
     width: 100%;
     font-size: 60px;
-    height: calc(100% - 20px);
+    height: calc(100% - 40px);
 }
 .indicador-valor-mitad
 {
