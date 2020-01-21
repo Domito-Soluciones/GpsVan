@@ -73,7 +73,7 @@ class ReporteDao {
             {
                 $buscaFecha = "AND servicio_fecha BETWEEN '".$desde." ".$hdesde."' AND '".$hasta." ".$hhasta."'";
             }
-            $query = "SELECT * FROM tbl_servicio WHERE servicio_estado != 0 "
+            $query = "SELECT * FROM tbl_servicio LEFT JOIN tbl_conductor ON servicio_conductor = conductor_id WHERE servicio_estado != 0 "
                     .$buscaFecha." ".$buscaEmpresa." ".$buscaConductor." ORDER BY servicio_fecha DESC,servicio_hora DESC";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
@@ -87,7 +87,7 @@ class ReporteDao {
                 $servicio->setFecha(date_format($date, 'd/m/Y'));
                 $servicio->setHora($row["servicio_hora"]);
                 $servicio->setMovil($row["servicio_movil"]);
-                $servicio->setConductor($row["servicio_conductor"]);
+                $servicio->setConductor($row["conductor_nombre"]." ".$row["conductor_papellido"]);
                 $servicio->setTarifa1($row["servicio_tarifa1"]);
                 $servicio->setTarifa2($row["servicio_tarifa2"]);
                 $servicio->setEstado($row["servicio_estado"]);

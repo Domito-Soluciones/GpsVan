@@ -133,12 +133,12 @@ function getReporteDetalle(){
             let servicio = response[i];
             let id = servicio.servicio_id;
             let cliente = servicio.servicio_cliente;
-            let ruta = servicio.servicio_ruta;
-            let truta = servicio.servicio_truta;
+            let ruta = servicio.servicio_ruta === '' ? '-' : servicio.servicio_ruta;
+            let truta = servicio.servicio_truta === '' ? '-' : servicio.servicio_truta;
             let fecha = servicio.servicio_fecha;
             let hora = servicio.servicio_hora;
             let movil = servicio.servicio_movil === '' ? '-' : servicio.servicio_movil;
-            let conductor = servicio.servicio_conductor === '' ? '-' : servicio.servicio_conductor;
+            let conductor = servicio.servicio_conductor === ' ' ? '-' : servicio.servicio_conductor;
             let tarifa1 = formatoMoneda(servicio.servicio_tarifa1);
             let tarifa2 = formatoMoneda(servicio.servicio_tarifa2);
             let estado = obtenerEstadoServicio(servicio.servicio_estado);

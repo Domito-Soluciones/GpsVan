@@ -87,7 +87,7 @@ function getDashBoard(cargar = true)
                   }      
             });
         }
-    }
+    };
     postRequest(url,params,success,cargar);
 }
 
