@@ -184,6 +184,16 @@ function cambiarModulo(pagina,params = null){
                 $("#contenido-central").html("");
                 $("#contenido-central").load(pagina+".html",function( response, status, xhr ) {
                     variable = undefined;
+                    if(pagina === 'servicios' && params !== null){
+                        alert(params.cliente);
+                        $("#estadoServicioBusca").val(params.estado);
+                        var d = new Date();
+                        var date = d. getDate();
+                        var month = d. getMonth() + 1;
+                        var year = d. getFullYear();
+                        var dateStr = date + "/" + month + "/" + year;
+                        $("#desde").val(dateStr);
+                    }
                     if(pagina === 'panel' || pagina === 'monitoreo' || pagina === 'panel_cliente')
                     {
                         if(pagina === 'panel' && params !== null)
@@ -219,6 +229,15 @@ function cambiarModulo(pagina,params = null){
         $("#contenido-central").html("");
         $("#contenido-central").load(pagina+".html",function( response, status, xhr ) {
             variable = undefined;
+            if(pagina === 'servicios' && params !== null){
+                $("#estadoServicioBusca").val(params.estado);
+                var d = new Date();
+                var date = d. getDate();
+                var month = d. getMonth() + 1;
+                var year = d. getFullYear();
+                var dateStr = date + "/" + month + "/" + year;
+                $("#desde").val(dateStr);
+            }
             if(pagina === 'panel' || pagina === 'monitoreo' || pagina === 'panel_cliente')
             {
                 if(pagina === 'panel' && params !== null)

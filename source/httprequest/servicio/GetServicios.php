@@ -20,7 +20,7 @@ else
     $desde = filter_input(INPUT_POST, 'desde');
 }
 $hdesde = filter_input(INPUT_POST, 'hdesde');
-$hasta = '23:59:59';
+$hasta = '';
 if(filter_input(INPUT_POST, 'hasta') != '')
 {
     $hasta = DateTime::createFromFormat('d/m/Y', filter_input(INPUT_POST, 'hasta'))->format('Y/m/d');

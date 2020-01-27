@@ -22,6 +22,7 @@ class Servicio {
     private $pasajero;
     private $destino;
     private $tipo;
+    private $cc;
     
     function getId() {
         return $this->id;
@@ -102,6 +103,10 @@ class Servicio {
     function getTipo() {
         return $this->tipo;
     }
+    
+    function getCC() {
+        return $this->cc;
+    }
 
     function setId($id) {
         $this->id = $id;
@@ -181,6 +186,10 @@ class Servicio {
 
     function setTipo($tipo) {
         $this->tipo = $tipo;
+    }
+    
+    function setCC($cc) {
+        $this->cc = $cc;
     }
 
     function toString() {

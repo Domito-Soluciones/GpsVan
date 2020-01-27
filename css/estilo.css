@@ -1391,6 +1391,7 @@ select
     text-align: center;
     height: calc(100% - 20px);
     line-height: 140px;
+    cursor: pointer;
 }
 .indicador-valor2
 {
@@ -1972,4 +1973,12 @@ select
 .punto-especial{
     width: 207px;
     height: auto;
+}
+
+.img-tipo{
+    margin-top: 10px !important;
+    margin-left: 10px;
+    float: left !important;
+    width:20px;
+    height:20px;
 }

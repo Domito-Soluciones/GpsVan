@@ -392,6 +392,7 @@ function abrirModificar(id,nombre)
     AGREGAR = false;
     ID_CLIENTE = id;
     NOMBRE_CLIENTE = nombre;
+    ocultarMapa();
     //marcarFilaActiva(ID_CLIENTE);
     $("#lista_busqueda_cliente_detalle").load("html/datos_cliente.html", function( response, status, xhr ) {
         $("#titulo_pagina_cliente").text(nombre);
@@ -419,8 +420,11 @@ function abrirModificar(id,nombre)
             },null);
         });
         $("#agregarT").click(function(){
+            ocultarMapa();
             AGREGAR = true;
             $("#lista_busqueda_tarifa_detalle").load("html/datos_tarifa_cliente.html", function( response, status, xhr ) {
+                initPlacesAutoCompleteTarifa(document.getElementById("origen"));
+                initPlacesAutoCompleteTarifa(document.getElementById("destino"));
                 iniciarHora([$("#hora")]);
                 cambiarPropiedad($("#titulo_tarifa"),"background-color","white");
                 cambiarPropiedad($(".contenedor-pre-input"),"height","25px");
@@ -717,6 +721,7 @@ function cambiarPestaniaGeneral()
     agregarclase($("#p_tarifa"),"dispose");
     mapa_oculto = false;
     ocultarSubMapa();
+    mostrarMapa();
 }
 
 function cambiarPestaniaCC()
@@ -1175,6 +1180,8 @@ function abrirBuscador(id)
     quitarclase($("#guardarT"),"oculto");
     quitarclase($("#eliminarT"),"oculto");
     $("#lista_busqueda_tarifa_detalle").load("html/datos_tarifa_cliente.html", function( response, status, xhr ) {
+        initPlacesAutoCompleteTarifa(document.getElementById("origen"));
+        initPlacesAutoCompleteTarifa(document.getElementById("destino"));
         iniciarHora([$("#hora")]);
         cambiarPropiedad($("#titulo_tarifa"),"background-color","white");
         cambiarPropiedad($(".contenedor-pre-input"),"height","25px");
@@ -1291,4 +1298,27 @@ function preEliminarTarifa(nombre,descripcion)
                 };
                 postRequest(url,params,success);
             });
+}
+
+function initPlacesAutoCompleteTarifa(input) {
+    var autocomplete = new google.maps.places.Autocomplete(input,
+    {componentRestrictions:{'country': 'cl'}});
+    places = new google.maps.places.PlacesService(map);
+    autocomplete.addListener('place_changed', function(){
+        input_direccion_cliente = input.id;
+        if(input.id === 'origen')
+        {
+            quitarclase($("#buscaOrigen"),"oculto");
+        }
+        else if(input.id === 'destino')
+        {
+            quitarclase($("#buscaDestino"),"oculto");
+        }
+        var place = autocomplete.getPlace();
+        if (place.geometry) {
+            map.panTo(place.geometry.location);
+            map.setZoom(15);
+            colocarMarcadorPlaces();
+        }
+    });
 }

@@ -39,48 +39,9 @@ $(document).ready(function(){
         agregarclase($(this),"oculto");   
         dibujarRuta();
     });
-    //buscarPasajeroCliente($("#clientes").val());
+    buscarCentrosCosto($("#clientes").val());
     initPlacesAutoComplete(document.getElementById("origens"));
     initPlacesAutoComplete(document.getElementById("destinos"));
-    
-//    $("#busqueda").keyup(function(){
-//        var pasajeros = $("#contenedor-pasajero-elegido");
-//        pasajeros.html("<div class=\"contenedor_central_titulo_pasajero\">"+
-//                "<div></div><div class=\"dato_pasajero\">Rut</div><div class=\"dato_pasajero\">Nombre</div>"+
-//                "<div class=\"dato_pasajero\">Apellido</div><div class=\"dato_pasajero\">Centro Costo</div>"+
-//                "<div class=\"dir_pasajero\">Dirección</div></div>");
-//        for (var [key, value] of PASAJEROS_ASIGNADOS) {
-//            if(key.toLowerCase().includes($(this).val().toLowerCase()))
-//            {
-//                var array = key.split("_");
-//                pasajeros.append("<div id=\""+array[0]+"\" class=\"fila_contenedor fila_contenedor_pasajero\">"+
-//                "<div class=\"dato_pasajero\">"+array[0]+"</div>"+
-//                "<div class=\"dato_pasajero\">"+array[2]+"</div>"+
-//                "<div class=\"dato_pasajero\">"+array[3]+"</div>"+
-//                "<div class=\"dato_pasajero\">"+array[4]+"</div><div class=\"dir_pasajero\">"+array[5]+"</div><div onclick=\"quitar($('#"+array[0]+"'),'"+array[0]+"','"+array[1]+"','"+array[2]+"','"+array[3]+"','"+array[4]+"','"+array[5]+"')\"><img src=\"img/abajo.svg\" width=\"50\" height=\"15\"></div></div>");
-//            }
-//        }
-//    });
-    
-//    $("#busqueda1").keyup(function(){
-//        var pasajeros = $("#contenedor-pasajero");
-//        pasajeros.html("<div class=\"contenedor_central_titulo_pasajero\">"+
-//                "<div></div><div class=\"dato_pasajero\">Rut</div><div class=\"dato_pasajero\">Nombre</div>"+
-//                "<div class=\"dato_pasajero\">Apellido</div><div class=\"dato_pasajero\">Centro Costo</div>"+
-//                "<div class=\"dir_pasajero\">Dirección</div></div>");
-//        for (var [key, value] of PASAJEROS_NO_ASIGNADOS) {
-//            if(key.toLowerCase().includes($(this).val().toLowerCase()))
-//            {
-//                var array = key.split("_");
-//                pasajeros.append("<div id=\""+array[0]+"\" class=\"fila_contenedor fila_contenedor_pasajero\">"+
-//                "<div class=\"dato_pasajero\">"+array[0]+"</div>"+
-//                "<div class=\"dato_pasajero\">"+array[2]+"</div>"+
-//                "<div class=\"dato_pasajero\">"+array[3]+"</div>"+
-//                "<div class=\"dato_pasajero\">"+array[4]+"</div><div class=\"dir_pasajero\">"+array[5]+"</div><div onclick=\"agregar($('#"+array[0]+"'),'"+array[0]+"','"+array[1]+"','"+array[2]+"','"+array[3]+"','"+array[4]+"','"+array[5]+"')\"><img src=\"img/abajo.svg\" width=\"50\" height=\"15\"></div></div>");
-//            }
-//        }
-//    });
-    
     
 });
 
@@ -89,6 +50,7 @@ function crearServicio()
     var cliente = $("#clientes").val();
     var nombre = $("#nombres").val();
     var celular = $("#celulars").val();
+    var cc = $("#ccs").val();
     var origen = $("#origens").val();
     var destino = $("#destinos").val();
     var fecha = $("#fechas").val();
@@ -110,7 +72,7 @@ function crearServicio()
         return;
     }
     vaciarFormulario();
-    var params = {cliente : cliente, fecha : fecha, hora : hora, observaciones : observaciones, estado : 0, tarifa1 : 0,tarifa2 : 0, tipo : 1};
+    var params = {cliente : cliente, fecha : fecha, hora : hora, observaciones : observaciones, estado : 0, tarifa1 : 0,tarifa2 : 0, tipo : 1, cc: cc};
     var url = urlBase + "/servicio/AddServicio.php";
     var success = function(response)
     {
@@ -360,4 +322,60 @@ function dibujarRuta()
             alertify.error("Ruta no encontrada");
         }
     });
+}
+
+function buscarCentrosCosto(cliente)
+{
+    var params = {cliente : cliente};
+    var url = urlBase + "/cliente/GetCentroCosto.php";
+    var success = function(response)
+    { 
+        for(var i = 0; i < response.length ; i++){
+            var value = response[i].cc_nombre;
+            $("#ccs").append("<option value='"+value+"'>"+value+"</option>");
+        }
+    };
+    postRequest(url,params,success);
+    
+}
+
+function decodePolyline(encoded) {
+    if (!encoded) {
+        return [];
+    }
+    var poly = [];
+    var index = 0, len = encoded.length;
+    var lat = 0, lng = 0;
+
+    while (index < len) {
+        var b, shift = 0, result = 0;
+
+        do {
+            b = encoded.charCodeAt(index++) - 63;
+            result = result | ((b & 0x1f) << shift);
+            shift += 5;
+        } while (b >= 0x20);
+
+        var dlat = (result & 1) !== 0 ? ~(result >> 1) : (result >> 1);
+        lat += dlat;
+
+        shift = 0;
+        result = 0;
+
+        do {
+            b = encoded.charCodeAt(index++) - 63;
+            result = result | ((b & 0x1f) << shift);
+            shift += 5;
+        } while (b >= 0x20);
+
+        var dlng = (result & 1) !== 0 ? ~(result >> 1) : (result >> 1);
+        lng += dlng;
+
+        var p = {
+            lat: lat / 1e5,
+            lng: lng / 1e5
+        };
+        poly.push(p);
+    }
+    return poly;
 }

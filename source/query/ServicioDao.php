@@ -26,11 +26,12 @@ class ServicioDao {
         $agente = $servicio->getAgente();
         $estado = $servicio->getEstado();
         $tipo = $servicio->getTipo();
+        $cc = $servicio->getCC();
         $conn = new Conexion();
         try {
             $query = "INSERT INTO tbl_servicio (servicio_cliente,servicio_ruta,servicio_truta,servicio_fecha,"
-                    . "servicio_hora,servicio_movil,servicio_conductor,servicio_tarifa1,servicio_tarifa2,servicio_observacion,servicio_agente,servicio_estado,servicio_tipo)"
-                    . " VALUES ('$cliente','$ruta','$truta','$fecha','$hora','$movil','$conductor','$tarifa1','$tarifa2','$observaciones',$agente,$estado,$tipo)";
+                    . "servicio_hora,servicio_movil,servicio_conductor,servicio_tarifa1,servicio_tarifa2,servicio_centro_costo,servicio_observacion,servicio_agente,servicio_estado,servicio_tipo)"
+                    . " VALUES ('$cliente','$ruta','$truta','$fecha','$hora','$movil','$conductor','$tarifa1','$tarifa2','$cc','$observaciones',$agente,$estado,$tipo)";
             $conn->conectar();
             if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
@@ -217,11 +218,11 @@ class ServicioDao {
             }
             if($desde != '' && $hasta == '')
             {
-                $buscaFecha = "AND servicio_fecha > '".$desde." ".$hdesde."' ";
+                $buscaFecha = "AND servicio_fecha >= '".$desde." ".$hdesde."' ";
             }
             if($hasta != '' && $desde == '')
             {
-                $buscaFecha = "AND servicio_fecha < '".$hasta." ".$hhasta."' ";
+                $buscaFecha = "AND servicio_fecha <= '".$hasta." ".$hhasta."' ";
             }
             if($desde != '' && $hasta != '')
             {

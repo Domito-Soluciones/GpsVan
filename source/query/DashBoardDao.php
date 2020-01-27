@@ -56,7 +56,7 @@ class DashBoardDao {
         $anio = $date['year'];
         $fecha = $anio."-".$mes."-".$dia;
         try {
-            $query = "SELECT COUNT(*) AS servicio_cantidad,servicio_estado FROM tbl_servicio WHERE DATE_FORMAT(servicio_fecha, '%Y-%m-%d') = '$fecha' AND servicio_cliente = '$cliente' GROUP BY servicio_estado";
+            $query = "SELECT COUNT(*) AS servicio_cantidad,servicio_estado FROM tbl_servicio WHERE DATE_FORMAT(servicio_fecha, '%Y-%m-%d') >= '$fecha' AND servicio_cliente = '$cliente' GROUP BY servicio_estado LIMIT 8";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {

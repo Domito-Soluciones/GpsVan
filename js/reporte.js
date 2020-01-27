@@ -9,6 +9,7 @@ var HASTA;
 var HHASTA;
 var PAGINA = 'REPORTES';
 $(document).ready(function(){
+    window.onbeforeunload = ()=>{};
     PAGINA_ANTERIOR = PAGINA;
     iniciarFecha([$("#desde"),$("#hasta")]);
     iniciarHora([$("#hdesde"),$("#hhasta")]);

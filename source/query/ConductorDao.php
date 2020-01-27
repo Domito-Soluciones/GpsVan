@@ -251,9 +251,11 @@ class ConductorDao {
             $result = mysqli_query($conn->conn,$query); 
             $id[0] = 0;
             $id[1] = '';
+            $id[2] = '';
             while($row = mysqli_fetch_array($result)) {
                 $id[0] = $row["conductor_id"];
                 $id[1] = trim($row["conductor_equipo"]);
+                $id[2] = trim($row["conductor_nombre"]." ".$row["conductor_papellido"]);
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

@@ -141,7 +141,11 @@ function decodePolyline(encoded) {
                 {
 //                    enviarCorreoDesasignacion("",id);
                 }
-                cont.append("<div id=\""+id+"\" class=\"pendiente\"><div  onclick=\"abrirServicio('"+id+"','"+cliente+"','"+ruta+"','"+fecha+"','"+hora+"','"+observacion+"')\">"+id+" - "+cliente+"</div><img onclick=\"cancelarServicio("+id+")\" width=\"15\" height=\"15\" src=\"img/cancelar_rojo.svg\"></div>");
+                var src = 'img/conductor.svg';
+                if(tipo === '1'){
+                    src = 'img/empresa.svg';
+                }
+                cont.append("<div id=\""+id+"\" class=\"pendiente\"><div  onclick=\"abrirServicio('"+id+"','"+cliente+"','"+ruta+"','"+fecha+"','"+hora+"','"+observacion+"')\"><img src='"+src+"' class='img-tipo'>"+id+" - "+cliente+"</div><img onclick=\"cancelarServicio("+id+")\" width=\"15\" height=\"15\" src=\"img/cancelar_rojo.svg\"></div>");
             }
             alertify.success("Hay "+response.length+": servicio(s) sin asignar");
         },false);

@@ -18,6 +18,7 @@ var HDESDE;
 var HASTA;
 var HHASTA;
 $(document).ready(function(){
+    window.onbeforeunload = ()=>{};
     if(TIPO_USUARIO !== 'CLIENTE')
     {
         limpiarMapa();
@@ -155,6 +156,7 @@ function abrirBuscador(id)
         $("#titulo_pagina_servicio").text(id);
         if(TIPO_USUARIO === 'CLIENTE')
         {
+            $("#tarifaAux").text("Tarifa");
             cambiarPropiedad($("#p_ruta"),"display","none");
             $("#rutaServicio").prop("readonly",true);
             $("#tipoRutaServicio").prop("disabled",true);

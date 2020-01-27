@@ -11,6 +11,7 @@ var RUT;
 var NOMBRE;
 var PAGINA = "LIQUIDACION";
 $(document).ready(function(){
+    window.onbeforeunload = ()=>{};
     PAGINA_ANTERIOR = PAGINA;
     getMeses();
     getAnio();

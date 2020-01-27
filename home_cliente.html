@@ -7,19 +7,19 @@
         <div class="contenedor-dashboard-cliente">
             <div class="indicador-dashboard">
                 <div class="indicador-titulo">Servicios en Ruta</div>
-                <div class="indicador-valor ruta" id="sRuta">0</div>
+                <div class="indicador-valor ruta" id="sRuta" onclick="cambiarModulo('servicios',{estado:4,})">0</div>
             </div>
             <div class="indicador-dashboard">
                 <div class="indicador-titulo">Servicios por Asignar</div>
-                <div class="indicador-valor asignar" id="sAsignar">0</div>
+                <div class="indicador-valor asignar" id="sAsignar" onclick="cambiarModulo('servicios',{estado:1})">0</div>
             </div>
             <div class="indicador-dashboard">
-                <div class="indicador-titulo">Servicios Solicitados</div>
-                <div class="indicador-valor realizar" id="sRealizar">0</div>
+                <div class="indicador-titulo">Servicios por Realizar</div>
+                <div class="indicador-valor realizar" id="sRealizar" onclick="cambiarModulo('servicios',{estado:3})">0</div>
             </div>
             <div class="indicador-dashboard">
-                <div class="indicador-titulo">Servicios Diarios</div>
-                <div class="indicador-valor finalizado" id="sFinalizado">0</div>
+                <div class="indicador-titulo">Servicios Finalizados</div>
+                <div class="indicador-valor finalizado" id="sFinalizado" onclick="cambiarModulo('servicios',{estado:5})">0</div>
             </div>
             <div class="indicador-dashboard">
                 <div class="indicador-titulo">Servicios por Centro Costo</div>
