@@ -1601,7 +1601,7 @@ select
 .pie-tarifa
 {
     width: 100%;
-    background-color: #ecf0f1;
+    background-color: white;
     height: 50px;
     display: none;
 }
@@ -1690,6 +1690,7 @@ select
     overflow-y: auto;
     overflow-x: hidden;
 }
+
 .lista_busqueda_extendida_tarifa
 {
     height: calc(100% - 62px);
