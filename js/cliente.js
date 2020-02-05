@@ -1,14 +1,19 @@
 /* global urlBase, alertify, obj, google, API_KEY, map, directionsDisplay, markers, geocoder, DIRECCION_EMPRESA, flightPath */
 var CLIENTES;
 var AGREGAR = true;
+var AGREGART = true;
 var PAGINA = 'CLIENTES';
 var ID_CLIENTE;
 var NOMBRE_CLIENTE;
 var TIPO_GRUPO = '3';
 var CENTROS_COSTO = [];
+var TARIFAS = [];
+var TARIFAS_ADD = [];
+var TARIFAS_MOD = [];
 var mapa_oculto = true;
 var clientes_tarifa = [];
 var CAMPOS = ["rut","razon","tipoCliente","direccion","nombreContacto","telefono","mail","mail2"];
+var CAMPOS_TARIFA = ["tipo","horario","descripcion","numero","hora","nombre","valor1","valor2"];
 var input_direccion_cliente;
 $(document).ready(function(){
     cambiarPropiedad($("#titulo_tarifa"),"background-color","white");
@@ -79,6 +84,125 @@ $(document).ready(function(){
                 cambiarPropiedad($("#eliminar"),"visibility","hidden");
             });
             mostrarMapa();
+            
+        $("#agregarT").click(function(){
+            ocultarMapa();
+            $("#lista_busqueda_tarifa_detalle").load("html/datos_tarifa_cliente.html", function( response, status, xhr ) {
+                initPlacesAutoCompleteTarifa(document.getElementById("origen"));
+                initPlacesAutoCompleteTarifa(document.getElementById("destino"));
+                iniciarHora([$("#hora")]);
+                cambiarPropiedad($("#titulo_tarifa"),"background-color","white");
+                cambiarPropiedad($(".contenedor-pre-input"),"height","25px");
+                agregarclase($("#agregarT"),"oculto");
+                quitarclase($("#guardarT"),"oculto");
+                agregarclase($("#eliminarT"),"oculto");
+                $("#clientes").val(NOMBRE_CLIENTE);
+                cambioEjecutado();                
+                cambiarPropiedad($("#titulo_tarifa"),"background-color","white");
+                cambiarPropiedad($(".contenedor-pre-input"),"height","25px");
+                cargarClientes();
+                $("#clientes").on('input',function(){
+                    generarNombre('cliente');
+                });
+                $("#tipo").change(function(){
+                    generarNombre('tipo');
+                    var tipo = $(this).val();
+                    if(tipo === 'RG')
+                    {
+                        $("#destino").val(DIRECCION_EMPRESA);
+                        $("#origen").val("");
+                    }
+                    else if(tipo === 'ZP')
+                    {
+                        $("#origen").val(DIRECCION_EMPRESA);
+                        $("#destino").val("");
+                    }
+                });
+                $("#horario").change(function(){
+                    generarNombre('horario');
+                });
+
+                $("#nombre").blur(function (){
+                    if(validarExistencia('nombre',$(this).val()))
+                    {
+                        alertify.error("El nombre "+$(this).val()+" ya existe");
+                        return;
+                    }
+                });
+                $("#clientes").on('blur',function () {
+                    if($("#clientes").val() === "")
+                    {
+                        //cargarPasajeros();
+                    }
+                    var noExiste = validarInexistencia($("#clientes").val(),clientes);
+                    if(noExiste)
+                    {
+                        alertify.error("Cliente inexistente");
+                        $("#clientes").val("");
+
+                    }
+                });
+
+                $("#buscaOrigen").click(function(){
+                    input_direccion_cliente = $("#origen");
+                    if(mapa_oculto)
+                    {
+                        colocarMarcadorPlacesTarifaCliente();
+                        quitarclase($("#contenedor_mapa2"),"oculto");
+                        mapa_oculto = false;
+                    }
+                    else
+                    {
+                        agregarclase($("#contenedor_mapa2"),"oculto");
+                        mapa_oculto = true;
+                    }
+                });
+                $("#buscaDestino").click(function(){
+                    input_direccion_cliente = $("#destino");
+                    if(mapa_oculto)
+                    {
+                        colocarMarcadorPlacesTarifaCliente();
+                        quitarclase($("#contenedor_mapa2"),"oculto");
+                        mapa_oculto = false;
+                    }
+                    else
+                    {
+                        agregarclase($("#contenedor_mapa2"),"oculto");
+                        mapa_oculto = true;
+                    }
+                });
+                
+                $("#volverT").click(function(){
+                    ocultarMapa();
+                    buscarTarifas(ID_CLIENTE,NOMBRE_CLIENTE);
+                    
+                });
+                mostrarSubMapa();
+            });
+            cambiarPropiedad($("#guardar"),"visibility","visible");
+            cambiarPropiedad($("#cancelar"),"visibility","visible");
+        });
+        $("#guardarT").click(function (){
+            if(AGREGART)
+            {
+                if(AGREGAR){
+                    preAgregarTarifa();
+                }
+                else{
+                    agregarTarifa();
+                }
+            }
+            else
+            {
+                if(AGREGAR){
+                    preModificarTarifa();
+                }
+                else{
+                    modificarTarifa();
+                }
+            }
+        });    
+            
         });
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#elimianr"),"visibility","hidden");
@@ -155,6 +279,9 @@ function agregarCliente()
             buscarCliente();
             CENTROS_COSTO = [];
             $(".contenedor_contrato_movil").html("");
+            agregarTarifaAdd();
+            modificarTarifaAdd();
+            TARIFAS_ADD = [];
         };
         postRequest(url,params,success);
     }
@@ -201,7 +328,10 @@ function modificarCliente()
             cerrarSession(response);
             alertify.success("Cliente Modificado");
             resetFormulario();
+            agregarTarifa();
+            modificarTarifa();
             CENTROS_COSTO = [];
+            TARIFAS_MOD = [];
         };
         postRequest(url,params,success);
     }
@@ -421,7 +551,6 @@ function abrirModificar(id,nombre)
         });
         $("#agregarT").click(function(){
             ocultarMapa();
-            AGREGAR = true;
             $("#lista_busqueda_tarifa_detalle").load("html/datos_tarifa_cliente.html", function( response, status, xhr ) {
                 initPlacesAutoCompleteTarifa(document.getElementById("origen"));
                 initPlacesAutoCompleteTarifa(document.getElementById("destino"));
@@ -441,16 +570,18 @@ function abrirModificar(id,nombre)
                 });
                 $("#tipo").change(function(){
                     generarNombre('tipo');
-                    var tipo = $(this).val();
-                    if(tipo === 'RG')
-                    {
-                        $("#destino").val(DIRECCION_EMPRESA);
-                        $("#origen").val("");
-                    }
-                    else if(tipo === 'ZP')
-                    {
-                        $("#origen").val(DIRECCION_EMPRESA);
-                        $("#destino").val("");
+                    if(typeof DIRECCION_EMPRESA !== 'undefined'){
+                        var tipo = $(this).val();
+                        if(tipo === 'RG')
+                        {
+                            $("#destino").val(DIRECCION_EMPRESA);
+                            $("#origen").val("");
+                        }
+                        else if(tipo === 'ZP')
+                        {
+                            $("#origen").val(DIRECCION_EMPRESA);
+                            $("#destino").val("");
+                        }
                     }
                 });
                 $("#horario").change(function(){
@@ -518,13 +649,23 @@ function abrirModificar(id,nombre)
             cambiarPropiedad($("#cancelar"),"visibility","visible");
         });
         $("#guardarT").click(function (){
-            if(AGREGAR)
+            if(AGREGART)
             {
-                agregarTarifa();
+                if(AGREGAR){
+                    preAgregarTarifa();
+                }
+                else{
+                    agregarTarifa();
+                }
             }
             else
             {
-                modificarTarifa();
+                if(AGREGAR){
+                    preModificarTarifa();
+                }
+                else{
+                    modificarTarifa();
+                }
             }
         });
         $("#volver").click(function(){
@@ -688,6 +829,26 @@ function activarPestania(array)
         else
         {
             marcarCampoOk($("#"+CAMPOS[i]));
+        }
+    }
+    if(general)
+    {
+        cambiarPestaniaGeneral();
+    }
+}
+
+function activarPestaniaTarifa(array)
+{
+    var general = false;
+    for(var i = 0 ; i < CAMPOS_TARIFA.length ; i++)
+    {
+        if(array[i] === '')
+        {
+            marcarCampoError($("#"+CAMPOS_TARIFA[i]));
+        }
+        else
+        {
+            marcarCampoOk($("#"+CAMPOS_TARIFA[i]));
         }
     }
     if(general)
@@ -920,8 +1081,70 @@ function preEliminarCliente(id)
     
     /* TARIFAS*/
     
-    function agregarTarifa()
+function agregarTarifaAdd()
 {
+    for(var i = 0; i < TARIFAS_ADD.length ; i++){
+        var obj = TARIFAS_ADD[i];
+        var cliente = obj.tarifa_cliente;
+        var tipo = obj.tarifa_tipo;
+        var horario = obj.tarifa_horario;
+        var hora = obj.tarifa_hora;
+        var numero = obj.tarifa_numero;
+        var descripcion = obj.tarifa_descripcion;
+        var nombre = obj.tarifa_nombre;
+        var origen = obj.tarifa_origen;
+        var destino = obj.tarifa_destino;
+        var valor1 = obj.tarifa_valor1;
+        var valor2 = obj.tarifa_valor2;
+        var params = {cliente : cliente, tipo : tipo,horario : horario, numero : numero, hora : hora,descripcion: descripcion,nombre : nombre, origen : origen,
+                destino : destino, valor1 : valor1, valor2 : valor2};
+        var url = urlBase + "/tarifa/AddTarifa.php";
+        var success = function(response)
+        {
+            cerrarSession(response);
+            alertify.success("Tarifa Agregada");
+        };
+        postRequest(url,params,success);
+    }
+    TARIFAS_ADD = [];
+}
+
+function modificarTarifaAdd()
+{
+    for(var i = 0 ; i < TARIFAS_MOD.length ; i++){
+        AGREGART = false;
+        var id = TARIFAS_MOD[i].tarifa_id;
+        var cliente = TARIFAS_MOD[i].tarifa_cliente;
+        var tipo = TARIFAS_MOD[i].tarifa_cliente;
+        var horario = TARIFAS_MOD[i].tarifa_horario;
+        var descripcion = TARIFAS_MOD[i].tarifa_descripcion;
+        var hora = TARIFAS_MOD[i].tarifa_hora;
+        var numero = TARIFAS_MOD[i].tarifa_numero;
+        var nombre = TARIFAS_MOD[i].tarifa_nombre;
+        var origen = TARIFAS_MOD[i].tarifa_origen;
+        var destino = TARIFAS_MOD[i].tarifa_destino;
+        var valor1 = TARIFAS_MOD[i].tarifa_valor1;
+        var valor2 = TARIFAS_MOD[i].tarifa_valor2;
+        var params = {id : id,cliente : cliente, tipo : tipo,horario : horario, numero : numero, hora : hora,descripcion : descripcion,nombre : nombre, origen : origen,
+            destino : destino, valor1 : valor1, valor2 : valor2};
+        var url = urlBase + "/tarifa/ModTarifa.php";
+        var success = function(response)
+        {
+            cerrarSession(response);
+            alertify.success("Tarifa Modificada");
+            resetFormulario();
+            buscarTarifas(ID_CLIENTE,NOMBRE_CLIENTE);
+            cambiarPropiedad($("#pie-aniadir"),"display","block");
+            agregarclase($("#guardarT"),"oculto");
+            agregarclase($("#eliminarT"),"oculto");
+            quitarclase($("#agregarT"),"oculto");
+            TARIFAS_MOD = undefined;
+        };
+        postRequest(url,params,success);
+    }
+}
+
+function agregarTarifa(){
     var cliente = $("#clientes").val();
     var tipo = $("#tipo").val();
     var horario = $("#horario").val();
@@ -936,7 +1159,7 @@ function preEliminarCliente(id)
     var array = [tipo,horario,descripcion,numero,hora,nombre,origen,destino,valor1,valor2];
     if(!validarCamposOr(array))
     {
-        activarPestania(array);
+        activarPestaniaTarifa(array);
         alertify.error("Ingrese todos los campos necesarios");
         return;
     }
@@ -947,10 +1170,10 @@ function preEliminarCliente(id)
         var url = urlBase + "/tarifa/AddTarifa.php";
         var success = function(response)
         {
+            ocultarSubMapa();
             ID_TARIFA = undefined;
             cerrarSession(response);
             alertify.success("Tarifa Agregada");
-            resetFormulario();
             buscarTarifas(ID_CLIENTE,NOMBRE_CLIENTE);
             cambiarPropiedad($("#pie-aniadir"),"display","block");
             quitarclase($("#agregarT"),"oculto");
@@ -978,7 +1201,7 @@ function modificarTarifa()
     var array = [tipo,horario,descripcion,numero, hora,nombre,valor1,valor2];
     if(!validarCamposOr(array))
     {
-        activarPestania(array);
+        activarPestaniaTarifa(array);
         alertify.error("Ingrese todos los campos necesarios");
         return;
     }
@@ -989,9 +1212,9 @@ function modificarTarifa()
         var url = urlBase + "/tarifa/ModTarifa.php";
         var success = function(response)
         {
+            ocultarSubMapa();
             cerrarSession(response);
             alertify.success("Tarifa Modificada");
-            resetFormulario();
             buscarTarifas(ID_CLIENTE,NOMBRE_CLIENTE);
             cambiarPropiedad($("#pie-aniadir"),"display","block");
             agregarclase($("#guardarT"),"oculto");
@@ -1034,6 +1257,16 @@ function buscarClienteTarifa()
                 clientes.append("<div class=\"fila_contenedor\" id=\""+id+"\" onClick=\"cambiarFilaTarifa('"+id+"','"+nombre+"','"+direccion+"')\">"+titulo+"</div>");
             }
         }
+        for(var i = 0; i < TARIFAS_ADD.length ; i++){
+            var obj = TARIFAS_ADD[i];
+            tarifas.append("<div class=\"fila_contenedor fila_contenedor_tarifa_detalle\" id=\"tar_"+i+"\" \">"+
+                    "<div onClick=\"abrirBuscador('tar_"+i+"')\">"+obj.tarifa_descripcion+"</div>"+
+                    "<div onClick=\"abrirBuscador('tar_"+i+"')\">"+obj.tarifa_hora+"</div>"+
+                    "<div onClick=\"abrirBuscador('tar_"+i+"')\">"+obj.tarifa_nombre+"</div>"+
+                    "<div onClick=\"abrirBuscador('tar_"+i+"')\">"+obj.tarifa_cliente+"</div>"+
+                    "<div><img onclick=\"preEliminarTarifaTemporal('tar_"+i+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
+                    "</div>");
+        }
     };
     postRequest(url,params,success);
 }
@@ -1053,17 +1286,12 @@ function buscarTarifas(id,nombre)
     var url = urlBase + "/tarifa/GetTarifas.php";
     var success = function(response)
     {
-        
         cambiarPropiedad($(".pie-tarifa"),"display","block");
         cerrarSession(response);
         var tarifas = $("#lista_busqueda_tarifa_detalle");
         tarifas.html("");
         TARIFAS = response;
         tarifas.append("<div class=\"contenedor_central_titulo_tarifa\"><div>Nombre</div><div>Hora</div><div>Descripción</div><div>Empresa</div><div></div></div>");
-        if(response.length === 0)
-        {
-            tarifas.append("<div class=\"mensaje_bienvenida\">No hay registros que mostrar</div>");
-        }
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].tarifa_id;
@@ -1078,6 +1306,20 @@ function buscarTarifas(id,nombre)
                     "<div onClick=\"abrirBuscador('"+id+"')\">"+empresa+"</div>"+
                     "<div><img onclick=\"preEliminarTarifa('"+descripcion+"','"+nombre+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
                     "</div>");
+        }
+        for(var i = 0; i < TARIFAS_ADD.length ; i++){
+            var obj = TARIFAS_ADD[i];
+            tarifas.append("<div class=\"fila_contenedor fila_contenedor_tarifa_detalle\" id=\"tar_"+i+"\" \">"+
+                    "<div onClick=\"abrirBuscador('tar_"+i+"')\">"+obj.tarifa_descripcion+"</div>"+
+                    "<div onClick=\"abrirBuscador('tar_"+i+"')\">"+obj.tarifa_hora+"</div>"+
+                    "<div onClick=\"abrirBuscador('tar_"+i+"')\">"+obj.tarifa_nombre+"</div>"+
+                    "<div onClick=\"abrirBuscador('tar_"+i+"')\">"+obj.tarifa_cliente+"</div>"+
+                    "<div><img onclick=\"preEliminarTarifaTemporal('tar_"+i+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
+                    "</div>");
+        }
+        if(response.length === 0 && TARIFAS_ADD.length === 0)
+        {
+            tarifas.append("<div class=\"mensaje_bienvenida\">No hay registros que mostrar</div>");
         }
     };
     postRequest(url,params,success);
@@ -1173,7 +1415,7 @@ function validarTipoDatoTarifa()
 }
 function abrirBuscador(id)
 {
-    AGREGAR = false;
+    AGREGART = false;
     ID_TARIFA = id;
     cambiarPropiedad($("#pie-aniadir"),"display","none");
     agregarclase($("#agregarT"),"oculto");
@@ -1192,6 +1434,13 @@ function abrirBuscador(id)
             if(TARIFAS[i].tarifa_id === id)
             {
                 tarifa = TARIFAS[i];
+            }
+        }
+        if(typeof tarifa === 'undefined'){
+            for(var i = 0 ; i < TARIFAS_ADD.length; i++)
+            {
+                var aux = id.split("_")[1];
+                tarifa = TARIFAS_ADD[aux];
             }
         }
         $("#tipo").change(function(){
@@ -1292,7 +1541,6 @@ function preEliminarTarifa(nombre,descripcion)
                     quitarclase($("#agregarT"),"oculto");
                     alertify.success("Tarifa eliminada");
                     cerrarSession(response);
-                    resetBotones();
                     buscarTarifas(ID_CLIENTE,NOMBRE_CLIENTE);
                     cambiarFilaTarifa(ID_CLIENTE,NOMBRE_CLIENTE);
                 };
@@ -1321,4 +1569,78 @@ function initPlacesAutoCompleteTarifa(input) {
             colocarMarcadorPlaces();
         }
     });
+}
+
+function preAgregarTarifa(){
+    var cliente = $("#clientes").val();
+    if(cliente === ''){
+        alertify.error("Debe ingresar razon social de cliente");
+        return;
+    }
+    var tipo = $("#tipo").val();
+    var horario = $("#horario").val();
+    var hora = $("#hora").val();
+    var numero = $("#numero").val();
+    var descripcion = $("#descripcion").val();
+    var nombre = $("#nombre").val();
+    var origen = $("#origen").val();
+    var destino = $("#destino").val();
+    var valor1 = $("#valor1").val().split('.').join('');
+    var valor2 = $("#valor2").val().split('.').join('');
+    var array = [tipo,horario,descripcion,numero, hora,nombre,valor1,valor2];
+    if(!validarCamposOr(array))
+    {
+        activarPestaniaTarifa(array);
+        alertify.error("Ingrese todos los campos necesarios");
+        return;
+    }
+    if(validarTipoDatoTarifa())
+    {
+        var obj = {tarifa_descripcion:descripcion,tarifa_numero:numero,tarifa_hora:hora,
+                   tarifa_nombre:nombre,tarifa_origen:origen,tarifa_destino:destino,
+                   tarifa_valor1:valor1,tarifa_valor2:valor2,tarifa_cliente:cliente,
+                   tarifa_tipo:tipo,tarifa_horario:horario}
+        TARIFAS_ADD.push(obj);
+        console.log(JSON.stringify(TARIFAS_ADD));
+        ocultarMapa();
+        buscarTarifas(ID_CLIENTE,NOMBRE_CLIENTE);
+    }
+}
+
+function preEliminarTarifaTemporal(index){
+    var tarifas = $("#lista_busqueda_tarifa_detalle");
+    tarifas.remove($("#tar_"+index));
+    TARIFAS_ADD.splice(i,1);
+}
+
+function preModificarTarifa(){
+    var id = ID_TARIFA;
+    var cliente = $("#clientes").val();
+    var tipo = $("#tipo").val();
+    var horario = $("#horario").val();
+    var hora = $("#hora").val();
+    var numero = $("#numero").val();
+    var descripcion = $("#descripcion").val();
+    var nombre = $("#nombre").val();
+    var origen = $("#origen").val();
+    var destino = $("#destino").val();
+    var valor1 = $("#valor1").val().split('.').join('');
+    var valor2 = $("#valor2").val().split('.').join('');
+    var array = [tipo,horario,descripcion,numero, hora,nombre,valor1,valor2];
+    if(!validarCamposOr(array))
+    {
+        activarPestaniaTarifa(array);
+        alertify.error("Ingrese todos los campos necesarios");
+        return;
+    }
+    if(validarTipoDatoTarifa())
+    {
+        var obj = {tarifa_id: id,tarifa_descripcion:descripcion,tarifa_numero:numero,tarifa_hora:hora,
+                   tarifa_nombre:nombre,tarifa_origen:origen,tarifa_destino:destino,
+                   tarifa_valor1:valor1,tarifa_valor2:valor2,tarifa_cliente:cliente,
+                   tarifa_tipo:tipo,tarifa_horario:horario}
+        TARIFAS_MOD = obj;
+        ocultarMapa();
+        buscarTarifas(ID_CLIENTE,NOMBRE_CLIENTE);
+    }
 }
