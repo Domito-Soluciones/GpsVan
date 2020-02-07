@@ -1574,7 +1574,7 @@ function initPlacesAutoCompleteTarifa(input) {
 function preAgregarTarifa(){
     var cliente = $("#clientes").val();
     if(cliente === ''){
-        alertify.error("Debe ingresar razon social de cliente");
+        alertify.error("Debe ingresar razón social de cliente");
         return;
     }
     var tipo = $("#tipo").val();
