@@ -36,7 +36,7 @@ if($clienteId > 0)
     $nombres = explode(",", filter_input(INPUT_POST, 'centros'));
     if(count($nombres) > 0)
     {
-        $clienteId = $clienteDao->agregarCentroCosto($nombres,$razon);
+        $clienteId = $clienteDao->agregarCentroCosto($nombres,$clienteId);
     }
 }
 echo "{\"cliente_id\":\"".$clienteId."\"}";
