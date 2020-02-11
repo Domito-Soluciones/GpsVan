@@ -219,5 +219,37 @@ class ClienteDao {
         }
         return $id;
     }
+    
+     public function agregarTarifa($tarifa)
+    {
+        $id = 0;
+        $descripcion = $tarifa->getDescripcion();
+        $numero = $tarifa->getNumero();
+        $hora = $tarifa->getHora();
+        $nombre = $tarifa->getNombre();
+        $origen = $tarifa->getOrigen();
+        $destino = $tarifa->getDestino();
+        $valor1 = $tarifa->getValor1();
+        $valor2 = $tarifa->getValor2();
+        $cliente = $tarifa->getCliente();
+        $tipo = $tarifa->getTipo();
+        $horario = $tarifa->getHorario();
+        $conn = new Conexion();
+        try {
+            $query = "INSERT INTO tbl_tarifa (tarifa_descripcion,tarifa_numero,tarifa_hora,tarifa_nombre,tarifa_origen,"
+                    . "tarifa_destino,tarifa_valor1,tarifa_valor2,tarifa_cliente,tarifa_tipo,tarifa_horario) VALUES "
+                    . "('$descripcion','$numero','$hora','$nombre','$origen','$destino','$valor1','$valor2','$cliente','$tipo','$horario')";
+            $conn->conectar();
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
+                $id = mysqli_insert_id($conn->conn);
+            } else {
+                echo mysqli_error($conn->conn);
+            }           
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
+        }
+        return $id;
+    }
    
 }

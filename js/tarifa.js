@@ -22,7 +22,7 @@ $(document).ready(function(){
             quitarclase($("#guardar"),"oculto");
             cambiarPropiedad($("#agregar"),"visibility","hidden");
             cambiarPropiedad($("#eliminar"),"visibility","hidden");
-            $("#clientes").val(NOMBRE_CLIENTE);
+            $("#clientes").val(ID_CLIENTE);
             cambioEjecutado();
             cargarClientes();
             $("#clientes").on('input',function(){
@@ -301,16 +301,15 @@ function buscarTarifas(id,nombre,direccion)
     ID_CLIENTE = id;
     NOMBRE_CLIENTE = nombre;
     DIRECCION_EMPRESA = direccion;
-    $("#clientes").val(nombre);
+    $("#clientes").val(ID_CLIENTE);
     marcarFilaActiva(id);
     quitarclase($("#agregar"),"oculto");
     $("#lista_busqueda_tarifa_detalle").html("");
-    var busqueda = NOMBRE_CLIENTE;
+    var busqueda = ID_CLIENTE;
     var params = {busqueda : busqueda};
     var url = urlBase + "/tarifa/GetTarifas.php";
     var success = function(response)
     {
-        
         cambiarPropiedad($(".pie-tarifa"),"display","block");
         cambiarPropiedad($("#guardar"),"visibility","hidden");
         cambiarPropiedad($("#eliminar2"),"visibility","hidden");
