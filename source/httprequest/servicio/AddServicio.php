@@ -18,7 +18,6 @@ $observaciones = filter_input(INPUT_POST, 'observaciones');
 $estado = filter_input(INPUT_POST, 'estado'); 
 $tipo = filter_input(INPUT_POST, 'tipo'); 
 $cc = filter_input(INPUT_POST, 'cc'); 
-echo $cc;
 $agente = 0;
 if(filter_input(INPUT_POST, 'app') == '')
 {

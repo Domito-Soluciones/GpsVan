@@ -21,6 +21,7 @@ $(document).ready(function(){
     limpiarMapa();
     buscarCliente(true);
     $("#agregar").click(function(){
+        ID_CLIENTE = undefined;
         NOMBRE_CLIENTE = undefined;
         quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
         cambiarPropiedad($("#agregar"),"visibility","hidden");
@@ -270,8 +271,6 @@ function agregarCliente()
         var success = function(response)
         {
             ocultarMapa();
-            ID_CLIENTE = undefined;
-            NOMBRE_CLIENTE = undefined;
             cerrarSession(response);
             alertify.success("Cliente Agregado");
             vaciarFormulario();
@@ -279,9 +278,11 @@ function agregarCliente()
             buscarCliente();
             CENTROS_COSTO = [];
             $(".contenedor_contrato_movil").html("");
-            agregarTarifaAdd();
+            agregarTarifaAdd(NOMBRE_CLIENTE);
             modificarTarifaAdd();
             TARIFAS_ADD = [];
+            ID_CLIENTE = undefined;
+            NOMBRE_CLIENTE = undefined;
         };
         postRequest(url,params,success);
     }
@@ -323,6 +324,7 @@ function modificarCliente()
         var url = urlBase + "/cliente/ModCliente.php";
         var success = function(response)
         {
+            CENTROS_COSTO = [];
             ocultarMapa();
             buscarCliente();
             cerrarSession(response);
@@ -330,8 +332,8 @@ function modificarCliente()
             resetFormulario();
             agregarTarifa();
             modificarTarifa();
-            CENTROS_COSTO = [];
             TARIFAS_MOD = [];
+            alert(CENTROS_COSTO);
         };
         postRequest(url,params,success);
     }
@@ -864,7 +866,7 @@ function iniciarPestanias()
     });
     $("#p_ccosto").click(function(){
         cambiarPestaniaCC();
-        buscarCentrosCosto(NOMBRE_CLIENTE);
+        buscarCentrosCosto(ID_CLIENTE);
     });
     $("#p_tarifa").click(function(){
         cambiarPestaniaTarifa();
@@ -1081,11 +1083,10 @@ function preEliminarCliente(id)
     
     /* TARIFAS*/
     
-function agregarTarifaAdd()
+function agregarTarifaAdd(cliente)
 {
     for(var i = 0; i < TARIFAS_ADD.length ; i++){
         var obj = TARIFAS_ADD[i];
-        var cliente = obj.tarifa_cliente;
         var tipo = obj.tarifa_tipo;
         var horario = obj.tarifa_horario;
         var hora = obj.tarifa_hora;
@@ -1573,10 +1574,6 @@ function initPlacesAutoCompleteTarifa(input) {
 
 function preAgregarTarifa(){
     var cliente = $("#clientes").val();
-    if(cliente === ''){
-        alertify.error("Debe ingresar razón social de cliente");
-        return;
-    }
     var tipo = $("#tipo").val();
     var horario = $("#horario").val();
     var hora = $("#hora").val();
@@ -1599,7 +1596,7 @@ function preAgregarTarifa(){
         var obj = {tarifa_descripcion:descripcion,tarifa_numero:numero,tarifa_hora:hora,
                    tarifa_nombre:nombre,tarifa_origen:origen,tarifa_destino:destino,
                    tarifa_valor1:valor1,tarifa_valor2:valor2,tarifa_cliente:cliente,
-                   tarifa_tipo:tipo,tarifa_horario:horario}
+                   tarifa_tipo:tipo,tarifa_horario:horario};
         TARIFAS_ADD.push(obj);
         console.log(JSON.stringify(TARIFAS_ADD));
         ocultarMapa();
