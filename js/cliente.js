@@ -17,7 +17,7 @@ var CAMPOS_TARIFA = ["tipo","horario","descripcion","numero","hora","nombre","va
 var input_direccion_cliente;
 $(document).ready(function(){
     cambiarPropiedad($("#titulo_tarifa"),"background-color","white");
-    PAGINA_ANTERIOR = PAGINA;
+    PAGINA_ANTERIOR = PAGINA;  
     limpiarMapa();
     buscarCliente(true);
     $("#agregar").click(function(){
@@ -266,7 +266,7 @@ function agregarCliente()
     if(validarTipoDato())
     {
         var params = { razon : razon, tipo : tipo, rut : rut, direccion : direccion, nombre : nombre,
-                telefono : telefono, mail : mail, mail2 : mail2 , contrato : contrato, grupo : grupo,color:color, centros : CENTROS_COSTO + ""};
+                telefono : telefono, mail : mail, mail2 : mail2 , contrato : contrato, grupo : grupo,color:color, centros : CENTROS_COSTO + "", tarifas : JSON.stringify(TARIFAS_ADD)};
         var url = urlBase+"/cliente/AddCliente.php";
         var success = function(response)
         {
@@ -278,7 +278,6 @@ function agregarCliente()
             buscarCliente();
             CENTROS_COSTO = [];
             $(".contenedor_contrato_movil").html("");
-            agregarTarifaAdd(ID_CLIENTE);
             modificarTarifaAdd();
             TARIFAS_ADD = [];
             ID_CLIENTE = undefined;
@@ -561,7 +560,7 @@ function abrirModificar(id,nombre)
                 agregarclase($("#agregarT"),"oculto");
                 quitarclase($("#guardarT"),"oculto");
                 agregarclase($("#eliminarT"),"oculto");
-                $("#clientes").val(NOMBRE_CLIENTE);
+                $("#clientes").val(ID_CLIENTE);
                 cambioEjecutado();                
                 cambiarPropiedad($("#titulo_tarifa"),"background-color","white");
                 cambiarPropiedad($(".contenedor-pre-input"),"height","25px");
@@ -1081,33 +1080,6 @@ function preEliminarCliente(id)
     }
     
     /* TARIFAS*/
-    
-function agregarTarifaAdd(cliente)
-{
-    for(var i = 0; i < TARIFAS_ADD.length ; i++){
-        var obj = TARIFAS_ADD[i];
-        var tipo = obj.tarifa_tipo;
-        var horario = obj.tarifa_horario;
-        var hora = obj.tarifa_hora;
-        var numero = obj.tarifa_numero;
-        var descripcion = obj.tarifa_descripcion;
-        var nombre = obj.tarifa_nombre;
-        var origen = obj.tarifa_origen;
-        var destino = obj.tarifa_destino;
-        var valor1 = obj.tarifa_valor1;
-        var valor2 = obj.tarifa_valor2;
-        var params = {cliente : cliente, tipo : tipo,horario : horario, numero : numero, hora : hora,descripcion: descripcion,nombre : nombre, origen : origen,
-                destino : destino, valor1 : valor1, valor2 : valor2};
-        var url = urlBase + "/tarifa/AddTarifa.php";
-        var success = function(response)
-        {
-            cerrarSession(response);
-            alertify.success("Tarifa Agregada");
-        };
-        postRequest(url,params,success);
-    }
-    TARIFAS_ADD = [];
-}
 
 function modificarTarifaAdd()
 {

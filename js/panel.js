@@ -33,7 +33,6 @@ $(document).ready(function(){
     };
     if((TIPO_SERVICIO === 1) && ASIGNANDO)
     {
-        alert()
         $("#ruta").html("<option value=\"ESP\">ESP</option>");
         $("#truta").html("<option value=\"XX-ESP\">XX-ESP</option>");
         $("#especial").prop("checked",true);

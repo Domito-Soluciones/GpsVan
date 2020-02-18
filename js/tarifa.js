@@ -302,7 +302,7 @@ function buscarTarifas(id,nombre,direccion)
     ID_CLIENTE = id;
     NOMBRE_CLIENTE = nombre;
     DIRECCION_EMPRESA = direccion;
-    $("#clientes").val(id);
+    $("#clientes").val(ID_CLIENTE);
     marcarFilaActiva(id);
     quitarclase($("#agregar"),"oculto");
     $("#lista_busqueda_tarifa_detalle").html("");
