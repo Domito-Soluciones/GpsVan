@@ -33,6 +33,7 @@ $(document).ready(function(){
     };
     if((TIPO_SERVICIO === 1) && ASIGNANDO)
     {
+        alert()
         $("#ruta").html("<option value=\"ESP\">ESP</option>");
         $("#truta").html("<option value=\"XX-ESP\">XX-ESP</option>");
         $("#especial").prop("checked",true);
@@ -536,7 +537,7 @@ function cargarRutas()
     $("#truta").html("<option value=\"\">Seleccione</option>");
     NOMBRE_CLIENTE = clientes;
     var params = {empresa : clientes};
-    var url = urlBase + "/tarifa/GetTarifasEmpresa.php";
+    var url = urlBase + "/tarifa/GetTarifasEmpresaNombre.php";
     var success = function(response)
     {
         cerrarSession(response);
@@ -672,10 +673,11 @@ function agregarDetalleServicio(idServicio)
     var params = {};
     var destinoFinal = "";
     var pasajeroFinal = "";
-    
-    destinoFinal += origen + "%";
+    var esRecogida = $("#truta").val().indexOf("RG") !== -1;
+    if(esRecogida){
+        destinoFinal += origen + "%";
+    }
     if(TIPO_SERVICIO === 0){
-        var esRecogida = $("#truta").val().indexOf("RG") !== -1;
         if(esRecogida && !EMPRESA_QUITADO)
         {
             EMPRESA_QUITADO = true;

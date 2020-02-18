@@ -195,7 +195,7 @@ class PasajeroDao {
             if($pas != ""){
                 $qryPass = " AND (pasajero_nombre LIKE '%".$pas."%' OR pasajero_papellido LIKE '%".$pas."%' OR pasajero_mapellido LIKE '%".$pas."%')";
             }
-            $query = "SELECT * FROM tbl_cliente LEFT JOIN tbl_pasajero ON cliente_razon_social = pasajero_empresa WHERE cliente_razon_social = '".$cliente."' ".$buscaRuta." ".$qryPass." ORDER BY pasajero_ruta_orden";
+            $query = "SELECT * FROM tbl_cliente LEFT JOIN tbl_pasajero ON cliente_id = pasajero_empresa WHERE cliente_razon_social = '".$cliente."' ".$buscaRuta." ".$qryPass." ORDER BY pasajero_ruta_orden";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {

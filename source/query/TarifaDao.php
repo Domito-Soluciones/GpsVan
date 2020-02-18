@@ -65,6 +65,38 @@ class TarifaDao {
         }
         return $array;
     }
+    
+        public function getTarifasEmpresaNombre($empresa)
+    {
+        $array = array();
+        $conn = new Conexion();
+        try {
+            $query = "SELECT * FROM tbl_tarifa WHERE tarifa_cliente = (SELECT cliente_id FROM tbl_cliente WHERE cliente_razon_social ='".$empresa."')";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
+            while($row = mysqli_fetch_array($result)) {
+                $tarifa = new Tarifa();
+                $tarifa->setId($row["tarifa_id"]);
+                $tarifa->setDescripcion($row["tarifa_descripcion"]);
+                $tarifa->setNumero($row["tarifa_numero"]);
+                $tarifa->setHora($row["tarifa_hora"]);
+                $tarifa->setNombre($row["tarifa_nombre"]);
+                $tarifa->setOrigen($row["tarifa_origen"]);
+                $tarifa->setDestino($row["tarifa_destino"]);
+                $tarifa->setValor1($row["tarifa_valor1"]);
+                $tarifa->setValor2($row["tarifa_valor2"]);
+                $tarifa->setCliente($row["tarifa_cliente"]);
+                $tarifa->setTipo($row["tarifa_tipo"]);
+                $tarifa->setHorario($row["tarifa_horario"]);
+                array_push($array, $tarifa);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
+        }
+        return $array;
+    }
+    
     function eliminarTarifa($nombre)
     {
         $id = 0;

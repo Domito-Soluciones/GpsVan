@@ -689,14 +689,15 @@ function cargarClientes()
         $("#empresa").html("<option value=''>Seleccione</option>");
         for(var i = 0 ; i < response.length ; i++)
         {
+            var id = response[i].cliente_id;
             var nombre = response[i].cliente_razon;
             var sel = "";
-            if(ID_EMPRESA === response[i].cliente_razon)
+            if(ID_EMPRESA === response[i].cliente_id)
             {
                 sel = " selected ";
                 //cargarCentroCosto(ID_EMPRESA,'');
             }
-            $("#empresa").append("<option value=\""+nombre+"\" "+sel+">"+nombre+"</option>");
+            $("#empresa").append("<option value=\""+id+"\" "+sel+">"+nombre+"</option>");
         }
     };
     postRequest(url,params,success);

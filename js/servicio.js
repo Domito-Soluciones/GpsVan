@@ -33,16 +33,7 @@ $(document).ready(function(){
     $("#buscar").click(function(){
         buscarServicio(); 
     });
-    
-    $("#estadoServicio").change(()=>{
-        if(ESTADO_ACTUAL === $(this).val()){
-            ESTADO_CAMBIO = false;
-        }
-        else{
-            ESTADO_ACTUAL = $(this).val();        
-            ESTADO_CAMBIO = true;
-        }
-    });
+
     if(TIPO_USUARIO === 'CLIENTE'){
         cambiarPropiedad($("#cont_empresa"),"display","none");
     }
@@ -154,6 +145,15 @@ function abrirBuscador(id)
     agregarclase($("#"+id),"fila_contenedor_activa");
     $("#contenedor_central").load("html/datos_servicio.html", function( response, status, xhr ) {
         $("#titulo_pagina_servicio").text(id);
+            $("#estadoServicio").change(()=>{
+            if(ESTADO_ACTUAL === $(this).val()){
+                ESTADO_CAMBIO = false;
+            }
+            else{
+                ESTADO_ACTUAL = $(this).val();        
+                ESTADO_CAMBIO = true;
+            }
+        });
         if(TIPO_USUARIO === 'CLIENTE')
         {
             $("#tarifaAux").text("Tarifa");

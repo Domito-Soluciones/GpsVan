@@ -97,7 +97,7 @@ $(document).ready(function(){
                 agregarclase($("#agregarT"),"oculto");
                 quitarclase($("#guardarT"),"oculto");
                 agregarclase($("#eliminarT"),"oculto");
-                $("#clientes").val(NOMBRE_CLIENTE);
+                $("#clientes").val(ID_CLIENTE);
                 cambioEjecutado();                
                 cambiarPropiedad($("#titulo_tarifa"),"background-color","white");
                 cambiarPropiedad($(".contenedor-pre-input"),"height","25px");
@@ -278,7 +278,7 @@ function agregarCliente()
             buscarCliente();
             CENTROS_COSTO = [];
             $(".contenedor_contrato_movil").html("");
-            agregarTarifaAdd(NOMBRE_CLIENTE);
+            agregarTarifaAdd(ID_CLIENTE);
             modificarTarifaAdd();
             TARIFAS_ADD = [];
             ID_CLIENTE = undefined;
@@ -333,7 +333,6 @@ function modificarCliente()
             agregarTarifa();
             modificarTarifa();
             TARIFAS_MOD = [];
-            alert(CENTROS_COSTO);
         };
         postRequest(url,params,success);
     }
@@ -1146,7 +1145,7 @@ function modificarTarifaAdd()
 }
 
 function agregarTarifa(){
-    var cliente = $("#clientes").val();
+    var cliente = ID_CLIENTE;
     var tipo = $("#tipo").val();
     var horario = $("#horario").val();
     var hora = $("#hora").val();
@@ -1276,13 +1275,13 @@ function buscarTarifas(id,nombre)
 {
     ID_CLIENTE = id;
     NOMBRE_CLIENTE = nombre;
-    $("#clientes").val(nombre);
+    $("#clientes").val(id);
     marcarFilaActiva(id);
     quitarclase($("#agregarT"),"oculto");
     agregarclase($("#guardarT"),"oculto");
     agregarclase($("#eliminarT"),"oculto");
     $("#lista_busqueda_tarifa_detalle").html("");
-    var busqueda = NOMBRE_CLIENTE;
+    var busqueda = ID_CLIENTE;
     var params = {busqueda : busqueda};
     var url = urlBase + "/tarifa/GetTarifas.php";
     var success = function(response)
