@@ -31,7 +31,7 @@ $(document).ready(function(){
     window.onbeforeunload = function() {
         return "¿Desea recargar la página web?";
     };
-    if((TIPO_SERVICIO === 1) && ASIGNANDO)
+    if((TIPO_SERVICIO === '1') && ASIGNANDO)
     {
         $("#ruta").html("<option value=\"ESP\">ESP</option>");
         $("#truta").html("<option value=\"XX-ESP\">XX-ESP</option>");
@@ -50,10 +50,14 @@ $(document).ready(function(){
         cargarPasajerosEspecial();
         ASIGNANDO = false;
     }
+    else if((TIPO_SERVICIO === '0') && ASIGNANDO){
+        cargarRutas();
+    }
     else
     {
         TIPO_SERVICIO = 0;
     }
+    ASIGNANDO = false;
     PAGINA_ANTERIOR = PAGINA;
     map.setZoom(15);
     var center = new google.maps.LatLng(POSITION[0], POSITION[1]);

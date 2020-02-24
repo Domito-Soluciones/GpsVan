@@ -111,8 +111,8 @@ function generarGraficoBarra(canvas,data,options)
 
 
     
-function abrirServicio(ids,clientes,ruta,fechas,hora,observacion)
+function abrirServicio(ids,clientes,ruta,fechas,hora,observacion,tipo)
 {
     ASIGNANDO = true;
-    cambiarModulo('panel',{ids:ids,clientes:clientes,ruta:ruta,fechas:fechas,hora:hora,observacion:observacion});
+    cambiarModulo('panel',{ids:ids,clientes:clientes,ruta:ruta,fechas:fechas,hora:hora,observacion:observacion,tipo:tipo});
 }

@@ -185,7 +185,6 @@ function cambiarModulo(pagina,params = null){
                 $("#contenido-central").load(pagina+".html",function( response, status, xhr ) {
                     variable = undefined;
                     if(pagina === 'servicios' && params !== null){
-                        alert(params.cliente);
                         $("#estadoServicioBusca").val(params.estado);
                         var d = new Date();
                         var date = d. getDate();
@@ -248,7 +247,7 @@ function cambiarModulo(pagina,params = null){
                     $("#fechaDesde").val(params.fechas);
                     $("#hora").val(params.hora);
                     $("#observacion").val(params.observacion);
-                    TIPO_SERVICIO = 1;
+                    TIPO_SERVICIO = params.tipo;
                 }
                 mostrarMapa();
             }
