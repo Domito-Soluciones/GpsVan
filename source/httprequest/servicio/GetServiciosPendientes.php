@@ -14,6 +14,7 @@ for ($i = 0 ; $i < count($servicios); $i++)
     $servicioId = $servicio->getId();
     $servicioCliente = $servicio->getCliente();
     $servicioRuta = $servicio->getRuta();
+    $servicioTRuta = $servicio->getTruta();
     $servicioFecha = $servicio->getFecha();
     $servicioHora = $servicio->getHora();
     $servicioTipo = $servicio->getTipo();
@@ -21,6 +22,7 @@ for ($i = 0 ; $i < count($servicios); $i++)
     echo "{\"servicio_id\":\"".$servicioId."\","
         . "\"servicio_cliente\":\"".$servicioCliente."\","
         . "\"servicio_ruta\":\"".$servicioRuta."\","
+        . "\"servicio_truta\":\"".$servicioTRuta."\","
         . "\"servicio_fecha\":\"".$servicioFecha."\","
         . "\"servicio_hora\":\"".$servicioHora."\","
         . "\"servicio_tipo\":\"".$servicioTipo."\","

@@ -23,7 +23,8 @@ class Servicio {
     private $destino;
     private $tipo;
     private $cc;
-    
+    private $anterior;
+
     function getId() {
         return $this->id;
     }
@@ -192,6 +193,14 @@ class Servicio {
         $this->cc = $cc;
     }
 
+    function getAnterior() {
+        return $this->anterior;
+    }
+
+    function setAnterior($anterior) {
+        $this->anterior = $anterior;
+    }
+    
     function toString() {
         return "Servicio{" . "id=" . $this->id . ", cliente=" . $this->cliente . ", clienteDireccion=" . $this->clienteDireccion .
         ", ruta=" . $this->ruta . ", truta=" . $this->truta . ", fecha=" . $this->fecha . ", hora=" . $this->hora . ", movil=" . $this->movil .

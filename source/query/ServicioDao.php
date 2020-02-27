@@ -27,8 +27,12 @@ class ServicioDao {
         $estado = $servicio->getEstado();
         $tipo = $servicio->getTipo();
         $cc = $servicio->getCC();
+        $anterior = $servicio->getAnterior();
         $conn = new Conexion();
         try {
+            if($anterior == '1'){
+                $estado = '5';
+            }
             $query = "INSERT INTO tbl_servicio (servicio_cliente,servicio_ruta,servicio_truta,servicio_fecha,"
                     . "servicio_hora,servicio_movil,servicio_conductor,servicio_tarifa1,servicio_tarifa2,servicio_centro_costo,servicio_observacion,servicio_agente,servicio_estado,servicio_tipo)"
                     . " VALUES ('$cliente','$ruta','$truta','$fecha','$hora','$movil','$conductor','$tarifa1','$tarifa2','$cc','$observaciones',$agente,$estado,$tipo)";
@@ -160,6 +164,10 @@ class ServicioDao {
         $tarifa2 = $servicio->getTarifa2();
         $observacion = $servicio->getObservaciones();
         $conductor = $servicio->getConductor();
+        $anterior = $servicio->getAnterior();
+        if($anterior == '1'){
+            $estado = '5';
+        }
         $conn = new Conexion();
         try {
             $query = "UPDATE tbl_servicio SET servicio_cliente = '$cliente',servicio_ruta = '$ruta',servicio_truta = '$truta', servicio_fecha = '$fecha',"
@@ -473,7 +481,8 @@ class ServicioDao {
                 $servicio = new Servicio();            
                 $servicio->setId($row["servicio_id"]);
                 $servicio->setCliente($row["servicio_cliente"]);
-                $servicio->setRuta($row["servicio_ruta"]);
+                $servicio->setTruta($row["servicio_ruta"]);
+                $servicio->setRuta($row["servicio_truta"]);
                 $date = new DateTime($row["servicio_fecha"]);
                 $servicio->setFecha(date_format($date, 'd/m/Y'));
                 $servicio->setHora($row["servicio_hora"]);
