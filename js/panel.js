@@ -489,7 +489,7 @@ function cargarPasajerosBusqueda()
     var pasajero = $("#busqueda").val();
     var cliente = $('#clientes').val();
     var ruta = $('#truta').val();
-    var params = {cliente : cliente, pasajero : pasajero, ruta : ruta, pasajeros : pasajeros+""};
+    var params = {cliente : cliente, pasajero : pasajero, ruta : ruta, pasajeros : +""};
     var url = urlBase + "/pasajero/GetPasajerosRuta.php";
     var success = function(response)
     {
@@ -514,7 +514,7 @@ function cargarPasajerosBusqueda()
         }
         
     };
-    postRequest(url,params,success);
+    postRequest(url,params,success,false);
 }
 
 

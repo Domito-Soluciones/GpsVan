@@ -109,14 +109,13 @@ class PasajeroDao {
         $array = array();
         $conn = new Conexion();
         try {
-            $query = "SELECT * FROM tbl_pasajero WHERE "
+            $query = "SELECT * FROM tbl_pasajero JOIN tbl_cliente ON pasajero_empresa = cliente_id WHERE "
                     . "pasajero_rut LIKE '%".$busqueda."%' OR "
                     . "pasajero_nombre LIKE '%".$busqueda."%' OR "
                     . "pasajero_papellido LIKE '%".$busqueda."%' OR "
                     . "pasajero_mapellido LIKE '%".$busqueda."%' OR "
                     . "pasajero_mail LIKE '%".$busqueda."%' OR "
-                    . "pasajero_empresa = (SELECT cliente_id FROM tbl_cliente WHERE cliente_razon_social = '".$busqueda."') "
-                    . " LIMIT 20";
+                    . "pasajero_empresa = (SELECT cliente_id FROM tbl_cliente WHERE cliente_razon_social = '".$busqueda."') ";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
@@ -134,7 +133,7 @@ class PasajeroDao {
                 $pasajero->setMail($row["pasajero_mail"]);
                 $pasajero->setCargo($row["pasajero_cargo"]);
                 $pasajero->setNivel($row["pasajero_nivel"]);
-                $pasajero->setEmpresa($row["pasajero_empresa"]);
+                $pasajero->setEmpresa($row["cliente_razon_social"]);
                 $pasajero->setCentroCosto($row["pasajero_centro_costo"]);
                 $pasajero->setRuta($row["pasajero_ruta"]);
                 array_push($array, $pasajero);
@@ -187,9 +186,13 @@ class PasajeroDao {
         $conn = new Conexion();
         try {
             $buscaRuta = '';
-            if($ruta != '')
-            {
-                $buscaRuta = " AND pasajero_ruta != '$ruta' AND pasajero_id NOT IN (".$pasajeros.") ";
+            if($ruta != ''){
+                if($pasajeros != ''){
+                    $buscaRuta = " AND pasajero_ruta != '$ruta' AND pasajero_id NOT IN (".$pasajeros.") ";   
+                }
+                else{
+                    $buscaRuta = " AND pasajero_ruta != '$ruta'";   
+                }
             }
             $qryPass = "";
             if($pas != ""){
