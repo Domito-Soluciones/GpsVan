@@ -5,7 +5,9 @@ var POLYLINE;
 var POLYLINE_LAT = '';
 var POLYLINE_LNG = '';
 var POSITION = [-33.440616, -70.6514212];
-var TIPO_SERVICIO = 0;
+var TIPO_SERVICIO = '0';
+var NOMBRE_RUTA = '';
+var TIPO_RUTA = '';
 var flightPath;
 var ASIGNANDO = false;
 var menus = new Map();
@@ -133,6 +135,7 @@ function decodePolyline(encoded) {
                 var id = response[i].servicio_id;
                 var cliente = response[i].servicio_cliente;
                 var ruta = response[i].servicio_ruta;
+                var truta = response[i].servicio_truta;
                 var fecha = response[i].servicio_fecha;
                 var hora = response[i].servicio_hora;
                 var observacion = response[i].servicio_observacion;
@@ -145,7 +148,7 @@ function decodePolyline(encoded) {
                 if(tipo === '1'){
                     src = 'img/empresa.svg';
                 }
-                cont.append("<div id=\""+id+"\" class=\"pendiente\"><div  onclick=\"abrirServicio('"+id+"','"+cliente+"','"+ruta+"','"+fecha+"','"+hora+"','"+observacion+"','"+tipo+"')\"><img src='"+src+"' class='img-tipo'>"+id+" - "+cliente+"</div><img onclick=\"cancelarServicio("+id+")\" width=\"15\" height=\"15\" src=\"img/cancelar_rojo.svg\"></div>");
+                cont.append("<div id=\""+id+"\" class=\"pendiente\"><div  onclick=\"abrirServicio('"+id+"','"+cliente+"','"+ruta+"','"+truta+"','"+fecha+"','"+hora+"','"+observacion+"','"+tipo+"')\"><img src='"+src+"' class='img-tipo'>"+id+" - "+cliente+"</div><img onclick=\"cancelarServicio("+id+")\" width=\"15\" height=\"15\" src=\"img/cancelar_rojo.svg\"></div>");
             }
             alertify.success("Hay "+response.length+": servicio(s) sin asignar");
         },false);

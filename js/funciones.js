@@ -199,11 +199,13 @@ function cambiarModulo(pagina,params = null){
                         {
                             $("#ids").val(params.ids);
                             $("#clientes").val(params.clientes);
-                            $("#ruta").val(params.ruta);
+//                            $("#ruta").val(params.ruta);
                             $("#fechaDesde").val(params.fechas);
                             $("#hora").val(params.hora);
                             $("#observacion").val(params.observacion);
-                            TIPO_SERVICIO = 1;
+                            TIPO_SERVICIO = params.tipo;
+                            NOMBRE_RUTA = params.ruta;
+                            TIPO_RUTA = params.truta;
                         }
                         mostrarMapa();
                     }
@@ -243,11 +245,13 @@ function cambiarModulo(pagina,params = null){
                 {
                     $("#ids").val(params.ids);
                     $("#clientes").val(params.clientes);
-                    $("#ruta").val(params.ruta);
+//                    $("#ruta").val(params.ruta);
                     $("#fechaDesde").val(params.fechas);
                     $("#hora").val(params.hora);
                     $("#observacion").val(params.observacion);
                     TIPO_SERVICIO = params.tipo;
+                    NOMBRE_RUTA = params.ruta;
+                    TIPO_RUTA = params.truta;
                 }
                 mostrarMapa();
             }

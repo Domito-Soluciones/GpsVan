@@ -31,8 +31,7 @@ $(document).ready(function(){
     window.onbeforeunload = function() {
         return "¿Desea recargar la página web?";
     };
-    if((TIPO_SERVICIO === '1') && ASIGNANDO)
-    {
+    if((TIPO_SERVICIO === '1') && ASIGNANDO){
         $("#ruta").html("<option value=\"ESP\">ESP</option>");
         $("#truta").html("<option value=\"XX-ESP\">XX-ESP</option>");
         $("#especial").prop("checked",true);
@@ -51,11 +50,17 @@ $(document).ready(function(){
         ASIGNANDO = false;
     }
     else if((TIPO_SERVICIO === '0') && ASIGNANDO){
-        cargarRutas();
+        cambiarPropiedad($(".buscador-pasajero"),"display","initial");
+        agregarclase($("#contenedor_mapa"),"mapa_bajo");
+        agregarclase($("#dato_especial"),"none");
+        $("#ruta").html("<option value='"+TIPO_RUTA+"'>"+TIPO_RUTA+"</option>");
+        $("#ruta").val(TIPO_RUTA);
+        $("#truta").html("<option value='"+NOMBRE_RUTA+"'>"+NOMBRE_RUTA+"</option>");
+        $("#truta").val(NOMBRE_RUTA);
+        cargarPasajeros();
     }
-    else
-    {
-        TIPO_SERVICIO = 0;
+    else{
+        TIPO_SERVICIO = '0';
     }
     ASIGNANDO = false;
     PAGINA_ANTERIOR = PAGINA;
@@ -66,7 +71,7 @@ $(document).ready(function(){
     cambioEjecutado();
     if($("#ids").val() !== "")
     {
-        if(TIPO_SERVICIO !== 1)
+        if(TIPO_SERVICIO === '0' && !ASIGNANDO)
         {
             cargarRutas();
         }
@@ -77,7 +82,7 @@ $(document).ready(function(){
     $("#clientes").on('input',function () {
         if($(this).val() !== '')
         {
-            if(TIPO_SERVICIO !== 1)
+            if(TIPO_SERVICIO !== '1')
             {
                 cargarRutas();
             }
@@ -100,12 +105,17 @@ $(document).ready(function(){
     
     $("#ruta").change(function(){
         $("#truta").html("<option val=\"\">Seleccione</option>");
+        var aux = '';
         for(var i = 0; i < TARIFAS.length; i++)
         {
-            $("#truta").append("<option val=\""+TARIFAS[i].tarifa_nombre+"\">"+TARIFAS[i].tarifa_nombre+"</option>");   
+            if(aux !== TARIFAS[i].tarifa_nombre){
+                $("#truta").append("<option val=\""+TARIFAS[i].tarifa_nombre+"\">"+TARIFAS[i].tarifa_nombre+"</option>");   
+                aux = TARIFAS[i].tarifa_nombre;
+            }
         }
         borrarServicio();
     });
+    
     $("#truta").change(function () {
         origen = undefined;
         destinos = [];
@@ -117,7 +127,7 @@ $(document).ready(function(){
             {
                 $("#hora").val(TARIFAS[i].tarifa_hora);
                 $("#tarifa1").val(TARIFAS[i].tarifa_valor1);
-                if(TIPO_SERVICIO === 1 || TIPO_SERVICIO === 2)
+                if(TIPO_SERVICIO === '1' || TIPO_SERVICIO === '2')
                 {
                     $("#tarifa2").val(TARIFAS[i].tarifa_valor2);
                 }
@@ -129,7 +139,7 @@ $(document).ready(function(){
         }
         cargarPasajeros();
         borrarServicio();
-        if(TIPO_SERVICIO === 0){
+        if(TIPO_SERVICIO === '0'){
             agregarclase($("#dato_especial"),"none");
         }
     });
@@ -144,7 +154,7 @@ $(document).ready(function(){
     });
     
     $("#clientes").on('blur',function () {
-        if(TIPO_SERVICIO === 0)
+        if(TIPO_SERVICIO === '0')
         {
             var noExiste = validarInexistencia($("#clientes").val(),clientesArray);
             if(noExiste)
@@ -184,14 +194,14 @@ $(document).ready(function(){
         cantidadServicios = dias;
         for(var i = 0 ; i < dias; i++)
         {
-            var fechaFormat = fecha.split('/');
-            var date = new Date(fechaFormat[2]+"-"+fechaFormat[1]+"-"+fechaFormat[0]+" "+hora.replace(/-/g, "/"));
-            var now = new Date();
-            if(date < now)
-            {
-                alertify.error("Debe seleccionar una fecha válida");
-                return;
-            }
+//            var fechaFormat = fecha.split('/');
+//            var date = new Date(fechaFormat[2]+"-"+fechaFormat[1]+"-"+fechaFormat[0]+" "+hora.replace(/-/g, "/"));
+//            var now = new Date();
+//            if(date < now)
+//            {
+//                alertify.error("Debe seleccionar una fecha válida");
+//                return;
+//            }
             agregarServicio(fecha);
             fecha = sumarDias(fecha,1);
         }
@@ -221,7 +231,7 @@ $(document).ready(function(){
         var nombre = $("#agregaNombre").val();
         var direccion = $("#agregaDireccion").val();
         var celular = $("#agregaCelular").val();
-        if(TIPO_SERVICIO !== 0)
+        if(TIPO_SERVICIO !== '0')
         {
             if(nombre !== '')
             {
@@ -321,7 +331,7 @@ function cargarPasajeros()
     var ruta = $('#truta').val();
     var params = {cliente : cliente, pasajero : pasajero, ruta : ''};
     var url = urlBase + "/pasajero/GetPasajerosRuta.php";
-    if(TIPO_SERVICIO === 2)
+    if(TIPO_SERVICIO === '2')
     {
         params = {cliente : cliente};
         url =  urlBase + "/pasajero/GetPasajerosCliente.php";
@@ -609,7 +619,7 @@ function agregarServicio(fecha)
 
 function dibujarRuta()
 {
-    console.log(origen+" "+destinos);
+    console.log(origen+" - "+destinos);
     GEOCODING = false;
     if(typeof origen === 'undefined' || destinos.length === 0)
     {
@@ -680,7 +690,7 @@ function agregarDetalleServicio(idServicio)
     if(esRecogida){
         destinoFinal += origen + "%";
     }
-    if(TIPO_SERVICIO === 0){
+    if(TIPO_SERVICIO === '0'){
         if(esRecogida && !EMPRESA_QUITADO)
         {
             EMPRESA_QUITADO = true;
@@ -824,7 +834,7 @@ function drop(ev,obj) {
                 destinos.push($(this).val());
             }
         }
-        else if(TIPO_SERVICIO === 1 || TIPO_SERVICIO === 2){
+        else if(TIPO_SERVICIO === '1' || TIPO_SERVICIO === '2'){
             if(total > 1){
                 if(index === 0){
                     origen = $(this).val();
@@ -971,7 +981,7 @@ function borrarPasajeroEspecial(obj,partida,destino)
 
 function agregarPasajero(obj,nombre,punto,celular)
 {
-    if(TIPO_SERVICIO !== 0){
+    if(TIPO_SERVICIO !== '0'){
         $("#nombre").val(nombre);
         $("#celular").val(celular);
         $("#partida").val(punto);
@@ -983,7 +993,7 @@ function agregarPasajero(obj,nombre,punto,celular)
 
 function cambiarServicioNormal()
 {
-    TIPO_SERVICIO = 0;
+    TIPO_SERVICIO = '0';
     vaciarFormulario();
     habilitarCampo($("#ruta"));
     habilitarCampo($("#truta"));
@@ -1006,7 +1016,7 @@ function cambiarServicioNormal()
 }
 function cambiarServicioEspecial()
 {
-    TIPO_SERVICIO = 2;
+    TIPO_SERVICIO = '2';
     destinos = [];
     pasajeros = [];
     origen = undefined;
@@ -1073,11 +1083,11 @@ function validarTipoDato()
 function obtenerExcepciones()
 {
     var exp = "";
-    if(TIPO_SERVICIO === 1)
+    if(TIPO_SERVICIO === '1')
     {
         exp += '||1||';
     }
-    else if(TIPO_SERVICIO === 0)
+    else if(TIPO_SERVICIO === '0')
     {
         exp += '||7||';
     }
@@ -1532,18 +1542,27 @@ function initAgregarPasajero(obj,nombre,punto,celular){
 
 function initAddServicio(params,id,conductor,fecha,hora){
     $("#conductores").html("Conductor: ");
+    var anterior = false;
+    var fechaFormat = fecha.split('/');
+    var date = new Date(fechaFormat[2]+"-"+fechaFormat[1]+"-"+fechaFormat[0]+" "+hora.replace(/-/g, "/"));
+    var now = new Date();
+    if(date < now)
+    {
+        anterior = true;
+    }
     var url = urlBase + "/servicio/AddServicio.php";
-    if(TIPO_SERVICIO === 1)
+    if(TIPO_SERVICIO === '1')
     {
         params.id = id;
         params.tipo = 1;
         url = urlBase + "/servicio/ModServicio.php";
     }
+    params.anterior = anterior ? "1" : "0";
     var success = function(response)
     {
         MODIFICADO = false;
         cerrarSession(response);
-        if(TIPO_SERVICIO === 1)
+        if(TIPO_SERVICIO === '1')
         {
             eliminarDetalleServicio(response.servicio_id);
         }
