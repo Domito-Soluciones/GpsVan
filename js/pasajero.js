@@ -8,6 +8,7 @@ var PASAJEROS;
 var AGREGAR = true;
 var PAGINA = 'PASAJEROS';
 var CC;
+var RUTA;
 var mapa_oculto = true;
 var input_places;
 //var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","punto","empresa","centro","nick"];
@@ -250,7 +251,17 @@ function modificarPasajero()
             ocultarMapa();
             cerrarSession(response);
             cambiarPestaniaGeneral();
-            buscarPasajero();
+            if(typeof ID_CLIENTE === 'undefined')
+            {
+                buscarPasajero();
+            }
+            else if(ID_CLIENTE === 'todo')
+            {
+                buscarPasajeroTodo();
+            }
+            else{
+                buscarPasajeroCliente(ID_CLIENTE,NOMBRE_CLIENTE);
+            }
             alertify.success("Pasajero Modificado");
             resetFormulario();
         };
@@ -281,7 +292,7 @@ function buscarPasajero(cargar = false)
             var rut = response[i].pasajero_rut;
             var nombre = response[i].pasajero_nombre;
             var papellido = response[i].pasajero_papellido;
-            var empresa = response[i].pasajero_empresa;
+            var empresa = response[i].pasajero_empresa_nombre;
             pasajeros.append("<div class=\"fila_contenedor fila_contenedor_pasajero\" id=\""+id+"\">"+
                     "<div class=\"col_empresa_pasajero\" onClick=\"cambiarFila('"+id+"','"+rut+"','"+nombre+"','"+papellido+"')\">"+(i+1)+"</div>"+
                     "<div onClick=\"cambiarFila('"+id+"','"+rut+"','"+nombre+"','"+papellido+"')\">"+rut+"</div>"+
@@ -306,14 +317,14 @@ function buscarPasajeroCliente(cliente,nombreCliente)
     var j = 1;
     for(var i = 0 ; i < PASAJEROS.length; i++)
     {
-        if(PASAJEROS[i].pasajero_empresa === nombreCliente)
+        if(PASAJEROS[i].pasajero_empresa === cliente)
         {
             noHayRegistros = false;
             var id = PASAJEROS[i].pasajero_id;
             var rut = PASAJEROS[i].pasajero_rut;
             var nombre = PASAJEROS[i].pasajero_nombre;
             var papellido = PASAJEROS[i].pasajero_papellido;
-            var empresa = PASAJEROS[i].pasajero_empresa;
+            var empresa = PASAJEROS[i].pasajero_empresa_nombre;
             pasajeros.append("<div class=\"fila_contenedor fila_contenedor_pasajero\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"','"+rut+"','"+nombre+"','"+papellido+"')\">"+
                     "<div class=\"col_empresa_pasajero\">"+j+"</div>"+
                     "<div>"+rut+"</div>"+
@@ -347,7 +358,7 @@ function buscarPasajeroTodo()
         var rut = PASAJEROS[i].pasajero_rut;
         var nombre = PASAJEROS[i].pasajero_nombre;
         var papellido = PASAJEROS[i].pasajero_papellido;
-        var empresa = PASAJEROS[i].pasajero_empresa;
+        var empresa = PASAJEROS[i].pasajero_empresa_nombre;
         pasajeros.append("<div class=\"fila_contenedor fila_contenedor_pasajero\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"','"+rut+"','"+nombre+"','"+papellido+"')\">"+
                 "<div class=\"col_empresa_pasajero\">"+(i+1)+"</div>"+
                 "<div>"+rut+"</div>"+
@@ -369,7 +380,7 @@ function cambiarFila(id,rut,nombre,papellido)
     if(MODIFICADO)
     {
         confirmar("Cambio de pasajero",
-        "?Desea cambiar de pasajero sin guardar los cambios?",
+        "¿Desea cambiar de pasajero sin guardar los cambios?",
         function()
         {
             MODIFICADO = false;
@@ -446,6 +457,8 @@ function abrirModificar(id,rut,nombre,apellido)
         $("#empresa").val(pasajero.pasajero_empresa);
         $("#ruta").val(pasajero.pasajero_ruta);
         ID_EMPRESA = pasajero.pasajero_empresa;
+        CC = pasajero.pasajero_centro_costo;
+        RUTA = pasajero.pasajero_ruta;
         cargarCentroCosto(ID_EMPRESA,pasajero.pasajero_centro_costo);
         cargarRutas(ID_EMPRESA,pasajero.pasajero_ruta);
         cambiarPropiedad($("#agregar"),"visibility","visible");
@@ -670,6 +683,9 @@ function cambiarPestaniaEmpresa()
 //    cambiarPropiedad($("#cont_app"),"display","none");
     quitarclase($("#p_empresa"),"dispose");
     agregarclase($("#p_general"), "dispose");
+    $("#empresa").val(ID_EMPRESA);
+    cargarCentroCosto(ID_EMPRESA,CC);
+    cargarRutas(ID_EMPRESA,RUTA);
 //    agregarclase($("#p_app"), "dispose");
 }
 
@@ -718,13 +734,13 @@ function cargarRutas(empresa,ruta)
         for(var i = 0 ; i < response.length ; i++)
         {
             var sel = "";
-            if(ruta === response[i].tarifa_nombre)
+            if(ruta === response[i].tarifa_descripcion)
             {
                 sel = " selected ";
             }
             var nombre = response[i].tarifa_descripcion;
             var descripcion = response[i].tarifa_nombre;
-            $("#ruta").append("<option value=\""+descripcion+"\" "+sel+">"+nombre+" / "+descripcion+"</option>");
+            $("#ruta").append("<option value=\""+nombre+"\" "+sel+">"+nombre+" / "+descripcion+"</option>");
         }
     };
     postRequest(url,params,success);
@@ -746,7 +762,7 @@ function buscarClientePasajero()
             alertify.error("No hay registros que mostrar");
             return;
         }
-        clientes.append("<div class=\"fila_contenedor fila_contenedor_activa\" id=\"col_todo\" onClick=\"cambiarFilaPasajero('todo','')\">Todos</div>");
+        clientes.append("<div class=\"fila_contenedor fila_contenedor_activa\" id=\"col_todo\" onClick=\"cambiarFilaPasajero('todo','todo')\">Todos</div>");
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].cliente_id;
@@ -760,7 +776,7 @@ function buscarClientePasajero()
 
 function cambiarFilaPasajero(id,nombre)
 {
-    NOMBRE_CLIENTE = nombre;
+//    NOMBRE_CLIENTE = nombre;
     if(MODIFICADO)
     {
         confirmar("Cambio de tarifa",

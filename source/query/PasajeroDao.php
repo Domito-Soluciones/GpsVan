@@ -133,7 +133,8 @@ class PasajeroDao {
                 $pasajero->setMail($row["pasajero_mail"]);
                 $pasajero->setCargo($row["pasajero_cargo"]);
                 $pasajero->setNivel($row["pasajero_nivel"]);
-                $pasajero->setEmpresa($row["cliente_razon_social"]);
+                $pasajero->setEmpresa($row["pasajero_empresa"]);
+                $pasajero->setEmpresaNombre($row["cliente_razon_social"]);
                 $pasajero->setCentroCosto($row["pasajero_centro_costo"]);
                 $pasajero->setRuta($row["pasajero_ruta"]);
                 array_push($array, $pasajero);

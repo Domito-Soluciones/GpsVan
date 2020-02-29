@@ -23,6 +23,7 @@ class Pasajero {
     private $empresa;
     private $empresaDireccion;
     private $ruta;
+    private $empresaNombre;
     
     function getId() {
         return $this->id;
@@ -190,6 +191,14 @@ class Pasajero {
 
     function setRuta($ruta) {
         $this->ruta = $ruta;
+    }
+    
+    function getEmpresaNombre() {
+        return $this->empresaNombre;
+    }
+
+    function setEmpresaNombre($empresaNombre) {
+        $this->empresaNombre = $empresaNombre;
     }
 
     

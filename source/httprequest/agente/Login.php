@@ -17,8 +17,9 @@ if ($agente->getId() > 0)
     $_SESSION['nick']=$agente->getNick();
     $_SESSION['tipo']=$agente->getPerfil();
     $_SESSION['empresa']=$agente->getEmpresa();
+    $_SESSION['empresa_nombre']=$agente->getEmpresaNombre();
     $respuesta = $_SESSION['agente'];
-    echo "{\"agente_id\":".$respuesta.",\"agente_tipo\":".$agente->getPerfil().",\"agente_empresa\":\"".$agente->getEmpresa()."\"}";
+    echo "{\"agente_id\":".$respuesta.",\"agente_tipo\":".$agente->getPerfil().",\"agente_empresa\":\"".$agente->getEmpresa()."\",\"agente_empresa_nombre\":\"".$agente->getEmpresaNombre()."\"}";
 }
 else
 {

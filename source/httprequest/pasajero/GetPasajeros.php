@@ -26,6 +26,7 @@ for ($i = 0 ; $i < count($pasajeros); $i++)
     $nivel = trim($pasajeros[$i]->getNivel());
     $centroCosto = trim($pasajeros[$i]->getCentroCosto());
     $empresa = trim($pasajeros[$i]->getEmpresa());
+    $empresaNombre = trim($pasajeros[$i]->getEmpresaNombre());
     $ruta = trim($pasajeros[$i]->getRuta());
     echo "{\"pasajero_id\":\"".$cId."\","
         . "\"pasajero_nombre\":\"".$nombre."\","
@@ -42,6 +43,7 @@ for ($i = 0 ; $i < count($pasajeros); $i++)
         . "\"pasajero_nivel\":\"".$nivel."\","
         . "\"pasajero_centro_costo\":\"".$centroCosto."\","
         . "\"pasajero_empresa\":\"".$empresa."\","
+        . "\"pasajero_empresa_nombre\":\"".$empresaNombre."\","
         . "\"pasajero_ruta\":\"".$ruta."\""
         . "}";
     if (($i+1) != count($pasajeros))

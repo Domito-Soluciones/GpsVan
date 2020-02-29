@@ -10,7 +10,7 @@ class AgenteDao {
         $conn = new Conexion();
         try {
             $agente = new Agente();
-            $query = "SELECT * FROM tbl_agente WHERE agente_nick = '$nombre' and agente_clave = '$clave'"; 
+            $query = "SELECT * FROM tbl_agente LEFT JOIN tbl_cliente ON agente_empresa = cliente_id WHERE agente_nick = '$nombre' and agente_clave = '$clave'"; 
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
@@ -27,6 +27,7 @@ class AgenteDao {
                 $agente->setMail($row["agente_mail"]);
                 $agente->setPerfil($row["agente_perfil"]);
                 $agente->setEmpresa($row["agente_empresa"]);
+                $agente->setEmpresaNombre($row["cliente_razon_social"]);
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

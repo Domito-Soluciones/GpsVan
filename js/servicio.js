@@ -71,7 +71,7 @@ function buscarServicio()
     var empresa = $("#empresa").val();
     if(TIPO_USUARIO === 'CLIENTE')
     {
-        empresa = $("#clientes").val();
+        empresa = $("#clientesNombre").val();
     }
     var movil = $("#movil").val();
     var truta = $("#tipoRutaServicioBusca").val();

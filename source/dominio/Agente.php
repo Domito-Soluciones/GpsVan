@@ -15,7 +15,8 @@ class Agente {
     private $mail;
     private $perfil;
     private $empresa;
-
+    private $empresaNombre;
+    
     function getId() {
         return $this->id;
     }
@@ -119,6 +120,15 @@ class Agente {
     function setEmpresa($empresa) {
         $this->empresa = $empresa;
     }
+    
+    function getEmpresaNombre() {
+        return $this->empresaNombre;
+    }
+
+    function setEmpresaNombre($empresaNombre) {
+        $this->empresaNombre = $empresaNombre;
+    }
+
 
     function toString() {
         return "Agente{" . "id=" . $this->id . ", nombre=" . $this->nombre . ", apellidoPat=" . $this->apellidoPat . ", apellidoMat=" .

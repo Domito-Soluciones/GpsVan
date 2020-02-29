@@ -667,7 +667,7 @@ function confirmar(titulo,texto,si,no)
 
 function cambioEjecutado()
 {
-    $("input").change(function()
+    $("input:not(#busqueda)").change(function()
     {
         MODIFICADO = true;
     });

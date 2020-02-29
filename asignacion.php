@@ -53,6 +53,7 @@ else if($_SESSION['tipo'] == '0')
                 
             </div>
             <img src="img/menu.svg" id="menu-telefono" class="menu-telefono">
+            <input type="hidden" id="clientesNombre" value="<?php echo $_SESSION['empresa_nombre']?>">
             <input type="hidden" id="clientes" value="<?php echo $_SESSION['empresa']?>">
         </div>
         <div id="menu" class="menu">

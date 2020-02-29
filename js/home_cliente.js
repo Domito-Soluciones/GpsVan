@@ -16,7 +16,7 @@ $(document).ready(function(){
 
 function getDashBoard(cargar = true)
 {
-    var cliente = $("#clientes").val();
+    var cliente = $("#clientesNombre").val();
     CLIENTE = cliente;
     var url = urlBase + "/estadistica/GetDashBoardCliente.php";
     var params = {cliente: cliente};

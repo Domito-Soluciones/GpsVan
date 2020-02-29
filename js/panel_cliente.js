@@ -39,6 +39,7 @@ $(document).ready(function(){
         agregarclase($(this),"oculto");   
         dibujarRuta();
     });
+    
     buscarCentrosCosto($("#clientes").val());
     initPlacesAutoComplete(document.getElementById("origens"));
     initPlacesAutoComplete(document.getElementById("destinos"));

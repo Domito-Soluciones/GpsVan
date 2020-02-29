@@ -4,6 +4,7 @@ var AGENTES;
 var AGREGAR = true;
 var clientesArray = [];
 var PAGINA = 'AGENTES';
+var CLIENTE = '';
 var CAMPOS = ["rut","nombre","papellido","mapellido","celular","direccion","mail","perfil","clientes","nick","password","password2"];
 $(document).ready(function(){
    PAGINA_ANTERIOR = PAGINA;
@@ -46,15 +47,15 @@ $(document).ready(function(){
                 }
             });
             
-            $("#clientes").on('blur',function () {
-                var noExiste = validarInexistencia($("#clientes").val(),clientesArray);
-                if(noExiste)
-                {
-                    alertify.error("Cliente inexistente");
-                    $("#clientes").val("");
-
-                }
-            });
+//            $("#clientes").on('blur',function () {
+//                var noExiste = validarInexistencia($("#clientes").val(),clientesArray);
+//                if(noExiste)
+//                {
+//                    alertify.error("Cliente inexistente");
+//                    $("#clientes").val("");
+//
+//                }
+//            });
         });
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#elimianr"),"visibility","hidden");
@@ -288,9 +289,11 @@ function abrirModificar(id)
         $("#direccion").val(agente.agente_direccion);
         $("#mail").val(agente.agente_mail);
         $("#perfil").val(agente.agente_perfil);
+        CLIENTE = agente.agente_empresa;
         if(agente.agente_perfil === '1')
         {
             $("#clientes").val("");
+            
             cargarClientes();
             quitarclase($("#empresa"),"oculto");
         }
@@ -324,15 +327,15 @@ function abrirModificar(id)
             }
         });
         
-        $("#clientes").on('blur',function () {
-            var noExiste = validarInexistencia($("#clientes").val(),clientesArray);
-            if(noExiste)
-            {
-                alertify.error("Cliente inexistente");
-                $("#clientes").val("");
-
-            }
-        });
+//        $("#clientes").on('blur',function () {
+//            var noExiste = validarInexistencia($("#clientes").val(),clientesArray);
+//            if(noExiste)
+//            {
+//                alertify.error("Cliente inexistente");
+//                $("#clientes").val("");
+//
+//            }
+//        });
     });
 }
 
@@ -489,11 +492,16 @@ function cargarClientes()
     var url = urlBase + "/cliente/GetClientes.php";
     var success = function(response)
     {
-        $("#lcliente").html("");
+        $("#clientes").html("<option value=''>Seleccione</option>");
         for(var i = 0 ; i < response.length ; i++)
         {
+            var id = response[i].cliente_id;
             var nombre = response[i].cliente_razon;
-            $("#lcliente").append("<option value=\""+nombre+"\">"+nombre+"</option>");
+            var selected = '';
+            if(CLIENTE === id){
+                selected = ' selected';
+            }
+            $("#clientes").append("<option value=\""+id+"\" "+selected+">"+nombre+"</option>");
             CLIENTES = response;
             clientesArray.push(nombre);
         }
