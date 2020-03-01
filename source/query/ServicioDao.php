@@ -865,12 +865,12 @@ class ServicioDao {
         return $id;
     }
     
-    public function cancelarServicio($idServicio)
+    public function eliminarServicio($idServicio)
     {
         $id = 0;
         $conn = new Conexion();
         try {
-            $query = "UPDATE tbl_servicio SET servicio_estado = 6 WHERE servicio_id = '$idServicio'"; 
+            $query = "DELETE FROM tbl_servicio WHERE servicio_id = '$idServicio'"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);

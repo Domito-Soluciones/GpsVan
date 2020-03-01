@@ -100,7 +100,7 @@ function buscarServicio()
             alertify.error("No hay registros que mostrar");
             return;
         }
-        servicios.append("<div class=\"contenedor_central_titulo cont_servicio\"><div></div><div>ID Servicio</div><div>Empresa</div><div class=\"fila_fecha\">Fecha</div><div class=\"fila_oculta\">Estado</div><div class=\"fila_oculta\">Vehículo</div></div>")
+        servicios.append("<div class=\"contenedor_central_titulo cont_servicio\"><div></div><div>ID Servicio</div><div>Empresa</div><div class=\"fila_fecha\">Fecha</div><div class=\"fila_oculta\">Estado</div><div class=\"fila_oculta\">Vehículo</div><div></div></div>")
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].servicio_id;
@@ -108,13 +108,18 @@ function buscarServicio()
             var fecha = response[i].servicio_fecha;
             var hora = response[i].servicio_hora;
             var estado = response[i].servicio_estado;
-            var conductor = response[i].servicio_movil;
-            servicios.append("<div class=\"fila_contenedor fila_contenedor_servicio cont_servicio\" id=\""+id+"\" onClick=\"abrirBuscador('"+id+"')\">"+
-                    "<div>"+id+"</div>"+
-                    "<div class=\"fila_empresa\">"+cliente+"</div>"+
-                    "<div class=\"fila_fecha\">"+fecha+" "+hora+"</div>"+
-                    "<div class=\"fila_oculta\">"+obtenerEstadoServicio(estado)+"</div>"+
-                    "<div class=\"fila_oculta\">"+conductor+"</div></div>");
+            var conductor = response[i].servicio_movil === '' ? '-' : response[i].servicio_movil ;
+            var elim ='';
+            if(TIPO_USUARIO !== 'CLIENTE'){
+                elim = "<img onclick=\"preEliminarServicio('"+id+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\">";
+            }
+            servicios.append("<div class=\"fila_contenedor fila_contenedor_servicio cont_servicio\" id=\""+id+"\">"+
+                    "<div onClick=\"abrirBuscador('"+id+"')\">"+id+"</div>"+
+                    "<div onClick=\"abrirBuscador('"+id+"')\" class=\"fila_empresa\">"+cliente+"</div>"+
+                    "<div onClick=\"abrirBuscador('"+id+"')\" class=\"fila_fecha\">"+fecha+" "+hora+"</div>"+
+                    "<div onClick=\"abrirBuscador('"+id+"')\" class=\"fila_oculta\">"+obtenerEstadoServicio(estado)+"</div>"+
+                    "<div onClick=\"abrirBuscador('"+id+"')\" class=\"fila_oculta\">"+conductor+"</div>"+
+                    "<div class=\"fila_oculta\" style=\"width:2%\">"+elim+"</div></div>");
         }
     };
     postRequest(url,params,success);
@@ -664,4 +669,21 @@ function notificarCambioServicio(idServicio,llave)
     var params = {texto  : texto, tipo : tipo, llave : llave, idServicio : idServicio};        
     var url = urlBase + "/notificacion/AddNotificacion.php";
     postRequest(url,params,null);
+}
+
+function preEliminarServicio(id)
+{
+    confirmar("Eliminar servicio","Esta seguro que desea eliminar el servicio "+id,
+            function(){
+                var params = {id : id};
+                var url = urlBase + "/servicio/DelServicio.php";
+                var success = function(response)
+                {
+                    alertify.success("Servicio eliminado");
+                    cerrarSession(response);
+                    resetBotones();
+                    buscarServicio();
+                };
+                postRequest(url,params,success);
+            });
 }
