@@ -1,5 +1,4 @@
 <?php
-
 $hoy = getdate();
 $dia = $hoy['mday'];
 $mes = $hoy['mon'];

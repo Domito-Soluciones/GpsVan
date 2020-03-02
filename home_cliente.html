@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <script src="js/home_cliente.js" type="text/javascript"></script>
-    </head>
     <body>
         <div class="contenedor-dashboard-cliente">
             <div class="indicador-dashboard">
                 <div class="indicador-titulo">Servicios en Ruta</div>
-                <div class="indicador-valor ruta" id="sRuta" onclick="cambiarModulo('servicios',{estado:4,})">0</div>
+                <div class="indicador-valor ruta" id="sRuta" onclick="cambiarModulo('servicios',{estado:4})">0</div>
             </div>
             <div class="indicador-dashboard">
                 <div class="indicador-titulo">Servicios por Asignar</div>
@@ -23,12 +20,17 @@
             </div>
             <div class="indicador-dashboard">
                 <div class="indicador-titulo">Servicios por Centro Costo</div>
-                <div class="indicador-valor2" id="vCantCC"></div>
+                <div class="indicador-valor2" id="vCantCC">
+                    <canvas id="canvas1"></canvas>
+                </div>
             </div>
             <div class="indicador-dashboard">
                 <div class="indicador-titulo">Gastos por Centro Costo</div>
-                <div class="ndicador-valor2" id="vGanCC"></div>
+                <div class="ndicador-valor2" id="vGanCC">
+                    <canvas id="canvas2"></canvas>
+                </div>
             </div>
         </div>
+        <script src="js/home_cliente.js" type="text/javascript"></script>
     </body>
 </html>

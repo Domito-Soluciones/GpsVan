@@ -92,7 +92,7 @@ class DashBoardDao {
         return $array;
     }
     
-    public function getServiciosCentroCosto()
+    public function getServiciosCentroCosto($cliente)
     {
         $array = array();
         $conn = new Conexion();
@@ -102,7 +102,7 @@ class DashBoardDao {
         $anio = $date['year'];
         $fecha = $anio."-".$mes."-".$dia;
         try {
-            $query = "SELECT count(*) as servicio_cantidad,pasajero_centro_costo FROM tbl_servicio JOIN tbl_servicio_pasajero ON servicio_id = servicio_pasajero_id_servicio JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id JOIN tbl_centro_costo ON pasajero_centro_costo = centro_costo_nombre WHERE DATE_FORMAT(servicio_fecha, '%Y-%m-%d') = '$fecha' AND servicio_estado = 5 GROUP BY servicio_cliente ORDER BY servicio_cantidad DESC";
+            $query = "SELECT count(*) as servicio_cantidad,pasajero_centro_costo FROM tbl_servicio JOIN tbl_servicio_pasajero ON servicio_id = servicio_pasajero_id_servicio JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id JOIN tbl_centro_costo ON pasajero_centro_costo = centro_costo_nombre WHERE DATE_FORMAT(servicio_fecha, '%Y-%m-%d') = '$fecha' AND servicio_estado = 5 AND servicio_cliente = '$cliente' GROUP BY servicio_cliente ORDER BY servicio_cantidad DESC";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
@@ -114,7 +114,7 @@ class DashBoardDao {
         }
         return $array;
     }
-    public function getGastoCentroCosto()
+    public function getGastoCentroCosto($cliente)
     {
         $array = array();
         $conn = new Conexion();
@@ -124,7 +124,8 @@ class DashBoardDao {
         $anio = $date['year'];
         $fecha = $anio."-".$mes."-".$dia;
         try {
-            $query = "SELECT sum(servicio_tarifa2) as servicio_cantidad,pasajero_centro_costo FROM tbl_servicio JOIN tbl_servicio_pasajero ON servicio_id = servicio_pasajero_id_servicio JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id JOIN tbl_centro_costo ON pasajero_centro_costo = centro_costo_nombre WHERE DATE_FORMAT(servicio_fecha, '%Y-%m-%d') = '$fecha' AND servicio_estado = 5 GROUP BY servicio_cliente ORDER BY servicio_cantidad DESC";
+            $query = "SELECT sum(servicio_tarifa2) as servicio_cantidad,pasajero_centro_costo FROM tbl_servicio JOIN tbl_servicio_pasajero ON servicio_id = servicio_pasajero_id_servicio JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id JOIN tbl_centro_costo ON pasajero_centro_costo = centro_costo_nombre WHERE DATE_FORMAT(servicio_fecha, '%Y-%m-%d') = '$fecha' AND servicio_estado = 5 AND servicio_cliente = '$cliente' GROUP BY servicio_cliente ORDER BY servicio_cantidad DESC";
+            echo $query;
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {

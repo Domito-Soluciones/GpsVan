@@ -28,16 +28,6 @@ function getDashBoard(cargar = true)
         $("#sAsignar").html(response.servicio_asignar);
         var cont = $("#vCantCC");
         var cont2 = $("#vGanCC");
-        cont.html("");
-        cont2.html("");
-        if(response.servicio_cc.length === 0)
-        {
-            cont.append("<div class=\"mensaje_bienvenida\" style=\"padding-top: 20%\">No hay datos registrados</div>");
-        }
-        if(response.ganancia_cc.length === 0)
-        {
-            cont2.append("<div class=\"mensaje_bienvenida\" style=\"padding-top: 20%\">No hay datos registrados</div>");
-        }
         if(response.servicio_cc.length === 0)
         {
             cont.html("");
@@ -45,7 +35,7 @@ function getDashBoard(cargar = true)
         }
         else
         {
-            var ctx = document.getElementById("canvasConvenio");
+            var ctx = document.getElementById("canvas1");
             var labelAux = [];
             var dataAux = [];
             for(var i = 0 ; i < response.servicio_cc.length;i++)
@@ -72,12 +62,12 @@ function getDashBoard(cargar = true)
         }
         if(response.ganancia_cc.length === 0)
         {
-            cont.html("");
-            cont.append("<div class=\"mensaje_bienvenida\" style=\"padding-top: 20%\">No hay datos registrados</div>");
+            cont2.html("");
+            cont2.append("<div class=\"mensaje_bienvenida\" style=\"padding-top: 20%\">No hay datos registrados</div>");
         }
         else
         {
-            var ctx = document.getElementById("canvasConvenio");
+            var ctx = document.getElementById("canvas2");
             var labelAux = [];
             var dataAux = [];
             for(var i = 0 ; i < response.ganancia_cc.length;i++)
