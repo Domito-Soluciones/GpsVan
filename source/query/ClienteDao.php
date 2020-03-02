@@ -77,8 +77,11 @@ class ClienteDao {
         $array = array();
         $conn = new Conexion();
         try {
-            $query = "SELECT centro_costo_nombre,centro_costo_nombre FROM tbl_centro_costo WHERE"
-                    . " centro_costo_cliente = '$cliente'";
+            $qryCC = '';
+            if($cliente != ''){
+                $qryCC = " WHERE centro_costo_cliente = '$cliente'";
+            }
+            $query = "SELECT centro_costo_nombre,centro_costo_nombre FROM tbl_centro_costo ".$qryCC;
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {

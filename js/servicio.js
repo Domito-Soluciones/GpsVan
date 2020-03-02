@@ -62,6 +62,12 @@ $(document).ready(function(){
             window.open(urlBase+"/reporte/GetPdfReporteDetalle.php?"+params, '_blank');
         }
     });
+    if(TIPO_USUARIO === 'CLIENTE'){
+        buscarCentrosCosto($("#clientes").val());
+    }
+    else{
+        buscarCentrosCosto();
+    }
 });
 
 function buscarServicio()
@@ -686,4 +692,19 @@ function preEliminarServicio(id)
                 };
                 postRequest(url,params,success);
             });
+}
+
+function buscarCentrosCosto(cliente = '')
+{
+    var params = {cliente : cliente};
+    var url = urlBase + "/cliente/GetCentroCosto.php";
+    var success = function(response)
+    { 
+        for(var i = 0; i < response.length ; i++){
+            var value = response[i].cc_nombre;
+            $("#cc").append("<option value='"+value+"'>"+value+"</option>");
+        }
+    };
+    postRequest(url,params,success);
+    
 }

@@ -24,7 +24,7 @@ var indexDestinos = new Map();
 var destinosVacios = ['',''];
 var index = -1;
 var LETRAS = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
-
+var ultima_letra = 0;
 var cantidadServicios = 0;
 var cantidadServiciosAux = 0;
 
@@ -353,7 +353,7 @@ function cargarPasajeros()
         {
             origen = response[0].pasajero_empresa_direccion;
             contenedorDir.html("<b>Origen:</b> "+origen);
-            contenedor.prepend(/*LETRAS[j]+*/"<div class=\"cont-pasajero-gral\" id=\"origen_empresa\"><div class=\"cont-pasajero\">"+response[0].pasajero_empresa+"</div><div class=\"cont-mini-pasajero\"><div>"+ origen + "</div><div>");
+            contenedor.prepend(LETRAS[j]+"<div class=\"cont-pasajero-gral\" id=\"origen_empresa\"><div class=\"cont-pasajero\">"+response[0].pasajero_empresa+"</div><div class=\"cont-mini-pasajero\"><div>"+ origen + "</div><div>");
             j++;
         }
         pasajeros = [];
@@ -380,7 +380,7 @@ function cargarPasajeros()
                 {
                     destinos.push(punto);
                 }
-                contenedor.append(/*LETRAS[j]+*/" <div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" draggable=\"true\" ondragstart=\"drag(event,$(this))\" ondrop=\"drop(event,$(this))\" ondragover=\"allowDrop(event)\">"
+                contenedor.append(LETRAS[j]+" <div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" draggable=\"true\" ondragstart=\"drag(event,$(this))\" ondrop=\"drop(event,$(this))\" ondragover=\"allowDrop(event)\">"
                                  +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+punto+"\">"
                                  +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'>"
                                  +"<div class=\"boton-chico\" onclick=\"editarPasajero('"+punto+"','punto_"+id+"','hidden_"+id+"')\"><img src=\"img/editar.svg\" width=\"12\" height=\"12\"></div>"
@@ -388,6 +388,7 @@ function cargarPasajeros()
                         "<div class=\"cont-mini-pasajero\"><div id=\"punto_"+id+"\">"+ recortar(punto,30) + "</div><div>" + celular+"</div></div>");
                 pasajeros.push(id);
             j++;
+            ultima_letra = j;
             }
             else if(ruta.indexOf("-ESP") !== -1)
             {
@@ -1503,7 +1504,8 @@ function initAgregarPasajero(obj,nombre,punto,celular){
     }
     var ruta = $('#truta').val();
     var pasajero = $("#"+obj);
-    var texto = "<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" draggable=\"true\" ondragstart=\"drag(event,$(this))\" ondrop=\"drop(event,$(this))\" ondragover=\"allowDrop(event)\">"
+    ultima_letra = ultima_letra + 1;
+    var texto = LETRAS[ultima_letra]+"<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" draggable=\"true\" ondragstart=\"drag(event,$(this))\" ondrop=\"drop(event,$(this))\" ondragover=\"allowDrop(event)\">"
                                  +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+punto+"\">"
                                  +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'>"
                                  +"<div class=\"boton-chico\" onclick=\"editarPasajero('"+punto+"','punto_"+id+"','hidden_"+id+"')\"><img src=\"img/editar.svg\" width=\"12\" height=\"12\"></div>"
