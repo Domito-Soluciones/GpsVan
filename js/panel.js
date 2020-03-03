@@ -329,8 +329,9 @@ function cargarPasajeros()
 {
     var pasajero = $("#busqueda").val();
     var cliente = $('#clientes').val();
-    var ruta = $('#truta').val();
-    var params = {cliente : cliente, pasajero : pasajero, ruta : ''};
+    var truta = $('#truta').val();
+    var ruta = $('#ruta').val();
+    var params = {cliente : cliente, pasajero : pasajero, ruta: ''};
     var url = urlBase + "/pasajero/GetPasajerosRuta.php";
     if(TIPO_SERVICIO === '2')
     {
@@ -349,7 +350,7 @@ function cargarPasajeros()
         if(typeof response[0] !== "undefined"){
             direccion_empresa = response[0].pasajero_empresa_direccion;
         }
-        if(ruta.indexOf("ZP") !== -1)
+        if(truta.indexOf("ZP") !== -1)
         {
             origen = response[0].pasajero_empresa_direccion;
             contenedorDir.html("<b>Origen:</b> "+origen);
@@ -370,7 +371,7 @@ function cargarPasajeros()
             var celular = response[i].pasajero_celular;
             if(ruta === response[i].pasajero_ruta)
             {
-                if(ruta.indexOf("RG") !== -1 && partidaExiste)
+                if(truta.indexOf("RG") !== -1 && partidaExiste)
                 {
                     origen = punto;
                     contenedorDir.html("<b>Origen:</b> "+origen);
@@ -390,18 +391,18 @@ function cargarPasajeros()
             j++;
             ultima_letra = j;
             }
-            else if(ruta.indexOf("-ESP") !== -1)
+            else if(truta.indexOf("-ESP") !== -1)
             {
                 $("#contenedor_punto_encuentro").html("<b>Origen: </b>");
                 $("#contenedor_punto_destino").html("<b>Destino: </b>");
-                if(ruta.indexOf("RG") !== -1 && partidaExiste)
+                if(truta.indexOf("RG") !== -1 && partidaExiste)
                 {
                     origen = punto;
                     contenedorDir.html("<b>Origen:</b> "+origen);
                     partidaExiste = false;
                 }
                 
-                if(ruta.indexOf("ZP") !== -1 && i === response.length-1)
+                if(truta.indexOf("ZP") !== -1 && i === response.length-1)
                 {
                     contenedorDes.html("<b>Destino:</b> "+punto);   
                     contenedor.append("<div class=\"cont-pasajero-gral\"><div class=\"cont-pasajero\">"+response[0].pasajero_empresa+"</div><div class=\"cont-mini-pasajero\"><div>"+ punto + "</div><div>");
@@ -419,13 +420,13 @@ function cargarPasajeros()
                         "<div class=\"cont-mini-pasajero\"><div>"+ recortar(punto,30) + "</div><div>" + celular+"</div></div>");
             }
         }
-        if(ruta.indexOf("RG") !== -1)
+        if(truta.indexOf("RG") !== -1)
         {
             destinos.push(response[0].pasajero_empresa_direccion);
             contenedorDes.html("<b>Destino:</b> "+response[0].pasajero_empresa_direccion);
             contenedor.append("<div class=\"cont-pasajero-gral\" id=\"destino_empresa\"><div class=\"cont-pasajero\">"+response[0].pasajero_empresa+"</div><div class=\"cont-mini-pasajero\"><div>"+ response[0].pasajero_empresa_direccion + "</div><div>");
         }
-        else if(ruta.indexOf("ZP") !== -1)
+        else if(truta.indexOf("ZP") !== -1)
         {
             if(destinos.length > 0){
                 contenedorDes.html("<b>Destino:</b> "+destinos[destinos.length-1]);

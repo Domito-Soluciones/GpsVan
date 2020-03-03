@@ -6,8 +6,9 @@ include '../../log/Log.php';
 
 header('Content-Type: application/json; charset=utf-8');
 $idServicio = filter_input(INPUT_POST, 'id');
+$cc = filter_input(INPUT_POST, 'cc');
 $servicioDao = new ServicioDao();
-$servicios = $servicioDao->getPasajerosServicios($idServicio);
+$servicios = $servicioDao->getPasajerosServicios($idServicio,$cc);
 echo "[";
 for ($i = 0 ; $i < count($servicios); $i++)
 {

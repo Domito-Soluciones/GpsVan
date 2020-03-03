@@ -864,7 +864,9 @@ function iniciarPestanias()
     });
     $("#p_ccosto").click(function(){
         cambiarPestaniaCC();
-        buscarCentrosCosto(ID_CLIENTE);
+        if(!AGREGAR){
+            buscarCentrosCosto(ID_CLIENTE);
+        }
     });
     $("#p_tarifa").click(function(){
         cambiarPestaniaTarifa();
@@ -1118,16 +1120,16 @@ function modificarTarifaAdd()
 
 function agregarTarifa(){
     var cliente = ID_CLIENTE;
-    var tipo = $("#tipo").val();
-    var horario = $("#horario").val();
-    var hora = $("#hora").val();
-    var numero = $("#numero").val();
-    var descripcion = $("#descripcion").val();
-    var nombre = $("#nombre").val();
-    var origen = $("#origen").val();
-    var destino = $("#destino").val();
-    var valor1 = $("#valor1").val().split('.').join('');
-    var valor2 = $("#valor2").val().split('.').join('');
+    var tipo = formatearCadena($("#tipo").val());
+    var horario = formatearCadena($("#horario").val());
+    var hora = formatearCadena($("#hora").val());
+    var numero = formatearCadena($("#numero").val());
+    var descripcion = formatearCadena($("#descripcion").val());
+    var nombre = formatearCadena($("#nombre").val());
+    var origen = formatearCadena($("#origen").val());
+    var destino = formatearCadena($("#destino").val());
+    var valor1 = formatearCadena($("#valor1").val().split('.').join(''));
+    var valor2 = formatearCadena($("#valor2").val().split('.').join(''));
     var array = [tipo,horario,descripcion,numero,hora,nombre,origen,destino,valor1,valor2];
     if(!validarCamposOr(array))
     {

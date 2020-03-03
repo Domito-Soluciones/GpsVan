@@ -13,14 +13,14 @@ var ESTADO_ACTUAL = '';
 var ESTADO_CAMBIO = false;
 var REPORTE;
 var EMPRESA;
+var CC;
 var DESDE;
 var HDESDE;
 var HASTA;
 var HHASTA;
 $(document).ready(function(){
     window.onbeforeunload = ()=>{};
-    if(TIPO_USUARIO !== 'CLIENTE')
-    {
+    if(TIPO_USUARIO !== 'CLIENTE'){
         limpiarMapa();
     }
     PAGINA_ANTERIOR = PAGINA;
@@ -62,10 +62,16 @@ $(document).ready(function(){
             window.open(urlBase+"/reporte/GetPdfReporteDetalle.php?"+params, '_blank');
         }
     });
+    
+    $("#empresa").change(function(){
+        buscarCentrosCosto($(this).val());
+    });
+    
     if(TIPO_USUARIO === 'CLIENTE'){
         buscarCentrosCosto($("#clientes").val());
     }
     else{
+        buscarEmpresas();
         buscarCentrosCosto();
     }
 });
@@ -74,11 +80,15 @@ function buscarServicio()
 {
     REPORTE = '';
     var id = $("#id").val();
-    var empresa = $("#empresa").val();
+    var empresa = '';
+    if($("#empresa").val() !== ''){
+        empresa = $("#empresa option:selected").text();
+    }
     if(TIPO_USUARIO === 'CLIENTE')
     {
         empresa = $("#clientesNombre").val();
     }
+    var cc = $("#cc").val();
     var movil = $("#movil").val();
     var truta = $("#tipoRutaServicioBusca").val();
     var estado = $("#estadoServicioBusca").val();
@@ -87,11 +97,12 @@ function buscarServicio()
     var hasta = $("#hasta").val();
     var hhasta = $("#hhasta").val();
     EMPRESA = empresa;
+    CC = cc;
     DESDE = desde;
     HDESDE = hdesde;
     HASTA = hasta;
     HHASTA = hhasta;
-    var params = {id : id, empresa : empresa, movil : movil, truta : truta, estado: estado,
+    var params = {id : id, empresa : empresa, cc : cc, movil : movil, truta : truta, estado: estado,
         desde : desde, hdesde : hdesde, hasta : hasta, hhasta : hhasta};
     var url = urlBase + "/servicio/GetServicios.php";
     var success = function(response)
@@ -506,7 +517,7 @@ function dibujarRutaReal()
 
 function obtenerPasajeros()
 {
-    var params = {id : ID_SERVICIO};
+    var params = {id : ID_SERVICIO,cc:CC};
     var url = urlBase + "/servicio/GetPasajerosServicio.php";
     var success = function(response)
     {
@@ -549,7 +560,7 @@ function obtenerPasajeros()
 
 function obtenerPasajerosMin()
 {
-    var params = {id : ID_SERVICIO};
+    var params = {id : ID_SERVICIO,cc:CC};
     var url = urlBase + "/servicio/GetPasajerosServicio.php";
     var success = function(response)
     {
@@ -693,13 +704,28 @@ function preEliminarServicio(id)
                 postRequest(url,params,success);
             });
 }
-
+function buscarEmpresas()
+{
+    var params = {busqueda : '',buscaCC : '0'};
+    var url = urlBase + "/cliente/GetClientes.php";
+    var success = function(response)
+    { 
+        for(var i = 0; i < response.length ; i++){
+            var id = response[i].cliente_id;
+            var nombre = response[i].cliente_razon;
+            $("#empresa").append("<option value='"+id+"'>"+nombre+"</option>");
+        }
+    };
+    postRequest(url,params,success);
+    
+}
 function buscarCentrosCosto(cliente = '')
 {
     var params = {cliente : cliente};
     var url = urlBase + "/cliente/GetCentroCosto.php";
     var success = function(response)
     { 
+        $("#cc").html("<option value=\"\">Seleccione</option>");
         for(var i = 0; i < response.length ; i++){
             var value = response[i].cc_nombre;
             $("#cc").append("<option value='"+value+"'>"+value+"</option>");

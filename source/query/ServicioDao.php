@@ -188,13 +188,14 @@ class ServicioDao {
         return $id;
     }
    
-    public function getServicios($id,$empresa,$conductor,$estado,$movil,$truta,$desde,$hdesde,$hasta,$hhasta)
+    public function getServicios($id,$empresa,$cc,$conductor,$estado,$movil,$truta,$desde,$hdesde,$hasta,$hhasta)
     {
         $array = array();
         $conn = new Conexion();
         try {
             $buscaId = '';
             $buscaEmpresa = '';
+            $buscaCC = '';
             $buscaConductor = '';
             $buscaMovil = '';
             $buscaEstado = '';
@@ -207,6 +208,10 @@ class ServicioDao {
             if($empresa != '')
             {
                 $buscaEmpresa = " AND servicio_cliente LIKE '%$empresa%' ";
+            }
+            if($cc != '')
+            {
+                $buscaCC = " AND pasajero_centro_costo = '$cc' ";
             }
             if($conductor != '')
             {
@@ -236,9 +241,9 @@ class ServicioDao {
             {
                 $buscaFecha = "AND servicio_fecha BETWEEN '".$desde." ".$hdesde."' AND '".$hasta." ".$hhasta."'";
             }
-            $query = "SELECT * FROM tbl_servicio WHERE servicio_estado != 0 "
-                    .$buscaFecha." ".$buscaId." ".$buscaEmpresa." ".$buscaConductor." ". $buscaTRuta." ".$buscaMovil." ".$buscaEstado
-                    . " ORDER BY servicio_id DESC LIMIT 500";
+            $query = "SELECT * FROM tbl_servicio LEFT JOIN tbl_servicio_pasajero ON servicio_id = servicio_pasajero_id_servicio LEFT JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id WHERE servicio_estado != 0 "
+                    .$buscaFecha." ".$buscaId." ".$buscaEmpresa." ".$buscaCC." ".$buscaConductor." ". $buscaTRuta." ".$buscaMovil." ".$buscaEstado
+                    . " GROUP BY servicio_id ORDER BY servicio_id DESC LIMIT 500";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
@@ -344,13 +349,17 @@ class ServicioDao {
         return $servicio;
     }
     
-    public function getPasajerosServicios($id)
+    public function getPasajerosServicios($id,$cc)
     {
         $array = array();
         $conn = new Conexion();
         try {
+            $qryCC = '';
+            if($cc != ''){
+                $qryCC = " AND pasajero_centro_costo = '$cc' ";
+            }
             $query = "SELECT * FROM tbl_servicio_pasajero LEFT JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id WHERE "
-                    . "servicio_pasajero_id_servicio = '$id' ORDER BY servicio_pasajero_id";
+                    . "servicio_pasajero_id_servicio = '$id' $qryCC ORDER BY servicio_pasajero_id";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {

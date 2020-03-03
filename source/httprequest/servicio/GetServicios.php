@@ -6,6 +6,7 @@ include '../../log/Log.php';
 header('Content-Type: application/json; charset=utf-8');
 $id = filter_input(INPUT_POST, 'id');
 $empresa = filter_input(INPUT_POST, 'empresa');
+$cc = filter_input(INPUT_POST, 'cc');
 $conductor = filter_input(INPUT_POST, 'conductor');
 $estado = filter_input(INPUT_POST, 'estado');
 $movil = filter_input(INPUT_POST, 'movil');
@@ -31,7 +32,7 @@ else
 }
 $hhasta = filter_input(INPUT_POST, 'hhasta');
 $servicioDao = new ServicioDao();
-$servicios = $servicioDao->getServicios($id,$empresa,$conductor,$estado,$movil,$truta,$desde,$hdesde,$hasta,$hhasta);
+$servicios = $servicioDao->getServicios($id,$empresa,$cc,$conductor,$estado,$movil,$truta,$desde,$hdesde,$hasta,$hhasta);
 echo "[";
 for ($i = 0 ; $i < count($servicios); $i++)
 {
