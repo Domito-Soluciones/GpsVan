@@ -10,7 +10,7 @@ class TarifaDao {
         $array = array();
         $conn = new Conexion();
         try {
-            $query = "SELECT * FROM tbl_tarifa WHERE tarifa_cliente = '".$busqueda."' LIMIT 20";
+            $query = "SELECT * FROM tbl_tarifa WHERE tarifa_cliente = '".$busqueda."'";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {

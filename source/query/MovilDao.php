@@ -158,7 +158,7 @@ class MovilDao {
                     . "movil_modelo LIKE '%".$busqueda."%' OR "
                     . "movil_nombre LIKE '%$busqueda%' OR "
                     . "movil_anio LIKE '%$busqueda%' "
-                    . " LIMIT 20";
+                    . " LIMIT 500";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
