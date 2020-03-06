@@ -1217,10 +1217,10 @@ function buscarClienteTarifa()
         }
         for(var i = 0 ; i < response.length; i++)
         {
-            var id = response[i].cliente_id;
-            var rut = response[i].cliente_rut;
-            var nombre = response[i].cliente_razon;
-            var direccion = response[i].cliente_direccion;
+            var id = formatearCadena(response[i].cliente_id);
+            var rut = formatearCadena(response[i].cliente_rut);
+            var nombre = formatearCadena(response[i].cliente_razon);
+            var direccion = formatearCadena(response[i].cliente_direccion);
             var titulo = recortar(rut+" / "+nombre);
             if (typeof ID_CLIENTE !== "undefined" && ID_CLIENTE === id)
             {
@@ -1272,7 +1272,7 @@ function buscarTarifas(id,nombre)
             var nombre = response[i].tarifa_descripcion;
             var hora = response[i].tarifa_hora;
             var descripcion = response[i].tarifa_nombre;
-            var empresa = response[i].tarifa_cliente;
+            var empresa = NOMBRE_CLIENTE;
             tarifas.append("<div class=\"fila_contenedor fila_contenedor_tarifa_detalle\" id=\""+id+"\" \">"+
                     "<div onClick=\"abrirBuscador('"+id+"')\">"+nombre+"</div>"+
                     "<div onClick=\"abrirBuscador('"+id+"')\">"+hora+"</div>"+

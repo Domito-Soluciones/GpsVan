@@ -548,13 +548,13 @@ function validarTipoDato()
     var telefono = $("#aparato");
     var celular = $("#celular");
     var mail = $("#mail");
-    if(!validarRut(rut.val()))
-    {
-        cambiarPestaniaGeneral();
-        marcarCampoError(rut);
-        alertify.error('Rut invalido');
-        return false;
-    }
+//    if(!validarRut(rut.val()))
+//    {
+//        cambiarPestaniaGeneral();
+//        marcarCampoError(rut);
+//        alertify.error('Rut invalido');
+//        return false;
+//    }
     if(!validarNumero(telefono.val()))
     {
         marcarCampoOk(telefono);

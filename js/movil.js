@@ -397,6 +397,9 @@ function buscarMovil(cargar = false)
             {
                 grupo = 'Externo';
             }
+            else{
+                grupo = '-';
+            }
             moviles.append("<div class=\"fila_contenedor fila_contenedor_servicio movil_tabla_valor\" id=\""+id+"\">"+
                     "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+patente+"</div>"+
                     "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+nombre+"</div>"+
@@ -471,6 +474,9 @@ function buscarMovilTipo(tipo)
             {
                 grupo = 'Externo';
             }
+            else{
+                grupo = '-';
+            }
             moviles.append("<div class=\"fila_contenedor fila_contenedor_servicio movil_tabla_valor\" id=\""+id+"\">"+
                     "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+patente+"</div>"+
                     "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+nombre+"</div>"+
@@ -510,6 +516,9 @@ function buscarMovilTodo()
         else if(MOVILES[i].movil_tipo === '1')
         {
             grupo = 'Externo';
+        }
+        else{
+            grupo = '-';
         }
         moviles.append("<div class=\"fila_contenedor fila_contenedor_servicio movil_tabla_valor\" id=\""+id+"\">"+
                 "<div onClick=\"abrirModificar('"+id+"','"+patente+"','"+nombre+"')\">"+patente+"</div>"+
