@@ -555,7 +555,9 @@ class ServicioDao {
                     $data = $nombres = explode("&", $row["servicio_pasajero_id_pasajero"]);
                     $pasajero->setId($row["servicio_pasajero_id_pasajero"]);
                     $pasajero->setNombre($data[0]);
-                    $pasajero->setCelular($data[1]);
+                    //if(count($data) > 1){
+                        $pasajero->setCelular($data[1]);
+                    //}
                 }
                 $pasajero->setEstado($row["servicio_pasajero_estado"]);
                 $servicio->setPasajero($pasajero);

@@ -388,6 +388,7 @@ function cargarPasajeros()
                                  +"<div class=\"boton-chico\" onclick=\"borrarPasajero('pasajero_"+id+"','"+formatearCadena(nombre)+"','"+formatearCadena(punto)+"','"+celular+"')\"><img src=\"img/cancelar.svg\" width=\"12\" height=\"12\"></div></div>"+
                         "<div class=\"cont-mini-pasajero\"><div id=\"punto_"+id+"\">"+ recortar(punto,30) + "</div><div>" + celular+"</div></div>");
                 pasajeros.push(id);
+                console.log("se agrego "+id);
             j++;
             ultima_letra = j;
             }

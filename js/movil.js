@@ -517,7 +517,7 @@ function buscarMovilTodo()
         {
             grupo = 'Externo';
         }
-        else{
+        else {
             grupo = '-';
         }
         moviles.append("<div class=\"fila_contenedor fila_contenedor_servicio movil_tabla_valor\" id=\""+id+"\">"+
