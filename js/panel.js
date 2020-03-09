@@ -354,7 +354,7 @@ function cargarPasajeros()
         {
             origen = response[0].pasajero_empresa_direccion;
             contenedorDir.html("<b>Origen:</b> "+origen);
-            contenedor.prepend(LETRAS[j]+"<div class=\"cont-pasajero-gral\" id=\"origen_empresa\"><div class=\"cont-pasajero\">"+response[0].pasajero_empresa+"</div><div class=\"cont-mini-pasajero\"><div>"+ origen + "</div><div>");
+            contenedor.prepend("<div class=\"cont-pasajero-gral\" id=\"origen_empresa\"><div class=\"cont-pasajero\">"+response[0].pasajero_empresa+"</div><div class=\"cont-mini-pasajero\"><div>"+ origen + "</div><div>");
             j++;
         }
         pasajeros = [];
@@ -381,7 +381,7 @@ function cargarPasajeros()
                 {
                     destinos.push(punto);
                 }
-                contenedor.append(LETRAS[j]+" <div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" draggable=\"true\" ondragstart=\"drag(event,$(this))\" ondrop=\"drop(event,$(this))\" ondragover=\"allowDrop(event)\">"
+                contenedor.append(" <div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" draggable=\"true\" ondragstart=\"drag(event,$(this))\" ondrop=\"drop(event,$(this))\" ondragover=\"allowDrop(event)\">"
                                  +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+punto+"\">"
                                  +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'>"
                                  +"<div class=\"boton-chico\" onclick=\"editarPasajero('"+punto+"','punto_"+id+"','hidden_"+id+"')\"><img src=\"img/editar.svg\" width=\"12\" height=\"12\"></div>"
@@ -988,7 +988,10 @@ function borrarPasajeroEspecial(obj,partida,destino)
 
 function agregarPasajero(obj,nombre,punto,celular)
 {
-    alert(pasajeros.length);
+    if(pasajeros.length >= 17){
+        alertify.error("Son 17 pasajeros como máximo por servicio");
+        return;
+    }
     if(TIPO_SERVICIO !== '0'){
         $("#nombre").val(nombre);
         $("#celular").val(celular);
@@ -1507,8 +1510,7 @@ function initAgregarPasajero(obj,nombre,punto,celular){
     }
     var ruta = $('#truta').val();
     var pasajero = $("#"+obj);
-    ultima_letra = ultima_letra + 1;
-    var texto = LETRAS[ultima_letra]+"<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" draggable=\"true\" ondragstart=\"drag(event,$(this))\" ondrop=\"drop(event,$(this))\" ondragover=\"allowDrop(event)\">"
+    var texto = "<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral\" draggable=\"true\" ondragstart=\"drag(event,$(this))\" ondrop=\"drop(event,$(this))\" ondragover=\"allowDrop(event)\">"
                                  +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+punto+"\">"
                                  +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'>"
                                  +"<div class=\"boton-chico\" onclick=\"editarPasajero('"+punto+"','punto_"+id+"','hidden_"+id+"')\"><img src=\"img/editar.svg\" width=\"12\" height=\"12\"></div>"

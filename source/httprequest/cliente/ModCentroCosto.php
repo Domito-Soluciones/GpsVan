@@ -5,10 +5,9 @@ include '../../query/ClienteDao.php';
 include '../../log/Log.php';
 
 header('Content-Type: application/json');
-$rut = filter_input(INPUT_POST, 'rut');
 $id = filter_input(INPUT_POST, 'id');
+$nombre = filter_input(INPUT_POST, 'nombre');
 $clienteDao = new ClienteDao();
-$clienteDao->eliminarCliente($rut);
-//$clienteDao->eliminarCentroCosto($id);
-echo "{\"cliente_eliminado\":\"".$rut."\"}";
-Log::write_log("DELCLIENTE: ".$rut, 0);
+$clienteDao->modificarCentroCosto($id,$nombre);
+echo "{\"cc_modificado\":\"".$id."\"}";
+Log::write_log("MODCENTROCOSTO: ".$id, 0);
