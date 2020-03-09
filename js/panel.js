@@ -27,6 +27,7 @@ var LETRAS = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q
 var ultima_letra = 0;
 var cantidadServicios = 0;
 var cantidadServiciosAux = 0;
+var LETRA_PASAJEROS = new Map();
 
 $(document).ready(function(){
     window.onbeforeunload = function() {
