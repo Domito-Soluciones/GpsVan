@@ -219,6 +219,7 @@ function abrirBuscador(id)
         $("#idServicio").val(servicio.servicio_id);
         $("#clienteServicio").val(servicio.servicio_cliente);
         $("#rutaServicio").val(servicio.servicio_ruta);
+        alert(servicio.servicio_truta)
         $("#tipoRutaServicio").val(servicio.servicio_truta);
         $("#estadoServicio").val(servicio.servicio_estado);
         if(servicio.servicio_estado === '5'){
@@ -713,7 +714,7 @@ function buscarEmpresas()
         for(var i = 0; i < response.length ; i++){
             var id = response[i].cliente_id;
             var nombre = response[i].cliente_razon;
-            $("#empresa").append("<option value='"+id+"'>"+nombre+"</option>");
+            $("#empresa").append("<option value='"+nombre+"'>"+nombre+"</option>");
         }
     };
     postRequest(url,params,success);

@@ -1278,7 +1278,7 @@ function buscarTarifas(id,nombre)
                     "<div onClick=\"abrirBuscador('"+id+"')\">"+hora+"</div>"+
                     "<div onClick=\"abrirBuscador('"+id+"')\">"+descripcion+"</div>"+
                     "<div onClick=\"abrirBuscador('"+id+"')\">"+empresa+"</div>"+
-                    "<div><img onclick=\"preEliminarTarifa('"+descripcion+"','"+nombre+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
+                    "<div><img onclick=\"preEliminarTarifa('"+id+"','"+descripcion+"','"+nombre+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>"+
                     "</div>");
         }
         for(var i = 0; i < TARIFAS_ADD.length ; i++){
@@ -1485,8 +1485,8 @@ function abrirBuscador(id)
 
 function eliminarTarifa()
 {
-    var nombre = $("#nombre").val();
-    var params = {nombre : nombre};
+    var id = ID_TARIFA;
+    var params = {id : id};
     var url = urlBase + "/tarifa/DelTarifa.php";
     var success = function(response)
     {
@@ -1502,11 +1502,11 @@ function eliminarTarifa()
     postRequest(url,params,success);
 }
 
-function preEliminarTarifa(nombre,descripcion)
+function preEliminarTarifa(id,nombre,descripcion)
 {
     confirmar("Eliminar tarifa","Esta seguro que desea eliminar la tarifa "+descripcion+" "+nombre,
             function(){
-                var params = {nombre : nombre};
+                var params = {id : id};
                 var url = urlBase + "/tarifa/DelTarifa.php";
                 var success = function(response)
                 {

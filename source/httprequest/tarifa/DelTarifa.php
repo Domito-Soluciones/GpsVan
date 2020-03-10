@@ -5,8 +5,8 @@ include '../../query/TarifaDao.php';
 include '../../log/Log.php';
 
 header('Content-Type: application/json');
-$nombre = filter_input(INPUT_POST, 'nombre');
+$id = filter_input(INPUT_POST, 'id');
 $tarifaDao = new TarifaDao();
-$tarifaDao->eliminarTarifa($nombre);
-echo "{\"tarifa_eliminada\":\"".$nombre."\"}";
-Log::write_log("DELTARIFA: ".$nombre, 0);
+$tarifaDao->eliminarTarifa($id);
+echo "{\"tarifa_eliminada\":\"".$id."\"}";
+Log::write_log("DELTARIFA: ".$id, 0);

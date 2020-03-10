@@ -988,7 +988,6 @@ function borrarPasajeroEspecial(obj,partida,destino)
 
 function agregarPasajero(obj,nombre,punto,celular)
 {
-    alert(pasajeros.length);
     if(TIPO_SERVICIO !== '0'){
         $("#nombre").val(nombre);
         $("#celular").val(celular);

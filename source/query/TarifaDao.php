@@ -97,12 +97,12 @@ class TarifaDao {
         return $array;
     }
     
-    function eliminarTarifa($nombre)
+    function eliminarTarifa($id)
     {
         $id = 0;
         $conn = new Conexion();
         try {
-            $query = "DELETE FROM tbl_tarifa WHERE tarifa_nombre = '$nombre'"; 
+            $query = "DELETE FROM tbl_tarifa WHERE tarifa_id = '$id'"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
