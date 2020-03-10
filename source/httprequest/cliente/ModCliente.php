@@ -37,8 +37,12 @@ if($cliente->getId() > 0)
     $nombres = explode(",", filter_input(INPUT_POST, 'centros'));
     if(count($nombres) > 0)
     {
-        $clienteDao->eliminarCentroCosto($cliente->getId());
         $clienteId = $clienteDao->agregarCentroCosto($nombres,$cliente->getId());
+    }
+    $ccelim = explode(",", filter_input(INPUT_POST, 'ccelim'));    
+    if(count($ccelim) > 0)
+    {
+        $clienteDao->eliminarCentroCosto($ccelim,$cliente->getId());
     }
 }
 echo "{\"cliente_id\":\"".$cliente->getId()."\"}";

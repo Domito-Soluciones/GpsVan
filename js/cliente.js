@@ -6,7 +6,9 @@ var PAGINA = 'CLIENTES';
 var ID_CLIENTE;
 var NOMBRE_CLIENTE;
 var TIPO_GRUPO = '3';
-var CENTROS_COSTO = [];
+var CENTROS_COSTO_ADD = [];
+var cc_agregar = 0;
+var CENTROS_COSTO_ELIM = [];
 var TARIFAS = [];
 var TARIFAS_ADD = [];
 var TARIFAS_MOD = [];
@@ -15,6 +17,7 @@ var clientes_tarifa = [];
 var CAMPOS = ["rut","razon","tipoCliente","direccion","nombreContacto","telefono","mail","mail2"];
 var CAMPOS_TARIFA = ["tipo","horario","descripcion","numero","hora","nombre","valor1","valor2"];
 var input_direccion_cliente;
+var flag_editar_cc = false;
 $(document).ready(function(){
     cambiarPropiedad($("#titulo_tarifa"),"background-color","white");
     PAGINA_ANTERIOR = PAGINA;  
@@ -251,9 +254,9 @@ function agregarCliente()
     var cc = $(".centro_costo");
     cc.each(
         function (index){
-            if($(this).val() !== '')
+            if($(this).val() !== '' && cc_agregar !== 0 && index >= cc_agregar)
             {   
-                CENTROS_COSTO.push($(this).val());
+                CENTROS_COSTO_ADD.push($(this).val());
             }
         });
     var array = [rut,razon,tipo,direccion,nombre,telefono,mail,mail2];
@@ -266,7 +269,7 @@ function agregarCliente()
     if(validarTipoDato())
     {
         var params = { razon : razon, tipo : tipo, rut : rut, direccion : direccion, nombre : nombre,
-                telefono : telefono, mail : mail, mail2 : mail2 , contrato : contrato, grupo : grupo,color:color, centros : CENTROS_COSTO + "", tarifas : JSON.stringify(TARIFAS_ADD)};
+                telefono : telefono, mail : mail, mail2 : mail2 , contrato : contrato, grupo : grupo,color:color, centros : CENTROS_COSTO_ADD + "", tarifas : JSON.stringify(TARIFAS_ADD)};
         var url = urlBase+"/cliente/AddCliente.php";
         var success = function(response)
         {
@@ -276,12 +279,13 @@ function agregarCliente()
             vaciarFormulario();
             resetFormulario();
             buscarCliente();
-            CENTROS_COSTO = [];
+            CENTROS_COSTO_ADD = [];
             $(".contenedor_contrato_movil").html("");
             modificarTarifaAdd();
             TARIFAS_ADD = [];
             ID_CLIENTE = undefined;
             NOMBRE_CLIENTE = undefined;
+            cc_agregar = 0;
         };
         postRequest(url,params,success);
     }
@@ -302,13 +306,13 @@ function modificarCliente()
     var color = formatearCadena($("#color").val());
     var contrato = $("#contratoOculta").val();
     var cc = $(".centro_costo");
-    cc.each(
-        function (index){
-            if($(this).val() !== '')
-            {   
-                CENTROS_COSTO.push($(this).val());
+    cc.each(function (index){
+                if($(this).val() !== '' && cc_agregar !== 0 && index >= cc_agregar-1){
+                    var cc = formatearCadena($(this).val());
+                    CENTROS_COSTO_ADD.push(cc);
+                }
             }
-        });
+            );
     var array = [rut,razon,tipo,direccion,nombre,telefono,mail,mail2];
     if(!validarCamposOr(array))
     {
@@ -319,11 +323,12 @@ function modificarCliente()
     if(validarTipoDato())
     {
         var params = { id : id, razon : razon, tipo : tipo, rut : rut, direccion : direccion, nombre : nombre,
-            telefono : telefono, mail : mail, mail2 : mail2, contrato : contrato ,grupo : grupo,color : color, centros : CENTROS_COSTO+""};
+            telefono : telefono, mail : mail, mail2 : mail2, contrato : contrato ,grupo : grupo,color : color, centros : CENTROS_COSTO_ADD+"", ccelim : CENTROS_COSTO_ELIM+""};
         var url = urlBase + "/cliente/ModCliente.php";
         var success = function(response)
         {
-            CENTROS_COSTO = [];
+            CENTROS_COSTO_ADD = [];
+            CENTROS_COSTO_ELIM = [];
             ocultarMapa();
             buscarCliente();
             cerrarSession(response);
@@ -332,6 +337,7 @@ function modificarCliente()
             agregarTarifa();
             modificarTarifa();
             TARIFAS_MOD = [];
+            cc_agregar = 0;
         };
         postRequest(url,params,success);
     }
@@ -915,37 +921,90 @@ function agregarCentroCosto()
     $(".centro_costo").each(function(index){
         i++;
     });
-    $("#centro_costo").append("<div class=\"contenedor-pre-input\" id=\"cont-pre-cc-"+i+"\">Centro Costo "+i+" (*)</div>"+
+    $("#centro_costo").append("<div class=\"contenedor-pre-input-cc\" id=\"cont-pre-cc-"+i+"\">Centro Costo "+i+" (*)</div>"+
             "<div class=\"contenedor-input\" id=\"cont-cc-"+i+"\">"+
                 "<input class=\"centro_costo\" type=\"text\" id=\"centros"+i+"\" placeholder=\"Ej: Principal\" maxlength=\"40\">");
     $('#centro_costo').animate({ scrollTop: $('#centro_costo').height() });
+    if(cc_agregar === 0){
+        cc_agregar = i;
+    }
 }
 
-function agregarCentroCostoValor(i,val)
+function agregarCentroCostoValor(idx,id,val)
 {
-    $("#cont-pre-cc-"+i).remove();
-    $("#cont-cc-"+i).remove();
-    $("#centros"+i).remove();
-    $("#centro_costo").append("<div class=\"contenedor-pre-input\" id=\"cont-pre-cc-"+i+"\">Centro Costo "+i+" (*)</div>"+
-            "<div class=\"contenedor-input\" id=\"cont-cc-"+i+"\"><input class=\"centro_costo\" type=\"text\" id=\"centros"+i+"\" value=\""+val+"\" placeholder=\"Ej: Principal\" maxlength=\"40\">");
+    $("#cont-pre-cc-"+id).remove();
+    $("#cont-cc-"+id).remove();
+    $("#centros"+id).remove();
+    $("#editar"+id).remove();
+    $("#borrar"+id).remove();
+    $("#cancelar"+id).remove();
+    $("#centro_costo").append("<div class=\"contenedor-pre-input-cc\" id=\"cont-pre-cc-"+id+"\">Centro Costo "+idx+" (*)</div>"+
+            "<div class=\"contenedor-input-cc\" id=\"cont-cc-"+id+"\"><input class=\"centro_costo\" type=\"text\" id=\"centros"+id+"\" "+
+            " value=\""+val+"\" placeholder=\"Ej: Principal\" maxlength=\"40\" disabled><div id=\"editar"+id+"\" class=\"boton-chico\" onclick=\"editarCC('"+id+"')\" style=\"margin-left: 5px;\"><img id=\"img"+id+"\" width=\"15\" height=\"15\" src=\"img/editar.svg\"></div><div id=\"borrar"+id+"\" class=\"boton-chico\" onclick=\"borrarCC('"+id+"')\"><img id=\"imgborrar-"+id+"\" width=\"15\" height=\"15\" src=\"img/eliminar.svg\"></div><div id=\"cancelar"+id+"\" class=\"boton-chico\" onclick=\"cancelarEditar('"+id+"')\" style=\"display:none\"><img id=\"img-"+id+"\" width=\"15\" height=\"15\" src=\"img/cancelar.svg\"></div></div>");
+}
+
+function editarCC(id){
+    if($("#img"+id).prop("src").indexOf("img/guardar.svg") !== -1){
+        var nombre = $("#centros"+id).val();
+        if(nombre === ''){
+            alertify.error("Centro de costo no puede ser vacio");
+            return;
+        }
+        var params = {id : id, nombre : nombre};
+            var url = urlBase + "/cliente/ModCentroCosto.php";
+            var success = function(response)
+            {
+                $("#centros"+id).attr("disabled",true);
+                $("#img"+id).prop("src","img/editar.svg");
+                $("#cancelar"+id).css("display","none");
+                alertify.success("Centro de costo modificado");
+            };
+            postRequest(url,params,success);
+        
+    }
+    else{
+        $("#centros"+id).prop("disabled",false);
+        $("#img"+id).prop("src","img/guardar.svg");
+        $("#cancelar"+id).css("display","inline-block");
+    }
+}
+function cancelarEditar(id){
+    $("#centros"+id).prop("disabled",true);
+    $("#img"+id).prop("src","img/editar.svg");
+    $("#cancelar"+id).css("display","none");
+}
+
+
+function borrarCC(id){
+    confirmar("Eliminar Centro de costo","Esta seguro que desea eliminar el centro de costo seleccionado?",
+        function(){
+            var params = {id : id};
+            var url = urlBase + "/cliente/DelCentroCosto.php";
+            var success = function(response)
+            {
+                $("#cont-pre-cc-"+id).remove();
+                $("#cont-cc-"+id).remove();
+                $("#centros"+id).remove();
+                $("#editar"+id).remove();
+                $("#borrar"+id).remove();
+                $("#cancelar"+id).remove();
+                alertify.success("Centro de costo eliminado");
+            };
+            postRequest(url,params,success);
+        });
 }
 
 function quitarCentroCosto()
 {
-    var i = 1;
-    var largo = $(".centro_costo").length;
-    if(largo > 1 )
-    {
-        $(".centro_costo").each(function(index){
-            if(i === largo)
-            {
-                $(this).remove();
-                $("#cont-cc-"+i).remove();
-                $("#cont-pre-cc-"+i).remove();
-            }
-            i++;
-        });
-    }
+    var ccElimin = $(".centro_costo:last").val();
+    var id = $(".centro_costo:last").attr("id").replace("centros","");
+    CENTROS_COSTO_ELIM.push(ccElimin);
+    $("#cont-pre-cc-"+id).remove();
+    $("#cont-cc-"+id).remove();
+    $("#centros"+id).remove();
+    $("#editar"+id).remove();
+    $("#borrar"+id).remove();
+    $("#cancelar"+id).remove();
 }
 
 function succesSubirContrato()
@@ -1120,6 +1179,9 @@ function modificarTarifaAdd()
 
 function agregarTarifa(){
     var cliente = ID_CLIENTE;
+    if(typeof $("#tipo").val() === 'undefined'){
+        return ;
+    }
     var tipo = formatearCadena($("#tipo").val());
     var horario = formatearCadena($("#horario").val());
     var hora = formatearCadena($("#hora").val());
@@ -1129,7 +1191,7 @@ function agregarTarifa(){
     var origen = formatearCadena($("#origen").val());
     var destino = formatearCadena($("#destino").val());
     var valor1 = formatearCadena($("#valor1").val().split('.').join(''));
-    var valor2 = formatearCadena($("#valor2").val().split('.').join(''));
+    var valor2 = formatearCadena($("#valor1").val().split('.').join(''));
     var array = [tipo,horario,descripcion,numero,hora,nombre,origen,destino,valor1,valor2];
     if(!validarCamposOr(array))
     {
@@ -1160,6 +1222,9 @@ function agregarTarifa(){
 
 function modificarTarifa()
 {
+    if(typeof ID_TARIFA === 'undefined'){
+        return ;
+    }
     var id = ID_TARIFA;
     var cliente = $("#clientes").val();;
     var tipo = $("#tipo").val();
@@ -1306,13 +1371,11 @@ function buscarCentrosCosto(cliente)
     var url = urlBase + "/cliente/GetCentroCosto.php";
     var success = function(response)
     { 
-        $("#centros").val(response[0].cc_nombre);
+        //$("#centros").val(response[0].cc_nombre);
         for(var i = 0; i < response.length ; i++){
+            var id = response[i].cc_id;
             var value = response[i].cc_nombre;
-            if(i > 0)
-            {
-                agregarCentroCostoValor(i+1,value);
-            }
+            agregarCentroCostoValor(i+1,id,value);
         }
     };
     postRequest(url,params,success);

@@ -7,13 +7,15 @@ include '../../log/Log.php';
 header('Content-Type: application/json');
 $cliente = filter_input(INPUT_POST, 'cliente');
 $clienteDao = new ClienteDao();
-$cc = $clienteDao->getCentrosCosto($cliente);
+$centrosCosto = $clienteDao->getCentrosCosto($cliente);
 echo "[";
-for ($i = 0 ; $i < count($cc); $i++)
+for ($i = 0 ; $i < count($centrosCosto); $i++)
 {
-    $ccNombre = $cc[$i];
-    echo "{\"cc_nombre\":\"".trim($ccNombre)."\",\"cc_empresa\":\"".trim($cliente)."\"}";
-    if (($i+1) != count($cc))
+    $cc = $centrosCosto[$i];
+    $id = $cc->getId();
+    $nombre = $cc->getNombre();
+    echo "{\"cc_id\":\"".$id."\",\"cc_nombre\":\"".$nombre."\",\"cc_empresa\":\"".trim($cliente)."\"}";
+    if (($i+1) != count($centrosCosto))
     {
         echo ",";
     }

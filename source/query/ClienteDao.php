@@ -2,6 +2,7 @@
 include '../../util/validarPeticion.php';
 include '../../conexion/Conexion.php';
 include '../../dominio/Cliente.php';
+include '../../dominio/CentroCosto.php';
 
 class ClienteDao {
     public function getClientes($busqueda)
@@ -81,11 +82,14 @@ class ClienteDao {
             if($cliente != ''){
                 $qryCC = " WHERE centro_costo_cliente = '$cliente'";
             }
-            $query = "SELECT centro_costo_nombre,centro_costo_nombre FROM tbl_centro_costo ".$qryCC;
+            $query = "SELECT centro_costo_id,centro_costo_nombre FROM tbl_centro_costo ".$qryCC;
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
-                array_push($array, $row["centro_costo_nombre"]);
+                $centroCosto = new CentroCosto();
+                $centroCosto->setId($row["centro_costo_id"]);
+                $centroCosto->setNombre($row["centro_costo_nombre"]);
+                array_push($array, $centroCosto);
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -181,14 +185,60 @@ class ClienteDao {
         return $id;
     }
     
-    function eliminarCentroCosto($idCliente)
+    function eliminarCentroCosto($nombres,$idCliente)
     {
         $id = 0;
         $conn = new Conexion();
         try {
-            $query = "DELETE FROM tbl_centro_costo WHERE centro_costo_cliente = '$idCliente'"; 
+            $query = "";
+            for($i = 0 ; $i < count($nombres) ; $i++){
+                if($nombres[$i] != ''){
+                    $query .= "DELETE FROM tbl_centro_costo WHERE centro_costo_nombre = '$nombres[$i]' AND centro_costo_cliente = '$idCliente';"; 
+                }
+            }
+            if($query == ""){
+                return 0;
+            }
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
+            if (mysqli_multi_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
+                $id = mysqli_insert_id($conn->conn);
+            } else {
+                echo mysqli_error($conn->conn);
+            }           
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
+        }
+        return $id;
+    }
+    
+    function eliminarCentroCostoUnico($idCC)
+    {
+        $id = 0;
+        $conn = new Conexion();
+        try {
+            $query = "DELETE FROM tbl_centro_costo WHERE centro_costo_id = '$idCC'"; 
+            $conn->conectar();
+            if (mysqli_multi_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
+                $id = mysqli_insert_id($conn->conn);
+            } else {
+                echo mysqli_error($conn->conn);
+            }           
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
+        }
+        return $id;
+    }
+    
+    function modificarCentroCosto($idCC,$nombreCC)
+    {
+        $id = 0;
+        $conn = new Conexion();
+        try {
+            $query = "UPDATE tbl_centro_costo SET centro_costo_nombre = '$nombreCC' WHERE centro_costo_id = '$idCC'"; 
+            $conn->conectar();
+            if (mysqli_multi_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);
@@ -208,7 +258,12 @@ class ClienteDao {
             $query = "";
             for($i = 0 ; $i < count($nombres) ; $i++)
             {
-                $query .= "INSERT INTO tbl_centro_costo (centro_costo_nombre,centro_costo_cliente) VALUES ('$nombres[$i]','$cliente');"; 
+                if($nombres[$i] != ''){
+                    $query .= "INSERT INTO tbl_centro_costo (centro_costo_nombre,centro_costo_cliente) VALUES ('$nombres[$i]','$cliente');"; 
+                }
+            }
+            if($query == ""){
+                return 0;
             }
             $conn->conectar();
             if (mysqli_multi_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {

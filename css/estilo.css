@@ -623,6 +623,14 @@ select
     height: 30px;
     display: inline-block;
 }
+.contenedor-pre-input-cc
+{
+    font-size: 13px;
+    margin-top: 7px;
+    width: 150px;
+    height: 30px;
+    display: inline-block;
+}
 .contenedor-pre-input-conductor
 {
     font-size: 13px;
@@ -643,11 +651,17 @@ select
     height: 30px;
     display: inline-block;
 }
+.contenedor-input-cc{
+    margin-left: 5%;
+    width: 275px !important;
+    height: 30px;
+    display: inline-block;
+}
 .contenedor-input-radio
 {
     width: 208px !important;
 }
-.contenedor-input input
+.contenedor-input input,.contenedor-input-cc input
 {
     margin-top: 5px;
     padding-left: 10px;
