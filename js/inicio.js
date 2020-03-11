@@ -238,7 +238,7 @@ $(document).ready(function () {
                     },
             error: function (resp)
             {
-                alert("error en carga de graficos" + resp.status);
+//                alert("error en carga de graficos" + resp.status);
             }
         });
     }, 6000);
