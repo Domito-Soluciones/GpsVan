@@ -188,12 +188,12 @@ class PasajeroDao {
         try {
             $buscaRuta = '';
             if($ruta != ''){
-                if($pasajeros != ''){
-                    $buscaRuta = " AND pasajero_ruta != '$ruta' AND pasajero_id NOT IN (".$pasajeros.") ";   
-                }
-                else{
-                    $buscaRuta = " AND pasajero_ruta != '$ruta'";   
-                }
+//                if($pasajeros != ''){
+//                    $buscaRuta = " AND pasajero_ruta != '$ruta' AND pasajero_id NOT IN (".$pasajeros.") ";   
+//                }
+//                else{
+//                    $buscaRuta = " AND pasajero_ruta != '$ruta'";   
+//                }
             }
             $qryPass = "";
             if($pas != ""){
