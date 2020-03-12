@@ -219,7 +219,6 @@ function abrirBuscador(id)
         $("#idServicio").val(servicio.servicio_id);
         $("#clienteServicio").val(servicio.servicio_cliente);
         $("#rutaServicio").val(servicio.servicio_ruta);
-        alert(servicio.servicio_truta)
         $("#tipoRutaServicio").val(servicio.servicio_truta);
         $("#estadoServicio").val(servicio.servicio_estado);
         if(servicio.servicio_estado === '5'){
