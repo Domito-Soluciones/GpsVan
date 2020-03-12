@@ -713,7 +713,7 @@ function buscarEmpresas()
         for(var i = 0; i < response.length ; i++){
             var id = response[i].cliente_id;
             var nombre = response[i].cliente_razon;
-            $("#empresa").append("<option value='"+nombre+"'>"+nombre+"</option>");
+            $("#empresa").append("<option value='"+id+"'>"+nombre+"</option>");
         }
     };
     postRequest(url,params,success);
