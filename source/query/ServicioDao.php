@@ -241,9 +241,9 @@ class ServicioDao {
             {
                 $buscaFecha = "AND servicio_fecha BETWEEN '".$desde." ".$hdesde."' AND '".$hasta." ".$hhasta."'";
             }
-            $query = "SELECT * FROM tbl_servicio LEFT JOIN tbl_servicio_pasajero ON servicio_id = servicio_pasajero_id_servicio LEFT JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id WHERE servicio_estado != 0 "
+            $query = "SELECT *,(SELECT COUNT(*) FROM tbl_servicio_pasajero WHERE servicio_pasajero_id_servicio = s.servicio_id) AS pasajero_total,COUNT(*) AS pasajero_total_cc FROM tbl_servicio s LEFT JOIN tbl_servicio_pasajero ON servicio_id = servicio_pasajero_id_servicio LEFT JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id WHERE servicio_estado != 0 "
                     .$buscaFecha." ".$buscaId." ".$buscaEmpresa." ".$buscaCC." ".$buscaConductor." ". $buscaTRuta." ".$buscaMovil." ".$buscaEstado
-                    . " GROUP BY servicio_id ORDER BY servicio_id DESC LIMIT 5000";
+                    . " GROUP BY servicio_id ORDER BY servicio_fecha DESC,servicio_hora DESC LIMIT 5000";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
@@ -261,6 +261,8 @@ class ServicioDao {
                 $servicio->setTarifa2($row["servicio_tarifa2"]);
                 $servicio->setEstado($row["servicio_estado"]);
                 $servicio->setObservacionesAdicionales($row["servicio_observacion_adicional"]);
+                $servicio->setCantidadPasajeros($row["pasajero_total"]);
+                $servicio->setCantidadPasajerosCC($row["pasajero_total_cc"]);
                 array_push($array, $servicio);
             }
         } catch (Exception $exc) {
@@ -358,10 +360,11 @@ class ServicioDao {
             if($cc != ''){
                 $qryCC = " AND pasajero_centro_costo = '$cc' ";
             }
-            $query = "SELECT * FROM tbl_servicio_pasajero LEFT JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id WHERE "
+            $query = "SELECT *,(SELECT COUNT(*) FROM tbl_servicio_pasajero WHERE servicio_pasajero_id_servicio = '11627') AS pasajero_total FROM tbl_servicio_pasajero JOIN tbl_servicio ON servicio_pasajero_id_servicio = servicio_id LEFT JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id WHERE "
                     . "servicio_pasajero_id_servicio = '$id' $qryCC ORDER BY servicio_pasajero_id";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
+            $nFilas = mysqli_num_rows($result);
             while($row = mysqli_fetch_array($result)) {
                 $servicioPasajero = new ServicioPasajero();
                 $servicioPasajero->setId($row["servicio_pasajero_id_servicio"]);          
@@ -377,6 +380,8 @@ class ServicioDao {
                 $servicioPasajero->setLatDestino($row["servicio_pasajero_lat_destino"]);
                 $servicioPasajero->setLonDestino($row["servicio_pasajero_lon_destino"]);
                 $servicioPasajero->setDestino($row["servicio_pasajero_destino"]);
+                $servicioPasajero->setCentroCosto($row["pasajero_centro_costo"]);
+                $servicioPasajero->setTarifa(round($row["servicio_tarifa2"] / $row["pasajero_total"]));
                 array_push($array, $servicioPasajero);
             }
         } catch (Exception $exc) {

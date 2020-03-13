@@ -21,6 +21,8 @@ for ($i = 0 ; $i < count($servicios); $i++)
     $destino = $servicio->getDestino();
     $lat = $servicio->getLatDestino();
     $lon = $servicio->getLonDestino();
+    $cc = $servicio->getCentroCosto();
+    $tarifa = $servicio->getTarifa();
         echo "{\"servicio_id\":\"".$id."\","
             . "\"servicio_pasajero\":\"".$pasajero."\","
             . "\"servicio_hora_destino\":\"".$hora."\","
@@ -28,7 +30,9 @@ for ($i = 0 ; $i < count($servicios); $i++)
             . "\"servicio_estado_cancelacion\":\"".trim($estadoCancelacion)."\","
             . "\"servicio_lat_destino\":\"".$lat."\","
             . "\"servicio_lon_destino\":\"".$lon."\","
-            . "\"servicio_destino\":\"".$destino."\"}";
+            . "\"servicio_destino\":\"".$destino."\","
+            . "\"servicio_cc\":\"".$cc."\","
+            . "\"servicio_tarifa\":\"".$tarifa."\"}";
         if (($i+1) != count($servicios))
         {
             echo ",";

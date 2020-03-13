@@ -9,6 +9,8 @@ class ServicioPasajero {
     private $hora;
     private $estado;
     private $estadoCancelacion;
+    private $centroCosto;
+    private $tarifa;
     
     function getId() {
         return $this->id;
@@ -74,7 +76,23 @@ class ServicioPasajero {
         $this->estadoCancelacion = $estadoCancelacion;
     }
     
-    
+    function getCentroCosto() {
+        return $this->centroCosto;
+    }
+
+    function getTarifa() {
+        return $this->tarifa;
+    }
+
+    function setCentroCosto($centroCosto) {
+        $this->centroCosto = $centroCosto;
+    }
+
+    function setTarifa($tarifa) {
+        $this->tarifa = $tarifa;
+    }
+
+        
     function toString() {
         return "ServicioPasajero{" . "id=" . $this->id . ", pasajero=" . $this->pasajero . ", destino=" . $this->destino .
         ", latDestino=" . $this->latDestino . ", lonDestino=" . $this->lonDestino . ", hora=" . $this->hora . ", estado=" .

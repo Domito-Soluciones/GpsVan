@@ -1780,11 +1780,19 @@ select
 }
 .dir_pasajero
 {
-    width: 44% !important;
+    width: 38% !important;
 }
 .est_pasajero
 {
-    width: 27% !important;
+    width: 10% !important;
+}
+.cc_pasajero
+{
+    width: 10% !important;
+}
+.tarifa_pasajero
+{
+    width: 10% !important;
 }
 
 .nombre_pasajero

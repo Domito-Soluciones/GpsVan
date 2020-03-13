@@ -24,6 +24,8 @@ class Servicio {
     private $tipo;
     private $cc;
     private $anterior;
+    private $cantidadPasajeros;
+    private $cantidadPasajerosCC;
 
     function getId() {
         return $this->id;
@@ -201,7 +203,22 @@ class Servicio {
         $this->anterior = $anterior;
     }
     
-    function toString() {
+    function getCantidadPasajeros() {
+        return $this->cantidadPasajeros;
+    }
+
+    function setCantidadPasajeros($cantidadPasajeros) {
+        $this->cantidadPasajeros = $cantidadPasajeros;
+    }
+    function getCantidadPasajerosCC() {
+        return $this->cantidadPasajerosCC;
+    }
+
+    function setCantidadPasajerosCC($cantidadPasajerosCC) {
+        $this->cantidadPasajerosCC = $cantidadPasajerosCC;
+    }
+
+            function toString() {
         return "Servicio{" . "id=" . $this->id . ", cliente=" . $this->cliente . ", clienteDireccion=" . $this->clienteDireccion .
         ", ruta=" . $this->ruta . ", truta=" . $this->truta . ", fecha=" . $this->fecha . ", hora=" . $this->hora . ", movil=" . $this->movil .
         ", conductor=" . $this->conductor . ", movilLat=" . $this->movilLat . ", movilLon=" . $this->movilLon . ", tarifa1=" . $this->tarifa1 .

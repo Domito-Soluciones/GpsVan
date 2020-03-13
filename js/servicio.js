@@ -117,7 +117,7 @@ function buscarServicio()
             alertify.error("No hay registros que mostrar");
             return;
         }
-        servicios.append("<div class=\"contenedor_central_titulo cont_servicio\"><div></div><div>ID Servicio</div><div>Empresa</div><div class=\"fila_fecha\">Fecha</div><div class=\"fila_oculta\">Estado</div><div class=\"fila_oculta\">Vehículo</div><div></div></div>")
+        servicios.append("<div class=\"contenedor_central_titulo cont_servicio\"><div></div><div>ID Servicio</div><div>Empresa</div><div class=\"fila_fecha\">Fecha</div><div class=\"fila_oculta\">Estado</div><div class=\"fila_oculta\">Tarifa</div><div></div></div>")
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].servicio_id;
@@ -125,17 +125,23 @@ function buscarServicio()
             var fecha = response[i].servicio_fecha;
             var hora = response[i].servicio_hora;
             var estado = response[i].servicio_estado;
-            var conductor = response[i].servicio_movil === '' ? '-' : response[i].servicio_movil ;
+            var tarifa = response[i].servicio_tarifa2 ;
+            if(cc !== ''){
+                var cantidad = response[i].servicio_cpasajeros;
+                var cantidadCC = response[i].servicio_cpasajeros_cc;
+                var aux = tarifa / cantidad;
+                tarifa = Math.round(aux * cantidadCC);
+            }
             var elim ='';
             if(TIPO_USUARIO !== 'CLIENTE'){
                 elim = "<img onclick=\"preEliminarServicio('"+id+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\">";
             }
             servicios.append("<div class=\"fila_contenedor fila_contenedor_servicio cont_servicio\" id=\""+id+"\">"+
-                    "<div onClick=\"abrirBuscador('"+id+"')\">"+id+"</div>"+
-                    "<div onClick=\"abrirBuscador('"+id+"')\" class=\"fila_empresa\">"+cliente+"</div>"+
-                    "<div onClick=\"abrirBuscador('"+id+"')\" class=\"fila_fecha\">"+fecha+" "+hora+"</div>"+
-                    "<div onClick=\"abrirBuscador('"+id+"')\" class=\"fila_oculta\">"+obtenerEstadoServicio(estado)+"</div>"+
-                    "<div onClick=\"abrirBuscador('"+id+"')\" class=\"fila_oculta\">"+conductor+"</div>"+
+                    "<div onClick=\"abrirBuscador('"+id+"','"+tarifa+"')\">"+id+"</div>"+
+                    "<div onClick=\"abrirBuscador('"+id+"','"+tarifa+"')\" class=\"fila_empresa\">"+cliente+"</div>"+
+                    "<div onClick=\"abrirBuscador('"+id+"','"+tarifa+"')\" class=\"fila_fecha\">"+fecha+" "+hora+"</div>"+
+                    "<div onClick=\"abrirBuscador('"+id+"','"+tarifa+"')\" class=\"fila_oculta\">"+obtenerEstadoServicio(estado)+"</div>"+
+                    "<div onClick=\"abrirBuscador('"+id+"','"+tarifa+"')\" class=\"fila_oculta\"> $ "+tarifa+"</div>"+
                     "<div class=\"fila_oculta\" style=\"width:2%\">"+elim+"</div></div>");
         }
     };
@@ -159,7 +165,7 @@ function cargarMoviles()
     postRequest(url,params,success);
 }
 
-function abrirBuscador(id)
+function abrirBuscador(id,tarifa)
 {
     AGREGAR = false;
     ID_SERVICIO = id;
@@ -251,6 +257,7 @@ function abrirBuscador(id)
         $("#fechaServicio").val(servicio.servicio_fecha);
         $("#tarifaServicio").val(formatoMoneda(servicio.servicio_tarifa1));
         $("#tarifa2Servicio").val(formatoMoneda(servicio.servicio_tarifa2)); 
+        //$("#tarifa2Servicio").val(formatoMoneda(tarifa)); 
         if(servicio.servicio_observacion_adicional !== '')
         {
             $("#cont_obs").html("<textarea readonly style=\"width:99%;height:400px;font-family:Arial, Helvetica, sans-serif;\">"+servicio.servicio_observacion_adicional+"</textarea>");
@@ -545,12 +552,16 @@ function obtenerPasajeros()
                 estado = "Entregado";
             }
             var destino = response[i].servicio_destino;
+            var cc = response[i].servicio_cc;
+            var tarifa = response[i].servicio_tarifa;
             if(destino !== ''){
             $("#pasajeros_contenido").append("<div class=\"fila_contenedor fila_contenedor_servicio\" onclick=\"mostrarPasajero()\">"+
                     "<div class=\"letra_pasajero\">"+LETRAS[i]+"</div>"+
-                    "<div class=\"nombre_pasajero\">"+pasajero+"</div>"+
-                    "<div class=\"dir_pasajero\">"+destino+"</div>"+
+                    "<div class=\"nombre_pasajero\" alt='"+pasajero+"' title='"+pasajero+"'>"+recortar(pasajero,25)+"</div>"+
+                    "<div class=\"dir_pasajero\" alt='"+destino+"' title='"+destino+"'>"+recortar(destino,60)+"</div>"+
                     "<div class=\"dato_pasajero\">"+horaDestino+"</div>"+
+                    "<div class=\"cc_pasajero\">"+cc+"</div>"+
+                    "<div class=\"tarifa_pasajero\">$ "+tarifa+"</div>"+
                     "<div class=\"est_pasajero\">"+estado+"</div></div>");
             }
         }
