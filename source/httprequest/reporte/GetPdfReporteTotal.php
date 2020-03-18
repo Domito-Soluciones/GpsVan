@@ -6,6 +6,7 @@ include '../../log/Log.php';
     $pdf = new FPDF();
     $pdf->AddPage();
     $empresa = filter_input(INPUT_GET, 'empresa');
+    $cc = filter_input(INPUT_GET, 'cc');
     $conductor = filter_input(INPUT_GET, 'conductor');
     $desde = '';
     if(filter_input(INPUT_GET, 'desde') != '')
@@ -28,7 +29,7 @@ include '../../log/Log.php';
     }
     $hhasta = filter_input(INPUT_GET, 'hhasta');
     $reporteDao = new ReporteDao();
-    $servicios = $reporteDao->getServicios($empresa,$conductor,$desde,$hdesde,$hasta,$hhasta);
+    $servicios = $reporteDao->getServicios($empresa,$cc,$conductor,$desde,$hdesde,$hasta,$hhasta);
     $serviciosFinalizados = 0;
     $serviciosEnRuta = 0;
     $serviciosPorRealizar = 0;

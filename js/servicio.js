@@ -46,7 +46,7 @@ $(document).ready(function(){
         }
         else
         {
-            var params = "empresa="+EMPRESA+"&desde="+DESDE+"&hdesde="+HDESDE+"&hasta="+HASTA+"&hhasta="+HHASTA+"&tipo="+TIPO_USUARIO;
+            var params = "empresa="+EMPRESA+"&cc="+CC+"&desde="+DESDE+"&hdesde="+HDESDE+"&hasta="+HASTA+"&hhasta="+HHASTA+"&tipo="+TIPO_USUARIO;
             exportar('reporte/GetExcelReporteDetalle',params);
         }
     });
@@ -58,7 +58,7 @@ $(document).ready(function(){
         }
         else
         {
-            var params = "empresa="+EMPRESA+"&desde="+DESDE+"&hdesde="+HDESDE+"&hasta="+HASTA+"&hhasta="+HHASTA+"&tipo="+TIPO_USUARIO;
+            var params = "empresa="+EMPRESA+"&cc="+CC+"&desde="+DESDE+"&hdesde="+HDESDE+"&hasta="+HASTA+"&hhasta="+HHASTA+"&tipo="+TIPO_USUARIO;
             window.open(urlBase+"/reporte/GetPdfReporteDetalle.php?"+params, '_blank');
         }
     });
@@ -117,7 +117,10 @@ function buscarServicio()
             alertify.error("No hay registros que mostrar");
             return;
         }
-        servicios.append("<div class=\"contenedor_central_titulo cont_servicio\"><div></div><div>ID Servicio</div><div>Empresa</div><div class=\"fila_fecha\">Fecha</div><div class=\"fila_oculta\">Estado</div><div class=\"fila_oculta\">Tarifa</div><div></div></div>")
+        servicios.append("<div class=\"contenedor_central_titulo cont_servicio\"><div></div>"+
+                         "<div>ID Servicio</div><div>Empresa</div><div class=\"fila_fecha\">Fecha</div>"+
+                         "<div class=\"fila_oculta\">Estado</div><div class=\"fila_oculta\">"+(cc === "-1" ? "Centro de costo" : "Movil")+"</div>"+
+                         "<div class=\"fila_oculta\">Tarifa</div><div></div></div>")
         for(var i = 0 ; i < response.length; i++)
         {
             var id = response[i].servicio_id;
@@ -126,12 +129,17 @@ function buscarServicio()
             var hora = response[i].servicio_hora;
             var estado = response[i].servicio_estado;
             var tarifa = response[i].servicio_tarifa2 ;
-            if(cc !== ''){
-                var cantidad = response[i].servicio_cpasajeros;
-                var cantidadCC = response[i].servicio_cpasajeros_cc;
-                var aux = tarifa / cantidad;
-                tarifa = Math.round(aux * cantidadCC);
+            //if(cc !== ''){
+            var cantidad = response[i].servicio_cpasajeros;
+            var cantidadCC = response[i].servicio_cpasajeros_cc;
+            var aux = 0;
+            if(cantidad > 0){
+                aux = tarifa / cantidad;
             }
+            tarifa = Math.round(aux * cantidadCC);
+            //}
+            var pasajeroCC = response[i].servicio_pasajero_cc === '' ? '-' : response[i].servicio_pasajero_cc ;
+            var movil = response[i].servicio_movil === '' ? '-' : response[i].servicio_movil ;
             var elim ='';
             if(TIPO_USUARIO !== 'CLIENTE'){
                 elim = "<img onclick=\"preEliminarServicio('"+id+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\">";
@@ -141,7 +149,8 @@ function buscarServicio()
                     "<div onClick=\"abrirBuscador('"+id+"','"+tarifa+"')\" class=\"fila_empresa\">"+cliente+"</div>"+
                     "<div onClick=\"abrirBuscador('"+id+"','"+tarifa+"')\" class=\"fila_fecha\">"+fecha+" "+hora+"</div>"+
                     "<div onClick=\"abrirBuscador('"+id+"','"+tarifa+"')\" class=\"fila_oculta\">"+obtenerEstadoServicio(estado)+"</div>"+
-                    "<div onClick=\"abrirBuscador('"+id+"','"+tarifa+"')\" class=\"fila_oculta\"> $ "+tarifa+"</div>"+
+                    "<div onClick=\"abrirBuscador('"+id+"','"+tarifa+"')\" class=\"fila_oculta\">"+(cc === "-1" ? pasajeroCC : movil)+"</div>"+
+                    "<div onClick=\"abrirBuscador('"+id+"','"+tarifa+"')\" class=\"fila_oculta\">$ "+tarifa+"</div>"+
                     "<div class=\"fila_oculta\" style=\"width:2%\">"+elim+"</div></div>");
         }
     };
@@ -468,7 +477,7 @@ function obtenerEstadoServicio(servicio)
     }
     else if(servicio === EN_PROCCESO_DE_ASIGNACION)
     {
-        return "En proceso de asignaci&oacute;n";            
+        return "En asignaci&oacute;n";            
     }
     else if(servicio === ASIGNADO)
     {
@@ -736,7 +745,7 @@ function buscarCentrosCosto(cliente = '')
     var url = urlBase + "/cliente/GetCentroCosto.php";
     var success = function(response)
     { 
-        $("#cc").html("<option value=\"\">Seleccione</option>");
+        $("#cc").html("<option value=\"\">Seleccione</option><option value=\"-1\">Todos</option>");
         for(var i = 0; i < response.length ; i++){
             var value = response[i].cc_nombre;
             $("#cc").append("<option value='"+value+"'>"+value+"</option>");

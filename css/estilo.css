@@ -1449,7 +1449,7 @@ select
 }
 .contenedor_central_titulo_amplio
 {
-    width: calc(280% - 0px);
+    width: calc(320% - 0px);
     height: 40px;
     line-height: 40px;
     background: white;
@@ -1482,7 +1482,7 @@ select
     font-size: 17px;
     color:#0099ff;
     float: left;
-    width: 19%;
+    width: 16%;
     text-align: center;
 }
 .contenedor_central_titulo_amplio div
@@ -1528,8 +1528,9 @@ select
 .fila_contenedor_servicio_reporte
 {
     padding: 0 !important;
-    width: calc(280% - 1px) !important;
+    width: calc(320% - 1px) !important;
     margin-left: 1px;
+    cursor: initial !important;
 }
 .fila_contenedor_conductor
 {
@@ -1545,7 +1546,7 @@ select
 .fila_contenedor_servicio div
 {
     float: left;
-    width: 19%;
+    width: 16%;
     text-align: center;    
 }
 .fila_contenedor_servicio_reporte div
@@ -1554,6 +1555,7 @@ select
     width: 6%;
     text-align: left;
     margin-left: 20px;
+    cursor: initial;
 }
 .fila_contenedor_conductor div
 {

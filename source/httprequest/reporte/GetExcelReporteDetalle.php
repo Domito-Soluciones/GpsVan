@@ -7,6 +7,7 @@
     header("Content-type: application/vnd.ms-excel");
     header("Content-Disposition: attachment; filename=reporte.xls");
     $empresa = filter_input(INPUT_GET, 'empresa');
+    $cc = filter_input(INPUT_GET, 'cc');
     $conductor = filter_input(INPUT_GET, 'conductor');
     $desde = '';
     if(filter_input(INPUT_GET, 'desde') != '')
@@ -30,7 +31,7 @@
     $hhasta = filter_input(INPUT_GET, 'hhasta');
     $tipo = filter_input(INPUT_GET, 'tipo');
     $reporteDao = new ReporteDao();
-    $servicios = $reporteDao->getServiciosDetalle($empresa,$conductor,$desde,$hdesde,$hasta,$hhasta);
+    $servicios = $reporteDao->getServiciosDetalle($empresa,$cc,$conductor,$desde,$hdesde,$hasta,$hhasta);
 ?>
 <html>
     <head>
@@ -89,6 +90,27 @@
                 $servicioTarifa1 = $servicios[$i]->getTarifa1();
                 $servicioTarifa2 = $servicios[$i]->getTarifa2();
                 $servicioEstado = $servicios[$i]->getEstado();
+                if($servicioEstado == "0"){
+                    $servicioEstado = "Creado";
+                }
+                else if($servicioEstado === "1"){
+                    $servicioEstado = "En asignaci&oacute;n";            
+                }            
+                else if($servicioEstado === "2"){
+                    $servicioEstado = "Asignado";     
+                }
+                else if($servicioEstado === "3"){
+                    $servicioEstado = "Aceptado";            
+                }
+                else if($servicioEstado === "4"){
+                    $servicioEstado = "En Ruta";
+                }
+                else if($servicioEstado === "5"){
+                    $servicioEstado = "Finalizado"; 
+                }
+                else if($servicioEstado === "6"){
+                    $servicioEstado = "Cancelado"; 
+                }
                 $servicioObAd = $servicios[$i]->getObservacionesAdicionales();
                 echo "<tr>"
                 . "<td>".$servicioId."</td>"
@@ -99,6 +121,17 @@
                 . "<td>".$servicioHora."</td>"
                 . "<td>".$servicioMovil."</td>"
                 . "<td>".$servicioConductor."</td>";
+                
+                $cantidad = $servicios[$i]->getCantidadPasajeros();
+                $cantidadCC = $servicios[$i]->getCantidadPasajerosCC();
+                $aux0 = 0;
+                $aux = 0;
+                if($cantidad > 0){
+                    $aux0 = $servicioTarifa1 / $cantidad;
+                    $aux = $servicioTarifa2 / $cantidad;
+                }
+                $servicioTarifa1 = round($aux0 * $cantidadCC);
+                $servicioTarifa2 = round($aux * $cantidadCC);
                 if($tipo == 'CLIENTE'){
                     echo "<td>".$servicioTarifa2."</td>";
                 }

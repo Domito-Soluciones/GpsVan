@@ -3,17 +3,22 @@ include '../../conexion/Conexion.php';
 include '../../dominio/Servicio.php';
 
 class ReporteDao {
-    public function getServicios($empresa,$conductor,$desde,$hdesde,$hasta,$hhasta)
+    public function getServicios($empresa,$cc,$conductor,$desde,$hdesde,$hasta,$hhasta)
     {
         $array = array();
         $conn = new Conexion();
         try {
             $buscaEmpresa = '';
+            $buscaCC = '';
             $buscaConductor = '';
             $buscaFecha = '';
             if($empresa != '')
             {
                 $buscaEmpresa = " AND servicio_cliente = '$empresa' ";
+            }
+            if($cc != '')
+            {
+                $buscaCC = " AND pasajero_centro_costo = '$cc' ";
             }
             if($conductor != '')
             {
@@ -31,8 +36,8 @@ class ReporteDao {
             {
                 $buscaFecha = "AND servicio_fecha BETWEEN '".$desde." ".$hdesde."' AND '".$hasta." ".$hhasta."'";
             }
-            $query = "SELECT servicio_estado,count(*) as servicio_cantidad FROM tbl_servicio WHERE servicio_estado != 0 "
-                    .$buscaFecha." ".$buscaEmpresa." ".$buscaConductor. " GROUP BY servicio_estado";
+            $query = "SELECT servicio_estado,count(*) as servicio_cantidad FROM tbl_servicio LEFT JOIN tbl_servicio_pasajero ON servicio_id = servicio_pasajero_id_servicio LEFT JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id WHERE servicio_estado != 0 "
+                    .$buscaFecha." ".$buscaEmpresa." ".$buscaCC." ".$buscaConductor. " GROUP BY servicio_estado";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
@@ -45,17 +50,28 @@ class ReporteDao {
         return $array;
     }
     
-    public function getServiciosDetalle($empresa,$conductor,$desde,$hdesde,$hasta,$hhasta)
+    public function getServiciosDetalle($empresa,$cc,$conductor,$desde,$hdesde,$hasta,$hhasta)
     {
         $array = array();
         $conn = new Conexion();
         try {
             $buscaEmpresa = '';
+            $buscaCC = '';
             $buscaConductor = '';
             $buscaFecha = '';
+            $buscaGroup = 'GROUP BY servicio_id';
             if($empresa != '')
             {
                 $buscaEmpresa = " AND servicio_cliente = '$empresa' ";
+            }
+            if($cc != '')
+            {
+                if($cc == -1){
+                    $buscaGroup = 'GROUP BY servicio_id,pasajero_centro_costo';                    
+                }
+                else{
+                    $buscaCC = " AND pasajero_centro_costo = '$cc' ";
+                }
             }
             if($conductor != '')
             {
@@ -73,8 +89,8 @@ class ReporteDao {
             {
                 $buscaFecha = "AND servicio_fecha BETWEEN '".$desde." ".$hdesde."' AND '".$hasta." ".$hhasta."'";
             }
-            $query = "SELECT * FROM tbl_servicio LEFT JOIN tbl_conductor ON servicio_conductor = conductor_id WHERE servicio_estado != 0 "
-                    .$buscaFecha." ".$buscaEmpresa." ".$buscaConductor." ORDER BY servicio_fecha DESC,servicio_hora DESC";
+            $query = "SELECT *,(SELECT COUNT(*) FROM tbl_servicio_pasajero WHERE servicio_pasajero_id_servicio = s.servicio_id) AS pasajero_total,COUNT(*) AS pasajero_total_cc FROM tbl_servicio s LEFT JOIN tbl_servicio_pasajero ON servicio_id = servicio_pasajero_id_servicio LEFT JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id LEFT JOIN tbl_conductor ON servicio_conductor = conductor_id WHERE servicio_estado != 0 "
+                    .$buscaFecha." ".$buscaEmpresa." ".$buscaCC." ".$buscaConductor." ".$buscaGroup."  ORDER BY servicio_fecha DESC,servicio_hora DESC";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
@@ -92,6 +108,9 @@ class ReporteDao {
                 $servicio->setTarifa2($row["servicio_tarifa2"]);
                 $servicio->setEstado($row["servicio_estado"]);
                 $servicio->setObservacionesAdicionales($row["servicio_observacion_adicional"]);
+                $servicio->setCantidadPasajeros($row["pasajero_total"]);
+                $servicio->setCantidadPasajerosCC($row["pasajero_total_cc"]);
+                $servicio->setPasajeroCentroCosto($row["pasajero_centro_costo"]);
                 array_push($array, $servicio);
             }
         } catch (Exception $exc) {

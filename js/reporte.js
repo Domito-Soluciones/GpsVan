@@ -2,6 +2,7 @@
 var ESTADO_SERVICIO;
 var REPORTE;
 var EMPRESA;
+var CC;
 var CONDUCTOR;
 var DESDE;
 var HDESDE;
@@ -14,6 +15,7 @@ $(document).ready(function(){
     iniciarFecha([$("#desde"),$("#hasta")]);
     iniciarHora([$("#hdesde"),$("#hhasta")]);
     cargarClientes();
+    buscarCentrosCosto();
     cargarConductores();
     
     $("#buscar").click(function(){
@@ -35,7 +37,7 @@ $(document).ready(function(){
         else
         {
             let reporte = $("#reporte").val();
-            var params = "empresa="+EMPRESA+"&conductor="+CONDUCTOR+"&desde="+DESDE+"&hdesde="+HDESDE+"&hasta="+HASTA+"&hhasta="+HHASTA;
+            var params = "empresa="+EMPRESA+"&cc="+CC+"&conductor="+CONDUCTOR+"&desde="+DESDE+"&hdesde="+HDESDE+"&hasta="+HASTA+"&hhasta="+HHASTA;
             if(reporte === '0'){
                 exportar('reporte/GetExcelReporteTotal',params);
             }
@@ -56,7 +58,7 @@ $(document).ready(function(){
         }
         else
         {
-            var params = "empresa="+EMPRESA+"&conductor="+CONDUCTOR+"&desde="+DESDE+"&hdesde="+HDESDE+"&hasta="+HASTA+"&hhasta="+HHASTA;
+            var params = "empresa="+EMPRESA+"&cc="+CC+"&conductor="+CONDUCTOR+"&desde="+DESDE+"&hdesde="+HDESDE+"&hasta="+HASTA+"&hhasta="+HHASTA;
             let reporte = $("#reporte").val();
             if(reporte === '0'){
                 window.open(urlBase+"/reporte/GetPdfReporteTotal.php?"+params, '_blank');
@@ -68,6 +70,10 @@ $(document).ready(function(){
                 alertify.error("Seleccione el tipo de reporte");
             }
         }
+    });
+    
+    $("#empresa").change(function(){
+        buscarCentrosCosto($(this).val());
     });
 });
 
@@ -83,13 +89,14 @@ function buscarReporte(tipo)
 }
 
 function getReporteTotal(){
-    EMPRESA = $("#empresa").val();
+    EMPRESA = $("#empresa option:selected").text() === 'Seleccione' ? '' : $("#empresa option:selected").text();
+    CC = $("#cc").val();
     CONDUCTOR = $("#conductores").val();
     DESDE = $("#desde").val();
     HDESDE = $("#hdesde").val();
     HASTA = $("#hasta").val();
     HHASTA = $("#hhasta").val();
-    var params = {empresa : EMPRESA, conductor : CONDUCTOR,
+    var params = {empresa : EMPRESA, cc : CC, conductor : CONDUCTOR,
         desde : DESDE, hdesde : HDESDE, hasta : HASTA, hhasta : HHASTA};
     var url = urlBase + "/reporte/GetReporteTotal.php";
     var success = function(response)
@@ -113,13 +120,14 @@ function getReporteTotal(){
 }
 
 function getReporteDetalle(){
-    EMPRESA = $("#empresa").val();
+    EMPRESA = $("#empresa option:selected").text() === 'Seleccione' ? '' : $("#empresa option:selected").text();
+    CC = $("#cc").val();
     CONDUCTOR = $("#conductores").val();
     DESDE = $("#desde").val();
     HDESDE = $("#hdesde").val();
     HASTA = $("#hasta").val();
     HHASTA = $("#hhasta").val();
-    var params = {empresa : EMPRESA, conductor : CONDUCTOR,
+    var params = {empresa : EMPRESA, cc : CC, conductor : CONDUCTOR,
         desde : DESDE, hdesde : HDESDE, hasta : HASTA, hhasta : HHASTA};
     var url = urlBase + "/reporte/GetReporteDetalle.php";
     var success = function(response)
@@ -128,8 +136,8 @@ function getReporteDetalle(){
         var reporte = $("#contenedor_central");
         reporte.html("");
         reporte.append("<div class=\"contenedor_central_titulo_amplio\"><div>ID</div><div>Cliente</div><div>Ruta</div><div>Tipo Ruta</div>\n\
-                            <div>Fecha</div><div>Hora</div><div>Movil</div><div>Conductor</div>\n\
-                            <div>Tarifa 1</div><div>Tarifa 2</div><div>Estado</div><div style=\"width:20%\">Observación adicional</div></div>");
+                            <div>Fecha</div><div>Hora</div><div>Tarifa 1</div><div>Tarifa 2</div><div>Movil</div><div>Conductor</div>\n\
+                            <div>Estado</div><div style=\"width:20%\">Observación adicional</div></div>");
         for(var i = 0 ; i < response.length; i++){
             let servicio = response[i];
             let id = servicio.servicio_id;
@@ -140,13 +148,31 @@ function getReporteDetalle(){
             let hora = servicio.servicio_hora;
             let movil = servicio.servicio_movil === '' ? '-' : servicio.servicio_movil;
             let conductor = servicio.servicio_conductor === ' ' ? '-' : servicio.servicio_conductor;
-            let tarifa1 = formatoMoneda(servicio.servicio_tarifa1);
-            let tarifa2 = formatoMoneda(servicio.servicio_tarifa2);
+            let tarifa1 = servicio.servicio_tarifa1;
+            let tarifa2 = servicio.servicio_tarifa2;
+            if(CC !== ''){
+                var cantidad = servicio.servicio_cpasajeros;
+                var cantidadCC = servicio.servicio_cpasajeros_cc;
+                var aux1 = tarifa1 / cantidad;
+                var aux2 = tarifa2 / cantidad;
+                tarifa1 = formatoMoneda(Math.round(aux1 * cantidadCC));
+                tarifa2 = formatoMoneda(Math.round(aux2 * cantidadCC));
+            }
             let estado = obtenerEstadoServicio(servicio.servicio_estado);
             let observacion = servicio.servicio_observacion_adicional;
-            reporte.append("<div class=\"fila_contenedor fila_contenedor_servicio_reporte\"><div>"+id+"</div><div>"+cliente+"</div><div>"+ruta+"</div><div>"+truta+"</div>\n\
-                            <div>"+fecha+"</div><div>"+hora+"</div><div>"+movil+"</div><div>"+conductor+"</div>\n\
-                            <div>"+tarifa1+"</div><div>"+tarifa2+"</div><div>"+estado+"</div><div style=\"width:20%\">"+observacion+"</div></div>");
+            reporte.append("<div class=\"fila_contenedor fila_contenedor_servicio_reporte\">"+
+                            "<div>"+id+"</div>"+
+                            "<div>"+cliente+"</div>"+
+                            "<div>"+ruta+"</div>"+
+                            "<div>"+truta+"</div>"+
+                            "<div>"+fecha+"</div>"+
+                            "<div>"+hora+"</div>"+
+                            "<div>"+tarifa1+"</div>"+
+                            "<div>"+tarifa2+"</div>"+
+                            "<div>"+movil+"</div>"+
+                            "<div>"+conductor+"</div>"+
+                            "<div>"+estado+"</div>"+
+                            "<div style=\"width:20%\">"+observacion+"</div></div>");
     
         }
     };
@@ -162,8 +188,9 @@ function cargarClientes()
         $("#empresa").html("<option value=\"\">Seleccione</option>");
         for(var i = 0 ; i < response.length ; i++)
         {
+            var id = response[i].cliente_id;
             var nombre = response[i].cliente_razon;
-            $("#empresa").append("<option value=\""+nombre+"\">"+nombre+"</option>");
+            $("#empresa").append("<option value=\""+id+"\">"+nombre+"</option>");
         }
     };
     postRequest(url,params,success);
@@ -215,4 +242,20 @@ function obtenerEstadoServicio(servicio)
     {
         return "Cancelado"; 
     }
+}
+
+function buscarCentrosCosto(cliente = '')
+{
+    var params = {cliente : cliente};
+    var url = urlBase + "/cliente/GetCentroCosto.php";
+    var success = function(response)
+    { 
+        $("#cc").html("<option value=\"\">Seleccione</option>");
+        for(var i = 0; i < response.length ; i++){
+            var value = response[i].cc_nombre;
+            $("#cc").append("<option value='"+value+"'>"+value+"</option>");
+        }
+    };
+    postRequest(url,params,success);
+    
 }

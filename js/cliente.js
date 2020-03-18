@@ -1222,9 +1222,10 @@ function agregarTarifa(){
 
 function modificarTarifa()
 {
-    if(typeof ID_TARIFA === 'undefined'){
+    if(typeof $("#tipo").val() === 'undefined'){
         return ;
     }
+    alert($("#tipo").val());
     var id = ID_TARIFA;
     var cliente = $("#clientes").val();;
     var tipo = $("#tipo").val();

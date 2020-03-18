@@ -6,6 +6,7 @@ include '../../log/Log.php';
     $pdf = new FPDF();
     $pdf->AddPage();
     $empresa = filter_input(INPUT_GET, 'empresa');
+    $cc = filter_input(INPUT_GET, 'cc');
     $conductor = filter_input(INPUT_GET, 'conductor');
     $desde = '';
     if(filter_input(INPUT_GET, 'desde') != '')
@@ -29,7 +30,7 @@ include '../../log/Log.php';
     $hhasta = filter_input(INPUT_GET, 'hhasta');
     $tipo = filter_input(INPUT_GET, 'tipo');
     $reporteDao = new ReporteDao();
-    $servicios = $reporteDao->getServiciosDetalle($empresa,$conductor,$desde,$hdesde,$hasta,$hhasta);
+    $servicios = $reporteDao->getServiciosDetalle($empresa,$cc,$conductor,$desde,$hdesde,$hasta,$hhasta);
     
     $width = 20;
     $widthG = 35;
@@ -52,7 +53,7 @@ include '../../log/Log.php';
         $pdf->Cell($widthB,$height,'Tarifa 1',1);
         $pdf->Cell($widthB,$height,'Tarifa 2',1);
     }
-    $pdf->Cell($widthB,$height,'Estado',1);
+    //$pdf->Cell($widthB,$height,'Estado',1);
 //    $pdf->Cell($width,$height,'Observacion adicional',1);
     $pdf->Ln();
     
@@ -79,6 +80,16 @@ include '../../log/Log.php';
         $pdf->Cell($width,$height,$servicioHora,1);
 //        $pdf->Cell($width,$height,$servicioMovil,1);
 //        $pdf->Cell($width,$height,$servicioConductor,1);
+        $cantidad = $servicios[$i]->getCantidadPasajeros();
+        $cantidadCC = $servicios[$i]->getCantidadPasajerosCC();
+        $aux0 = 0;
+        $aux = 0;
+        if($cantidad > 0){
+            $aux0 = $servicioTarifa1 / $cantidad;
+            $aux = $servicioTarifa2 / $cantidad;
+        }
+        $servicioTarifa1 = round($aux0 * $cantidadCC);
+        $servicioTarifa2 = round($aux * $cantidadCC);
         if($tipo == 'CLIENTE'){
             $pdf->Cell($widthB,$height,$servicioTarifa1,1);
         }
@@ -86,7 +97,7 @@ include '../../log/Log.php';
             $pdf->Cell($widthB,$height,$servicioTarifa1,1);
             $pdf->Cell($widthB,$height,$servicioTarifa2,1);
         }
-        $pdf->Cell($widthB,$height,$servicioEstado,1);
+        //$pdf->Cell($widthB,$height,$servicioEstado,1);
 //        $pdf->Cell($width,$height,$servicioObAd,1);
         $pdf->Ln();
     }

@@ -7,6 +7,7 @@
     header("Content-type: application/vnd.ms-excel");
     header("Content-Disposition: attachment; filename=reporte.xls");
     $empresa = filter_input(INPUT_GET, 'empresa');
+    $cc = filter_input(INPUT_GET, 'cc');
     $conductor = filter_input(INPUT_GET, 'conductor');
     $desde = '';
     if(filter_input(INPUT_GET, 'desde') != '')
@@ -29,7 +30,7 @@
     }
     $hhasta = filter_input(INPUT_GET, 'hhasta');
     $reporteDao = new ReporteDao();
-    $servicios = $reporteDao->getServicios($empresa,$conductor,$desde,$hdesde,$hasta,$hhasta);
+    $servicios = $reporteDao->getServicios($empresa,$cc,$conductor,$desde,$hdesde,$hasta,$hhasta);
     $serviciosFinalizados = 0;
     $serviciosEnRuta = 0;
     $serviciosPorRealizar = 0;

@@ -5,6 +5,7 @@ include '../../log/Log.php';
 
 header('Content-Type: application/json; charset=utf-8');
 $empresa = filter_input(INPUT_POST, 'empresa');
+$cc = filter_input(INPUT_POST, 'cc');
 $conductor = filter_input(INPUT_POST, 'conductor');
 $desde = '';
 if(filter_input(INPUT_POST, 'desde') != '')
@@ -27,7 +28,7 @@ else
 }
 $hhasta = filter_input(INPUT_POST, 'hhasta');
 $reporteDao = new ReporteDao();
-$servicios = $reporteDao->getServicios($empresa,$conductor,$desde,$hdesde,$hasta,$hhasta);
+$servicios = $reporteDao->getServicios($empresa,$cc,$conductor,$desde,$hdesde,$hasta,$hhasta);
 $serviciosFinalizados = 0;
 $serviciosEnRuta = 0;
 $serviciosPorRealizar = 0;

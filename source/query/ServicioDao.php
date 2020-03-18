@@ -201,6 +201,7 @@ class ServicioDao {
             $buscaEstado = '';
             $buscaFecha = '';
             $buscaTRuta = '';
+            $buscaGroup = 'GROUP BY servicio_id';
             if($id != '')
             {
                 $buscaId = " AND servicio_id LIKE '%$id%' ";
@@ -211,7 +212,12 @@ class ServicioDao {
             }
             if($cc != '')
             {
-                $buscaCC = " AND pasajero_centro_costo = '$cc' ";
+                if($cc == -1){
+                    $buscaGroup = 'GROUP BY servicio_id,pasajero_centro_costo';                    
+                }
+                else{
+                    $buscaCC = " AND pasajero_centro_costo = '$cc' ";
+                }
             }
             if($conductor != '')
             {
@@ -243,7 +249,7 @@ class ServicioDao {
             }
             $query = "SELECT *,(SELECT COUNT(*) FROM tbl_servicio_pasajero WHERE servicio_pasajero_id_servicio = s.servicio_id) AS pasajero_total,COUNT(*) AS pasajero_total_cc FROM tbl_servicio s LEFT JOIN tbl_servicio_pasajero ON servicio_id = servicio_pasajero_id_servicio LEFT JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id WHERE servicio_estado != 0 "
                     .$buscaFecha." ".$buscaId." ".$buscaEmpresa." ".$buscaCC." ".$buscaConductor." ". $buscaTRuta." ".$buscaMovil." ".$buscaEstado
-                    . " GROUP BY servicio_id ORDER BY servicio_fecha DESC,servicio_hora DESC LIMIT 5000";
+                    . " ".$buscaGroup." ORDER BY servicio_fecha DESC,servicio_hora DESC LIMIT 5000";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
@@ -263,6 +269,7 @@ class ServicioDao {
                 $servicio->setObservacionesAdicionales($row["servicio_observacion_adicional"]);
                 $servicio->setCantidadPasajeros($row["pasajero_total"]);
                 $servicio->setCantidadPasajerosCC($row["pasajero_total_cc"]);
+                $servicio->setPasajeroCentroCosto($row["pasajero_centro_costo"]);
                 array_push($array, $servicio);
             }
         } catch (Exception $exc) {

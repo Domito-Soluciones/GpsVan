@@ -10,7 +10,7 @@ class TarifaDao {
         $array = array();
         $conn = new Conexion();
         try {
-            $query = "SELECT * FROM tbl_tarifa WHERE tarifa_cliente = '".$busqueda."'";
+            $query = "SELECT * FROM tbl_tarifa WHERE tarifa_cliente = '".$busqueda."' ORDER BY tarifa_descripcion";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
@@ -97,12 +97,12 @@ class TarifaDao {
         return $array;
     }
     
-    function eliminarTarifa($id)
+    function eliminarTarifa($idTarifa)
     {
         $id = 0;
         $conn = new Conexion();
         try {
-            $query = "DELETE FROM tbl_tarifa WHERE tarifa_id = '$id'"; 
+            $query = "DELETE FROM tbl_tarifa WHERE tarifa_id = '$idTarifa'"; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);

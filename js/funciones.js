@@ -868,7 +868,7 @@ function obtenerEstadoServicio(servicio)
     }
     else if(servicio === EN_PROCCESO_DE_ASIGNACION)
     {
-        return "En proceso de asignaci&oacute;n";            
+        return "En asignaci&oacute;n";            
     }
     else if(servicio === ASIGNADO)
     {
