@@ -71,6 +71,9 @@
                 <td>Tarifa 1</td>
                 <td>Tarifa 2</td>
                 <?php
+                    if($cc == '-1'){
+                        echo "<td>Centro de costo</td>";
+                    }
                 }
                 ?>
                 <td>Estado</td>
@@ -90,6 +93,7 @@
                 $servicioTarifa1 = $servicios[$i]->getTarifa1();
                 $servicioTarifa2 = $servicios[$i]->getTarifa2();
                 $servicioEstado = $servicios[$i]->getEstado();
+                $servicioCC = $servicios[$i]->getPasajeroCentroCosto();
                 if($servicioEstado == "0"){
                     $servicioEstado = "Creado";
                 }
@@ -138,7 +142,10 @@
                 else{
                     echo "<td>".$servicioTarifa1."</td>"
                     . "<td>".$servicioTarifa2."</td>";
-                }       
+                }
+                if($cc == '-1'){
+                    echo "<td>".$servicioCC."</td>";
+                }
                 echo "<td>".$servicioEstado."</td>"
                 . "<td>".$servicioObAd."</td>"
                 . "</tr>";

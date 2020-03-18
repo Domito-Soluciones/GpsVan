@@ -45,6 +45,9 @@ for ($i = 0 ; $i < count($servicios); $i++)
     $servicioAgente = $servicios[$i]->getAgente();
     $servicioEstado = $servicios[$i]->getEstado();
     $servicioObAd = $servicios[$i]->getObservacionesAdicionales();
+    $cantidad = $servicios[$i]->getCantidadPasajeros();
+    $cantidadCC = $servicios[$i]->getCantidadPasajerosCC();
+    $pasajeroCentroCosto = $servicios[$i]->getPasajeroCentroCosto();
     echo "{\"servicio_id\":\"".$servicioId."\","
         . "\"servicio_cliente\":\"".$servicioCliente."\","
         . "\"servicio_ruta\":\"".$servicioRuta."\","
@@ -57,6 +60,9 @@ for ($i = 0 ; $i < count($servicios); $i++)
         . "\"servicio_tarifa2\":\"".$servicioTarifa2."\","
         . "\"servicio_agente\":\"".$servicioAgente."\","
         . "\"servicio_estado\":\"".$servicioEstado."\","
+        . "\"servicio_cpasajeros\":\"".$cantidad."\","
+        . "\"servicio_cpasajeros_cc\":\"".$cantidadCC."\","
+        . "\"servicio_pasajero_cc\":\"".$pasajeroCentroCosto."\","
         . "\"servicio_observacion_adicional\":\"".trim($servicioObAd)."\""
         . "}";
     if (($i+1) != count($servicios))

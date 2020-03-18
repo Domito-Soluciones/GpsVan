@@ -12,13 +12,19 @@ class ReporteDao {
             $buscaCC = '';
             $buscaConductor = '';
             $buscaFecha = '';
+            $buscaGroup = 'GROUP BY servicio_id';
             if($empresa != '')
             {
                 $buscaEmpresa = " AND servicio_cliente = '$empresa' ";
             }
             if($cc != '')
             {
-                $buscaCC = " AND pasajero_centro_costo = '$cc' ";
+                if($cc == -1){
+                    $buscaGroup = 'GROUP BY servicio_id,pasajero_centro_costo';                    
+                }
+                else{
+                    $buscaCC = " AND pasajero_centro_costo = '$cc' ";
+                }
             }
             if($conductor != '')
             {
@@ -37,7 +43,8 @@ class ReporteDao {
                 $buscaFecha = "AND servicio_fecha BETWEEN '".$desde." ".$hdesde."' AND '".$hasta." ".$hhasta."'";
             }
             $query = "SELECT servicio_estado,count(*) as servicio_cantidad FROM tbl_servicio LEFT JOIN tbl_servicio_pasajero ON servicio_id = servicio_pasajero_id_servicio LEFT JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id WHERE servicio_estado != 0 "
-                    .$buscaFecha." ".$buscaEmpresa." ".$buscaCC." ".$buscaConductor. " GROUP BY servicio_estado";
+                    .$buscaFecha." ".$buscaEmpresa." ".$buscaCC." ".$buscaConductor. "  ".$buscaGroup;
+            echo $query;
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {

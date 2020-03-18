@@ -119,7 +119,7 @@ function getReporteTotal(){
     postRequest(url,params,success);
 }
 
-function getReporteDetalle(){
+function getReporteDetalle(){ 
     EMPRESA = $("#empresa option:selected").text() === 'Seleccione' ? '' : $("#empresa option:selected").text();
     CC = $("#cc").val();
     CONDUCTOR = $("#conductores").val();
@@ -136,7 +136,7 @@ function getReporteDetalle(){
         var reporte = $("#contenedor_central");
         reporte.html("");
         reporte.append("<div class=\"contenedor_central_titulo_amplio\"><div>ID</div><div>Cliente</div><div>Ruta</div><div>Tipo Ruta</div>\n\
-                            <div>Fecha</div><div>Hora</div><div>Tarifa 1</div><div>Tarifa 2</div><div>Movil</div><div>Conductor</div>\n\
+                            <div>Fecha</div><div>Tarifa 1</div><div>Tarifa 2</div>"+(CC === "-1" ? "<div>Centro de costo</div>" : "") +"<div>Movil</div><div>Conductor</div>\n\
                             <div>Estado</div><div style=\"width:20%\">Observación adicional</div></div>");
         for(var i = 0 ; i < response.length; i++){
             let servicio = response[i];
@@ -150,14 +150,17 @@ function getReporteDetalle(){
             let conductor = servicio.servicio_conductor === ' ' ? '-' : servicio.servicio_conductor;
             let tarifa1 = servicio.servicio_tarifa1;
             let tarifa2 = servicio.servicio_tarifa2;
-            if(CC !== ''){
-                var cantidad = servicio.servicio_cpasajeros;
-                var cantidadCC = servicio.servicio_cpasajeros_cc;
-                var aux1 = tarifa1 / cantidad;
-                var aux2 = tarifa2 / cantidad;
-                tarifa1 = formatoMoneda(Math.round(aux1 * cantidadCC));
-                tarifa2 = formatoMoneda(Math.round(aux2 * cantidadCC));
+            var cantidad = response[i].servicio_cpasajeros;
+            var cantidadCC = response[i].servicio_cpasajeros_cc;
+            var pasajeroCC = response[i].servicio_pasajero_cc === '' ? '-' : response[i].servicio_pasajero_cc ;
+            var aux = 0;
+            var aux1 = 0;
+            if(cantidad > 0){
+                aux = tarifa1 / cantidad;
+                aux1 = tarifa2 / cantidad;
             }
+            tarifa1 = Math.round(aux * cantidadCC);
+            tarifa2 = Math.round(aux1 * cantidadCC);
             let estado = obtenerEstadoServicio(servicio.servicio_estado);
             let observacion = servicio.servicio_observacion_adicional;
             reporte.append("<div class=\"fila_contenedor fila_contenedor_servicio_reporte\">"+
@@ -165,10 +168,10 @@ function getReporteDetalle(){
                             "<div>"+cliente+"</div>"+
                             "<div>"+ruta+"</div>"+
                             "<div>"+truta+"</div>"+
-                            "<div>"+fecha+"</div>"+
-                            "<div>"+hora+"</div>"+
-                            "<div>"+tarifa1+"</div>"+
-                            "<div>"+tarifa2+"</div>"+
+                            "<div>"+fecha+" "+hora+"</div>"+
+                            "<div>$ "+tarifa1+"</div>"+
+                            "<div>$ "+tarifa2+"</div>"+
+                            (CC === "-1" ? "<div>"+pasajeroCC+"</div>" : "") +
                             "<div>"+movil+"</div>"+
                             "<div>"+conductor+"</div>"+
                             "<div>"+estado+"</div>"+
@@ -220,7 +223,7 @@ function obtenerEstadoServicio(servicio)
     }
     else if(servicio === EN_PROCCESO_DE_ASIGNACION)
     {
-        return "En proceso de asignaci&oacute;n";            
+        return "En asignaci&oacute;n";            
     }
     else if(servicio === ASIGNADO)
     {
@@ -250,7 +253,7 @@ function buscarCentrosCosto(cliente = '')
     var url = urlBase + "/cliente/GetCentroCosto.php";
     var success = function(response)
     { 
-        $("#cc").html("<option value=\"\">Seleccione</option>");
+        $("#cc").html("<option value=\"\">Seleccione</option></option><option value=\"-1\">Todos</option>");
         for(var i = 0; i < response.length ; i++){
             var value = response[i].cc_nombre;
             $("#cc").append("<option value='"+value+"'>"+value+"</option>");

@@ -129,7 +129,6 @@ function buscarServicio()
             var hora = response[i].servicio_hora;
             var estado = response[i].servicio_estado;
             var tarifa = response[i].servicio_tarifa2 ;
-            //if(cc !== ''){
             var cantidad = response[i].servicio_cpasajeros;
             var cantidadCC = response[i].servicio_cpasajeros_cc;
             var aux = 0;
@@ -137,7 +136,6 @@ function buscarServicio()
                 aux = tarifa / cantidad;
             }
             tarifa = Math.round(aux * cantidadCC);
-            //}
             var pasajeroCC = response[i].servicio_pasajero_cc === '' ? '-' : response[i].servicio_pasajero_cc ;
             var movil = response[i].servicio_movil === '' ? '-' : response[i].servicio_movil ;
             var elim ='';
