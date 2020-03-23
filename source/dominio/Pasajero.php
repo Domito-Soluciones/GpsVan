@@ -24,6 +24,7 @@ class Pasajero {
     private $empresaDireccion;
     private $ruta;
     private $empresaNombre;
+    private $index;
     
     function getId() {
         return $this->id;
@@ -200,8 +201,15 @@ class Pasajero {
     function setEmpresaNombre($empresaNombre) {
         $this->empresaNombre = $empresaNombre;
     }
+    function getIndex() {
+        return $this->index;
+    }
 
-    
+    function setIndex($index) {
+        $this->index = $index;
+    }
+
+        
     function toString() {
         return "Pasajero{" . "id=" . $this->id . ", nombre=" . $this->nombre . ", papellido=" . $this->papellido . ", mapellido=" .
         $this->mapellido . ", rut=" . $this->rut . ", nick=" . $this->nick . ", password=" . $this->password . ", telefono=" . $this->telefono .

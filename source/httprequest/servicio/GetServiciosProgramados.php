@@ -32,6 +32,7 @@ for ($i = 0 ; $i < count($servicios); $i++)
     $pasajeroNombre = $servicio->getPasajero()->getNombre();
     $pasajeroCelular = $servicio->getPasajero()->getCelular();
     $pasajeroEstado = $servicio->getPasajero()->getEstado();
+    $index = $servicio->getPasajero()->getIndex();
     $destino = $servicio->getDestino();
         echo "{\"servicio_id\":\"".$id."\","
             . "\"servicio_cliente\":\"".$cliente."\","
@@ -49,6 +50,7 @@ for ($i = 0 ; $i < count($servicios); $i++)
             . "\"servicio_pasajero_nombre\":\"".$pasajeroNombre."\","
             . "\"servicio_pasajero_celular\":\"".$pasajeroCelular."\","
             . "\"servicio_pasajero_estado\":\"".$pasajeroEstado."\","
+            . "\"servicio_pasajero_index\":\"".$index."\","
             . "\"servicio_destino\":\"".$destino."\"}";
         
         if (($i+1) != count($servicios))

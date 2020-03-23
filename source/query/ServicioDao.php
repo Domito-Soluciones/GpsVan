@@ -89,12 +89,14 @@ class ServicioDao {
         $conn = new Conexion();
         try {
             $query = "";
+            $j = 0;
             for($i = 0 ; $i < count($pasajeros) ; $i++)
             {
                 if($pasajeros[$i] != "")
                 {
                     $destino = str_replace("'","\'",$destinos[$i]);
-                    $query .= "INSERT INTO tbl_servicio_pasajero (servicio_pasajero_id_servicio,servicio_pasajero_id_pasajero,servicio_pasajero_destino) VALUES ($idServicio,'$pasajeros[$i]','$destino');"; 
+                    $query .= "INSERT INTO tbl_servicio_pasajero (servicio_pasajero_id_servicio,servicio_pasajero_id_pasajero,servicio_pasajero_destino,servicio_pasajero_index) VALUES ($idServicio,'$pasajeros[$i]','$destino','$j');"; 
+                    $j++;
                 }
             }
             $conn->conectar();
@@ -382,7 +384,7 @@ class ServicioDao {
                     $servicioPasajero->setPasajero($nombre[0]);
                 }
                 $servicioPasajero->setEstado($row["servicio_pasajero_estado"]);
-                $servicioPasajero->setEstadoCancelacion($row["pasajero_estado_cancelado"]);
+                $servicioPasajero->setEstadoCancelacion($row["servicio_pasajero_estado_cancelado"]);
                 $servicioPasajero->setHora($row["servicio_pasajero_hora_destino"]);
                 $servicioPasajero->setLatDestino($row["servicio_pasajero_lat_destino"]);
                 $servicioPasajero->setLonDestino($row["servicio_pasajero_lon_destino"]);
@@ -534,7 +536,7 @@ class ServicioDao {
             $query = "SELECT servicio_id,servicio_cliente,servicio_ruta,servicio_truta,servicio_fecha,"
                     . "servicio_hora,servicio_conductor,servicio_estado,servicio_tarifa1,"
                     . "servicio_observacion,servicio_conductor,movil_nombre,servicio_pasajero_id,"
-                    . "servicio_pasajero_estado,servicio_pasajero_id_pasajero,servicio_pasajero_destino,pasajero_id,pasajero_nombre,pasajero_papellido,pasajero_celular,cliente_direccion "
+                    . "servicio_pasajero_estado,servicio_pasajero_id_pasajero,servicio_pasajero_destino,servicio_pasajero_index,pasajero_id,pasajero_nombre,pasajero_papellido,pasajero_celular,cliente_direccion "
                     . " FROM tbl_servicio JOIN tbl_servicio_pasajero ON"
                     . " servicio_id = servicio_pasajero_id_servicio "
                     . "JOIN tbl_movil ON servicio_movil = movil_nombre "
@@ -572,6 +574,7 @@ class ServicioDao {
                     //}
                 }
                 $pasajero->setEstado($row["servicio_pasajero_estado"]);
+                $pasajero->setIndex($row["servicio_pasajero_index"]);
                 $servicio->setPasajero($pasajero);
                 $servicio->setDestino($row["servicio_pasajero_destino"]);
                 array_push($array, $servicio);
@@ -622,7 +625,7 @@ class ServicioDao {
             $query = "SELECT servicio_id,servicio_cliente,servicio_ruta,servicio_truta,servicio_fecha,"
                     . "servicio_hora,servicio_conductor,servicio_estado,servicio_tarifa1,"
                     . "servicio_observacion,servicio_conductor,movil_nombre,"
-                    . "servicio_pasajero_estado,servicio_pasajero_id_pasajero,servicio_pasajero_destino,pasajero_id,pasajero_nombre,pasajero_papellido,pasajero_celular,cliente_direccion "
+                    . "servicio_pasajero_estado,servicio_pasajero_id_pasajero,servicio_pasajero_index, servicio_pasajero_destino,pasajero_id,pasajero_nombre,pasajero_papellido,pasajero_celular,cliente_direccion "
                     . " FROM tbl_servicio JOIN tbl_servicio_pasajero ON"
                     . " servicio_id = servicio_pasajero_id_servicio "
                     . "JOIN tbl_movil ON servicio_movil = movil_nombre "
@@ -657,6 +660,7 @@ class ServicioDao {
                     $pasajero->setCelular($data[1]);
                 }
                 $pasajero->setEstado($row["servicio_pasajero_estado"]);
+                $pasajero->setIndex($row["servicio_pasajero_index"]);
                 $servicio->setPasajero($pasajero);
                 $servicio->setDestino($row["servicio_pasajero_destino"]);
                 array_push($array, $servicio);
@@ -917,7 +921,7 @@ class ServicioDao {
             {
                 $stLatlng = ",servicio_pasajero_hora_destino = CURRENT_TIME(),servicio_pasajero_lat_destino = $lat, servicio_pasajero_lon_destino = $lon ";
             }
-            $query = "UPDATE tbl_servicio_pasajero SET servicio_pasajero_estado = $estado,pasajero_estado_cancelado = '$observacion' ".$stLatlng." WHERE servicio_pasajero_id_servicio = $idServicio AND servicio_pasajero_id_pasajero  = '$idPasajero'";
+            $query = "UPDATE tbl_servicio_pasajero SET servicio_pasajero_estado = $estado,servicio_pasajero_estado_cancelado = '$observacion' ".$stLatlng." WHERE servicio_pasajero_id_servicio = $idServicio AND servicio_pasajero_id_pasajero  = '$idPasajero'";
             $conn->conectar();
             if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
