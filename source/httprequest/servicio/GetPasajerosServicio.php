@@ -15,6 +15,7 @@ for ($i = 0 ; $i < count($servicios); $i++)
     $servicio = $servicios[$i];
     $id = $servicio->getId();
     $pasajero = $servicio->getPasajero();
+    $celular = $servicio->getCelular();
     $hora = $servicio->getHora();
     $estado = $servicio->getEstado();
     $estadoCancelacion = $servicio->getEstadoCancelacion();
@@ -25,6 +26,7 @@ for ($i = 0 ; $i < count($servicios); $i++)
     $tarifa = $servicio->getTarifa();
         echo "{\"servicio_id\":\"".$id."\","
             . "\"servicio_pasajero\":\"".$pasajero."\","
+            . "\"servicio_pasajero_celular\":\"".$celular."\","
             . "\"servicio_hora_destino\":\"".$hora."\","
             . "\"servicio_estado\":\"".$estado."\","
             . "\"servicio_estado_cancelacion\":\"".trim($estadoCancelacion)."\","

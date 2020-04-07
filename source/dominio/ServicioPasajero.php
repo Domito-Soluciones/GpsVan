@@ -4,6 +4,7 @@ class ServicioPasajero {
     private $id;
     private $pasajero;
     private $destino;
+    private $celular;
     private $latDestino;
     private $lonDestino;
     private $hora;
@@ -11,7 +12,7 @@ class ServicioPasajero {
     private $estadoCancelacion;
     private $centroCosto;
     private $tarifa;
-    
+
     function getId() {
         return $this->id;
     }
@@ -90,6 +91,14 @@ class ServicioPasajero {
 
     function setTarifa($tarifa) {
         $this->tarifa = $tarifa;
+    }
+    
+    function getCelular() {
+        return $this->celular;
+    }
+
+    function setCelular($celular) {
+        $this->celular = $celular;
     }
 
         

@@ -1225,7 +1225,6 @@ function modificarTarifa()
     if(typeof $("#tipo").val() === 'undefined'){
         return ;
     }
-    alert($("#tipo").val());
     var id = ID_TARIFA;
     var cliente = $("#clientes").val();;
     var tipo = $("#tipo").val();
@@ -1635,7 +1634,6 @@ function preAgregarTarifa(){
                    tarifa_valor1:valor1,tarifa_valor2:valor2,tarifa_cliente:cliente,
                    tarifa_tipo:tipo,tarifa_horario:horario};
         TARIFAS_ADD.push(obj);
-        console.log(JSON.stringify(TARIFAS_ADD));
         ocultarMapa();
         buscarTarifas(ID_CLIENTE,NOMBRE_CLIENTE);
     }

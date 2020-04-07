@@ -10,7 +10,9 @@ var NOMBRE_RUTA = '';
 var TIPO_RUTA = '';
 var flightPath;
 var ASIGNANDO = false;
+var EDITANDO = false;
 var menus = new Map();
+var ID_SERVICIO;
 
 $(document).ready(function(){
     

@@ -1,5 +1,5 @@
 
-/* global MODIFICADO, alertify, PAGINA_ANTERIOR, INTERVAL_SERVICIOS, MENU_OCULTO, PLACES_AUTOCOMPLETE_API, POSITION, API_KEY, google, map, flightPath, markers, menus, interval */
+/* global MODIFICADO, alertify, PAGINA_ANTERIOR, INTERVAL_SERVICIOS, MENU_OCULTO, PLACES_AUTOCOMPLETE_API, POSITION, API_KEY, google, map, flightPath, markers, menus, interval, EDITANDO */
 var PAGINA_ANTERIOR;
 var MODIFICADO = false;
 var KEY = "DGFSGHJRTJTHWGWEJNGWI9EFN";
@@ -197,15 +197,20 @@ function cambiarModulo(pagina,params = null){
                     {
                         if(pagina === 'panel' && params !== null)
                         {
-                            $("#ids").val(params.ids);
-                            $("#clientes").val(params.clientes);
-//                            $("#ruta").val(params.ruta);
-                            $("#fechaDesde").val(params.fechas);
-                            $("#hora").val(params.hora);
-                            $("#observacion").val(params.observacion);
-                            TIPO_SERVICIO = params.tipo;
-                            NOMBRE_RUTA = params.ruta;
-                            TIPO_RUTA = params.truta;
+                            if(EDITANDO){
+                                $("#ids").val(params.ids);
+                            }
+                            else{
+                                $("#ids").val(params.ids);
+                                $("#clientes").val(params.clientes);
+    //                            $("#ruta").val(params.ruta);
+                                $("#fechaDesde").val(params.fechas);
+                                $("#hora").val(params.hora);
+                                $("#observacion").val(params.observacion);
+                                TIPO_SERVICIO = params.tipo;
+                                NOMBRE_RUTA = params.ruta;
+                                TIPO_RUTA = params.truta;
+                            }
                         }
                         mostrarMapa();
                     }
@@ -307,7 +312,7 @@ function resetPagina()
 function cerrarSession(response)
 {
     if(response.resp === 'return')
-    {b
+    {
         alertify.error('Sesión expirada');
         location.href = "index.php";
         return;

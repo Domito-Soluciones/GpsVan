@@ -18,6 +18,7 @@ var DESDE;
 var HDESDE;
 var HASTA;
 var HHASTA;
+
 $(document).ready(function(){
     window.onbeforeunload = ()=>{};
     if(TIPO_USUARIO !== 'CLIENTE'){
@@ -277,6 +278,7 @@ function abrirBuscador(id,tarifa)
             cargarRutas();
         });
         $("#volver").click(function(){
+            EDITANDO = false;
             buscarServicio();
         });
         $("#movilServicio").change(function () {
@@ -319,7 +321,8 @@ function modificarServicio()
     var array = [cliente,ruta,fecha,hora,estado,tarifa1,tarifa2];
     var params = {id : id,cliente : cliente,ruta : ruta, truta : truta,fecha : fecha, hora : hora,
         estado : estado,movil : movil, conductor : conductor, tarifa1 : tarifa1, tarifa2 : tarifa2};
-    if(!validarCamposOr(array))
+ 
+   if(!validarCamposOr(array))
     {
         activarPestania(array);
         alertify.error("Ingrese todos los campos necesarios");
@@ -535,11 +538,25 @@ function obtenerPasajeros()
     var url = urlBase + "/servicio/GetPasajerosServicio.php";
     var success = function(response)
     {
+        $("#editarPasajero").click(()=>{
+            if(ESTADO_SERVICIO === '1' || ESTADO_SERVICIO === '2' || ESTADO_SERVICIO === '3'){
+                abrirServicio(ID_SERVICIO);
+            }
+            else if(ESTADO_SERVICIO  === '4'){
+                alertify.error("El servicio ya se encuentra en curso");
+            }
+            else if(ESTADO_SERVICIO  === '5'){
+                alertify.error("El servicio se encuentra finalizado");
+            }
+            else if(ESTADO_SERVICIO  === '6'){
+                alertify.error("El servicio se encuentra cancelado");
+            }
+        });
         SERVICIOS_PASAJEROS = response;
         $("#pasajeros_contenido").html("");
         for(var i = 0; i < response.length; i++)
         {
-            var pasajero = response[i].servicio_pasajero;
+            var pasajero = response[i].servicio_pasajero.replace("_"," ");
             var horaDestino = response[i].servicio_hora_destino === '00:00:00'?"-":response[i].servicio_hora_destino;
             var estado = '';
             if(response[i].servicio_estado === '0')
@@ -559,13 +576,13 @@ function obtenerPasajeros()
                 estado = "Entregado";
             }
             var destino = response[i].servicio_destino;
-            var cc = response[i].servicio_cc;
+            var cc = response[i].servicio_cc === '' ? '-' : response[i].servicio_cc;
             var tarifa = response[i].servicio_tarifa;
             if(destino !== ''){
             $("#pasajeros_contenido").append("<div class=\"fila_contenedor fila_contenedor_servicio\" onclick=\"mostrarPasajero()\">"+
                     "<div class=\"letra_pasajero\">"+LETRAS[i]+"</div>"+
                     "<div class=\"nombre_pasajero\" alt='"+pasajero+"' title='"+pasajero+"'>"+recortar(pasajero,25)+"</div>"+
-                    "<div class=\"dir_pasajero\" alt='"+destino+"' title='"+destino+"'>"+recortar(destino,60)+"</div>"+
+                    "<div class=\"dir_pasajero\" alt='"+destino+"' title='"+destino+"'>"+recortar(destino,50)+"</div>"+
                     "<div class=\"dato_pasajero\">"+horaDestino+"</div>"+
                     "<div class=\"cc_pasajero\">"+cc+"</div>"+
                     "<div class=\"tarifa_pasajero\">$ "+tarifa+"</div>"+
@@ -751,4 +768,10 @@ function buscarCentrosCosto(cliente = '')
     };
     postRequest(url,params,success);
     
+}
+
+function abrirServicio(id)
+{
+    EDITANDO = true;
+    cambiarModulo('panel',{id:id});
 }

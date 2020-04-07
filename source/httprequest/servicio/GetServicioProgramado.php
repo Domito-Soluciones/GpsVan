@@ -28,6 +28,7 @@ for ($i = 0 ; $i < count($servicios); $i++)
     $estado = $servicio->getEstado();
     $conductor = $servicio->getConductor();
     $tarifa = $servicio->getTarifa1();
+    $tarifa2 = $servicio->getTarifa2();
     $observacion = $servicio->getObservaciones();
     $pasajeroId = $servicio->getPasajero()->getId();
     $pasajeroNombre = $servicio->getPasajero()->getNombre();
@@ -37,7 +38,7 @@ for ($i = 0 ; $i < count($servicios); $i++)
     $destino = $servicio->getDestino();
         echo "{\"servicio_id\":\"".$id."\","
             . "\"servicio_cliente\":\"".$cliente."\","
-            . "\"servicio_cliente_direccion\":\"".$clienteDireccion."\","
+            . "\"servicio_empresa_direccion\":\"".$clienteDireccion."\","
             . "\"servicio_ruta\":\"".$ruta."\","
             . "\"servicio_truta\":\"".$truta."\","
             . "\"servicio_fecha\":\"".$fecha."\","
@@ -46,6 +47,7 @@ for ($i = 0 ; $i < count($servicios); $i++)
             . "\"servicio_movil\":\"".$movil."\","
             . "\"servicio_conductor\":\"".$conductor."\","
             . "\"servicio_tarifa\":\"".$tarifa."\","
+            . "\"servicio_tarifa2\":\"".$tarifa2."\","
             . "\"servicio_observacion\":\"".trim($observacion)."\","
             . "\"servicio_pasajero_id\":\"".$pasajeroId."\","
             . "\"servicio_pasajero_nombre\":\"".$pasajeroNombre."\","

@@ -12,7 +12,7 @@ class Log {
         
     public static function write_error_log($error)
     {
-//        $arch = fopen("/opt/bitnami/apache2/htdocs/log/log_error_".date("Y-m-d").".txt", "a+"); 
+//        $arch = fopen("".date("Y-m-d").".txt", "a+"); 
 //        $log = "[".date("Y-m-d H:i:s.u")." ".$_SERVER['REMOTE_ADDR']." ERROR: ".$error."\n";
 //	fwrite($arch, $log);
 //	fclose($arch);

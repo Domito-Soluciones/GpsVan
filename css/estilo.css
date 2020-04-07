@@ -1104,7 +1104,7 @@ select
     width: 100%;
     height: auto;
     overflow: auto;
-    color: red;
+    color: green;
 }
 .pendiente{
     font-size: 13px;
@@ -1979,7 +1979,7 @@ select
     margin-left: 40px;
 }
 .select-rep{
-    width: 170px;
+    width: 160px;
 }
 
 .btn-rep{
