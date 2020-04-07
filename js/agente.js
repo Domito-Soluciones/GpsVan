@@ -131,6 +131,7 @@ function agregarAgente()
             cambiarPestaniaGeneral();
             vaciarFormulario();
             resetFormulario();
+            enviarCorreoCreaAdmin(mail,nick,password);
             buscarAgente();
         };
         postRequest(url,params,success);

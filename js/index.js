@@ -33,7 +33,7 @@ function login(){
         }
         else if(parseInt(response.agente_id) > 0)
         {
-            if(parseInt(response.agente_tipo) === 0)
+            if(parseInt(response.agente_tipo) === 0 || parseInt(response.agente_tipo) === 2)
             {
                 redireccionar("principal.php");
             }

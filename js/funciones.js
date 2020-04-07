@@ -799,6 +799,19 @@ function enviarCorreoPassword(mail,password)
     postRequest(url,params,success);
 }
 
+function enviarCorreoCreaAdmin(mail,usuario,password)
+{
+    var url = urlUtil + "/enviarMail.php";
+    var asunto = "Envio de datos de acceso";
+    var mensaje = "Estimado, se adjuntan sus credenciales de acceso:\n ";
+    var params = {email : mail,asunto : asunto, mensaje : mensaje, extra : "Usuario: "+usuario+"\nPassword: "+password};
+    var success = function(response)
+    {
+        alertify.success("Datos de acceso enviados al correo "+mail);
+    };
+    postRequest(url,params,success);
+}
+
 function verAdjunto(valor,i)
 {
     if(valor !== '')
