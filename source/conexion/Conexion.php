@@ -1,5 +1,5 @@
 <?php
-include '../../util/validarPeticion.php';
+//include '../../util/validarPeticion.php';
 
 class Conexion {
     

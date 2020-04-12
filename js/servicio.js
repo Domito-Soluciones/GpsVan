@@ -181,7 +181,7 @@ function abrirBuscador(id,tarifa)
     agregarclase($("#"+id),"fila_contenedor_activa");
     $("#contenedor_central").load("html/datos_servicio.html", function( response, status, xhr ) {
         $("#titulo_pagina_servicio").text(id);
-            $("#estadoServicio").change(()=>{
+        $("#estadoServicio").change(()=>{
             if(ESTADO_ACTUAL === $(this).val()){
                 ESTADO_CAMBIO = false;
             }
@@ -240,6 +240,16 @@ function abrirBuscador(id,tarifa)
         }
         ESTADO_ACTUAL = servicio.servicio_estado;
         ESTADO_SERVICIO = servicio.servicio_estado;
+        if(ESTADO_SERVICIO === '1' || ESTADO_SERVICIO === '2' || ESTADO_SERVICIO === '3'){
+            cambiarPropiedad($("#guardar"),"display","none");
+            $("#editarPasajero").click(()=>{
+                abrirServicio(ID_SERVICIO);
+            });
+        }
+        else{
+            cambiarPropiedad($("#guardar"),"display","initial");
+            cambiarPropiedad($("#editarPasajero"),"display","none");
+        }
         cargarRutas();
         var conductorReal = "";
         for(var i = 0 ; i < MOVILES.length; i++)
@@ -266,8 +276,7 @@ function abrirBuscador(id,tarifa)
         $("#tarifaServicio").val(formatoMoneda(servicio.servicio_tarifa1));
         $("#tarifa2Servicio").val(formatoMoneda(servicio.servicio_tarifa2)); 
         //$("#tarifa2Servicio").val(formatoMoneda(tarifa)); 
-        if(servicio.servicio_observacion_adicional !== '')
-        {
+        if(servicio.servicio_observacion_adicional !== ''){
             $("#cont_obs").html("<textarea readonly style=\"width:99%;height:400px;font-family:Arial, Helvetica, sans-serif;\">"+servicio.servicio_observacion_adicional+"</textarea>");
         }   
         else
@@ -538,20 +547,6 @@ function obtenerPasajeros()
     var url = urlBase + "/servicio/GetPasajerosServicio.php";
     var success = function(response)
     {
-        $("#editarPasajero").click(()=>{
-            if(ESTADO_SERVICIO === '1' || ESTADO_SERVICIO === '2' || ESTADO_SERVICIO === '3'){
-                abrirServicio(ID_SERVICIO);
-            }
-            else if(ESTADO_SERVICIO  === '4'){
-                alertify.error("El servicio ya se encuentra en curso");
-            }
-            else if(ESTADO_SERVICIO  === '5'){
-                alertify.error("El servicio se encuentra finalizado");
-            }
-            else if(ESTADO_SERVICIO  === '6'){
-                alertify.error("El servicio se encuentra cancelado");
-            }
-        });
         SERVICIOS_PASAJEROS = response;
         $("#pasajeros_contenido").html("");
         for(var i = 0; i < response.length; i++)

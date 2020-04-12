@@ -48,7 +48,7 @@ $(document).ready(function(){
 
 function crearServicio()
 {
-    var cliente = $("#clientes").val();
+    var cliente = $("#clientesNombre").val();
     var nombre = $("#nombres").val();
     var celular = $("#celulars").val();
     var cc = $("#ccs").val();
@@ -80,7 +80,7 @@ function crearServicio()
         cerrarSession(response);
         alertify.success('Servicio agregado con id '+response.servicio_id);
         agregarDetalleServicio(response.servicio_id,nombre,celular,origen,destino);
-        enviarCorreoAsignacion("jose.sanchez.6397@gmail.com",response.servicio_id,cliente);
+        enviarCorreoAsignacion(response.servicio_id,cliente);
         $("#contenedor-pasajero-elegido").html("<div class=\"contenedor_central_titulo_pasajero\">"+
                 "<div></div><div class=\"dato_pasajero\">Rut</div><div class=\"dato_pasajero\">Nombre</div>"+
                 "<div class=\"dato_pasajero\">Apellido</div><div class=\"dato_pasajero\">Centro Costo</div>"+
@@ -105,12 +105,12 @@ function activarPestania(array)
     }
 }
 
-function enviarCorreoAsignacion(mail,id,cliente)
+function enviarCorreoAsignacion(id,cliente)
 {
     var url = urlUtil + "/enviarMail.php";
     var asunto = "Notificación Dómito";
     var mensaje = "Estimado(a), se informan los siguientes cambios:<br> El cliente "+cliente+" a creado un nuevo servicio con el id "+id+", ";
-    var params = {email : mail,asunto : asunto, mensaje : mensaje, extra : ''};
+    var params = {asunto : asunto, mensaje : mensaje, extra : ''};
     var success = function(response)
     {
     };

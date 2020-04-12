@@ -1,5 +1,4 @@
 <?php
-include '../../util/validarPeticion.php';
 include '../../conexion/Conexion.php';
 include '../../dominio/Agente.php';
 
@@ -71,6 +70,43 @@ class AgenteDao {
         }
         return $array;
     }
+    
+    public function isAgenteExiste($rut)
+    {
+        $mail = '';
+        $conn = new Conexion();
+        try {
+            $query = "SELECT * FROM tbl_agente WHERE agente_rut = '".$rut."'";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); ; 
+            while($row = mysqli_fetch_array($result)) {
+                $mail = $row["agente_mail"];
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
+        }
+        return $mail;
+    }
+
+    public function getAgenteSolicitud($rut)
+    {
+        $solicitud = '';
+        $conn = new Conexion();
+        try {
+            $query = "SELECT agente_solicitud_clave FROM tbl_agente WHERE agente_rut = '".$rut."'";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die ((mysqli_error($conn->conn)));
+            while($row = mysqli_fetch_array($result)) {
+                $solicitud = $row["agente_solicitud_clave"];
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
+        }
+        return $solicitud;
+    }
+    
     function eliminarAgente($rut)
     {
         $id = 0;
@@ -163,4 +199,40 @@ class AgenteDao {
         }
         return $id;
     }
+    public function modificarAgenteClave($rut,$clave)
+    {
+        $id = 0;
+        $conn = new Conexion();
+        try {
+            $query = "UPDATE tbl_agente SET agente_clave = '$clave', agente_solicitud_clave = '' WHERE agente_rut = '$rut'";           
+            $conn->conectar();
+            if (mysqli_query($conn->conn,$query) or die ((mysqli_error($conn->conn)))) {
+                $id = mysqli_insert_id($conn->conn);
+            } else {
+                echo mysqli_error($conn->conn);
+            }          
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
+        }
+        return $id;
+    }
+    
+    public function setIdSolicitud($rut,$idSolicitud){
+        $conn = new Conexion();
+        try {
+            $query = "UPDATE tbl_agente SET agente_solicitud_clave = '$idSolicitud' WHERE agente_rut = '$rut'";           
+            $conn->conectar();
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
+                $id = mysqli_insert_id($conn->conn);
+            } else {
+                echo mysqli_error($conn->conn);
+            }           
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
+        }
+        return $id;
+    }
+    
 }

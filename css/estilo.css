@@ -2007,3 +2007,10 @@ select
     width:20px;
     height:20px;
 }
+
+.enlace-rec{
+    color: white;
+    font-size: 12px;
+    float: right;
+    margin-top: 10px;
+}

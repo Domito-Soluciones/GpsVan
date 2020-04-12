@@ -1,4 +1,4 @@
-/* global google, urlBase, alertify, MENU_VISIBLE, urlUtil */
+/* global google, urlBase, alertify, MENU_VISIBLE, urlUtil, GOOGLE_MAPS_API, API_KEY */
 var NICK_GLOBAL;
 var map;
 var POLYLINE;
@@ -161,7 +161,7 @@ function enviarCorreoDesasignacion(mail,id)
     var url = urlUtil + "/enviarMail.php";
     var asunto = "Notificación Dómito";
     var mensaje = "Estimado(a), el servicio "+id+" a sido rechazado por el conductor favor reasignar ";
-    var params = {email : mail,asunto : asunto, mensaje : mensaje, extra : ''};
+    var params = {email : mail, mailencrypt : true, asunto : asunto, mensaje : mensaje, extra : ''};
     var success = function(response)
     {
     };

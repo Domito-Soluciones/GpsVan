@@ -58,7 +58,7 @@ $(document).ready(function(){
 //            });
         });
         cambiarPropiedad($("#guardar"),"visibility","visible");
-        cambiarPropiedad($("#elimianr"),"visibility","hidden");
+        cambiarPropiedad($("#eliminar"),"visibility","hidden");
     });
     $("#cancelar").click(function(){
         validarCancelar(PAGINA);
@@ -352,6 +352,7 @@ function eliminarAgente()
         resetFormularioEliminar(PAGINA);
         resetBotones();
         buscarAgente();
+        $("#contenedor_central").html("<div class=\"mensaje_bienvenida\">SELECCIONE OPCIONES PARA AGREGAR EDITAR Y/O MODIFICAR ADMINISTRADORES</div>");
     };
     postRequest(url,params,success);
 }

@@ -791,7 +791,7 @@ function enviarCorreoPassword(mail,password)
     var url = urlUtil + "/enviarMail.php";
     var asunto = "Envio de password";
     var mensaje = "Estimado, su password para uso de aplicacion es la siguiente ";
-    var params = {email : mail,asunto : asunto, mensaje : mensaje, extra : password};
+    var params = {email : mail,mailencrypt : false,asunto : asunto, mensaje : mensaje, extra : password,encrypt : true};
     var success = function(response)
     {
         alertify.success("Password enviada al correo "+mail);
@@ -804,13 +804,27 @@ function enviarCorreoCreaAdmin(mail,usuario,password)
     var url = urlUtil + "/enviarMail.php";
     var asunto = "Envio de datos de acceso";
     var mensaje = "Estimado, se adjuntan sus credenciales de acceso:\n ";
-    var params = {email : mail,asunto : asunto, mensaje : mensaje, extra : "Usuario: "+usuario+"\nPassword: "+password};
+    var params = {email : mail,mailencrypt : false,asunto : asunto, mensaje : mensaje, extra : btoa("Usuario: "+usuario+"\nPassword: "+password),encrypt : true};
     var success = function(response)
     {
         alertify.success("Datos de acceso enviados al correo "+mail);
     };
     postRequest(url,params,success);
 }
+
+function enviarCorreoRecuperacion(rut,mail,sol){
+    var url = urlUtil + "/enviarMail.php";
+    var asunto = "Recuperación de contraseña";
+    var mensaje = "Estimado, ingrese al siguinete link para poder recuperar su contraseña:\n\nhttps://transfer.domitoapp.cl/ingresarClave.php?data="+rut+"&idSol="+sol;
+    //var mensaje = "Estimado, ingrese al siguinete link para poder recuperar su contraseña:\n\nhttp://localhost/DMT-TransferPortal/ingresarClave.php?data="+rut+"&idSol="+sol;
+    var params = {email : mail,mailencrypt : true,asunto : asunto, mensaje : mensaje, extra : ''};
+    var success = function(response)
+    {
+        alertify.success("Datos de acceso enviados a su correo ");
+    };
+    postRequest(url,params,success);
+}
+
 
 function verAdjunto(valor,i)
 {

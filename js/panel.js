@@ -28,6 +28,7 @@ var ultima_letra = 0;
 var cantidadServicios = 0;
 var cantidadServiciosAux = 0;
 var LETRA_PASAJEROS = new Map();
+var SERVICIO_EDITADO = [];
 
 $(document).ready(function(){
     window.onbeforeunload = function() {
@@ -68,6 +69,7 @@ $(document).ready(function(){
         var url = urlBase + "/servicio/GetServicioProgramado.php";
         var success = function(response)
         {
+            SERVICIO_EDITADO = response;
             let servicio = response[0];
             if(servicio.servicio_truta.indexOf("ZP") !== -1 || servicio.servicio_truta.indexOf("RG") !== -1){
                 TIPO_SERVICIO = "0";
@@ -77,25 +79,15 @@ $(document).ready(function(){
             }
             $("#ids").val(servicio.servicio_id);
             $("#clientes").val(servicio.servicio_cliente);
-            $("#ruta").html("<option value='"+servicio.servicio_ruta+"'>"+servicio.servicio_ruta+"</option>");
-            $("#truta").html("<option value='"+servicio.servicio_truta+"'>"+servicio.servicio_truta+"</option>");
-            $("#fechaDesde").val(servicio.servicio_fecha);
+            $("#fechaDesde").val(servicio.servicio_fecha.replace("-","/").replace("-","/"));
             $("#hora").val(servicio.servicio_hora);
-            $("#vehiculos").html("<option val='"+servicio.servicio_movil+"'>"+servicio.servicio_movil+" / "+servicio.servicio_conductor+"</option>");
             $("#conductorV").val(servicio.servicio_conductor);
             $("#conductorH").val(servicio.servicio_conductor);
             $("#tarifa1").val(servicio.servicio_tarifa);
             $("#observacion").val(servicio.servicio_observacion);
-            deshabilitarCampo($("#clientes"));
-            deshabilitarCampo($("#ruta"));
-            deshabilitarCampo($("#truta"));
-            deshabilitarCampo($("#fechaDesde"));
+            $("#clientes").prop("readonly",true);
+            cargarRutas();
             deshabilitarCampo($("#fechaHasta"));
-            deshabilitarCampo($("#hora"));
-            deshabilitarCampo($("#vehiculos"));
-            deshabilitarCampo($("#conductorV"));
-            deshabilitarCampo($("#tarifa1"));
-            deshabilitarCampo($("#observacion"));
             cambiarPropiedad($(".buscador-pasajero"),"display","initial");
             agregarclase($("#contenedor_mapa"),"mapa_bajo");
             if(TIPO_SERVICIO !== '2'){
@@ -181,7 +173,7 @@ $(document).ready(function(){
         var aux = '';
         for(var i = 0; i < TARIFAS.length; i++)
         {
-            if(aux !== TARIFAS[i].tarifa_nombre){
+            if(aux !== TARIFAS[i].tarifa_descripcion){
                 $("#truta").append("<option val=\""+TARIFAS[i].tarifa_nombre+"\">"+TARIFAS[i].tarifa_nombre+"</option>");   
                 aux = TARIFAS[i].tarifa_nombre;
             }
@@ -367,11 +359,14 @@ function init()
         cambiarPropiedad($(".asignacion_buscador"),"width","calc(70% - 67px)");
     }
     cargarClientes();
-    if(!EDITANDO){
-        cargarMoviles();
-        iniciarFecha(['#fechaDesde','#fechaHasta']);
-        iniciarHora(['#hora']);
+    if(EDITANDO){
+        iniciarFecha(['#fechaDesde']);
     }
+    else{
+        iniciarFecha(['#fechaDesde','#fechaHasta']);
+    }
+    iniciarHora(['#hora']);
+    cargarMoviles();
     directionsService = new google.maps.DirectionsService();
     limpiarMapa();
 }
@@ -644,6 +639,10 @@ function cargarMoviles()
         $("#vehiculos").html("<option value=\"\">Seleccione</option>");
         for(var i = 0 ; i < response.length ; i++)
         {
+            let movilNombre = '';
+            if(SERVICIO_EDITADO.length > 0){
+                movilNombre = SERVICIO_EDITADO[0].servicio_movil;
+            }
             var nombre = response[i].movil_nombre;
             var id = response[i].movil_conductor;
             var conductor = response[i].movil_conductor_nombre;
@@ -652,7 +651,11 @@ function cargarMoviles()
             {
                 conductor = "No Definido";
             }
-            $("#vehiculos").append("<option value=\""+nombre+"\">"+nombre+" / "+conductor+"</option>");
+            let sel = '';
+            if(nombre === movilNombre){
+                sel = "selected";
+            }
+            $("#vehiculos").append("<option value=\""+nombre+"\" "+sel+">"+nombre+" / "+conductor+"</option>");
             moviles.push(nombre);
         }
     };
@@ -672,14 +675,37 @@ function cargarRutas()
     {
         cerrarSession(response);
         var ruta = "";
+        let rutaAux = '';
+        if(SERVICIO_EDITADO.length > 0){
+            rutaAux = SERVICIO_EDITADO[0].servicio_ruta;
+        }
         for(var i = 0 ; i < response.length ; i++)
         {
             TARIFAS = response;
             var descripcion = response[i].tarifa_descripcion.trim();
             if(descripcion !== ruta)
             {
-                $("#ruta").append("<option value=\""+descripcion+"\">"+descripcion+"</option>");
+                let sel = '';
+                if(rutaAux === descripcion){
+                    sel = 'selected';
+                }
+                $("#ruta").append("<option value=\""+descripcion+"\" "+sel+">"+descripcion+"</option>");
                 ruta = descripcion;
+            }
+        }
+        if(EDITANDO){
+            $("#truta").html("<option val=\"\">Seleccione</option>");
+            var aux = '';
+            for(var i = 0; i < TARIFAS.length; i++)
+            {
+                let sel = '';
+                if(aux !== TARIFAS[i].tarifa_descripcion){
+                    if(SERVICIO_EDITADO[0].servicio_truta === TARIFAS[i].tarifa_nombre){
+                        sel = 'selected';
+                    }
+                    $("#truta").append("<option val=\""+TARIFAS[i].tarifa_nombre+"\" "+sel+">"+TARIFAS[i].tarifa_nombre+"</option>");   
+                    aux = TARIFAS[i].tarifa_nombre;
+                }
             }
         }
     };
@@ -726,16 +752,10 @@ function agregarServicio(fecha)
     {
         var params = {cliente : cliente, ruta : ruta,truta : truta,fecha : fecha, hora : hora,movil : movil,
                     conductor: conductor ,tarifa1 : tarifa1, tarifa2 : tarifa2, observaciones : observaciones, estado : 1, tipo : tipo};
-        if(EDITANDO){
-            var idServicio = ID_SERVICIO;
-            eliminarDetalleServicio(idServicio);
-        }
-        else{
-            initAddServicio(params,id,conductor,fecha,hora);
-            if(tipo !== 0){
-                index = -1;
-                indexDestinos.clear();
-            }
+        initAddServicio(params,id,conductor,fecha,hora);
+        if(tipo !== 0){
+            index = -1;
+            indexDestinos.clear();
         }
     }
 }
@@ -1162,6 +1182,7 @@ function cambiarServicioNormal()
     }
 }
 function ejecutarNormal(){
+    SERVICIO_EDITADO = [];
     iniciarFecha(['#fechaDesde','#fechaHasta']);
     iniciarHora(['#hora']);    
     agregarclase($("#dato_especial"),"none");
@@ -1170,6 +1191,7 @@ function ejecutarNormal(){
     vaciarFormulario();
     cargarMoviles();
     habilitarCampo($("#clientes"));
+    $("#clientes").prop("readonly",false);
     habilitarCampo($("#ruta"));
     habilitarCampo($("#truta"));
     habilitarCampo($("#fechaDesde"));
@@ -1196,6 +1218,7 @@ function ejecutarNormal(){
     cambiarPropiedad($("#tarifa2"),"background-color","#e5e7e9");
     $("#tarifa2").val("");
     MODIFICADO = false;
+    EDITANDO = false;
 }
 function cambiarServicioEspecial()
 {
@@ -1216,6 +1239,7 @@ function cambiarServicioEspecial()
 }
 
 function ejecutarEspecial(){
+    SERVICIO_EDITADO = [];
     iniciarFecha(['#fechaDesde','#fechaHasta']);
     iniciarHora(['#hora']);
     quitarclase($("#dato_especial"),"none");
@@ -1226,6 +1250,7 @@ function ejecutarEspecial(){
     origen = undefined;
     cargarMoviles();
     habilitarCampo($("#clientes"));
+    $("#clientes").prop("readonly",false);
     habilitarCampo($("#fechaDesde"));
     habilitarCampo($("#fechaHasta"));
     habilitarCampo($("#hora"));
@@ -1254,6 +1279,7 @@ function ejecutarEspecial(){
     contenedor.html("");
     contenedorEx.html("");
     MODIFICADO = false;
+    EDITANDO = false;
 }
 
 function activarPestania(array)
@@ -1885,10 +1911,14 @@ function initAddServicio(params,id,conductor,fecha,hora){
         anterior = true;
     }
     var url = urlBase + "/servicio/AddServicio.php";
-    if(TIPO_SERVICIO === '1')
+    if(TIPO_SERVICIO === '1' || EDITANDO)
     {
         params.id = id;
         params.tipo = 1;
+        if(EDITANDO){
+            params.tipo = TIPO_SERVICIO;
+            eliminarDetalleServicio(id);
+        }
         url = urlBase + "/servicio/ModServicio.php";
     }
     params.anterior = anterior ? "1" : "0";
@@ -1900,8 +1930,10 @@ function initAddServicio(params,id,conductor,fecha,hora){
         {
             eliminarDetalleServicio(response.servicio_id);
         }
-        agregarDetalleServicio(response.servicio_id);
-        alertify.success('Servicio agregado con id '+response.servicio_id);
+        if(!EDITANDO){
+            agregarDetalleServicio(response.servicio_id);
+            alertify.success('Servicio agregado con id '+response.servicio_id);
+        }
         notificarConductor(response.servicio_id,conductor,fecha,hora);
         notificarServicioFuturo(response.servicio_id,conductor,fecha,hora);
     };

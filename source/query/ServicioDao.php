@@ -171,11 +171,15 @@ class ServicioDao {
         if($anterior == '1'){
             $estado = '5';
         }
+        $qryTarifa = '';
+        if($tarifa2 !== ''){
+            $qryTarifa = ", servicio_tarifa2 = '$tarifa2'";
+        }
         $conn = new Conexion();
         try {
             $query = "UPDATE tbl_servicio SET servicio_cliente = '$cliente',servicio_ruta = '$ruta',servicio_truta = '$truta', servicio_fecha = '$fecha',"
                     . "servicio_hora = '$hora',servicio_movil = '$movil',servicio_estado = '$estado',"
-                    . "servicio_conductor = '$conductor',servicio_observacion = '$observacion', servicio_tarifa1 = '$tarifa1', servicio_tarifa2 = '$tarifa2' WHERE servicio_id = ".$id; 
+                    . "servicio_conductor = '$conductor',servicio_observacion = '$observacion', servicio_tarifa1 = '$tarifa1' ".$qryTarifa." WHERE servicio_id = ".$id; 
             $conn->conectar();
             if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
             } else {
