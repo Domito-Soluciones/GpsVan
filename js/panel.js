@@ -546,8 +546,8 @@ function cargarPasajerosSinAsignados()
 
 function cargarPasajerosEspecial()
 {
-    var params = {id : $("#ids").val()};
-    var url = urlBase + "/pasajero/GetPasajerosEspecial.php";
+    var params = {id : $("#ids").val(),conductor : 115};
+    var url = urlBase + "/servicio/GetServicioProgramado.php";
     var success = function(response)
     {
         if(response.length === 0)
@@ -555,41 +555,24 @@ function cargarPasajerosEspecial()
             alertify.error("No hay pasajeros disponibles para esta ruta");
             return;
         }
-        var contenedorDir = $("#contenedor_punto_encuentro");
-        var contenedorDes = $("#contenedor_punto_destino");
-        var contenedor = $("#contenedor_pasajero");
-        var contenedorEx = $("#contenedor_pasajero_no_asignado");
-        contenedor.html("");
-        contenedorEx.html("");
-        contenedorDir.html("<b>Origen:</b> "+origen);
-        pasajeros = [];
-        destinos = [];
+        let mapa = new Map();
         for(var i = 0 ; i < response.length ; i++)
         {
-            var id = response[i].pasajero_id;
-            var nombre = response[i].pasajero_nombre;
-            var punto = response[i].pasajero_punto_encuentro;
-            var celular = response[i].pasajero_celular;
-            if(i === 0)
-            {
-                origen = punto;
-                contenedorDir.html("<b>Origen:</b> "+punto);
+            var nombre = response[i].servicio_pasajero_nombre;
+            var punto = response[i].servicio_destino;
+            var celular = response[i].servicio_pasajero_celular;
+            if(mapa.get(nombre) === undefined){
+                mapa.set(nombre,{"nombre":nombre,"celular":celular,"partida":punto,"destino":""});
             }
-            else
-            {
-                destinos.push(punto);
+            else{
+                var json = mapa.get(nombre);
+                json.destino = punto;
+                mapa.set(nombre,json);
             }
-            if(i === response.length -1 && destinos.length > 0)
-            {
-                contenedorDes.html("<b>Destino:</b> "+punto);          
-            }             
-            contenedor.append("<div id=\"pasajero_"+id+"\"  class=\"cont-pasajero-gral\" draggable=\"true\" ondragstart=\"drag(event,$(this))\" ondrop=\"drop(event,$(this))\" ondragover=\"allowDrop(event)\">"
-                                 +"<input id=\"hidden_"+id+"\" type=\"hidden\" class=\"hidden\" value=\""+ formatearCadena(punto)+"\">"
-                                 +"<div class=\"cont-pasajero\">"+formatearCadena(nombre)+"</div><div style='float:right'>"
-                                 +"<div class=\"boton-chico\" onclick=\"editarPasajero('"+formatearCadena(punto)+"','punto_"+id+"','hidden_"+id+"')\"><img src=\"img/editar.svg\" width=\"12\" height=\"12\"></div>"
-                                 +"<div class=\"boton-chico\" onclick=\"borrarPasajero('pasajero_"+id+"','"+formatearCadena(nombre)+"','"+formatearCadena(punto)+"','"+celular+"')\"><img src=\"img/cancelar.svg\" width=\"12\" height=\"12\"></div></div>"
-                        +"<div class=\"cont-mini-pasajero\"><div>"+ recortar(punto,30) + "</div><div>" + celular+"</div></div>");
-            pasajeros.push(id);
+        }
+        for (var json of mapa.values()) {
+            var celular = json.celular.replace("_par","").replace("_des","");
+            agregarPasajeroEspecialCliente(json.nombre,celular,json.partida,json.destino);
         }
         dibujarRuta();
     };
@@ -763,7 +746,6 @@ function agregarServicio(fecha)
 function dibujarRuta()
 {
     GEOCODING = false;
-    console.log(origen+" - "+destinos);
     if(typeof origen === 'undefined' || destinos.length === 0)
     {
         return;
@@ -1243,7 +1225,7 @@ function ejecutarEspecial(){
     iniciarFecha(['#fechaDesde','#fechaHasta']);
     iniciarHora(['#hora']);
     quitarclase($("#dato_especial"),"none");
-    cambiarPropiedad($("#addPasajero"),"display","none")
+    cambiarPropiedad($("#addPasajero"),"display","none");
     TIPO_SERVICIO = '2';
     destinos = [];
     pasajeros = [];
@@ -2014,3 +1996,46 @@ function cargarPasajerosEditar(servicios)
     }
     dibujarRuta();
 }
+
+function agregarPasajeroEspecialCliente(nombre,celular,partida,destino){
+    if(validarNumero(nombre))
+    {
+        alertify.error("Nombre no debe ser numerico");
+        return;
+    }
+    if(nombre.indexOf("-") !== -1)
+    {
+        alertify.error("Nombre no debe tener caracteres especiales");
+        return;
+    }
+    if(!validarNumero(celular))
+    {
+        alertify.error("Celular debe ser numerico");
+        return;
+    }
+    var id = nombre+"-"+celular.split("+").join("");
+        var cont = "<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral-especial\">"
+            +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'>"
+            +"<div class=\"boton-chico\" id=\"editEspecial"+id+"\"><img src=\"img/editar.svg\" width=\"12\" height=\"12\"></div>"
+            +"<div class=\"boton-chico\" id=\"delEspecial"+id+"\"><img src=\"img/cancelar.svg\" width=\"12\" height=\"12\"></div></div>"
+            +"<div class=\"cont-mini-pasajero\"><div class=\"punto-especial\" id=\"punto_origen_"+id+"\"></div><div class=\"punto-especial\" id=\"punto_destino_"+id+"\"></div><div>" + celular+"</div></div>";
+    $("#contenedor_pasajero").append(cont);
+    $("#editEspecial"+id).click(()=>{
+        editarPasajeroEspecial(formatearCadena(nombre),celular,formatearCadena(partida),formatearCadena(destino),id);
+    });
+    $("#delEspecial"+id).click(()=>{
+        borrarPasajeroEspecial("pasajero_"+id,formatearCadena(partida),formatearCadena(destino));
+    });
+    $("#punto_origen_"+id).html("<div id=\"punto_"+id+"\"><b>Origen:</b> "+ recortar(partida,50) + "</div>");
+    $("#punto_destino_"+id).html("<div id=\"punto_"+id+"\"><b>Destino:</b> "+ recortar(destino,50) + "</div>");
+    pasajeros.push(id+"_par");
+    pasajeros.push(id+"_des"); 
+    if(typeof origen === 'undefined'){
+        origen = partida;
+    }
+    else{
+        destinos.push(partida);
+    }
+    destinos.push(destino)
+    dibujarRuta();
+}   

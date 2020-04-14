@@ -25,7 +25,6 @@ if($email == ''){
         echo $exc->getTraceAsString();
         Log::write_error_log($exc->getTraceAsString());
     }
-    var_dump($mails);
 }
 $asunto = filter_input(INPUT_POST, 'asunto');
 $mensaje = filter_input(INPUT_POST, 'mensaje');
@@ -50,12 +49,13 @@ $mail->SMTPAuth = true;
 $mail->Username = 'notificaciones@gotransfer.cl';
 $mail->Password = 'notificacionesgo';
 $mail->setFrom('notificaciones@gotransfer.cl', 'Notificación Go Transfer');
-if($email == ''){
+if($email != ''){
     $mail->addAddress($email, '');
 }
 else{
     for($i = 0 ; $i < count($mails); $i++){
-        $mail->addAddress($mails[$i], '');
+        //$mail->addAddress($mails[$i], '');
+        $mail->addAddress("jose.sanchez.6397@gmail.com","");
     }
 }
 $mail->Subject = $asunto;

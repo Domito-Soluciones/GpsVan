@@ -634,11 +634,11 @@ class ServicioDao {
                     . "servicio_pasajero_estado,servicio_pasajero_id_pasajero,servicio_pasajero_index, servicio_pasajero_destino,pasajero_id,pasajero_nombre,pasajero_papellido,pasajero_celular,cliente_direccion "
                     . " FROM tbl_servicio JOIN tbl_servicio_pasajero ON"
                     . " servicio_id = servicio_pasajero_id_servicio "
-                    . "JOIN tbl_movil ON servicio_movil = movil_nombre "
+                    . "LEFT JOIN tbl_movil ON servicio_movil = movil_nombre "
                     . " LEFT JOIN tbl_conductor ON servicio_conductor = conductor_id "
                     . "LEFT JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id "
                     . "LEFT JOIN tbl_cliente ON servicio_cliente = cliente_razon_social "
-                    . "WHERE servicio_id = '$idServicio' AND servicio_estado IN (1,2,3) ORDER BY servicio_pasajero_id";
+                    . "WHERE servicio_id = '$idServicio' AND servicio_estado IN (0,1,2,3) ORDER BY servicio_pasajero_id";
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
