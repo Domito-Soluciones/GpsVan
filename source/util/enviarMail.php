@@ -54,8 +54,8 @@ if($email != ''){
 }
 else{
     for($i = 0 ; $i < count($mails); $i++){
-        //$mail->addAddress($mails[$i], '');
-        $mail->addAddress("jose.sanchez.6397@gmail.com","");
+        $mail->addAddress($mails[$i], '');
+        //$mail->addAddress("jose.sanchez.6397@gmail.com","");
     }
 }
 $mail->Subject = $asunto;

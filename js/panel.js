@@ -51,7 +51,6 @@ $(document).ready(function(){
         contenedorEx.html("");
         agregarclase($("#contenedor_mapa"),"mapa_bajo");
         cargarPasajerosEspecial();
-        ASIGNANDO = false;
     }
     else if((TIPO_SERVICIO === '0') && ASIGNANDO){
         cambiarPropiedad($(".buscador-pasajero"),"display","initial");
@@ -128,7 +127,6 @@ $(document).ready(function(){
     else{
         TIPO_SERVICIO = '0';
     }
-    ASIGNANDO = false;
     PAGINA_ANTERIOR = PAGINA;
     map.setZoom(15);
     var center = new google.maps.LatLng(POSITION[0], POSITION[1]);
@@ -835,6 +833,7 @@ function agregarDetalleServicio(idServicio)
     params = {pasajeros : pasajeroFinal ,destinos : destinoFinal, id : idServicio};
     var url = urlBase + "/servicio/AddServicioDetalle.php";
     var success = () => {
+        ASIGNANDO = false;
         if(EDITANDO){
             EDITANDO = false;
             resetFormulario();
@@ -876,7 +875,8 @@ function eliminarDetalleServicio(idServicio)
     params = { id : idServicio};
     var url = urlBase + "/servicio/DelServicioDetalle.php";
     var success = ()=>{
-        if(EDITANDO){
+        alert("entre pero "+EDITANDO+" "+ASIGNANDO);
+        if(EDITANDO || ASIGNANDO){
             agregarDetalleServicio(idServicio);
         }
     };
@@ -1201,6 +1201,7 @@ function ejecutarNormal(){
     $("#tarifa2").val("");
     MODIFICADO = false;
     EDITANDO = false;
+    ASIGNANDO = false;
 }
 function cambiarServicioEspecial()
 {
@@ -1262,6 +1263,7 @@ function ejecutarEspecial(){
     contenedorEx.html("");
     MODIFICADO = false;
     EDITANDO = false;
+    ASIGNANDO = false;
 }
 
 function activarPestania(array)
@@ -1541,15 +1543,37 @@ function agregarPasajeroEspecial(){
     var celular = $("#celular").val();
     var partida = $("#partida").val();
     var destino = $("#destino").val();
-    if(nombre !== '' || celular !== ''){
-        if(partida === '' && destino === ''){
-            alertify.error("El pasajero debe tener por lo menos un origen o un destino");
-            return;
-        }
+    if(nombre === ''){
+        marcarCampoError($("#nombre"));
+        alertify.error("Ingrese nombre");
+        return;
     }
     else{
-        alertify.error("Ingrese todos los campos necesarios");
+        marcarCampoOk($("#nombre"));
+    }
+    if(celular === ''){
+        marcarCampoError($("#celular"));
+        alertify.error("Ingrese celular");
         return;
+    }
+    else{
+        marcarCampoOk($("#celular"));
+    }
+    if(partida === ''){
+        marcarCampoError($("#partida"));
+        alertify.error("Ingrese partida");
+        return;
+    }
+    else{
+        marcarCampoOk($("#partida"));
+    }
+    if(destino === ''){
+        marcarCampoError($("#destino"));
+        alertify.error("Ingrese destino");
+        return;
+    }
+    else{
+        marcarCampoOk($("#destino"));
     }
     if(validarNumero(nombre))
     {
@@ -1566,86 +1590,49 @@ function agregarPasajeroEspecial(){
         alertify.error("Celular debe ser numerico");
         return;
     }
+    if(pasajeros.length > 15){
+        alertify.error("Son 17 pasajeros como máximo por servicio");
+        return;
+    }
     var id = nombre+"-"+celular.split("+").join("");
     
     if(accion === 'editar'){
-        var indexPartida = indexDestinos.get(partidaEdit);
-        var indexDestino = indexDestinos.get(destinoEdit);
-        if(indexPartida === 0){
-            
-            if(partida === ''){
-                if(destinos.length > 0){
-                    origen = destinos.shift();
-                }
-            }
-            else{
-                if(typeof origen === 'undefined'){
-                    origen = partida;
-                }
-                else{
-                    destinos.unshift(origen);
-                    origen = partida;
-                }
-                pasajeros.splice(0,1,nombre+"_par");
-            }
-        }
-        if(indexDestino === 1){
-            if(partida !== ''){
-                destinos.splice(0, 1, destino);
-                pasajeros.splice(0, 1, nombre+"_des");
-            }
-            else{
-                console.log("no se hace nada");
-            }
-        }
-        if(indexDestino === 0){
-            destinos.unshift(origen);
-            origen = partida;
-        }
-        if(indexPartida > 0 && indexDestino > 1){
-            destinos.splice(indexPartida-1, 1, partida);
-            pasajeros.splice(indexPartida-1, 1, nombre+"_par");
-            destinos.splice(indexDestino-1, 1, destino);
-            pasajeros.splice(indexDestino-1, 1, nombre+"_des");
-        }
-        indexDestinos.clear();
-        indexDestinos.set(origen,0);
-        for(var i = 0 ; i < destinos.length ; i++){
-            indexDestinos.set(destinos[i],i+1);
-        }
-        $("#editEspecial"+idEdit).prop("onclick", null).off("click");
-        $("#delEspecial"+idEdit).prop("onclick", null).off("click");
+        var id = nombre+"-"+celular.split("+").join("");
         $("#editEspecial"+id).click(()=>{
             editarPasajeroEspecial(formatearCadena(nombre),celular,formatearCadena(partida),formatearCadena(destino),id);
         });
         $("#delEspecial"+id).click(()=>{
             borrarPasajeroEspecial("pasajero_"+id,formatearCadena(partida),formatearCadena(destino));
         });
-        $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+origen);
-        if(destinos.length > 0){
-            $("#contenedor_punto_destino").html("<b>Destino: </b>"+destinos[destinos.length-1]);
-        }
         $("#punto_origen_"+id).html("<div id=\"punto_"+id+"\"><b>Origen:</b> "+ recortar(partida,50) + "</div>");
         $("#punto_destino_"+id).html("<div id=\"punto_"+id+"\"><b>Destino:</b> "+ recortar(destino,50) + "</div>");
-        $("#addEspecial").text("Agregar");
-        accion = 'agregar';
+        for(var i = 0; i < pasajeros.length; i++)
+        {
+            if(pasajeros[i] === idEdit)
+            {
+                pasajeros[i] = id;
+            }
+        }
+        if(origen === partidaEdit){
+            origen = partida;
+        }
+        for(var i = 0; i < destinos.length; i++)
+        {
+            if(destinos[i] === partidaEdit)
+            {
+                destinos[i] = partida;
+            }
+            if(destinos[i] === destinoEdit){
+                destinos[i] = destino;
+            }
+        }
     }
     else {
-        var cont = '';
-        index = index + 1;
-        indexDestinos.set(partida.trim(),index);
-        index = index + 1;
-        indexDestinos.set(destino.trim(),index);
-        if(partida.trim() !== '' || destino !== ''){
-            cont = "<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral-especial\">"
+        var cont = "<div id=\"pasajero_"+id+"\" class=\"cont-pasajero-gral-especial\">"
                 +"<div class=\"cont-pasajero\">"+nombre+"</div><div style='float:right'>"
                 +"<div class=\"boton-chico\" id=\"editEspecial"+id+"\"><img src=\"img/editar.svg\" width=\"12\" height=\"12\"></div>"
                 +"<div class=\"boton-chico\" id=\"delEspecial"+id+"\"><img src=\"img/cancelar.svg\" width=\"12\" height=\"12\"></div></div>"
                 +"<div class=\"cont-mini-pasajero\"><div class=\"punto-especial\" id=\"punto_origen_"+id+"\"></div><div class=\"punto-especial\" id=\"punto_destino_"+id+"\"></div><div>" + celular+"</div></div>";
-        }
-        else{
-            return;
-        }
         $("#contenedor_pasajero").append(cont);
         $("#editEspecial"+id).click(()=>{
             editarPasajeroEspecial(formatearCadena(nombre),celular,formatearCadena(partida),formatearCadena(destino),id);
@@ -1653,42 +1640,34 @@ function agregarPasajeroEspecial(){
         $("#delEspecial"+id).click(()=>{
             borrarPasajeroEspecial("pasajero_"+id,formatearCadena(partida),formatearCadena(destino));
         });
-        if(partida.trim() !== ''){
-            $("#punto_origen_"+id).html("<div id=\"punto_"+id+"\"><b>Origen:</b> "+ recortar(partida,50) + "</div>");
-            if(typeof origen === 'undefined'){
-                origen = partida;
-                $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+origen);
-            }
-            else{
-                destinos.push(partida);
-                $("#contenedor_punto_destino").html("<b>Destino: </b>"+partida);
-            }
-            pasajeros.push(id+"_par");
+        $("#punto_origen_"+id).html("<div id=\"punto_"+id+"\"><b>Origen:</b> "+ recortar(partida,50) + "</div>");
+        if(typeof origen === 'undefined'){
+            origen = partida;
+            $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+origen);
         }
         else{
-             $("#punto_origen_"+id).html("<div id=\"punto_"+id+"\"><b>Origen:</b></div>");
+            destinos.push(partida);
+            $("#contenedor_punto_destino").html("<b>Destino: </b>"+partida);
         }
-        if(destino.trim() !== ''){
-            $("#punto_destino_"+id).html("<div id=\"punto_"+id+"\"><b>Destino:</b> "+ recortar(destino,50) + "</div>");
-            if(typeof origen === 'undefined'){
-                origen = destino;
-                $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+origen);
-            }
-            else{
-                destinos.push(destino);
-                $("#contenedor_punto_destino").html("<b>Destino: </b>"+destino);
-            }
-            pasajeros.push(id+"_des");
+        pasajeros.push(id+"_par");
+        $("#punto_destino_"+id).html("<div id=\"punto_"+id+"\"><b>Destino:</b> "+ recortar(destino,50) + "</div>");
+        if(typeof origen === 'undefined'){
+            origen = destino;
+            $("#contenedor_punto_encuentro").html("<b>Origen: </b>"+origen);
         }
         else{
-            $("#punto_destino_"+id).html("<div id=\"punto_"+id+"\"><b>Destino:</div>");
+            destinos.push(destino);
+            $("#contenedor_punto_destino").html("<b>Destino: </b>"+destino);
         }
+        pasajeros.push(id+"_des");
     }
     dibujarRuta();
     $("#nombre").val("");
     $("#celular").val("");
     $("#partida").val("");
     $("#destino").val("");
+    $("#addEspecial").text("Agregar");
+    accion = 'agregar';
 }   
 
 function agregarPasajeroEspecialEditar(nombre,celular,partida,destino){
