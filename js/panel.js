@@ -875,7 +875,6 @@ function eliminarDetalleServicio(idServicio)
     params = { id : idServicio};
     var url = urlBase + "/servicio/DelServicioDetalle.php";
     var success = ()=>{
-        alert("entre pero "+EDITANDO+" "+ASIGNANDO);
         if(EDITANDO || ASIGNANDO){
             agregarDetalleServicio(idServicio);
         }
@@ -1904,7 +1903,7 @@ function initAddServicio(params,id,conductor,fecha,hora){
 
 function cargarPasajerosEditar(servicios)
 {
-    direccion_empresa = servicios[0].servicio_empresa_direccion;
+    direccion_empresa = servicios[0].servicio_cliente_direccion;
     $("#conductorH").val(servicios[0].servicio_conductor);
     var contenedorDir = $("#contenedor_punto_encuentro");
     var contenedorDes = $("#contenedor_punto_destino");
@@ -1913,7 +1912,7 @@ function cargarPasajerosEditar(servicios)
     var truta = servicios[0].servicio_truta;
     if(truta.indexOf("ZP") !== -1)
     {
-        origen = servicios[0].servicio_empresa_direccion;
+        origen = servicios[0].servicio_cliente_direccion;
         contenedorDir.html("<b>Origen:</b> "+origen);
         contenedor.prepend("<div class=\"cont-pasajero-gral\" id=\"origen_empresa\">"
         +"<div class=\"cont-pasajero\">"+servicios[0].servicio_cliente+
@@ -1956,11 +1955,11 @@ function cargarPasajerosEditar(servicios)
     }
     if(truta.indexOf("RG") !== -1)
     {
-        destinos.push(servicios[0].servicio_empresa_direccion);
-        contenedorDes.html("<b>Destino:</b> "+servicios[0].servicio_empresa_direccion);
+        destinos.push(servicios[0].servicio_cliente_direccion);
+        contenedorDes.html("<b>Destino:</b> "+servicios[0].servicio_cliente_direccion);
         contenedor.append("<div class=\"cont-pasajero-gral\" id=\"destino_empresa\"><div class=\"cont-pasajero\">"
                 +servicios[0].servicio_cliente+"</div><div class=\"cont-mini-pasajero\"><div>"
-                + servicios[0].servicio_empresa_direccion + "</div><div>");
+                + servicios[0].servicio_cliente_direccion + "</div><div>");
     }
     else if(truta.indexOf("ZP") !== -1)
     {

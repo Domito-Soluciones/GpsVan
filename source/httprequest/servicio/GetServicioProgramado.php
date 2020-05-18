@@ -38,7 +38,7 @@ for ($i = 0 ; $i < count($servicios); $i++)
     $destino = $servicio->getDestino();
         echo "{\"servicio_id\":\"".$id."\","
             . "\"servicio_cliente\":\"".$cliente."\","
-            . "\"servicio_empresa_direccion\":\"".$clienteDireccion."\","
+            . "\"servicio_cliente_direccion\":\"".$clienteDireccion."\","
             . "\"servicio_ruta\":\"".$ruta."\","
             . "\"servicio_truta\":\"".$truta."\","
             . "\"servicio_fecha\":\"".$fecha."\","

@@ -59,4 +59,4 @@ for ($i = 0 ; $i < count($servicios); $i++)
         }
 }
 echo "]";
-Log::write_log("GETSERVICIOSPROGRAMADOS", 0);
+//Log::write_log("GETSERVICIOSPROGRAMADOS", 0);

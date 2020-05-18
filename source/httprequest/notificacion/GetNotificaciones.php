@@ -26,4 +26,4 @@ for ($i = 0 ; $i < count($notificaciones); $i++)
     }
 }
 echo "]";
-Log::write_log("GETNOTIFICACIONES", 0);
+//Log::write_log("GETNOTIFICACIONES", 0);
