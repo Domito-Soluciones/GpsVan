@@ -8,7 +8,8 @@ class Notificacion {
     private $llave;
     private $fecha;
     private $idServicio;
-    
+    private $deviceID;
+
     function getId() {
         return $this->id;
     }
@@ -35,6 +36,10 @@ class Notificacion {
 
     function getIdServicio() {
         return $this->idServicio;
+    }
+    
+    function getDeviceID() {
+        return $this->deviceID;
     }
 
     function setId($id) {
@@ -63,6 +68,10 @@ class Notificacion {
 
     function setIdServicio($idServicio) {
         $this->idServicio = $idServicio;
+    }
+    
+    function setDeviceID($deviceID) {
+        $this->deviceID = $deviceID;
     }
     
     function toString(){

@@ -93,4 +93,29 @@ class NotificacionDao {
         return $array;
     }
     
+    public function getNotificacionesIOS()
+    {
+        $array = array();
+        $conn = new Conexion();
+        try {
+            $query = "SELECT * FROM tbl_notificacion JOIN tbl_servicio ON notificacion_servicio = servicio_id JOIN tbl_conductor ON servicio_conductor = conductor_id WHERE notificacion_estado = 0 AND LENGTH(conductor_equipo) > 50";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
+            while($row = mysqli_fetch_array($result)) {
+                $notificacion = new Notificacion();
+                $notificacion->setId($row["notificacion_id"]);
+                $notificacion->setTexto($row["notificacion_texto"]);
+                $notificacion->setTipo($row["notificacion_tipo"]);
+                $notificacion->setFecha($row["notificacion_fecha"]);
+                $notificacion->setLlave($row["conductor_id"]);
+                $notificacion->setDeviceID($row["conductor_equipo"]);
+                array_push($array, $notificacion);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
+        }
+        return $array;
+    }
+    
 }
