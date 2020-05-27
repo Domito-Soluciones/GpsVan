@@ -65,13 +65,13 @@ function postRequest(url,params,success,cargar = true)
         success: success,
         complete: function (data) {
             if(cargar){
-                eliminarDivLoader();
+                setTimeout("eliminarDivLoader()",2000);
             }
         },
         error: function (resposeError)
         {
             if(cargar){
-                eliminarDivLoader();
+                setTimeout("eliminarDivLoader()",2000);
             }
         }
     });

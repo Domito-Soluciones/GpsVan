@@ -203,22 +203,21 @@ function abrirBuscador(id,tarifa)
             $("#tarifa2Servicio").prop("readonly",true);
             cambiarPropiedad($("#tarifaServicio"),"display","none");
             cambiarPropiedad($("#contTarifa1"),"display","none");
-            cambiarPropiedad($("#guardar"),"display","none");
+//            cambiarPropiedad($("#guardar"),"display","none");
         }
         else if(TIPO_USUARIO === 'ADMIN')
         {
+            $("#rutaServicio").prop("readonly",true);
+            $("#tipoRutaServicio").prop("disabled",true);
+            $("#fechaServicio").prop("readonly",true);
+            $("#inicioServicio").prop("readonly",true);
+            $("#movilServicio").prop("disabled",true);
+            $("#tarifa1Servicio").prop("readonly",true);
+            $("#tarifa2Servicio").prop("readonly",true);
+            $("#estadoServicio").prop("disabled",false);
+            $("#estadoServicio").prop("disabled",true);
             cargarClientes();
             cargarRutas();
-            $("#rutaServicio").prop("readonly",false);
-            $("#tipoRutaServicio").prop("readonly",false);
-            $("#fechaServicio").prop("disabled",false);
-            $("#inicioServicio").prop("disabled",false);
-            $("#estadoServicio").prop("disabled",false);
-            $("#movilServicio").prop("disabled",false);
-            $("#tarifaServicio").prop("readonly",false);
-            $("#tarifa2Servicio").prop("readonly",false);
-            iniciarFecha([$("#fechaServicio")]);
-            iniciarHora([$("#inicioServicio")]);
         }
         cambioEjecutado();
         iniciarPestanias();
@@ -241,13 +240,13 @@ function abrirBuscador(id,tarifa)
         ESTADO_ACTUAL = servicio.servicio_estado;
         ESTADO_SERVICIO = servicio.servicio_estado;
         if(ESTADO_SERVICIO === '1' || ESTADO_SERVICIO === '2' || ESTADO_SERVICIO === '3'){
-            cambiarPropiedad($("#guardar"),"display","none");
+//            cambiarPropiedad($("#guardar"),"display","none");
             $("#editarPasajero").click(()=>{
                 abrirServicio(ID_SERVICIO);
             });
         }
         else{
-            cambiarPropiedad($("#guardar"),"display","initial");
+//            cambiarPropiedad($("#guardar"),"display","initial");
             cambiarPropiedad($("#editarPasajero"),"display","none");
         }
         cargarRutas();
@@ -301,9 +300,9 @@ function abrirBuscador(id,tarifa)
                 $("#conductorServicio").val("");
             }
         });
-        $("#guardar").click(function(){
-            modificarServicio();
-        });
+//        $("#guardar").click(function(){
+//            modificarServicio();
+//        });
         
         $("#eliminar").click(function (){
             confirmar("Eliminar servicio","Esta seguro que desea eliminar el servicio "+ID_SERVICIO,
@@ -440,7 +439,7 @@ function cambiarPestaniaGeneral()
     agregarclase($("#p_pasajero"),"dispose");
     agregarclase($("#p_ruta"),"dispose");
     agregarclase($("#p_obs"),"dispose");
-    quitarclase($("#guardar"),"oculto");
+//    quitarclase($("#guardar"),"oculto");
 }
 
 function cambiarPestaniaPasajero()
@@ -453,7 +452,7 @@ function cambiarPestaniaPasajero()
     agregarclase($("#p_general"),"dispose");
     agregarclase($("#p_ruta"),"dispose");
     agregarclase($("#p_obs"),"dispose");
-    agregarclase($("#guardar"),"oculto");
+//    agregarclase($("#guardar"),"oculto");
 }
 function cambiarPestaniaRuta()
 {
@@ -465,7 +464,7 @@ function cambiarPestaniaRuta()
     agregarclase($("#p_general"),"dispose");
     agregarclase($("#p_pasajero"),"dispose");
     agregarclase($("#p_obs"),"dispose");
-    agregarclase($("#guardar"),"oculto");
+//    agregarclase($("#guardar"),"oculto");
 }
 function cambiarPestaniaObservacion()
 {
@@ -477,7 +476,7 @@ function cambiarPestaniaObservacion()
     agregarclase($("#p_general"),"dispose");
     agregarclase($("#p_pasajero"),"dispose");
     agregarclase($("#p_ruta"),"dispose");
-    agregarclase($("#guardar"),"oculto");
+//    agregarclase($("#guardar"),"oculto");
 }
 function obtenerEstadoServicio(servicio)
 {
