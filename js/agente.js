@@ -131,7 +131,8 @@ function agregarAgente()
             cambiarPestaniaGeneral();
             vaciarFormulario();
             resetFormulario();
-            enviarCorreoCreaAdmin(mail,nick,password);
+            enviarCorreoCreaAdmin(mail);
+            alertify.success("Datos de acceso enviados al correo "+mail);
             buscarAgente();
         };
         postRequest(url,params,success);
@@ -229,7 +230,7 @@ function buscarAgente(cargar = false)
             }
         }
     };
-    postRequest(url,params,success);
+    postRequest(url,params,success,cargar);
 }
 
 function cambiarFila(id)
@@ -347,6 +348,7 @@ function eliminarAgente()
     var url = urlBase + "/agente/DelAgente.php";
     var success = function(response)
     {
+        CLIENTE = undefined;
         alertify.success("Administrador eliminado");
         cerrarSession(response);
         resetFormularioEliminar(PAGINA);

@@ -799,17 +799,11 @@ function enviarCorreoPassword(mail,password)
     postRequest(url,params,success);
 }
 
-function enviarCorreoCreaAdmin(mail,usuario,password)
+function enviarCorreoCreaAdmin(mail)
 {
-    var url = urlUtil + "/enviarMail.php";
-    var asunto = "Envio de datos de acceso";
-    var mensaje = "Estimado, se adjuntan sus credenciales de acceso:\n ";
-    var params = {email : mail,mailencrypt : false,asunto : asunto, mensaje : mensaje, extra : btoa("Usuario: "+usuario+"\nPassword: "+password),encrypt : true};
-    var success = function(response)
-    {
-        alertify.success("Datos de acceso enviados al correo "+mail);
-    };
-    postRequest(url,params,success);
+    var url = urlBase + "/agente/SendMailAddAgente.php";
+    var params = {mail : mail};
+    postRequest(url,params,()=>{});
 }
 
 function enviarCorreoRecuperacion(rut,mail,sol){

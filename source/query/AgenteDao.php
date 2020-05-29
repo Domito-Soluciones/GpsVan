@@ -71,6 +71,25 @@ class AgenteDao {
         return $array;
     }
     
+    public function getAgenteAcceso($mail)
+    {
+        $agente = new Agente();
+        $conn = new Conexion();
+        try {
+            $query = "SELECT * FROM tbl_agente WHERE agente_mail = '".$mail."'";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
+            while($row = mysqli_fetch_array($result)) {
+                $agente->setNick($row["agente_nick"]);
+                $agente->setClave($row["agente_telefono"]);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
+        }
+        return $agente;
+    }
+    
     public function isAgenteExiste($rut)
     {
         $mail = '';
@@ -78,7 +97,7 @@ class AgenteDao {
         try {
             $query = "SELECT * FROM tbl_agente WHERE agente_rut = '".$rut."'";
             $conn->conectar();
-            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); ; 
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $mail = $row["agente_mail"];
             }
@@ -235,4 +254,4 @@ class AgenteDao {
         return $id;
     }
     
-}
+    }
