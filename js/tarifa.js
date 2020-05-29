@@ -11,17 +11,18 @@ var input_direccion;
 
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
-    buscarClienteTarifa();
+    buscarClienteTarifa(true);
     buscarTarifasAll(true);
     $("#agregar").click(function(){
         AGREGAR = true;
+        ocultarMapa();
         $("#lista_busqueda_tarifa_detalle").load("html/datos_tarifa.html", function( response, status, xhr ) {
             initPlacesAutoComplete(document.getElementById("origen"));
             initPlacesAutoComplete(document.getElementById("destino"));
             iniciarHora([$("#hora")]);
             quitarclase($("#guardar"),"oculto");
             cambiarPropiedad($("#agregar"),"visibility","hidden");
-            cambiarPropiedad($("#eliminar"),"visibility","hidden");
+            cambiarPropiedad($("#eliminar2"),"visibility","hidden");
             $("#clientes").val(ID_CLIENTE);
             cambioEjecutado();
             cargarClientes();
@@ -46,13 +47,13 @@ $(document).ready(function(){
                 generarNombre('horario');
             });
 
-            $("#nombre").blur(function (){
-                if(validarExistencia('nombre',$(this).val()))
-                {
-                    alertify.error("El nombre "+$(this).val()+" ya existe");
-                    return;
-                }
-            });
+//            $("#nombre").blur(function (){
+//                if(validarExistencia('nombre',$(this).val()))
+//                {
+//                    alertify.error("El nombre "+$(this).val()+" ya existe");
+//                    return;
+//                }
+//            });
             $("#clientes").on('blur',function () {
                 if($("#clientes").val() === "")
                 {
@@ -129,14 +130,20 @@ $(document).ready(function(){
             mostrarSubMapa();
         });
         cambiarPropiedad($("#guardar"),"visibility","visible");
-        cambiarPropiedad($("#cancelar"),"visibility","visible");
+        cambiarPropiedad($("#cancelar"),"visibility","hidden");
     });
+    
+    cambiarPropiedad($("#guardar"),"visibility","hidden");
+    cambiarPropiedad($("#cancelar"),"visibility","hidden");
 
     $("#busqueda").keyup(function(){
-        buscarClienteTarifa($(this).val());
+        buscarClienteTarifa();
     });
                 
     $("#guardar").click(function (){
+        if($("#tipo").val() === undefined){
+            return;
+        }
         if(AGREGAR)
         {
             agregarTarifa();
@@ -240,7 +247,7 @@ function modificarTarifa()
 
 
 
-function buscarClienteTarifa()
+function buscarClienteTarifa(cargar = false)
 {
     var busqueda = $("#busqueda").val();
     var params = {busqueda : busqueda,buscaCC : '0'};
@@ -273,11 +280,12 @@ function buscarClienteTarifa()
             }
         }
     };
-    postRequest(url,params,success);
+    postRequest(url,params,success,cargar);
 }
 
 function cambiarFilaTarifa(id,nombre,direccion)
 {
+    AGREGAR = false;
     if(MODIFICADO)
     {
         confirmar("Cambio de tarifa",
@@ -404,6 +412,9 @@ function abrirBuscador(id)
         cambiarPropiedad($("#cancelar"),"visibility","visible");
         cambiarPropiedad($("#eliminar"),"visibility","visible");
         $("#eliminar2").click(function (){
+            if(AGREGAR){
+                return;
+            }       
             confirmar("Eliminar tarifa","Esta seguro que desea eliminar la tarifa "+$("#descripcion").val() + " " +$("#nombre").val(),
             function(){
                 eliminarTarifa();
@@ -481,6 +492,7 @@ function eliminarTarifa()
     var url = urlBase + "/tarifa/DelTarifa.php";
     var success = function(response)
     {
+        ocultarMapa();
         alertify.success("Tarifa eliminada");
         cerrarSession(response);
         resetBotones();
@@ -595,12 +607,16 @@ function generarNombre()
 
 function preEliminarTarifa(id,nombre,descripcion)
 {
+    if(AGREGAR){
+        return;
+    }
     confirmar("Eliminar tarifa","Esta seguro que desea eliminar la tarifa "+descripcion+" "+nombre,
             function(){
                 var params = {id : id};
                 var url = urlBase + "/tarifa/DelTarifa.php";
                 var success = function(response)
                 {
+                    ocultarMapa();
                     agregarclase($("#eliminarT"),"oculto");
                     agregarclase($("#guardarT"),"oculto");
                     quitarclase($("#agregarT"),"oculto");

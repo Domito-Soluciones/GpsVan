@@ -60,10 +60,17 @@ $(document).ready(function(){
         cambiarPropiedad($("#guardar"),"visibility","visible");
         cambiarPropiedad($("#eliminar"),"visibility","hidden");
     });
+    
+    cambiarPropiedad($("#guardar"),"visibility","hidden");
+    cambiarPropiedad($("#eliminar"),"visibility","hidden");
+        
     $("#cancelar").click(function(){
         validarCancelar(PAGINA);
     });
     $("#guardar").click(function(){
+        if($("#rut").val() === undefined){
+            return;
+        }
         if(AGREGAR)
         {
             agregarAgente();
@@ -79,11 +86,14 @@ $(document).ready(function(){
     });
     
     $("#eliminar").click(function (){
-            confirmar("Eliminar administrador",
-            "Esta seguro que desea eliminar al administrador "+$("#rut").val(),
-            function(){
-                eliminarAgente();
-            },null);
+        if(AGREGAR){
+            return;
+        }
+        confirmar("Eliminar administrador",
+        "Esta seguro que desea eliminar al administrador "+$("#rut").val(),
+        function(){
+            eliminarAgente();
+        },null);
     });
     
 });

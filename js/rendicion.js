@@ -7,10 +7,10 @@ var RENDICIONES;
 var ID_RENDICION;
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
-    buscarConductor();
+    buscarConductor(true);
     verRendiciones('',true);
     $("#busqueda").keyup(function(){
-        buscarConductor($(this).val());
+        buscarConductor();
     });
     
     $("#agregar").click(function(){
@@ -30,6 +30,9 @@ $(document).ready(function(){
     });
     
     $("#guardar").click(function(){
+        if($("#dato").val() === undefined){
+            return;
+        }
         if(AGREGAR)
         {
             agregarRendicion();
@@ -41,6 +44,9 @@ $(document).ready(function(){
     });
     
     $("#eliminar").click(function (){
+        if(AGREGAR){
+            return;
+        }
         confirmar("Eliminar rendición","Esta seguro que desea eliminar la rendición "+ID_RENDICION+"?",
         function(){
                     eliminarRendicion();
@@ -105,7 +111,7 @@ function modificarRendicion()
     }
 }
 
-function buscarConductor()
+function buscarConductor(cargar = false)
 {
     var busqueda = $("#busqueda").val();
     var params = {busqueda : busqueda};
@@ -139,11 +145,12 @@ function buscarConductor()
             }
         }
     };
-    postRequest(url,params,success);
+    postRequest(url,params,success,cargar);
 }
 
 function verRendiciones(conductor,cargar = false)
 {
+    AGREGAR = false;
     ID_CONDUCTOR = conductor;
     marcarFilaActiva(conductor);
     if(conductor !== '')
@@ -247,6 +254,9 @@ function activarPestania(array)
 
 function preEliminarRendicion(id)
 {
+    if(AGREGAR){
+        return;
+    }
     confirmar("Eliminar connductor","Esta seguro que desea eliminar la rendición "+id,
             function(){
                 var params = {id : id};
