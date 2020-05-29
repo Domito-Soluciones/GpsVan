@@ -19,6 +19,9 @@ $(document).ready(function(){
     buscarClientePasajero();
     buscarPasajero(true);
     $("#agregar").click(function(){
+        CC = undefined;
+        ID_EMPRESA = undefined;
+        ocultarMapa();
         quitarclase($(".fila_contenedor"),"fila_contenedor_activa");
         cambiarPropiedad($("#agregar"),"visibility","hidden");
         AGREGAR = true;
@@ -251,17 +254,7 @@ function modificarPasajero()
             ocultarMapa();
             cerrarSession(response);
             cambiarPestaniaGeneral();
-            if(typeof ID_CLIENTE === 'undefined')
-            {
-                buscarPasajero();
-            }
-            else if(ID_CLIENTE === 'todo')
-            {
-                buscarPasajeroTodo();
-            }
-            else{
-                buscarPasajeroCliente(ID_CLIENTE,NOMBRE_CLIENTE);
-            }
+            buscarPasajeroTodo();
             alertify.success("Pasajero Modificado");
             resetFormulario();
         };
@@ -308,6 +301,7 @@ function buscarPasajero(cargar = false)
 
 function buscarPasajeroCliente(cliente,nombreCliente)
 {
+    ocultarMapa();
     ID_CLIENTE = cliente;
     marcarFilaActiva("col_"+cliente);
     var pasajeros = $("#lista_busqueda_pasajero_detalle");
@@ -325,12 +319,12 @@ function buscarPasajeroCliente(cliente,nombreCliente)
             var nombre = PASAJEROS[i].pasajero_nombre;
             var papellido = PASAJEROS[i].pasajero_papellido;
             var empresa = PASAJEROS[i].pasajero_empresa_nombre;
-            pasajeros.append("<div class=\"fila_contenedor fila_contenedor_pasajero\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"','"+rut+"','"+nombre+"','"+papellido+"')\">"+
+            pasajeros.append("<div class=\"fila_contenedor fila_contenedor_pasajero\" id=\""+id+"\">"+
                     "<div class=\"col_empresa_pasajero\">"+j+"</div>"+
-                    "<div>"+rut+"</div>"+
-                    "<div>"+nombre+"</div>"+
-                    "<div>"+papellido+"</div>"+
-                    "<div class=\"col_empresa_pasajero\">"+empresa+"</div>"+
+                    "<div onClick=\"cambiarFila('"+id+"','"+rut+"','"+nombre+"','"+papellido+"')\">"+rut+"</div>"+
+                    "<div onClick=\"cambiarFila('"+id+"','"+rut+"','"+nombre+"','"+papellido+"')\">"+nombre+"</div>"+
+                    "<div onClick=\"cambiarFila('"+id+"','"+rut+"','"+nombre+"','"+papellido+"')\">"+papellido+"</div>"+
+                    "<div  onClick=\"cambiarFila('"+id+"','"+rut+"','"+nombre+"','"+papellido+"')\" class=\"col_empresa_pasajero\">"+empresa+"</div>"+
                     "<div><img onclick=\"preEliminarPasajero('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>");
             j++;
         }
@@ -346,6 +340,7 @@ function buscarPasajeroCliente(cliente,nombreCliente)
 function buscarPasajeroTodo()
 {
     ID_CLIENTE = 'todo';
+    ocultarMapa()
     marcarFilaActiva('col_todo');
     var pasajeros = $("#lista_busqueda_pasajero_detalle");
     pasajeros.html("");
@@ -359,12 +354,12 @@ function buscarPasajeroTodo()
         var nombre = PASAJEROS[i].pasajero_nombre;
         var papellido = PASAJEROS[i].pasajero_papellido;
         var empresa = PASAJEROS[i].pasajero_empresa_nombre;
-        pasajeros.append("<div class=\"fila_contenedor fila_contenedor_pasajero\" id=\""+id+"\" onClick=\"cambiarFila('"+id+"','"+rut+"','"+nombre+"','"+papellido+"')\">"+
+        pasajeros.append("<div class=\"fila_contenedor fila_contenedor_pasajero\" id=\""+id+"\" >"+
                 "<div class=\"col_empresa_pasajero\">"+(i+1)+"</div>"+
-                "<div>"+rut+"</div>"+
-                "<div>"+nombre+"</div>"+
-                "<div>"+papellido+"</div>"+
-                "<div class=\"col_empresa_pasajero\">"+empresa+"</div>"+
+                "<div onClick=\"cambiarFila('"+id+"','"+rut+"','"+nombre+"','"+papellido+"')\">"+rut+"</div>"+
+                "<div onClick=\"cambiarFila('"+id+"','"+rut+"','"+nombre+"','"+papellido+"')\">"+nombre+"</div>"+
+                "<div onClick=\"cambiarFila('"+id+"','"+rut+"','"+nombre+"','"+papellido+"')\">"+papellido+"</div>"+
+                "<div onClick=\"cambiarFila('"+id+"','"+rut+"','"+nombre+"','"+papellido+"')\" class=\"col_empresa_pasajero\">"+empresa+"</div>"+
                 "<div><img onclick=\"preEliminarPasajero('"+rut+"')\" src=\"img/eliminar-negro.svg\" width=\"12\" height=\"12\"></div>");
     }
     if(noHayRegistros)
@@ -505,11 +500,12 @@ function eliminarPasajero()
     var url = urlBase + "/pasajero/DelPasajero.php";
     var success = function(response)
     {
+        buscarPasajero();
+        ocultarMapa();
         alertify.success("Pasajero eliminado");
         cerrarSession(response);
         resetFormularioEliminar(PAGINA);
         resetBotones();
-        buscarPasajero();
     };
     postRequest(url,params,success);
 }
@@ -560,14 +556,14 @@ function validarTipoDato()
         marcarCampoOk(telefono);
         cambiarPestaniaGeneral();
         marcarCampoError(telefono);
-        alertify.error('Telefono debe ser numerico');
+        alertify.error('Telefono debe ser numérico');
         return false;
     }
     if(!validarNumero(celular.val()))
     {
         cambiarPestaniaGeneral();
         marcarCampoError(celular);
-        alertify.error('Celular debe ser numerico');
+        alertify.error('Celular debe ser numérico');
         return false;
     }
     if(!validarEmail(mail.val()))
@@ -599,6 +595,7 @@ function iniciarPestanias()
 
 function cargarCentroCosto(empresa,centro)
 {
+    console.log(empresa+" "+centro)
     var params = {cliente : empresa};
     var url = urlBase + "/cliente/GetCentroCosto.php";
     var success = function(response)

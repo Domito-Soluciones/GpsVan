@@ -644,14 +644,14 @@ function validarTipoDato()
         marcarCampoOk(telefono);
         cambiarPestaniaGeneral();
         marcarCampoError(telefono);
-        alertify.error('Telefono debe ser numerico');
+        alertify.error('Telefono debe ser numérico');
         return false;
     }
     if(!validarNumero(celular.val()))
     {
         cambiarPestaniaGeneral();
         marcarCampoError(celular);
-        alertify.error('Celular debe ser numerico');
+        alertify.error('Celular debe ser numérico');
         return false;
     }
     if(!validarEmail(mail.val()))
@@ -665,14 +665,14 @@ function validarTipoDato()
     {
         cambiarPestaniaContrato();
         marcarCampoError(renta);
-        alertify.error('Renta debe ser numerico');
+        alertify.error('Renta debe ser numérico');
         return false;
     }
     if(!validarNumero(isapread.val()))
     {
         cambiarPestaniaContrato();
         marcarCampoError(isapread);
-        alertify.error('Isapre adicional debe ser numerico');
+        alertify.error('Isapre adicional debe ser numérico');
         return false;
     }
     if(!validarNumero(descuento.val() === '' ? '0' : descuento.val()))
@@ -680,7 +680,7 @@ function validarTipoDato()
         marcarCampoOk(descuento);
         cambiarPestaniaContrato();
         marcarCampoError(descuento);
-        alertify.error('% Descuento debe ser numerico');
+        alertify.error('% Descuento debe ser numérico');
         return false;
     }
     

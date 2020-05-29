@@ -45,12 +45,28 @@ function obtenerConfiguracion()
 
 function modificarConfiguracion()
 {
-    var uf = $("#valor_uf").val().val().split('.').join('');;
+    var uf = $("#valor_uf").val();
     var afp = $("#porcentaje_afp").val();
     var isapre = $("#porcentaje_isapre").val();
     var mutual = $("#porcentaje_mutual").val();
     var params = {uf : uf,afp: afp, isapre : isapre, mutual : mutual};
-    var array = [uf,afp,isapre,mutual];   
+    var array = [uf,afp,isapre,mutual];  
+    if(!validarNumero(uf)){
+        alertify.error("Valor UF debe ser numérico");
+        return;
+    }
+    if(!validarNumero(afp)){
+        alertify.error("Descuento AFP debe ser numérico");
+        return;
+    }
+    if(!validarNumero(isapre)){
+        alertify.error("Descuento Isapre debe ser numérico");
+        return;
+    }
+    if(!validarNumero(mutual)){
+        alertify.error("Descuento Mutual debe ser numérico");
+        return;
+    }
     if(!validarCamposOr(array))
     {
         activarPestania(array);
@@ -63,7 +79,7 @@ function modificarConfiguracion()
         var success = function(response)
         {
             cerrarSession(response);
-            resetFormulario();
+            MODIFICADO = false;
             alertify.success("Configuración Guardada");
         };
         postRequest(url,params,success);
@@ -83,25 +99,25 @@ function validarTipoDato()
     if(!validarNumero(uf.val()))
     {
         marcarCampoError(uf);
-        alertify.error('UF debe ser numerico');
+        alertify.error('UF debe ser numérico');
         return false;
     }
     if(!validarNumero(afp.val()))
     {
         marcarCampoError(afp);
-        alertify.error('AFP debe ser numerico');
+        alertify.error('AFP debe ser numérico');
         return false;
     }
     if(!validarNumero(isapre.val()))
     {
         marcarCampoError(isapre);
-        alertify.error('Isapre debe ser numerico');
+        alertify.error('Isapre debe ser numérico');
         return false;
     }
     if(!validarNumero(mutual.val()))
     {
         marcarCampoError(mutual);
-        alertify.error('Mutual debe ser numerico');
+        alertify.error('Mutual debe ser numérico');
         return false;
     }
     

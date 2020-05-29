@@ -224,7 +224,7 @@ function validarTipoDato()
     if(!validarNumero(valor.val()))
     {
         marcarCampoError(valor);
-        alertify.error('Valor debe ser numerico');
+        alertify.error('Valor debe ser numérico');
         return false;
     }
     return true;

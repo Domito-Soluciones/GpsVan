@@ -454,7 +454,7 @@ function agregarPasajeroEspecial(){
     }
     if(validarNumero(nombre))
     {
-        alertify.error("Nombre no debe ser numerico");
+        alertify.error("Nombre no debe ser numérico");
         return;
     }
     if(nombre.indexOf("-") !== -1)
@@ -464,7 +464,7 @@ function agregarPasajeroEspecial(){
     }
     if(!validarNumero(celular))
     {
-        alertify.error("Celular debe ser numerico");
+        alertify.error("Celular debe ser numérico");
         return;
     }
     if(pasajeros.length > 15){
@@ -546,7 +546,7 @@ function modificarPasajeroEspecial(){
     }
     if(validarNumero(nombre))
     {
-        alertify.error("Nombre no debe ser numerico");
+        alertify.error("Nombre no debe ser numérico");
         return;
     }
     if(nombre.indexOf("-") !== -1)
@@ -556,7 +556,7 @@ function modificarPasajeroEspecial(){
     }
     if(!validarNumero(celular))
     {
-        alertify.error("Celular debe ser numerico");
+        alertify.error("Celular debe ser numérico");
         return;
     }
     var id = nombre+"-"+celular.split("+").join("");

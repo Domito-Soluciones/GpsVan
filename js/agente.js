@@ -402,14 +402,14 @@ function validarTipoDato()
     {
         cambiarPestaniaGeneral();
         marcarCampoError(telefono);
-        alertify.error('Telefono debe ser numerico');
+        alertify.error('Telefono debe ser numérico');
         return false;
     }
     if(!validarNumero(celular.val()))
     {
         cambiarPestaniaGeneral();
         marcarCampoError(celular);
-        alertify.error('Celular debe ser numerico');
+        alertify.error('Celular debe ser numérico');
         return false;
     }
     if(!validarEmail(mail.val()))

@@ -1291,13 +1291,13 @@ function validarTipoDato()
     if(!validarNumero(tarifa1.val()))
     {
         marcarCampoError(tarifa1);
-        alertify.error('Tarifa 1 debe ser numerico');
+        alertify.error('Tarifa 1 debe ser numérico');
         return false;
     }
     if(!validarNumero(tarifa2.val()))
     {
         marcarCampoError(tarifa2);
-        alertify.error('Tarifa 2 debe ser numerico');
+        alertify.error('Tarifa 2 debe ser numérico');
         return false;
     }
     return true;
@@ -1576,7 +1576,7 @@ function agregarPasajeroEspecial(){
     }
     if(validarNumero(nombre))
     {
-        alertify.error("Nombre no debe ser numerico");
+        alertify.error("Nombre no debe ser numérico");
         return;
     }
     if(nombre.indexOf("-") !== -1)
@@ -1586,7 +1586,7 @@ function agregarPasajeroEspecial(){
     }
     if(!validarNumero(celular))
     {
-        alertify.error("Celular debe ser numerico");
+        alertify.error("Celular debe ser numérico");
         return;
     }
     if(pasajeros.length > 15){
@@ -1796,17 +1796,17 @@ function initAgregarPasajero(obj,nombre,punto,celular){
     nombre = nombre.split(" ").join("_");
     if(validarNumero(nombre))
     {
-        alertify.error("Nombre no debe ser numerico");
+        alertify.error("Nombre no debe ser numérico");
         return;
     }
     if(nombre.indexOf("-") !== -1)
     {
-        alertify.error("Nombre no debe ser numerico");
+        alertify.error("Nombre no debe ser numérico");
         return;
     }
     if(!validarNumero(celular))
     {
-        alertify.error("Celular debe ser numerico");
+        alertify.error("Celular debe ser numérico");
         return;
     }
     $("#agregaNombre").val("");
@@ -1978,7 +1978,7 @@ function cargarPasajerosEditar(servicios)
 function agregarPasajeroEspecialCliente(nombre,celular,partida,destino){
     if(validarNumero(nombre))
     {
-        alertify.error("Nombre no debe ser numerico");
+        alertify.error("Nombre no debe ser numérico");
         return;
     }
     if(nombre.indexOf("-") !== -1)
@@ -1988,7 +1988,7 @@ function agregarPasajeroEspecialCliente(nombre,celular,partida,destino){
     }
     if(!validarNumero(celular))
     {
-        alertify.error("Celular debe ser numerico");
+        alertify.error("Celular debe ser numérico");
         return;
     }
     var id = nombre+"-"+celular.split("+").join("");

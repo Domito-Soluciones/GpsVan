@@ -769,7 +769,7 @@ function validarTipoDato()
     {
         cambiarPestaniaGeneral();
         marcarCampoError(anio);
-        alertify.error('A&ntilde;o debe ser numerico');
+        alertify.error('A&ntilde;o debe ser numérico');
         return false;
     }
     else
@@ -780,7 +780,7 @@ function validarTipoDato()
     {
         cambiarPestaniaGeneral();
         marcarCampoError(cantidad);
-        alertify.error('Cantidad debe ser numerico');
+        alertify.error('Cantidad debe ser numérico');
         return false;
     }
     else
@@ -791,7 +791,7 @@ function validarTipoDato()
     {
         cambiarPestaniaGeneral();
         marcarCampoError(gps);
-        alertify.error('Descuento GPS debe ser numerico');
+        alertify.error('Descuento GPS debe ser numérico');
         return false;
     }
     else
@@ -802,7 +802,7 @@ function validarTipoDato()
     {
         cambiarPestaniaGeneral();
         marcarCampoError(celular);
-        alertify.error('Descuento Celular debe ser numerico');
+        alertify.error('Descuento Celular debe ser numérico');
         return false;
     }
     else
@@ -813,7 +813,7 @@ function validarTipoDato()
     {
         cambiarPestaniaGeneral();
         marcarCampoError(app);
-        alertify.error('Descuento Celular debe ser numerico');
+        alertify.error('Descuento Celular debe ser numérico');
         return false;
     }
     else
@@ -824,7 +824,7 @@ function validarTipoDato()
     {
         cambiarPestaniaFicha();
         marcarCampoError(kilo);
-        alertify.error('Kilometraje debe ser numerico');
+        alertify.error('Kilometraje debe ser numérico');
         return false;
     }
     else
@@ -835,7 +835,7 @@ function validarTipoDato()
     {
         cambiarPestaniaFicha();
         marcarCampoError(motor);
-        alertify.error('N° Motor debe ser numerico');
+        alertify.error('N° Motor debe ser numérico');
         return false;
     }
     else
@@ -846,7 +846,7 @@ function validarTipoDato()
     {
         cambiarPestaniaFicha();
         marcarCampoError(chasis);
-        alertify.error('N° Chasis debe ser numerico');
+        alertify.error('N° Chasis debe ser numérico');
         return false;
     }
     else
@@ -857,7 +857,7 @@ function validarTipoDato()
     {
         cambiarPestaniaSeguro();
         marcarCampoError(polizaSegOb);
-        alertify.error('N° Poliza Seguro Obligatorio debe ser numerico');
+        alertify.error('N° Poliza Seguro Obligatorio debe ser numérico');
         return false;
     }
     else
@@ -868,7 +868,7 @@ function validarTipoDato()
     {
         cambiarPestaniaSeguro();
         marcarCampoError(polizaSegRcDm);
-        alertify.error('N° Poliza Seguro RC+DM debe ser numerico');
+        alertify.error('N° Poliza Seguro RC+DM debe ser numérico');
         return false;
     }
     else
@@ -879,7 +879,7 @@ function validarTipoDato()
     {
         cambiarPestaniaSeguro();
         marcarCampoError(polizaSegAs);
-        alertify.error('N° Poliza Seguro Asientos debe ser numerico');
+        alertify.error('N° Poliza Seguro Asientos debe ser numérico');
         return false;
     }
     else
@@ -890,7 +890,7 @@ function validarTipoDato()
     {
         cambiarPestaniaSeguro();
         marcarCampoError(polizaSegRcExceso);
-        alertify.error('N° Poliza Seguro RC Exceso debe ser numerico');
+        alertify.error('N° Poliza Seguro RC Exceso debe ser numérico');
         return false;
     }
     else
@@ -901,7 +901,7 @@ function validarTipoDato()
     {
         cambiarPestaniaSeguro();
         marcarCampoError(valorSegOb);
-        alertify.error('Valor Seguro Obligatorio debe ser numerico');
+        alertify.error('Valor Seguro Obligatorio debe ser numérico');
         return false;
     }
     else
@@ -912,7 +912,7 @@ function validarTipoDato()
     {
         cambiarPestaniaSeguro();
         marcarCampoError(valorSegRcDm);
-        alertify.error('Valor Seguro RC+DM debe ser numerico');
+        alertify.error('Valor Seguro RC+DM debe ser numérico');
         return false;
     }
     else
@@ -923,7 +923,7 @@ function validarTipoDato()
     {
         cambiarPestaniaSeguro();
         marcarCampoError(valorSegRcExceso);
-        alertify.error('Valor Seguro RC Exceso debe ser numerico');
+        alertify.error('Valor Seguro RC Exceso debe ser numérico');
         return false;
     }
     else
@@ -934,7 +934,7 @@ function validarTipoDato()
     {
         cambiarPestaniaSeguro();
         marcarCampoError(valorSegAs);
-        alertify.error('Valor Seguro Asientos debe ser numerico');
+        alertify.error('Valor Seguro Asientos debe ser numérico');
         return false;
     }
     else

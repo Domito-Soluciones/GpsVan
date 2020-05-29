@@ -519,19 +519,19 @@ function validarTipoDatoTarifa()
     if(!validarNumero(numero.val()))
     {
         marcarCampoError(numero);
-        alertify.error('Número ruta debe ser numerico');
+        alertify.error('Número ruta debe ser numérico');
         return false;
     }
     if(!validarNumero(valor1.val()))
     {
         marcarCampoError(valor1);
-        alertify.error('Tarifa 1 debe ser numerico');
+        alertify.error('Tarifa 1 debe ser numérico');
         return false;
     }
     if(!validarNumero(valor2.val()))
     {
         marcarCampoError(valor2);
-        alertify.error('Tarifa 2 debe ser numerico');
+        alertify.error('Tarifa 2 debe ser numérico');
         return false;
     }
     return true;

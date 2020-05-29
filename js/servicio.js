@@ -674,14 +674,14 @@ function validarTipoDato()
     {
         cambiarPestaniaGeneral();
         marcarCampoError(tarifa1);
-        alertify.error('Tarifa 1 debe ser numerico');
+        alertify.error('Tarifa 1 debe ser numérico');
         return false;
     }
     if(!validarNumero(tarifa2.val()))
     {
         cambiarPestaniaGeneral();
         marcarCampoError(tarifa2);
-        alertify.error('Tarifa 2 debe ser numerico');
+        alertify.error('Tarifa 2 debe ser numérico');
         return false;
     }
     
