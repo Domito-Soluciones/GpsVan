@@ -44,7 +44,6 @@ class ReporteDao {
             }
             $query = "SELECT servicio_estado,count(*) as servicio_cantidad FROM tbl_servicio LEFT JOIN tbl_servicio_pasajero ON servicio_id = servicio_pasajero_id_servicio LEFT JOIN tbl_pasajero ON servicio_pasajero_id_pasajero = pasajero_id WHERE servicio_estado != 0 "
                     .$buscaFecha." ".$buscaEmpresa." ".$buscaCC." ".$buscaConductor. "  ".$buscaGroup;
-            echo $query;
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {

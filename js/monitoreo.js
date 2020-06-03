@@ -17,7 +17,7 @@ $(document).ready(function(){
     interval = setInterval('moverMovilesMapa()',3000);
     
     $("#busqueda").keyup(function(e){
-        cargarMovilesMapa(false);
+        cargarMovilesMapa();
     });
     
     google.maps.event.addListener(map,'zoom_changed',function(){});
@@ -89,7 +89,7 @@ function buscarServicio()
     getRequest(url,success);
 }
 
-function cargarMovilesMapa(monitor)
+function cargarMovilesMapa(cargar = false)
 {
     var busqueda = $("#busqueda").val();
     var params = {busqueda : busqueda};
@@ -140,7 +140,7 @@ function cargarMovilesMapa(monitor)
             }    
         }
     };
-    postRequest(url,params,success);
+    postRequest(url,params,success,cargar);
 }
 
 function moverMovilesMapa()
@@ -273,15 +273,23 @@ function animarMovil(patente)
 function moverMovil(patente,nombre,estado,lat,lon,servicio,conductor,color){
     if(estado === '0')
     {
+        console.log(markers.length);
         for(var j = 0  ; j < markers.length;j++)
-        {           
+        {
+            console.log("# "+markers[j].get("idMarker"));
             if(markers[j].get("idMarker") === patente)
             {
+                for (var [clave, valor] of MOVILES_DIBUJADOS) {
+                    console.log("estado 0: "+clave + " = " + valor);
+                }
                 quitarclase($("#"+patente+"-img"),"img-estado-ok");
                 agregarclase($("#"+patente+"-img"),"img-estado-no");
                 markers[j].setMap(null);
                 MOVILES_DIBUJADOS.delete(patente);
                 break;
+            }
+            else{
+                console.log("no dunco# "+markers[j].get("idMarker"));
             }
         }
     }
@@ -290,6 +298,9 @@ function moverMovil(patente,nombre,estado,lat,lon,servicio,conductor,color){
         var marker = undefined;
         if(typeof MOVILES_DIBUJADOS.get(patente) === 'undefined')
         {
+            for (var [clave, valor] of MOVILES_DIBUJADOS) {
+                console.log("estado 1: "+clave + " = " + valor);
+            }
             marker = dibujarMarcador(patente,lat,lon,nombre,servicio,conductor,color);
             MOVILES_DIBUJADOS.set(patente,patente);
             quitarclase($("#"+patente+"-img"),"img-estado-no");
