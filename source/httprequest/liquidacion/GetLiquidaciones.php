@@ -9,10 +9,16 @@ set_time_limit(0);
 $convenio = 0;
 $descuento = 1;
 $rendicion = 2;
-$liquidacionDao = new LiquidacionDao();
-$conductores = $liquidacionDao->getConductores();
 $mes = date('m');
-$anio = date('y');
+$anio = date('yy');
+
+$liquidacionDao = new LiquidacionDao();
+
+$liquidacionDao->eliminarLiquidacionDetalle($mes,$anio);
+$aux = $liquidacionDao->eliminarLiquidacion($mes, $anio);
+
+
+$conductores = $liquidacionDao->getConductores();
 //$mes = 12;
 //$anio = 2019;
 $porcentajes = $liquidacionDao->getPorcentajes();   
@@ -34,7 +40,7 @@ for($i = 0 ; $i < count($conductores); $i++){
     $liquidoPagar = 0;
     
     if(count($servicios) == 0){
-        echo "CONDUCTOR ".$conductor->getId()." NO TIENE SERVICIOS REALIZADOS POR LO TANTO NO HABRA LIQUIDACION<br>";
+        //echo "CONDUCTOR ".$conductor->getId()." NO TIENE SERVICIOS REALIZADOS POR LO TANTO NO HABRA LIQUIDACION<br>";
         continue;
     }
     

@@ -79,7 +79,8 @@ function agregarRendicion()
             cerrarSession(response);
             alertify.success("Rendición Agregada");
             vaciarFormulario();
-            resetFormulario();
+            //resetFormulario();
+            MODIFICADO = false;
         };
         postRequest(url,params,success);
     }

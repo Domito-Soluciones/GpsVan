@@ -88,8 +88,10 @@ $meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Julio", "Agosto
     $x = 0;
     for($j = 0; $j < count($liquidacionRendiciones) ; $j++)
     {
+        $pdf->SetXY(130,$posicion2);
         $detalle = $liquidacionRendiciones[$j];
         $pdf->MultiCell($width,$height,utf8_decode($detalle->getItem())."   $ ".$detalle->getValor()."\n", 1);
+        $posicion2 = $posicion2+10;
     }
     for($c = 0 ; $c < $total - $x;$c++){
         $pdf->MultiCell($width,$height,"\n", 1);

@@ -1890,9 +1890,11 @@ select
     font-weight: bold ;
     margin-top: 10px;
     width: 100%;
-    height: calc(100% - 10px);
+    height: calc(100% - 20px);
     min-height: 345px;
+    overflow: auto;
 }
+
 
 .liquidacion_item
 {

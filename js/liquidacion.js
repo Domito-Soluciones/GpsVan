@@ -47,7 +47,7 @@ $(document).ready(function(){
 });
 
 
-function buscarConductor()
+function buscarConductor(cargar = false)
 {
     var busqueda = $("#busqueda").val();
     var params = {busqueda : busqueda};
@@ -81,7 +81,7 @@ function buscarConductor()
             }
         }
     };
-    postRequest(url,params,success);
+    postRequest(url,params,success,cargar);
 }
 
 function generarLiquidacion(id,rut,nombre)

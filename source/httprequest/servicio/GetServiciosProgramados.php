@@ -5,7 +5,7 @@ include '../../query/ServicioDao.php';
 include '../../log/Log.php';
 
 header('Content-Type: application/json; charset=utf-8');
-$conductor = filter_input(INPUT_GET, 'conductor');
+$conductor = filter_input(INPUT_POST, 'conductor');
 $idAnt = "";
 $servicioDao = new ServicioDao();
 $servicios = $servicioDao->getServicioProgramados($conductor);

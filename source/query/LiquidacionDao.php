@@ -308,6 +308,42 @@ class LiquidacionDao {
         return $id;
     }
     
+    public function eliminarLiquidacion($mes,$anio){
+        $id = 0;
+        $conn = new Conexion();
+        try {
+            $query = "DELETE FROM tbl_liquidacion WHERE liquidacion_mes = $mes AND liquidacion_anio = $anio"; 
+            $conn->conectar();
+            if (mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn))) {
+                $id = mysqli_insert_id($conn->conn);
+            } else {
+                echo mysqli_error($conn->conn);
+            }           
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
+        }
+        return $id;
+    }
+    
+    public function eliminarLiquidacionDetalle($mes,$anio){
+        $id = 0;
+        $conn = new Conexion();
+        try {
+            $query = "DELETE FROM tbl_liquidacion_detalle WHERE liquidaciondetalle_mes = $mes AND liquidaciondetalle_anio = $anio"; 
+            $conn->conectar();
+            if (mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn))) {
+                $id = mysqli_insert_id($conn->conn);
+            } else {
+                echo mysqli_error($conn->conn);
+            }           
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
+        }
+        return $id;
+    }
+    
     public function getLiquidacion($conductor,$mes,$anio)
     {
         $liquidacion = new Liquidacion();
