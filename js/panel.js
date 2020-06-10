@@ -1410,7 +1410,7 @@ function colocarMarcadorPlaces()
         position: map.getCenter(),
         map: map
     });
-    markers.push(marker);
+    markers.set("marker",marker);
     map.setZoom(17);
     map.panTo(marker.position);
     

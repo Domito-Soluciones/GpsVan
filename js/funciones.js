@@ -11,7 +11,7 @@ var directionsDisplay = null;
 var geocoder = null;
 var autocomplete;
 var places;
-var markers = [];
+var markers = new Map();
 var GOOGLE_MAPS_API = "https://maps.googleapis.com/maps/api/js?";
 var urlUtil= "source/util";
 var ADJUNTANDO = false;
@@ -842,13 +842,16 @@ function cerrarTooltip(tooltip)
 
 function eliminarMarkers()
 {
-    if(typeof markers !== 'undefined')
-    {
-        for(var i = 0 ; i < markers.length;i++)
-        {
-            markers[i].setMap(null);
-        }
+    for (var marker of markers.values()) {
+        marker.setMap(null);
     }
+//        if(typeof markers !== 'undefined')
+//        {
+//            for(var i = 0 ; i < markers.length;i++)
+//            {
+//
+//            }
+//        }
 }
 
 
@@ -924,10 +927,13 @@ function limpiarMapa()
     {
         flightPath.setMap(null);
     }
-    for(var i = 0; i < markers.length;i++)
-    {
-        markers[i].setMap(null);
+    for (var marker of markers.values()) {
+        marker.setMap(null);
     }
+//    for(var i = 0; i < markers.length;i++)
+//    {
+//        markers[i].setMap(null);
+//    }
 }
 
 function eliminarDivLoader() {

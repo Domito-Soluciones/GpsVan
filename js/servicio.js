@@ -381,10 +381,13 @@ function iniciarPestanias()
         }
         else
         {
-            for(var i = 0; i < markers.length;i++)
-            {
-                markers[i].setMap(null);
+            for (var marker of markers.values()) {
+                marker.setMap(null);
             }
+//            for(var i = 0; i < markers.length;i++)
+//            {
+//                markers[i].setMap(null);
+//            }
             mostrarMapa();
             dibujarRutaReal();
             if(typeof SERVICIOS_PASAJEROS === 'undefined')
@@ -426,7 +429,7 @@ function dibujarMarcadorLetra(letra,lat,lon)
         icon:icon
     });    
     marker.setMap(map);
-    markers.push(marker);
+    markers.set("marker",marker);
 }
 
 function cambiarPestaniaGeneral()

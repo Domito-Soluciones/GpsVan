@@ -4,6 +4,7 @@ class ServicioDetalle {
     private $id;
     private $lat;
     private $lon;
+    private $estado;
     
     function getId() {
         return $this->id;
@@ -28,7 +29,16 @@ class ServicioDetalle {
     function setLon($lon) {
         $this->lon = $lon;
     }
+    
+    function getEstado() {
+        return $this->estado;
+    }
 
+    function setEstado($estado) {
+        $this->estado = $estado;
+    }
+
+    
     function toString() {
         return "ServicioDetalle{" . "id=" . $this->id . ", lat=" . $this->lat . ", lon=" . $this->lon . '}';
     }

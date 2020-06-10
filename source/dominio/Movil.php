@@ -56,6 +56,7 @@ class Movil {
     private $adjuntoSegRcExceso;
     private $nombreEmpresa;
     private $colorEmpresa;
+    private $servicioEstado;
     
     function getId() {
         return $this->id;
@@ -489,6 +490,15 @@ class Movil {
         $this->colorEmpresa = $colorEmpresa;
     }
 
+    function getServicioEstado() {
+        return $this->servicioEstado;
+    }
+
+    function setServicioEstado($servicioEstado) {
+        $this->servicioEstado = $servicioEstado;
+    }
+
+    
     function toString() {
         return "Movil{" . "id=" . $this->id . ", patente=" . $this->patente . ", marca=" . $this->marca . ", modelo=" . $this->modelo .
         ", nombre=" . $this->nombre . ", anio=" . $this->anio . ", color=" . $this->color . ", cantidad=" . $this->cantidad . ", clase=" .

@@ -250,6 +250,7 @@ class MovilDao {
                 $movil->setLat($row['movil_lat']);
                 $movil->setLon($row['movil_lon']);
                 $movil->setServicio($row['movil_servicio']);
+                $movil->setServicioEstado($row["servicio_estado"]);
                 $movil->setConductor($row['movil_conductor']);
                 $movil->setConductorNombre($row['conductor_nombre']." ".$row['conductor_papellido']);
                 $movil->setConductorNick($row['conductor_nick']);

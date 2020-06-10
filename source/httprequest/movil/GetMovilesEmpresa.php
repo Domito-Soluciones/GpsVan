@@ -19,6 +19,7 @@ for ($i = 0 ; $i < count($moviles); $i++)
     $movilLat = trim($moviles[$i]->getLat());
     $movilLon = trim($moviles[$i]->getLon());
     $movilServicio = trim($moviles[$i]->getServicio());
+    $movilServicioEstado = trim($moviles[$i]->getServicioEstado());
     $movilConductor = trim($moviles[$i]->getConductor());
     $movilConductorNick = trim($moviles[$i]->getConductorNick());
     $movilConductorNombre = trim($moviles[$i]->getConductorNombre());
@@ -31,6 +32,7 @@ for ($i = 0 ; $i < count($moviles); $i++)
         . "\"movil_lat\":\"".$movilLat."\","
         . "\"movil_lon\":\"".$movilLon."\","
         . "\"movil_servicio\":\"".$movilServicio."\","
+        . "\"movil_servicio_estado\":\"".$movilServicioEstado."\","
         . "\"movil_conductor\":\"".$movilConductor."\","
         . "\"movil_conductor_nombre\":\"".$movilConductorNombre."\","
         . "\"movil_conductor_nick\":\"".$movilConductorNick."\","

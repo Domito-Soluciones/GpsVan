@@ -7,6 +7,7 @@ header('Content-Type: application/json; charset=utf-8');
 $id = filter_input(INPUT_POST, 'id');
 $servicioDao = new ServicioDao();
 $coordenadas = $servicioDao->getServiciosDetalle($id);
+$estado = $coordenadas->getEstado();
 $lat = explode(",", $coordenadas->getLat());
 $lon = explode(",", $coordenadas->getLon());
 $respuesta = "[";
@@ -20,7 +21,8 @@ for($i = 0 ; $i < count($lat) ; $i++)
            $respuesta .= ",";
        }
         $respuesta .= "{\"lat\":".$lat[$i].","
-            . "\"lng\":".$lon[$i]."}";   
+                . "\"lng\":".$lon[$i].","  
+            . "\"estado\":".$estado."}";   
     }
     
 }

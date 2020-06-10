@@ -5,7 +5,7 @@ var pasajeros_diarios = [];
 var PAGINA = "MONITOREO";
 var interval;
 var PATENTE;
-var MOVILES_DIBUJADOS = new Map();
+var ESTADOS_ANTERIORES = new Map();
 
 $(document).ready(function(){
     PAGINA_ANTERIOR = PAGINA;
@@ -158,6 +158,7 @@ function moverMovilesMapa()
             var patente = response[i].movil_patente;
             var nombre = response[i].movil_nombre;
             var servicio = response[i].movil_servicio;
+            var servicioEstado = response[i].movil_servicio_estado;
             var lat = parseFloat(response[i].movil_lat);
             var lon = parseFloat(response[i].movil_lon);
             var conductor = response[i].movil_conductor_nombre;
@@ -167,12 +168,12 @@ function moverMovilesMapa()
             if(TIPO_USUARIO === 'CLIENTE'){
                 if(CLIENTE === empresa){
                     vacio = false;
-                    moverMovil(patente,nombre,estado,lat,lon,servicio,conductor,color);
+                    moverMovil(patente,nombre,estado,lat,lon,servicio,conductor,color,servicioEstado);
                 }
                 
             }
             else{
-                moverMovil(patente,nombre,estado,lat,lon,servicio,conductor,color);
+                moverMovil(patente,nombre,estado,lat,lon,servicio,conductor,color,servicioEstado);
             }
         }
         if(TIPO_USUARIO === 'CLIENTE' && vacio){
@@ -182,7 +183,7 @@ function moverMovilesMapa()
     getRequest(url,success,false);
 }
 
-function dibujarMarcador(id,lat,lon,nombre,servicio,conductor,color)
+function dibujarMarcador(id,lat,lon,nombre,servicio,conductor,color,estadoServicio)
 {
     var myLatLng = {lat: lat, lng: lon};
     var icon = {
@@ -214,8 +215,11 @@ function dibujarMarcador(id,lat,lon,nombre,servicio,conductor,color)
     google.maps.event.addListener(marker, 'click', function() {
         infowindow.open(map,marker);
     });
-    
-    markers.push(marker);
+    markers.set(id,marker);
+    if(estadoServicio === ""){
+        estadoServicio = "1";
+    }
+    ESTADOS_ANTERIORES.set(id,estadoServicio);
     return marker;
 }
 
@@ -225,6 +229,8 @@ function dibujarServicio(id)
     var params = {id : id};
     var url = urlBase + "/servicio/GetDetalleServicio.php";
     var success = function(response){
+        var servicioEstado = response[0].estado;
+        alert("1 "+servicioEstado);
         flightPath = new google.maps.Polyline({
             path: response,
             geodesic: true,
@@ -246,7 +252,8 @@ function dibujarServicio(id)
             var lat = response.movil_lat;
             var lng = response.movil_lon;
             var conductor = response.movil_conductor_nombre;
-            dibujarMarcador(patente,parseFloat(lat),parseFloat(lng),patente,id,conductor,'white');
+            console.log("dibujandp marcador 1");
+            dibujarMarcador(patente,parseFloat(lat),parseFloat(lng),patente,id,conductor,'white',servicioEstado);
         };
         getRequest(url,success);
     };
@@ -257,64 +264,47 @@ function animarMovil(patente)
 {
     marcarFilaActiva(patente);
     PATENTE = patente;
-    for(var i = 0 ; i < markers.length; i++)
+    if(markers.get(patente) !== undefined)
     {
-        if(markers[i].get("idMarker") === PATENTE)
-        {
-            var latLng = markers[i].getPosition(); 
-            map.setCenter(latLng); 
-            map.setZoom(18);  
-            break;
-        }
-    } 
-    
+        var latLng = markers.get(patente).getPosition(); 
+        map.setCenter(latLng); 
+        map.setZoom(18);  
+    }
 }
 
-function moverMovil(patente,nombre,estado,lat,lon,servicio,conductor,color){
+function moverMovil(patente,nombre,estado,lat,lon,servicio,conductor,color,estadoServicio){
     if(estado === '0')
     {
-        console.log(markers.length);
-        for(var j = 0  ; j < markers.length;j++)
-        {
-            console.log("# "+markers[j].get("idMarker"));
-            if(markers[j].get("idMarker") === patente)
-            {
-                for (var [clave, valor] of MOVILES_DIBUJADOS) {
-                    console.log("estado 0: "+clave + " = " + valor);
-                }
-                quitarclase($("#"+patente+"-img"),"img-estado-ok");
-                agregarclase($("#"+patente+"-img"),"img-estado-no");
-                markers[j].setMap(null);
-                MOVILES_DIBUJADOS.delete(patente);
-                break;
-            }
-            else{
-                console.log("no dunco# "+markers[j].get("idMarker"));
-            }
+        quitarclase($("#"+patente+"-img"),"img-estado-ok");
+        agregarclase($("#"+patente+"-img"),"img-estado-no");             
+        let marker = markers.get(patente);
+        if(marker !== undefined){
+            marker.setMap(null);
+            marker.delete(patente);
         }
     }
     else
     {
         var marker = undefined;
-        if(typeof MOVILES_DIBUJADOS.get(patente) === 'undefined')
+        if(markers.get(patente) === undefined)
         {
-            for (var [clave, valor] of MOVILES_DIBUJADOS) {
-                console.log("estado 1: "+clave + " = " + valor);
-            }
-            marker = dibujarMarcador(patente,lat,lon,nombre,servicio,conductor,color);
-            MOVILES_DIBUJADOS.set(patente,patente);
+            console.log("dibujandp marcador 2");
+            marker = dibujarMarcador(patente,lat,lon,nombre,servicio,conductor,color,estadoServicio);
             quitarclase($("#"+patente+"-img"),"img-estado-no");
             agregarclase($("#"+patente+"-img"),"img-estado-ok");
         }
         else
         {
-            for(var j = 0  ; j < markers.length;j++)
-            {           
-                if(markers[j].get("idMarker") === patente)
-                {
-                    marker = markers[j];
-                    break;
-                }
+            marker = markers.get(patente);
+            var estadoAnterior = ESTADOS_ANTERIORES.get(patente);
+            if((parseInt(estadoAnterior) < 4 && estadoServicio === '4') || 
+               (estadoAnterior === "4" && estadoServicio === '')){
+                console.log("redibujando marcador "+patente+" "+lat+" "+lon+" "+nombre+" "+servicio+" "+conductor+" "+color+" "+estado);
+                marker.setMap(null);
+                markers.delete(patente);
+                console.log(markers);
+                console.log("dibujandp marcador 3");
+                dibujarMarcador(patente,lat,lon,nombre,servicio,conductor,color,estadoServicio);
             }
         }
         var latlng = new google.maps.LatLng(parseFloat(lat), parseFloat(lon));

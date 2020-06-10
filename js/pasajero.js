@@ -816,7 +816,7 @@ function colocarMarcadorPlaces()
         map: map
     });
     
-    markers.push(marker);
+    markers.set("marker",marker);
 
     map.setZoom(17);
     map.panTo(marker.position);
@@ -888,7 +888,7 @@ function initPlacesAutoComplete(input) {
                 position: place.geometry.location,
                 map: map
             });
-            markers.push(marker);
+            markers.set("marker",marker);
             map.panTo(place.geometry.location);
             map.setZoom(15);
             google.maps.event.addListener(map, "drag", function() {

@@ -416,6 +416,7 @@ class ServicioDao {
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {
                 $servicioDetalle->setId($row["servicio_detalle_id"]);          
+                $servicioDetalle->setEstado($row["servicio_estado"]);
                 $servicioDetalle->setLat($row["servicio_detalle_lat"]);
                 $servicioDetalle->setLon($row["servicio_detalle_lon"]);
             }

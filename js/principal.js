@@ -125,6 +125,9 @@ function decodePolyline(encoded) {
         var params = {};
         var url = urlBase + "/servicio/GetServiciosPendientes.php";
         postRequest(url,params,function(response){
+            if(response.length === undefined){
+                redireccionar("index.php");
+            }
             var cont = $("#contenedor_servicios");
             cont.html("");
             if(response.length === 0)
