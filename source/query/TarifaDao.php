@@ -1,6 +1,6 @@
 <?php
 include '../../util/validarPeticion.php';
-include '../../conexion/Conexion.php';
+include_once '../../conexion/Conexion.php';
 include '../../dominio/Tarifa.php';
 
 class TarifaDao {
@@ -35,6 +35,43 @@ class TarifaDao {
         }
         return $array;
     }
+    
+    public function getTarifa($nombre,$cliente)
+    {
+        $tarifa = "-";
+        $conn = new Conexion();
+        try {
+            $query = "SELECT tarifa_descripcion FROM tbl_tarifa WHERE tarifa_descripcion = '".$nombre."' AND tarifa_cliente = (SELECT cliente_id FROM tbl_cliente WHERE cliente_razon_social = '".$cliente."')";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
+            while($row = mysqli_fetch_array($result)) {
+                $tarifa = $row["tarifa_descripcion"];
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
+        }
+        return $tarifa;
+    }
+    
+        public function getPrecioTarifa($nombre,$cliente)
+    {
+        $tarifa = "-";
+        $conn = new Conexion();
+        try {
+            $query = "SELECT tarifa_valor1,tarifa_valor2 FROM tbl_tarifa WHERE tarifa_descripcion = '".$nombre."' AND tarifa_cliente = (SELECT cliente_id FROM tbl_cliente WHERE cliente_razon_social = '".$cliente."')";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
+            while($row = mysqli_fetch_array($result)) {
+                $tarifa = $row["tarifa_valor1"]."%".$row["tarifa_valor2"];
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
+        }
+        return $tarifa;
+    }
+    
     public function getTarifasEmpresa($empresa)
     {
         $array = array();

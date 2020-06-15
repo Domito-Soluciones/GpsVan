@@ -1,8 +1,8 @@
 <?php
 include '../../util/validarPeticion.php';
-include '../../conexion/Conexion.php';
-include '../../dominio/Conductor.php';
-include '../../dominio/Movil.php';
+include_once '../../conexion/Conexion.php';
+include_once '../../dominio/Conductor.php';
+include_once '../../dominio/Movil.php';
 
 class ConductorDao {
     
@@ -240,6 +240,25 @@ class ConductorDao {
         }
         return $array;
     }
+    
+    public function getConductorID($nombre,$apellido)
+    {
+        $conn = new Conexion();
+        $conductor = "-";
+        try {
+            $query = "SELECT conductor_id FROM tbl_conductor WHERE conductor_nombre = '$nombre' AND conductor_papellido = '$apellido'"; 
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query); 
+            while($row = mysqli_fetch_array($result)) {
+                $conductor = $row["conductor_id"];
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
+        }
+        return $conductor;
+    }
+   
     
     public function getConductor($nombre,$clave)
     {

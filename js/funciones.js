@@ -111,7 +111,7 @@ function addTexto(div,texto)
     div.text(texto);
 }
 
-function validarCamposOr(array,exepciones = null)
+    function validarCamposOr(array,exepciones = null)
 {
     for (var i = 0 ; i < array.length; i++)
     {
@@ -435,6 +435,46 @@ function subirFicheroPDF(event,form,nombre,archivo,index)
     {
         alertify.error("El contrato debe ir asociado a un "+nombre.attr("id") );
     }
+    event.preventDefault();
+}
+
+function subirFicheroXLSX(event,form,nombre,archivo)
+{
+    ADJUNTANDO = true;
+    var url = 'source/util/subirFichero.php?nombre='+nombre+'&tipo=excel&archivo='+archivo.val();
+    $.ajax({
+        async: true,
+        type: 'POST',
+        url: url,
+        data: new FormData(form[0]),
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function (xhr) {
+            mostrarDivLoader();
+        },
+        success: function(response)
+        {
+            ADJUNTANDO = false;
+            var params = {archivo  : archivo.val()};        
+            var url = urlBase + "/servicio/AddServicioExcel.php";
+            var success = (response)=>{
+                if(response.error === undefined){
+                    alertify.success(response.estado);
+                }   
+                else{
+                    alertify.error(response.error);
+                }
+                MODIFICADO = false;
+            };
+            postRequest(url,params,success);
+            eliminarDivLoader();
+        },
+        error: function(response)
+        {
+            eliminarDivLoader();
+        }
+    });
     event.preventDefault();
 }
 

@@ -1,12 +1,12 @@
 <?php
 include '../../util/validarPeticion.php';
-include '../../conexion/Conexion.php';
+include_once '../../conexion/Conexion.php';
 include '../../dominio/Servicio.php';
 include '../../dominio/ServicioEspecial.php';
 include '../../dominio/ServicioDetalle.php';
 include '../../dominio/ServicioPasajero.php';
-include '../../dominio/Movil.php';
-include '../../dominio/Pasajero.php';
+include_once '../../dominio/Movil.php';
+include_once '../../dominio/Pasajero.php';
 
 class ServicioDao {
     
@@ -83,6 +83,71 @@ class ServicioDao {
         return $id;
     }
     
+    
+    public function addServicioExcel($servicios,$detalles,$notificaciones,$notificaciones2)
+    {
+        $idProcesado = 0;
+        $aux = 0;
+        for($i = 0 ; $i < count($servicios); $i++){
+            $servicio = $servicios[$i];
+            $cliente = $servicio->getCliente();
+            $ruta = $servicio->getRuta();
+            $truta = $servicio->getTruta();
+            if($truta == "RECOGIDA"){
+                $truta = "RG-MAN";
+            }
+            else{
+                $truta = "ZP-MAN";
+            }
+            $fecha = $servicio->getFecha();
+            $hora = $servicio->getHora();
+            $movil = $servicio->getMovil();
+            $conductor = $servicio->getConductor();
+            $tarifa1 = $servicio->getTarifa1();
+            $tarifa2 = $servicio->getTarifa2();
+            $observaciones = $servicio->getObservaciones();
+            $agente = $servicio->getAgente();
+            $estado = $servicio->getEstado();
+            $tipo = $servicio->getTipo();
+            $cc = $servicio->getCC();
+            $conn = new Conexion();
+            $notificacionDao = new NotificacionDao();
+            try {
+                if($aux != $servicio->getId()){
+                    $query = "INSERT INTO tbl_servicio (servicio_cliente,servicio_ruta,servicio_truta,servicio_fecha,"
+                            . "servicio_hora,servicio_movil,servicio_conductor,servicio_tarifa1,servicio_tarifa2,servicio_centro_costo,servicio_observacion,servicio_agente,servicio_estado,servicio_tipo)"
+                            . " VALUES ('$cliente','$ruta','$truta','$fecha','$hora','$movil','$conductor','$tarifa1','$tarifa2','$cc','$observaciones',$agente,$estado,$tipo)";
+                    $conn->conectar();
+                    if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
+                        $id = mysqli_insert_id($conn->conn);
+                        $detalle = $detalles[$i];
+                        self::addServicioDetalleUnico($id,$detalle->getPasajero(),$detalle->getDestino(),$i);
+                        $notificacion = $notificaciones[$i];
+                        $notificacion2 = $notificaciones2[$i];
+                        $notificacion->setIdServicio($id);
+                        $notificacion->setTexto($notificacion->getTexto()."".$id);
+                        $notificacion2->setIdServicio($id);
+                        $notificacion2->setTexto($notificacion2->getTexto()."".$id);
+                        $notificacionDao->agregarNotificacion($notificaciones[$i]);
+                        $notificacionDao->agregarNotificacion($notificaciones2[$i]);
+                        $idProcesado = $id;
+                        $aux = $servicio->getId();
+                    } else {
+                        echo mysqli_error($conn->conn);
+                    }   
+                }
+                else{
+                    $detalle = $detalles[$i];
+                    self::addServicioDetalleUnico($idProcesado,$detalle->getPasajero(),$detalle->getDestino(),$i);
+                }
+            } catch (Exception $exc) {
+                echo $exc->getTraceAsString();
+                Log::write_error_log($exc->getTraceAsString());
+            }
+        }
+        return $id;
+    }
+    
     public function addServicioDetalle($pasajeros,$destinos,$idServicio)
     {
         $id = 0;
@@ -103,7 +168,25 @@ class ServicioDao {
             if (mysqli_multi_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
-                echo "aca esta el problema";
+                echo mysqli_error($conn->conn);
+            }           
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
+        }
+        return $id;
+    }
+    
+    public static function addServicioDetalleUnico($idServicio,$nombre,$destino,$index)
+    {
+        $id = 0;
+        $conn = new Conexion();
+        try {
+            $query = "INSERT INTO tbl_servicio_pasajero (servicio_pasajero_id_servicio,servicio_pasajero_id_pasajero,servicio_pasajero_destino,servicio_pasajero_index) VALUES ('$idServicio','$nombre','$destino','$index');"; 
+            $conn->conectar();
+            if (mysqli_multi_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
+                $id = mysqli_insert_id($conn->conn);
+            } else {
                 echo mysqli_error($conn->conn);
             }           
         } catch (Exception $exc) {

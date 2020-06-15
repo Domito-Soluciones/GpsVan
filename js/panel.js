@@ -86,6 +86,7 @@ $(document).ready(function(){
             $("#observacion").val(servicio.servicio_observacion);
             $("#clientes").prop("readonly",true);
             cargarRutas();
+            cargarMoviles();
             deshabilitarCampo($("#fechaHasta"));
             cambiarPropiedad($(".buscador-pasajero"),"display","initial");
             agregarclase($("#contenedor_mapa"),"mapa_bajo");
@@ -121,6 +122,7 @@ $(document).ready(function(){
                 }
             }
             MODIFICADO = true;
+            EDITANDO = false;
         };
         postRequest(url,params,success);
     }

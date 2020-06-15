@@ -1,6 +1,6 @@
 <?php
 include '../../util/validarPeticion.php';
-include '../../conexion/Conexion.php';
+include_once '../../conexion/Conexion.php';
 include '../../dominio/Cliente.php';
 include '../../dominio/CentroCosto.php';
 
@@ -71,6 +71,24 @@ class ClienteDao {
             Log::write_error_log($exc->getTraceAsString());
         }
         return $array;
+    }
+    
+    public function getCliente($nombre)
+    {
+        $cliente = "-";
+        $conn = new Conexion();
+        try {
+            $query = "SELECT cliente_razon_social FROM tbl_cliente WHERE cliente_razon_social = '".$nombre."'";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
+            while($row = mysqli_fetch_array($result)) {
+                $cliente = $row["cliente_razon_social"];
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
+        }
+        return $cliente;
     }
     
     public function getCentrosCosto($cliente)

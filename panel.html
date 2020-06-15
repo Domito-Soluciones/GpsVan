@@ -119,6 +119,15 @@
                         <img src="img/guardar.svg" width="12" height="12">
                         Solicitar
                     </div>
+                    <input type="hidden" id="excelOculta">
+                    <form id="formExcel" enctype="multipart/form-data" method="POST" 
+                          onsubmit="subirFicheroXLSX(event,$('#formExcel'),'excel',$('#excelOculta'))">
+                        <input name="excel" type="file" class="file" id="archivoImportar"  accept=".xlsx" onchange="enviarFormFile($('#archivoImportar').val(),'excel',$('#excelOculta'),$('#formExcel'))">         
+                    </form>
+                    <div class="boton" id="importar" onclick="abrirFile(event,$('#archivoImportar:hidden'))">
+                        <img src="img/icon.svg" width="12" height="12">
+                        Importar
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,6 +1,6 @@
 <?php
 include '../../util/validarPeticion.php';
-include '../../conexion/Conexion.php';
+include_once '../../conexion/Conexion.php';
 include '../../dominio/Notificacion.php';
 
 class NotificacionDao {
@@ -19,7 +19,8 @@ class NotificacionDao {
                     . "notificacion_estado,notificacion_servicio,notificacion_llave,notificacion_fecha)"
                     . " VALUES ('$texto','$tipo',0,'$servicio','$llave','$fecha')"; 
             $conn->conectar();
-            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
+            //if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
+            if (mysqli_query($conn->conn,$query) or die (mysqli_error($conn->conn))) {
                 $id = mysqli_insert_id($conn->conn);
             } else {
                 echo mysqli_error($conn->conn);

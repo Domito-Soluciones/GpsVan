@@ -1,6 +1,6 @@
 <?php
 include '../../util/validarPeticion.php';
-include '../../conexion/Conexion.php';
+include_once '../../conexion/Conexion.php';
 include '../../dominio/Pasajero.php';
 
 class PasajeroDao {
@@ -22,6 +22,41 @@ class PasajeroDao {
         }
         return $id;
     }
+    
+    public function getPasajeroNombre($nombre,$apellido,$cliente)
+    {
+        $conn = new Conexion();
+        $pasajero = new Pasajero();
+        try {
+            $query = "SELECT * FROM tbl_pasajero WHERE pasajero_nombre = '$nombre' AND pasajero_papellido = '$apellido' AND pasajero_empresa = (SELECT cliente_id FROM tbl_cliente WHERE cliente_razon_social = '$cliente')"; 
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
+            while($row = mysqli_fetch_array($result)) {
+                $pasajero->setId($row["pasajero_id"]);
+                $pasajero->setNombre($row["pasajero_nombre"]);
+                $pasajero->setPapellido($row["pasajero_papellido"]);
+                $pasajero->setMapellido($row["pasajero_mapellido"]);
+                $pasajero->setRut($row["pasajero_rut"]);
+                $pasajero->setNick($row["pasajero_nick"]);
+                $pasajero->setTelefono($row["pasajero_telefono"]);
+                $pasajero->setCelular($row["pasajero_celular"]);
+                $pasajero->setDireccion($row["pasajero_direccion"]);
+                $pasajero->setPunto($row["pasajero_punto_encuentro"]);
+                $pasajero->setMail($row["pasajero_mail"]);
+                $pasajero->setCargo($row["pasajero_cargo"]);
+                $pasajero->setNivel($row["pasajero_nivel"]);
+                $pasajero->setEmpresa($row["pasajero_empresa"]);
+                $pasajero->setEmpresaNombre($row["cliente_razon_social"]);
+                $pasajero->setCentroCosto($row["pasajero_centro_costo"]);
+                $pasajero->setRuta($row["pasajero_ruta"]);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
+        }
+        return $pasajero;
+    }
+    
     
     public function agregarPasajero($pasajero)
     {

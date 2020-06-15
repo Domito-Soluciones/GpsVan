@@ -1,8 +1,8 @@
 <?php
 include '../../util/validarPeticion.php';
-include '../../conexion/Conexion.php';
-include '../../dominio/Movil.php';
-include '../../dominio/Conductor.php';
+include_once '../../conexion/Conexion.php';
+include_once '../../dominio/Movil.php';
+include_once '../../dominio/Conductor.php';
 
 class MovilDao {
     
@@ -414,6 +414,23 @@ class MovilDao {
                 $conductor->setDireccion($row["conductor_direccion"]);
                 $conductor->setMail($row["conductor_mail"]);
                 $movil->setConductor($conductor);
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
+        }
+        return $movil;
+    }
+    public function getConductorMovil($conductor)
+    {
+        $movil = "-";
+        $conn = new Conexion();
+        try {
+            $query = "SELECT movil_nombre FROM tbl_movil WHERE movil_conductor = '".$conductor."'";
+            $conn->conectar();
+            $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
+            while($row = mysqli_fetch_array($result)) {
+                $movil = $row["movil_nombre"];
             }
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

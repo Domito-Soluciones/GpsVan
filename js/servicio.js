@@ -31,6 +31,12 @@ $(document).ready(function(){
     buscarServicio();
     cargarMoviles();
     
+    $("#id").keyup(function(e){
+        if(isTeclaEnter(e)){
+            buscarServicio(); 
+        }
+    });
+    
     $("#buscar").click(function(){
         buscarServicio(); 
     });
