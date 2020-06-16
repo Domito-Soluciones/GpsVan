@@ -118,6 +118,9 @@ $(document).ready(function(){
         validarCancelar(PAGINA);
     });
     $("#guardar").click(function(){
+        if($("#rut").val() === undefined){
+            return;
+        }
         if(AGREGAR)
         {
             agregarPasajero();
@@ -132,10 +135,13 @@ $(document).ready(function(){
     });
     
     $("#eliminar").click(function (){
-            confirmar("Eliminar pasajero","Esta seguro que desea eliminar al pasajero "+$("#rut").val(),
-            function(){
-                eliminarPasajero();
-            },null);
+        if($("#rut").val() === undefined){
+            return;
+        }
+        confirmar("Eliminar pasajero","Esta seguro que desea eliminar al pasajero "+$("#rut").val(),
+        function(){
+            eliminarPasajero();
+        },null);
     });
 });
 
@@ -428,6 +434,8 @@ function abrirModificar(id,rut,nombre,apellido)
                 buscarPasajeroCliente(ID_CLIENTE,NOMBRE_CLIENTE);
             }
             cambiarPropiedad($("#agregar"),"visibility","visible");
+            cambiarPropiedad($("#guardar"),"visibility","hidden");
+            cambiarPropiedad($("#eliminar"),"visibility","hidden");
         });
         var pasajero;
         for(var i = 0 ; i < PASAJEROS.length; i++)
@@ -774,6 +782,9 @@ function buscarClientePasajero()
 function cambiarFilaPasajero(id,nombre)
 {
 //    NOMBRE_CLIENTE = nombre;
+    cambiarPropiedad($("#agregar"),"visibility","visible");
+    cambiarPropiedad($("#guardar"),"visibility","hidden");
+    cambiarPropiedad($("#eliminar"),"visibility","hidden");
     if(MODIFICADO)
     {
         confirmar("Cambio de tarifa",
