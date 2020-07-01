@@ -217,6 +217,9 @@ $(document).ready(function(){
         validarCancelar(PAGINA);
     });
     $("#guardar").click(function(){
+        if($("#razon").val() === undefined){
+            return;
+        }
         if(AGREGAR)
         {
             agregarCliente();
@@ -231,6 +234,9 @@ $(document).ready(function(){
     });
     
     $("#eliminar").click(function (){
+        if(AGREGAR){
+            return;
+        } 
         confirmar("Eliminar cliente"
         ,"Esta seguro que desea eliminar al cliente "+$("#rut").val(),
         function(){
@@ -259,7 +265,6 @@ function agregarCliente()
             if($(this).val() !== '')
             {   
                 var cc = formatearCadena($(this).val());
-                alert(cc)
                 CENTROS_COSTO_ADD.push(cc);
             }
         });
@@ -666,7 +671,6 @@ function abrirModificar(id,nombre)
             cambiarPropiedad($("#cancelar"),"visibility","visible");
         });
         $("#guardarT").click(function (){
-            alert(AGREGART+" "+AGREGAR);
             if(AGREGART)
             {
                 if(AGREGAR){
@@ -1099,6 +1103,9 @@ function colocarMarcadorPlacesTarifaCliente()
 }
 function preEliminarCliente(id)
 {
+    if(AGREGAR){
+        return;
+    }
     confirmar("Eliminar cliente","Esta seguro que desea eliminar al cliente "+id,
             function(){
                 var params = {rut : id};

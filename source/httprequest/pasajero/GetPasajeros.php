@@ -6,8 +6,9 @@ include '../../log/Log.php';
 
 header('Content-Type: application/json');
 $busqueda = filter_input(INPUT_POST, 'busqueda');
+$cliente = filter_input(INPUT_POST, 'cliente');
 $pasajeroDao = new PasajeroDao();
-$pasajeros = $pasajeroDao->getPasajeros($busqueda);
+$pasajeros = $pasajeroDao->getPasajeros($busqueda,$cliente);
 echo "[";
 for ($i = 0 ; $i < count($pasajeros); $i++)
 {

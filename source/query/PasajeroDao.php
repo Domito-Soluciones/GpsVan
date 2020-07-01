@@ -139,18 +139,20 @@ class PasajeroDao {
         return $id;
     }
     
-    function getPasajeros($busqueda)
+    function getPasajeros($busqueda,$cliente)
     {
         $array = array();
         $conn = new Conexion();
         try {
             $query = "SELECT * FROM tbl_pasajero JOIN tbl_cliente ON pasajero_empresa = cliente_id WHERE "
-                    . "pasajero_rut LIKE '%".$busqueda."%' OR "
+                    . "(pasajero_rut LIKE '%".$busqueda."%' OR "
                     . "pasajero_nombre LIKE '%".$busqueda."%' OR "
                     . "pasajero_papellido LIKE '%".$busqueda."%' OR "
                     . "pasajero_mapellido LIKE '%".$busqueda."%' OR "
-                    . "pasajero_mail LIKE '%".$busqueda."%' OR "
-                    . "pasajero_empresa = (SELECT cliente_id FROM tbl_cliente WHERE cliente_razon_social = '".$busqueda."') ";
+                    . "pasajero_mail LIKE '%".$busqueda."%' )";
+                    if($cliente != ""){
+                        $query .= " AND pasajero_empresa = ".$cliente;
+                    }
             $conn->conectar();
             $result = mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn))); 
             while($row = mysqli_fetch_array($result)) {

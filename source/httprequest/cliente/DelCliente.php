@@ -9,6 +9,7 @@ $rut = filter_input(INPUT_POST, 'rut');
 $id = filter_input(INPUT_POST, 'id');
 $clienteDao = new ClienteDao();
 $clienteDao->eliminarCliente($rut);
-//$clienteDao->eliminarCentroCosto($id);
+$clienteDao->eliminarCentrosCosto($id);
+$clienteDao->eliminarTarifas($id);
 echo "{\"cliente_eliminado\":\"".$rut."\"}";
 Log::write_log("DELCLIENTE: ".$rut, 0);

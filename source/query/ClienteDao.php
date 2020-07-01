@@ -230,6 +230,45 @@ class ClienteDao {
         return $id;
     }
     
+    function eliminarCentrosCosto($idCliente)
+    {
+        $id = 0;
+        $conn = new Conexion();
+        try {
+            $query = "DELETE FROM tbl_centro_costo WHERE centro_costo_cliente = $idCliente;"; 
+            $conn->conectar();
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
+                $id = mysqli_insert_id($conn->conn);
+            } else {
+                echo mysqli_error($conn->conn);
+            }           
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
+        }
+        return $id;
+    }
+    
+    function eliminarTarifas($idCliente)
+    {
+        $id = 0;
+        $conn = new Conexion();
+        try {
+            $query = "DELETE FROM tbl_tarifa WHERE tarifa_cliente = $idCliente;"; 
+            $conn->conectar();
+            if (mysqli_query($conn->conn,$query) or die (Log::write_error_log(mysqli_error($conn->conn)))) {
+                $id = mysqli_insert_id($conn->conn);
+            } else {
+                echo mysqli_error($conn->conn);
+            }           
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+            Log::write_error_log($exc->getTraceAsString());
+        }
+        return $id;
+    }
+    
+    
     function eliminarCentroCostoUnico($idCC)
     {
         $id = 0;
