@@ -20,17 +20,19 @@ if($ext != 'pdf')
     }
 }
 $tipo = $_REQUEST['tipo'];
-$dir_subida = 'img/'.$nombre.'_';
-echo "este es el tipo = ".$tipo;
 if($tipo == 'pdf')
 {
     $archivo = 'contrato';
     $dir_subida = 'pdf/'.$nombre.'_';
 }
-if($tipo == 'excel')
+else if($tipo == 'excel')
 {
     $archivo = 'excel';
     $dir_subida = 'excel/'.$nombre.'_';
+}
+else{
+    $archivo = 'foto';
+    $dir_subida = 'img/'.$nombre.'_';
 }
 
 $fichero_subido = $dir_subida . basename($_FILES[$archivo]['name']);

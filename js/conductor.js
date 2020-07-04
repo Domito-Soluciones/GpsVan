@@ -76,6 +76,9 @@ $(document).ready(function(){
         validarCancelar(PAGINA);
     });
     $("#guardar").click(function(){
+        if($("#rut").val() === undefined){
+            return;
+        }
         if(AGREGAR)
         {
             agregarConductor();
@@ -90,6 +93,9 @@ $(document).ready(function(){
     });
     
     $("#eliminar").click(function (){
+        if(AGREGAR){
+            return;
+        } 
         confirmar("Eliminar conductor","Esta seguro que desea eliminar al conductor "+$("#rut").val(),
         function(){
                 eliminarConductor();
@@ -431,6 +437,7 @@ function buscarConductorTodo()
 
 function cambiarFila(id)
 {
+    resetFormulario();
     if(MODIFICADO)
     {
         confirmar("Cambio de conductor",

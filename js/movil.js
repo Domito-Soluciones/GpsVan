@@ -60,6 +60,9 @@ $(document).ready(function(){
     });
     
     $("#guardar").click(function(){
+        if($("#patente").val() === undefined){
+            return;
+        }
         if(AGREGAR)
         {
             agregarMovil();
@@ -75,6 +78,9 @@ $(document).ready(function(){
     });
     
     $("#eliminar").click(function (){
+        if(AGREGAR){
+            return;
+        }
         confirmar("Eliminar veh&iacute;culo",
             "Esta seguro que desea eliminar el veh&iacute;culo "+$("#patente").val(),
             function(){
@@ -414,6 +420,7 @@ function buscarMovil(cargar = false)
 
 function cambiarFila(id)
 {
+    resetFormulario();
     if(MODIFICADO)
     {
         confirmar("Cambio de veh&iacute;culo",
@@ -973,7 +980,7 @@ function activarPestania(array)
     {
         if(array[i] === '')
         {
-            if(i < 10)
+            if(i < 11)
             {
                 general = true;
             }
